@@ -26,7 +26,7 @@ const cols = [
 
 export function ProblemSection() {
   return (
-    <section style={{ padding: '96px 0', borderBottom: '1px solid #111' }}>
+    <section className="problem-section" style={{ padding: '96px 0', borderBottom: '1px solid #111' }}>
       <p style={{ fontSize: 11, fontWeight: 400, color: '#555555', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 18 }}>
         The Problem
       </p>

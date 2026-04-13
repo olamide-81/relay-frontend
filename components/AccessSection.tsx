@@ -18,7 +18,7 @@ export function AccessSection() {
   ]
 
   return (
-    <section style={{ padding: '96px 0', borderBottom: '1px solid #111' }}>
+    <section className="access-section" style={{ padding: '96px 0', borderBottom: '1px solid #111' }}>
       <p style={{ fontSize: 11, fontWeight: 400, color: '#555555', letterSpacing: '0.1em', textTransform: 'uppercase' }}>Access</p>
       <h2 style={{ marginTop: 18, fontSize: 'clamp(32px, 3.8vw, 50px)', fontWeight: 500, letterSpacing: '-0.025em' }}>
         <span style={{ color: '#e8e8e8' }}>Start free.</span>

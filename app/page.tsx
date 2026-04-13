@@ -16,7 +16,7 @@ export default function Page() {
     <div style={{ background: '#060606', minHeight: '100vh', fontFamily: "'DM Sans', sans-serif" }}>
       <LoadingScreen />
       <Nav />
-      <div style={{ maxWidth: 1400, margin: '0 auto', padding: '0 52px' }}>
+      <div className="page-shell" style={{ maxWidth: 1400, margin: '0 auto', padding: '0 52px' }}>
         <Hero />
         <ScrollReveal>
           <DirectorySection />

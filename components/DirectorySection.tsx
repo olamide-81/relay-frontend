@@ -19,12 +19,14 @@ export function DirectorySection() {
   })
 
   const showLockedRows = activeCategory === 'All' && activeRegion === 'All' && searchQuery === ''
+  const mobilePreview = filtered.slice(0, 6)
   const mono = "'DM Mono', ui-monospace, SFMono-Regular, Menlo, monospace"
   const triggerSearch = () => setSearchQuery((q) => `${q}`)
   const onRegionClick = (region: string) => setActiveRegion((prev) => (prev === region ? 'All' : region))
 
   return (
     <section
+      className="directory-section"
       style={{
         padding: '40px 0 90px',
         background: '#060606',
@@ -32,7 +34,7 @@ export function DirectorySection() {
         width: '100%',
       }}
     >
-      <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 40, marginBottom: 44 }}>
+      <div className="directory-header" style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 40, marginBottom: 44 }}>
         <div>
           <p style={{ fontFamily: mono, fontSize: 12, fontWeight: 400, color: '#555555', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: 14 }}>
             Search Directory
@@ -52,7 +54,7 @@ export function DirectorySection() {
         </div>
       </div>
 
-      <div style={{ background: '#080808', border: '1px solid #111', borderRadius: 14, overflow: 'hidden' }}>
+      <div className="directory-desktop-console" style={{ background: '#080808', border: '1px solid #111', borderRadius: 14, overflow: 'hidden' }}>
         <div style={{ display: 'flex', alignItems: 'center', padding: '14px 20px', borderBottom: '1px solid #0d0d0d', position: 'relative' }}>
           <div style={{ display: 'flex', gap: 6 }}>
             <span style={{ width: 9, height: 9, borderRadius: '50%', background: '#161616' }} />
@@ -181,6 +183,64 @@ export function DirectorySection() {
           <p style={{ marginTop: 10, padding: '0 2px', fontSize: 11, fontWeight: 300, color: '#333', letterSpacing: '0.01em' }}>
             Free preview: search and filter visible providers. Unlock access for fee tables, rate comparisons, and full intelligence.
           </p>
+        </div>
+      </div>
+
+      <div className="directory-mobile-console" style={{ display: 'none', marginTop: 22 }}>
+        <div style={{ border: '1px solid #111', borderRadius: 12, overflow: 'hidden', background: '#080808' }}>
+          <div style={{ padding: '12px 14px', borderBottom: '1px solid #0d0d0d' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
+              <Sparkles size={14} stroke="#777" strokeWidth={1.7} />
+              <p style={{ fontFamily: mono, fontSize: 11, color: '#666', letterSpacing: '0.08em', textTransform: 'uppercase' }}>Relay Search Console</p>
+            </div>
+            <div style={{ display: 'flex', gap: 8 }}>
+              <input
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') triggerSearch()
+                }}
+                placeholder="Search providers"
+                style={{ flex: 1, background: '#0b0b0b', border: '1px solid #1a1a1a', borderRadius: 8, padding: '10px 12px', fontSize: 13, color: '#d0d0d0', outline: 'none' }}
+              />
+              <button type="button" onClick={triggerSearch} style={{ width: 38, height: 38, borderRadius: 8, background: '#e8e8e8', border: '1px solid #d0d0d0', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <ArrowRight size={14} stroke="#060606" strokeWidth={2.5} />
+              </button>
+            </div>
+          </div>
+
+          <div style={{ padding: '10px 12px', borderBottom: '1px solid #0d0d0d', display: 'flex', gap: 6, overflowX: 'auto' }}>
+            {['All', 'Africa', 'Europe', 'LATAM', 'Global'].map((r) => {
+              const active = activeRegion === r || (r === 'All' && activeRegion === 'All')
+              return (
+                <button
+                  key={`m-${r}`}
+                  type="button"
+                  onClick={() => setActiveRegion(r === 'All' ? 'All' : r)}
+                  style={{ whiteSpace: 'nowrap', fontFamily: mono, fontSize: 11, color: active ? '#d7d7d7' : '#777', border: `1px solid ${active ? '#2e2e2e' : '#161616'}`, borderRadius: 6, padding: '6px 10px', background: active ? '#121212' : 'transparent' }}
+                >
+                  {r}
+                </button>
+              )
+            })}
+          </div>
+
+          <div style={{ padding: 12, display: 'grid', gap: 10 }}>
+            {mobilePreview.map((provider) => (
+              <div key={`mobile-${provider.name}`} style={{ border: '1px solid #131313', borderRadius: 10, padding: '11px 12px', background: '#090909' }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
+                  <p style={{ fontSize: 14, fontWeight: 500, color: '#d6d6d6' }}>{provider.name}</p>
+                  <Lock size={11} stroke="#444" strokeWidth={1.8} />
+                </div>
+                <p style={{ fontSize: 12, color: '#7a7a7a', marginTop: 4, lineHeight: 1.6 }}>{provider.description}</p>
+                <div style={{ display: 'flex', gap: 6, marginTop: 8 }}>
+                  <span style={{ fontFamily: mono, fontSize: 10, color: '#666', border: '1px solid #1a1a1a', borderRadius: 5, padding: '3px 7px' }}>{provider.category}</span>
+                  <span style={{ fontFamily: mono, fontSize: 10, color: '#666', border: '1px solid #1a1a1a', borderRadius: 5, padding: '3px 7px' }}>{provider.region}</span>
+                </div>
+              </div>
+            ))}
+            {!mobilePreview.length && <p style={{ fontSize: 12, color: '#666', padding: '6px 2px' }}>No providers match your search.</p>}
+          </div>
         </div>
       </div>
     </section>

@@ -13,7 +13,7 @@ export function Footer() {
   }
 
   return (
-    <footer style={{ padding: '56px 0 44px', borderTop: '1px solid #111' }}>
+    <footer className="footer-section" style={{ padding: '56px 0 44px', borderTop: '1px solid #111' }}>
       <div style={{ display: 'grid', gridTemplateColumns: '1.4fr 1fr 1fr 1fr', gap: 40, marginBottom: 48 }}>
         <div>
           <Image src="/relaydark.png" width={32} height={32} alt="Relay logo" style={{ marginBottom: 12 }} />

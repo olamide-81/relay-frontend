@@ -38,6 +38,7 @@ export function StatsRow() {
 
   return (
     <section
+      className="stats-row"
       ref={ref}
       style={{
         display: 'grid',

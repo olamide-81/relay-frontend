@@ -11,6 +11,7 @@ const baseAnim = {
 export function Hero() {
   return (
     <section
+      className="hero-section"
       style={{
         marginTop: 62,
         padding: '96px 0 40px',

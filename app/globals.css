@@ -48,3 +48,167 @@ html {
 ::-webkit-scrollbar-thumb:hover {
   background: #333;
 }
+
+@media (max-width: 900px) {
+  .page-shell {
+    padding: 0 18px !important;
+  }
+
+  .nav-inner {
+    padding: 0 18px !important;
+  }
+
+  .nav-desktop-actions {
+    display: none !important;
+  }
+
+  .nav-mobile-trigger {
+    display: inline-flex !important;
+  }
+
+  .hero-section {
+    margin-top: 56px !important;
+    padding: 82px 0 26px !important;
+  }
+
+  .hero-section h1 {
+    font-size: clamp(36px, 12vw, 52px) !important;
+    margin-bottom: 20px !important;
+  }
+
+  .hero-section > div > div:nth-of-type(1) {
+    font-size: 14px !important;
+    line-height: 1.7 !important;
+    margin-bottom: 24px !important;
+  }
+
+  .hero-section > div > div:nth-of-type(2) {
+    width: 100%;
+    flex-wrap: wrap;
+    margin-bottom: 16px !important;
+  }
+
+  .directory-section {
+    padding: 28px 0 70px !important;
+  }
+
+  .directory-header {
+    flex-direction: column;
+    gap: 18px !important;
+    margin-bottom: 20px !important;
+  }
+
+  .directory-header > div:last-child {
+    max-width: none !important;
+    width: 100%;
+    text-align: left !important;
+  }
+
+  .directory-desktop-console {
+    display: none !important;
+  }
+
+  .directory-mobile-console {
+    display: block !important;
+  }
+
+  .stats-row {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  .stats-row > div {
+    padding: 20px 14px !important;
+    border-right: 1px solid #111 !important;
+    border-bottom: 1px solid #111;
+  }
+
+  .stats-row > div:nth-child(2n) {
+    border-right: none !important;
+  }
+
+  .stats-row > div:nth-last-child(-n + 2) {
+    border-bottom: none !important;
+  }
+
+  .stats-row > div > div:first-child {
+    font-size: 38px !important;
+  }
+
+  .problem-section,
+  .feature-section,
+  .access-section {
+    padding: 70px 0 !important;
+  }
+
+  .problem-section h2 br,
+  .feature-section h2 br,
+  .access-section h2 br {
+    display: none;
+  }
+
+  .problem-section > div {
+    margin-top: 34px !important;
+    grid-template-columns: 1fr !important;
+    gap: 24px;
+  }
+
+  .problem-section > div > div {
+    border-right: none !important;
+    border-top: 1px solid #111;
+    padding: 20px 0 0 0 !important;
+  }
+
+  .feature-section > div:last-child {
+    grid-template-columns: 1fr !important;
+    gap: 14px !important;
+    margin-top: 30px !important;
+  }
+
+  .access-section > div:last-child {
+    grid-template-columns: 1fr !important;
+    gap: 26px !important;
+    margin-top: 34px !important;
+  }
+
+  .access-section > div:last-child > div:last-child {
+    padding: 22px !important;
+  }
+
+  .waitlist-section {
+    padding: 90px 0 !important;
+  }
+
+  .waitlist-section > h2 {
+    font-size: clamp(38px, 12vw, 56px) !important;
+  }
+
+  .waitlist-section > div {
+    flex-direction: column;
+    max-width: 100% !important;
+  }
+
+  .waitlist-section > div > button {
+    width: 100%;
+  }
+
+  .footer-section {
+    padding: 44px 0 30px !important;
+  }
+
+  .footer-section > div:first-child {
+    grid-template-columns: 1fr !important;
+    gap: 28px !important;
+    margin-bottom: 32px !important;
+  }
+
+  .footer-section > div:last-child {
+    grid-template-columns: 1fr !important;
+    gap: 12px;
+    text-align: left;
+  }
+
+  .footer-section > div:last-child > div,
+  .footer-section > div:last-child > p {
+    justify-self: start !important;
+  }
+}

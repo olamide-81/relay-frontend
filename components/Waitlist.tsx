@@ -1,6 +1,6 @@
 export function Waitlist() {
   return (
-    <section style={{ padding: '140px 0', textAlign: 'center', borderBottom: '1px solid #111' }}>
+    <section className="waitlist-section" style={{ padding: '140px 0', textAlign: 'center', borderBottom: '1px solid #111' }}>
       <p style={{ fontSize: 11, fontWeight: 300, color: '#444', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 20 }}>
         Early Access
       </p>
