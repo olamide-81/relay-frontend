@@ -1,47 +1,50 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --text-primary: #09090b;
-  --text-secondary: #71717a;
-  --text-muted: #a1a1aa;
-  --section-alt: #f7f7f7;
-  --card-bg: #f4f4f5;
-  --border-subtle: #e4e4e7;
-  --accent: #1a56ff;
-  --accent-hover: #1240cc;
-  --accent-light: #eef3ff;
-  --success: #22c55e;
-  --warning: #f59e0b;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-text-primary: var(--text-primary);
-  --color-text-secondary: var(--text-secondary);
-  --color-text-muted: var(--text-muted);
-  --color-section-alt: var(--section-alt);
-  --color-card-bg: var(--card-bg);
-  --color-border-subtle: var(--border-subtle);
-  --color-accent: var(--accent);
-  --color-accent-hover: var(--accent-hover);
-  --color-accent-light: var(--accent-light);
-  --color-success: var(--success);
-  --color-warning: var(--warning);
-  --font-sans: var(--font-dm-sans);
-  --font-mono: var(--font-dm-sans);
-}
-
-body {
-  background: var(--background);
-  color: var(--text-primary);
-  font-family: var(--font-dm-sans), Arial, Helvetica, sans-serif;
-}
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap');
 
 * {
-  border-color: var(--border-subtle);
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-.mono {
-  font-family: var(--font-dm-sans), sans-serif;
+html {
+  background: #060606;
+  color: #e8e8e8;
+  font-family: 'DM Sans', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  animation: marquee 32s linear infinite;
+}
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+::selection {
+  background: #e8e8e8;
+  color: #060606;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #060606;
+}
+::-webkit-scrollbar-thumb {
+  background: #222;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #333;
 }

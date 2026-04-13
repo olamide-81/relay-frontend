@@ -1,14 +1,48 @@
 export function Waitlist() {
   return (
-    <section className="px-6 py-24 md:px-10 xl:py-32">
-      <p className="mono text-xs tracking-[0.2em] text-text-muted">EARLY ACCESS</p>
-      <h2 className="mt-4 text-[clamp(52px,6vw,64px)] font-extrabold leading-[1] tracking-tight">Be the first<br />team to use Relay.</h2>
-      <p className="mt-5 text-lg text-text-secondary">Join 140+ fintech teams already on the waitlist.</p>
-      <div className="mt-8 flex flex-wrap items-center gap-3">
-        <input className="w-full max-w-[300px] rounded-sm border border-border-subtle px-4 py-3" placeholder="Email address" />
-        <button className="rounded-sm bg-accent px-6 py-3 text-white hover:bg-accent-hover">Join Waitlist</button>
+    <section style={{ padding: '140px 0', textAlign: 'center', borderBottom: '1px solid #111' }}>
+      <p style={{ fontSize: 11, fontWeight: 300, color: '#444', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 20 }}>
+        Early Access
+      </p>
+      <h2 style={{ fontSize: 'clamp(46px, 6vw, 76px)', fontWeight: 500, color: '#e8e8e8', lineHeight: 1, letterSpacing: '-0.035em', marginBottom: 16 }}>
+        Be the first
+        <br />
+        team on Relay.
+      </h2>
+      <p style={{ fontSize: 14, fontWeight: 300, color: '#888', marginBottom: 36 }}>
+        Join 140+ fintech teams already on the waitlist.
+      </p>
+      <div style={{ display: 'flex', gap: 8, justifyContent: 'center', maxWidth: 400, margin: '0 auto 12px' }}>
+        <input
+          placeholder="your@company.com"
+          style={{
+            flex: 1,
+            background: '#0a0a0a',
+            border: '1px solid #1a1a1a',
+            borderRadius: 6,
+            padding: '11px 14px',
+            fontSize: 13,
+            fontWeight: 300,
+            color: '#d0d0d0',
+            outline: 'none',
+          }}
+        />
+        <button
+          type="button"
+          style={{
+            background: '#e8e8e8',
+            color: '#060606',
+            fontSize: 12,
+            fontWeight: 500,
+            padding: '11px 20px',
+            borderRadius: 6,
+            border: '1px solid #d0d0d0',
+          }}
+        >
+          Join Waitlist
+        </button>
       </div>
-      <p className="mt-3 text-xs text-text-muted">No spam. Unsubscribe anytime.</p>
+      <p style={{ fontSize: 11, fontWeight: 300, color: '#333' }}>No spam. Unsubscribe anytime.</p>
     </section>
-  );
+  )
 }

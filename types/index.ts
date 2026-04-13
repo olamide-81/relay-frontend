@@ -1,12 +1,12 @@
 export interface Provider {
-  name: string;
-  category: string;
-  regions: string[];
-  uptime: string;
-  desc: string;
+  initials: string
+  name: string
+  category: string
+  region: string
+  description: string
 }
 
 export interface Category {
-  name: string;
-  count: number;
+  label: string
+  value: string
 }

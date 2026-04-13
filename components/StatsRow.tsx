@@ -1,29 +1,68 @@
-import { BarChart3, Building2, Globe2, TimerReset } from "lucide-react";
-import { BarVisualization } from "@/components/ui/BarVisualization";
-import { CountUp } from "@/components/ui/CountUp";
+'use client'
+
+import { useEffect, useRef, useState } from 'react'
+import { motion, useInView } from 'framer-motion'
+
+function useCountUp(target: number, start: boolean) {
+  const [value, setValue] = useState(0)
+
+  useEffect(() => {
+    if (!start) return
+    const duration = 1500
+    const startTime = performance.now()
+    let raf = 0
+    const tick = (now: number) => {
+      const progress = Math.min(1, (now - startTime) / duration)
+      const eased = 1 - Math.pow(1 - progress, 3)
+      setValue(Math.round(target * eased))
+      if (progress < 1) raf = requestAnimationFrame(tick)
+    }
+    raf = requestAnimationFrame(tick)
+    return () => cancelAnimationFrame(raf)
+  }, [start, target])
+
+  return value
+}
 
 export function StatsRow() {
+  const ref = useRef<HTMLElement | null>(null)
+  const inView = useInView(ref, { once: true, amount: 0.25 })
+  const c200 = useCountUp(200, inView)
+  const c40 = useCountUp(40, inView)
+  const c12 = useCountUp(12, inView)
+
+  const cellStyle: React.CSSProperties = {
+    padding: '28px 28px',
+    borderRight: '1px solid #111',
+  }
+
   return (
-    <section className="grid gap-8 border-b border-border-subtle px-6 py-10 md:px-10 xl:grid-cols-2">
-      <div className="grid gap-6 sm:grid-cols-2">
-        <div>
-          <p className="mb-1 flex items-center gap-2 text-sm text-text-secondary"><Building2 size={14} />Providers Listed</p>
-          <p className="mono text-5xl font-bold"><CountUp value={200} suffix="+" /></p>
-        </div>
-        <div>
-          <p className="mb-1 flex items-center gap-2 text-sm text-text-secondary"><Globe2 size={14} />Countries Covered</p>
-          <p className="mono text-5xl font-bold"><CountUp value={40} suffix="+" /></p>
-        </div>
-        <div>
-          <p className="mb-1 flex items-center gap-2 text-sm text-text-secondary"><BarChart3 size={14} />Categories</p>
-          <p className="mono text-5xl font-bold"><CountUp value={12} /></p>
-        </div>
-        <div>
-          <p className="mb-1 flex items-center gap-2 text-sm text-text-secondary"><TimerReset size={14} />Updated</p>
-          <p className="mono text-5xl font-bold">Weekly</p>
-        </div>
+    <section
+      ref={ref}
+      style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(4,1fr)',
+        borderBottom: '1px solid #111',
+      }}
+    >
+      <div style={cellStyle}>
+        <div style={{ fontSize: 48, fontWeight: 500, color: '#e8e8e8', letterSpacing: '-0.04em', lineHeight: 1 }}>{c200}+</div>
+        <div style={{ fontSize: 13, fontWeight: 300, color: '#666', marginTop: 7 }}>Providers indexed</div>
       </div>
-      <BarVisualization bars={28} height={180} width={350} className="h-[180px] w-full" />
+      <div style={cellStyle}>
+        <div style={{ fontSize: 48, fontWeight: 500, color: '#e8e8e8', letterSpacing: '-0.04em', lineHeight: 1 }}>{c40}</div>
+        <div style={{ fontSize: 13, fontWeight: 300, color: '#666', marginTop: 7 }}>Countries covered</div>
+      </div>
+      <div style={cellStyle}>
+        <div style={{ fontSize: 48, fontWeight: 500, color: '#e8e8e8', letterSpacing: '-0.04em', lineHeight: 1 }}>{c12}</div>
+        <div style={{ fontSize: 13, fontWeight: 300, color: '#666', marginTop: 7 }}>Categories</div>
+      </div>
+      <div style={{ padding: '28px 28px' }}>
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: inView ? 1 : 0 }} transition={{ duration: 0.4 }} style={{ fontSize: 26, fontWeight: 500, color: '#e8e8e8', lineHeight: 1 }}>
+          Weekly
+        </motion.div>
+        <div style={{ fontSize: 13, fontWeight: 300, color: '#666', marginTop: 7 }}>Updated</div>
+      </div>
     </section>
-  );
+  )
 }
