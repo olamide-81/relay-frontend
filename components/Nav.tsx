@@ -2,10 +2,12 @@
 import Image from 'next/image'
 import { useState } from 'react'
 import { Menu, X } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 
 export function Nav() {
   const links = ['Directory', 'Compare', 'Pricing', 'About', 'Contact']
   const [menuOpen, setMenuOpen] = useState(false)
+  const router = useRouter()
 
   return (
     <nav
@@ -96,6 +98,7 @@ export function Nav() {
             }}
             onMouseEnter={(e) => (e.currentTarget.style.background = '#ffffff')}
             onMouseLeave={(e) => (e.currentTarget.style.background = '#e8e8e8')}
+            onClick={() => router.push('/#cta')}
           >
             Get Access
           </button>
@@ -156,7 +159,14 @@ export function Nav() {
             <button type="button" style={{ marginTop: 8, padding: '10px 8px', fontSize: 14, color: '#b0b0b0', background: 'transparent', border: '1px solid #1c1c1c', borderRadius: 8, textAlign: 'left' }}>
               Log in
             </button>
-            <button type="button" style={{ marginTop: 6, padding: '11px 10px', fontSize: 13, fontWeight: 500, color: '#060606', background: '#e8e8e8', border: '1px solid #d0d0d0', borderRadius: 8 }}>
+            <button
+              type="button"
+              onClick={() => {
+                setMenuOpen(false)
+                router.push('/#cta')
+              }}
+              style={{ marginTop: 6, padding: '11px 10px', fontSize: 13, fontWeight: 500, color: '#060606', background: '#e8e8e8', border: '1px solid #d0d0d0', borderRadius: 8 }}
+            >
               Get Access
             </button>
           </div>

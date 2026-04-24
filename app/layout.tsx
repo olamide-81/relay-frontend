@@ -79,7 +79,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body style={{ background: '#060606', scrollBehavior: 'smooth' }}>
+      <body>
         {children}
       </body>
     </html>

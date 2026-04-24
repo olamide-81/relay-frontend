@@ -1,6 +1,9 @@
+'use client'
 import { Check, Lock } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 
 export function AccessSection() {
+  const router = useRouter()
   const freeItems = [
     'Provider listings & profiles',
     'Category & region filters',
@@ -70,6 +73,7 @@ export function AccessSection() {
           ))}
           <button
             type="button"
+            onClick={() => router.push('/#cta')}
             style={{
               width: '100%',
               background: '#e8e8e8',
