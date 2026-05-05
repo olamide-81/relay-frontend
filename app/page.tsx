@@ -1,8 +1,8 @@
 import { readFileSync } from 'node:fs'
+import path from 'node:path'
 import { LandingRuntime } from '@/components/LandingRuntime'
 
-const redesignPath =
-  '/Users/olamide/Library/Application Support/Claude/local-agent-mode-sessions/9b4581a3-bb51-46a0-a4ea-9674fc9a2bec/deb2eeea-2d43-4e49-8ba0-5aed707acffc/local_e6b3ce03-5978-459c-bfaf-8efd95bf6bb7/outputs/relay-redesign.html'
+const redesignPath = path.join(process.cwd(), 'app', 'relay-redesign.html')
 
 function withProviderLogos(html: string) {
   const domainByProvider: Record<string, string> = {
