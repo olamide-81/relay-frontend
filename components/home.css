@@ -1298,7 +1298,7 @@
    Intercom-style sections (Relay-adapted)
    ═══════════════════════════════════════════ */
 
-/* ─── Split hero ─── */
+/* ─── Centered editorial hero ─── */
 .hero2 {
   max-width: var(--max-width);
   margin: 0 auto;
@@ -1307,64 +1307,45 @@
 
 .has-banner .hero2 { padding-top: calc(var(--nav-height) + 40px + 56px); }
 
-.hero2-inner {
-  display: grid;
-  grid-template-columns: 1fr 1.08fr;
-  gap: 56px;
-  align-items: center;
+.hero2--center { text-align: center; }
+
+.hero2-center {
+  position: relative;
+  max-width: 940px;
+  margin: 0 auto;
+  padding: 48px 0 24px;
 }
+
+.hero2-lead { position: relative; z-index: 3; }
 
 .hero2-eyebrow {
   display: inline-block;
   font-size: 11px;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.2em;
   color: var(--text-muted);
-  margin-bottom: 24px;
-}
-
-.hero2-title {
-  font-size: clamp(40px, 5vw, 68px);
-  font-weight: 500;
-  line-height: 1.04;
-  letter-spacing: -0.04em;
   margin-bottom: 26px;
 }
 
-.hero2-title .serif-italic { font-weight: 300; letter-spacing: -0.02em; }
+.hero2-title {
+  font-size: clamp(44px, 6.4vw, 82px);
+  font-weight: 500;
+  line-height: 1.02;
+  letter-spacing: -0.045em;
+  max-width: 14ch;
+  margin: 0 auto 28px;
+}
+
+.hero2-title .serif-italic { font-weight: 300; letter-spacing: -0.025em; }
 
 .hero2-lede {
   font-size: 19px;
   line-height: 1.6;
   color: var(--text-secondary);
-  max-width: 480px;
-  margin-bottom: 34px;
+  max-width: 540px;
+  margin: 0 auto 36px;
 }
 
-.hero2-actions { display: flex; gap: 14px; flex-wrap: wrap; }
-
-.hero2-visual { position: relative; }
-
-.hero2-glow {
-  position: absolute;
-  inset: -8% -6% -8% -6%;
-  background:
-    radial-gradient(60% 70% at 70% 30%, rgba(29, 78, 216, 0.12), transparent 70%),
-    radial-gradient(50% 60% at 20% 80%, rgba(245, 158, 11, 0.1), transparent 70%);
-  filter: blur(8px);
-  z-index: 0;
-}
-
-.hero2-ink {
-  position: absolute;
-  top: -64px;
-  right: -8px;
-  width: 110px;
-  height: auto;
-  opacity: 0.85;
-  z-index: 3;
-  pointer-events: none;
-  mix-blend-mode: multiply;
-}
+.hero2-actions { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; }
 
 /* ─── Hero feature strip ─── */
 .hero2-tabs {
@@ -1409,132 +1390,6 @@
   color: var(--text-secondary);
 }
 
-/* ─── Hero dashboard mock ─── */
-.mock {
-  position: relative;
-  z-index: 2;
-  background: var(--paper-pure);
-  border: 1px solid var(--line-strong);
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 30px 70px -42px rgba(11, 11, 12, 0.5);
-}
-
-.mock-bar {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  padding: 12px 16px;
-  border-bottom: 1px solid var(--line);
-  background: var(--paper);
-}
-
-.mock-dot {
-  width: 9px; height: 9px; border-radius: 50%;
-  background: var(--line-strong);
-}
-
-.mock-tab {
-  margin-left: 10px;
-  font-size: 10px;
-  letter-spacing: 0.06em;
-  color: var(--text-secondary);
-  background: var(--paper-pure);
-  border: 1px solid var(--line);
-  padding: 4px 12px;
-  border-radius: 100px;
-}
-
-.mock-head {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 20px 22px 14px;
-}
-
-.mock-title { font-size: 15px; font-weight: 600; letter-spacing: -0.01em; }
-.mock-meta { font-size: 9px; letter-spacing: 0.1em; color: var(--text-muted); margin-top: 5px; }
-
-.mock-live {
-  display: inline-flex; align-items: center; gap: 6px;
-  font-size: 9px; letter-spacing: 0.12em; color: #16a34a;
-}
-.mock-live i {
-  width: 6px; height: 6px; border-radius: 50%;
-  background: #16a34a; box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.16);
-  animation: pulse 2s ease-in-out infinite;
-}
-
-.mock-rows { padding: 0 14px; }
-
-.mock-rowhead,
-.mock-row {
-  display: grid;
-  grid-template-columns: 1.7fr 0.7fr 0.8fr 1.1fr;
-  align-items: center;
-  gap: 8px;
-  padding: 0 12px;
-}
-
-.mock-rowhead {
-  font-size: 8px;
-  letter-spacing: 0.1em;
-  color: var(--text-muted);
-  padding-top: 4px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid var(--line);
-}
-
-.mock-row {
-  font-size: 12px;
-  color: var(--text-secondary);
-  padding-top: 13px;
-  padding-bottom: 13px;
-  border-bottom: 1px solid var(--line);
-}
-.mock-row:last-child { border-bottom: none; }
-
-.mock-prov { display: flex; align-items: center; gap: 10px; color: var(--text); font-weight: 500; }
-
-.mock-logo { width: 18px; height: 18px; border-radius: 5px; flex-shrink: 0; }
-.tone-a { background: #dbeafe; }
-.tone-b { background: var(--accent); }
-.tone-c { background: #fde68a; }
-.tone-d { background: #c7f0e6; }
-
-.mock-row.is-best {
-  background: rgba(29, 78, 216, 0.06);
-  border-radius: 8px;
-  border-bottom-color: transparent;
-  box-shadow: inset 2px 0 0 var(--accent);
-}
-.mock-row.is-best + .mock-row { border-top: 1px solid var(--line); }
-
-.mock-foot {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin: 12px 16px 16px;
-  padding: 12px 14px;
-  background: var(--ink);
-  border-radius: 10px;
-}
-.mock-foot-ic {
-  position: relative;
-  width: 28px; height: 28px; border-radius: 8px;
-  background: rgba(255, 255, 255, 0.12);
-  flex-shrink: 0;
-}
-.mock-foot-ic::after {
-  content: '';
-  position: absolute; inset: 0; margin: auto;
-  width: 8px; height: 8px; border-radius: 50%;
-  background: #4ade80; box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.2);
-}
-.mock-foot-text { font-size: 11px; color: rgba(255, 255, 255, 0.82); }
-.mock-foot-text b { color: #fff; font-weight: 600; }
-.mock-foot-status { margin-left: auto; font-size: 9px; letter-spacing: 0.06em; color: var(--text-on-ink-muted); }
 
 /* ─── Snapshot mocks (in value cards) ─── */
 .snap {
@@ -1715,16 +1570,33 @@
   border-top: 1px solid var(--line);
 }
 .quotes-tab {
+  position: relative;
   padding: 16px 20px;
   text-align: left;
   font-family: var(--font-mono);
   font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
   color: var(--text-muted);
-  border-top: 2px solid transparent;
   margin-top: -1px;
-  transition: color 0.2s, border-color 0.2s;
+  transition: color 0.2s;
 }
-.quotes-tab.is-active { color: var(--ink); border-top-color: var(--accent); }
+.quotes-tab.is-active { color: var(--ink); }
+
+.quotes-progress {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 2px;
+  width: 0;
+  background: var(--accent);
+}
+.quotes-tab.is-active .quotes-progress {
+  animation: quoteFill 7s linear forwards;
+}
+
+@keyframes quoteFill {
+  from { width: 0; }
+  to { width: 100%; }
+}
 
 .quotes-panel {
   position: relative;
@@ -1898,7 +1770,6 @@
 
 /* ── New sections responsive ── */
 @media (max-width: 1024px) {
-  .hero2-inner { grid-template-columns: 1fr; gap: 40px; }
   .hero2-tabs { grid-template-columns: repeat(2, 1fr); margin-top: 56px; }
   .hero2-tab:nth-child(3) { border-left: none; }
   .hero2-tab:nth-child(n+3) { border-top: 1px solid var(--line); }
@@ -1924,15 +1795,46 @@
   .banner-inner { justify-content: flex-start; }
   .nav-hide-sm { display: none; }
 
-  .hero2 { padding: calc(var(--nav-height) + 32px) 20px 0; }
+  .hero2 { padding: calc(var(--nav-height) + 32px) 16px 0; }
   .has-banner .hero2 { padding-top: calc(var(--nav-height) + 40px + 28px); }
-  .hero2-ink { display: none; }
-  .hero2-tabs { grid-template-columns: 1fr; margin-top: 44px; }
-  .hero2-tab { border-left: none; border-top: 1px solid var(--line); padding: 20px 0 22px; }
-  .hero2-tab.is-active { background: transparent; border-top-color: var(--accent); }
-  .mock-body--cols { grid-template-columns: 1fr; }
-  .mock-side { display: none; }
-  .mock-float { position: static; width: auto; margin: 16px; }
+  .hero2-center { padding: 12px 0; }
+  .hero2-title { font-size: clamp(34px, 11vw, 48px); }
+  .hero2-lede { font-size: 17px; }
+
+  .hero2-tabs {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-top: 40px;
+    border-top: none;
+  }
+  .hero2-tab {
+    position: relative;
+    overflow: hidden;
+    margin-top: 0;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    background: var(--paper-pure);
+    padding: 18px 18px 18px 22px;
+    gap: 6px;
+  }
+  .hero2-tab::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 3px;
+    background: transparent;
+    transition: background 0.2s;
+  }
+  .hero2-tab.is-active {
+    border-color: var(--line-strong);
+    background: #fff;
+    box-shadow: 0 12px 30px -22px rgba(11, 11, 12, 0.4);
+  }
+  .hero2-tab.is-active::before { background: var(--accent); }
+  .hero2-tab-label { font-size: 15px; color: var(--text); }
+  .hero2-tab-cap { font-size: 13.5px; }
 
   .logos { padding: 48px 20px; margin-top: 56px; }
   .logos-grid { grid-template-columns: repeat(2, 1fr); }

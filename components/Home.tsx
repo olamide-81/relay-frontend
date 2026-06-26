@@ -2,6 +2,7 @@
 
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
+import { motion, AnimatePresence, type Variants } from 'framer-motion'
 import {
   caseStudies,
   categories,
@@ -12,20 +13,28 @@ import {
   heroTabs,
   logoWall,
   newsItems,
-  providers,
   stats,
   testimonials,
   valueCards,
 } from '@/data/providers'
 import './home.css'
 
-function ProviderWordmark({ name }: { name: string }) {
-  return (
-    <span className="marquee-logo">
-      <span className="marquee-logo-name">{name}</span>
-      <span className="marquee-logo-sep" aria-hidden>·</span>
-    </span>
-  )
+const EASE = [0.22, 1, 0.36, 1] as const
+
+const fadeUp: Variants = {
+  hidden: { opacity: 0, y: 26 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: EASE } },
+}
+
+const stagger: Variants = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.09, delayChildren: 0.04 } },
+}
+
+const inView = {
+  initial: 'hidden' as const,
+  whileInView: 'show' as const,
+  viewport: { once: true, margin: '-80px' },
 }
 
 function SectionLabel({ index, children }: { index: string; children: React.ReactNode }) {
@@ -39,58 +48,6 @@ function SectionLabel({ index, children }: { index: string; children: React.Reac
 }
 
 /* ── CSS-built product mockups (no external screenshots) ── */
-
-function HeroMock() {
-  const rows = [
-    { name: 'Provider A', fee: '1.4%', live: '2 wks', cover: '12', tone: 'a' },
-    { name: 'Provider B', fee: '0.9%', live: '6 wks', cover: '28', tone: 'b', best: true },
-    { name: 'Provider C', fee: '1.1%', live: '3 wks', cover: '19', tone: 'c' },
-    { name: 'Provider D', fee: '1.6%', live: '4 wks', cover: '22', tone: 'd' },
-  ]
-  return (
-    <div className="mock">
-      <div className="mock-bar">
-        <span className="mock-dot" />
-        <span className="mock-dot" />
-        <span className="mock-dot" />
-        <span className="mock-tab mono">Directory · Payouts</span>
-      </div>
-      <div className="mock-head">
-        <div>
-          <div className="mock-title">Payouts · Sub-Saharan Africa</div>
-          <div className="mock-meta mono">18 PROVIDERS · UPDATED Q2 2026</div>
-        </div>
-        <span className="mock-live mono"><i />LIVE</span>
-      </div>
-      <div className="mock-rows">
-        <div className="mock-rowhead mono">
-          <span>PROVIDER</span>
-          <span>FEE</span>
-          <span>GO-LIVE</span>
-          <span>COVERAGE</span>
-        </div>
-        {rows.map((r) => (
-          <div key={r.name} className={`mock-row ${r.best ? 'is-best' : ''}`}>
-            <span className="mock-prov">
-              <i className={`mock-logo tone-${r.tone}`} />
-              {r.name}
-            </span>
-            <span>{r.fee}</span>
-            <span>{r.live}</span>
-            <span>{r.cover} countries</span>
-          </div>
-        ))}
-      </div>
-      <div className="mock-foot">
-        <span className="mock-foot-ic" aria-hidden />
-        <span className="mock-foot-text">
-          <b>2 introductions sent</b> — NG, KE, GH payouts
-        </span>
-        <span className="mock-foot-status mono">41s ago</span>
-      </div>
-    </div>
-  )
-}
 
 function AssistantMock() {
   return (
@@ -168,7 +125,12 @@ export default function Home() {
     return () => clearInterval(timer)
   }, [])
 
-  const doubledProviders = [...providers, ...providers]
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setActiveQuote((q) => (q + 1) % testimonials.length)
+    }, 7000)
+    return () => clearTimeout(timer)
+  }, [activeQuote])
 
   return (
     <div className={`relay-home ${bannerOpen ? 'has-banner' : ''}`}>
@@ -210,37 +172,31 @@ export default function Home() {
         </div>
       </header>
 
-      {/* Hero — split layout with product mockup */}
-      <section className="hero2">
-        <div className="hero2-inner">
-          <div className="hero2-copy">
-            <span className="hero2-eyebrow mono">INFRASTRUCTURE INTELLIGENCE</span>
-            <h1 className="hero2-title">
+      {/* Hero — centered, editorial / art-led */}
+      <section className="hero2 hero2--center">
+        <div className="hero2-center">
+          <motion.div
+            className="hero2-lead"
+            variants={stagger}
+            initial="hidden"
+            animate="show"
+          >
+            <motion.span className="hero2-eyebrow mono" variants={fadeUp}>
+              INFRASTRUCTURE INTELLIGENCE
+            </motion.span>
+            <motion.h1 className="hero2-title" variants={fadeUp}>
               The only directory built for the{' '}
               <span className="serif-italic">fintech builder era.</span>
-            </h1>
-            <p className="hero2-lede">
+            </motion.h1>
+            <motion.p className="hero2-lede" variants={fadeUp}>
               Relay indexes every API for building financial products — so every infrastructure
               decision is faster, cheaper and easier to defend than ever before.
-            </p>
-            <div className="hero2-actions">
+            </motion.p>
+            <motion.div className="hero2-actions" variants={fadeUp}>
               <a href="#waitlist" className="btn btn-primary">Request access</a>
               <a href="#directory" className="btn btn-ghost">Explore directory</a>
-            </div>
-          </div>
-
-          <div className="hero2-visual">
-            <div className="hero2-glow" aria-hidden />
-            <Image
-              src="/editorial/ink-flower.png"
-              alt=""
-              width={150}
-              height={210}
-              className="hero2-ink"
-              aria-hidden
-            />
-            <HeroMock />
-          </div>
+            </motion.div>
+          </motion.div>
         </div>
 
         {/* Hero feature strip */}
@@ -261,23 +217,27 @@ export default function Home() {
 
       {/* Logo wall */}
       <section className="logos" aria-label="Providers indexed">
-        <p className="logos-label mono">Indexing more than 240 of the APIs fintechs build on</p>
-        <div className="logos-grid">
+        <motion.p className="logos-label mono" variants={fadeUp} {...inView}>
+          Indexing more than 240 of the APIs fintechs build on
+        </motion.p>
+        <motion.div className="logos-grid" variants={stagger} {...inView}>
           {logoWall.map((name) => (
-            <div key={name} className="logos-item">{name}</div>
+            <motion.div key={name} className="logos-item" variants={fadeUp}>
+              {name}
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </section>
 
       {/* Three-up value cards with snapshots */}
       <section className="section section--paper-pure">
         <div className="section-inner">
-          <h2 className="band-title">
+          <motion.h2 className="band-title" variants={fadeUp} {...inView}>
             A better way to choose infrastructure — for builders, leaders and finance teams.
-          </h2>
-          <div className="value-grid">
+          </motion.h2>
+          <motion.div className="value-grid" variants={stagger} {...inView}>
             {valueCards.map((card) => (
-              <article key={card.title} className="value-card">
+              <motion.article key={card.title} className="value-card" variants={fadeUp}>
                 <div className="value-snap">
                   <div className="value-snap-bg" aria-hidden />
                   {card.mock === 'assistant' && <AssistantMock />}
@@ -286,34 +246,27 @@ export default function Home() {
                 </div>
                 <h3>{card.title}</h3>
                 <p>{card.description}</p>
-              </article>
+              </motion.article>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Provider marquee */}
-      <section className="marquee-section" aria-label="Featured providers">
-        <p className="marquee-label mono">Every provider, continuously re-verified</p>
-        <div className="marquee-track-wrap">
-          <div className="marquee-track">
-            {doubledProviders.map((p, i) => (
-              <ProviderWordmark key={`${p.domain}-${i}`} name={p.name} />
-            ))}
-          </div>
+          </motion.div>
         </div>
       </section>
 
       {/* Capabilities (Intercom omnichannel style) */}
       <section className="section" id="solutions">
         <div className="section-inner">
-          <h2 className="channels-head">
+          <motion.h2 className="channels-head" variants={fadeUp} {...inView}>
             <span className="channels-head-muted">Deliver confident decisions</span>
             <span>across every category</span>
-          </h2>
+          </motion.h2>
           <div className="channels-list">
             {channels.map((ch, i) => (
-              <div key={ch.title} className="channel-row">
+              <motion.div
+                key={ch.title}
+                className="channel-row"
+                variants={fadeUp}
+                {...inView}
+              >
                 <div className="channel-copy">
                   <h3>{ch.title}</h3>
                   <p>{ch.description}</p>
@@ -333,7 +286,7 @@ export default function Home() {
                     <AssistantMock />
                   )}
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
@@ -350,6 +303,7 @@ export default function Home() {
                 className={`quotes-tab ${i === activeQuote ? 'is-active' : ''}`}
                 onClick={() => setActiveQuote(i)}
               >
+                <span className="quotes-progress" />
                 {t.company}
               </button>
             ))}
@@ -359,14 +313,24 @@ export default function Home() {
             <span className="quotes-corner quotes-corner--tr" aria-hidden />
             <span className="quotes-corner quotes-corner--bl" aria-hidden />
             <span className="quotes-corner quotes-corner--br" aria-hidden />
-            <span className="quotes-company serif">{testimonials[activeQuote].company}</span>
-            <blockquote className="quotes-text">
-              “{testimonials[activeQuote].quote}”
-            </blockquote>
-            <figcaption className="quotes-cite">
-              <span className="quotes-name">{testimonials[activeQuote].name}</span>
-              <span className="quotes-role">{testimonials[activeQuote].role}</span>
-            </figcaption>
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeQuote}
+                initial={{ opacity: 0, y: 14 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -14 }}
+                transition={{ duration: 0.45, ease: EASE }}
+              >
+                <span className="quotes-company serif">{testimonials[activeQuote].company}</span>
+                <blockquote className="quotes-text">
+                  “{testimonials[activeQuote].quote}”
+                </blockquote>
+                <figcaption className="quotes-cite">
+                  <span className="quotes-name">{testimonials[activeQuote].name}</span>
+                  <span className="quotes-role">{testimonials[activeQuote].role}</span>
+                </figcaption>
+              </motion.div>
+            </AnimatePresence>
           </figure>
         </div>
       </section>
@@ -378,22 +342,28 @@ export default function Home() {
         <span className="fq-marker fq-marker--bl" aria-hidden />
         <span className="fq-marker fq-marker--br" aria-hidden />
         <div className="fq-inner">
-          <div className="fq-copy">
+          <motion.div className="fq-copy" variants={fadeUp} {...inView}>
             <span className="fq-brand mono">A FINTECH SCALE-UP</span>
             <blockquote>“{featuredTestimonial.quote}”</blockquote>
             <div className="fq-cite">
               <span className="fq-name">{featuredTestimonial.name}</span>
               <span className="fq-role">{featuredTestimonial.role}</span>
             </div>
-          </div>
-          <div className="fq-photo">
+          </motion.div>
+          <motion.div
+            className="fq-photo"
+            initial={{ opacity: 0, scale: 0.94 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true, margin: '-80px' }}
+            transition={{ duration: 0.7, ease: EASE }}
+          >
             <Image
               src={featuredTestimonial.image}
               alt={featuredTestimonial.name}
               width={320}
               height={400}
             />
-          </div>
+          </motion.div>
         </div>
       </section>
 
@@ -405,29 +375,29 @@ export default function Home() {
             One workspace for every{' '}
             <span className="serif-italic">infrastructure decision.</span>
           </h2>
-          <div className="feature-grid">
+          <motion.div className="feature-grid" variants={stagger} {...inView}>
             {features.map((f, i) => (
-              <article key={f.title} className="feature-card">
+              <motion.article key={f.title} className="feature-card" variants={fadeUp}>
                 <span className="feature-num mono">{String(i + 1).padStart(2, '0')}</span>
                 <h3>{f.title}</h3>
                 <p>{f.description}</p>
-              </article>
+              </motion.article>
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
 
       {/* Stats */}
       <section className="stats-section">
         <div className="section-inner">
-          <div className="stats-grid">
+          <motion.div className="stats-grid" variants={stagger} {...inView}>
             {stats.map((s) => (
-              <div key={s.label} className="stat-item">
+              <motion.div key={s.label} className="stat-item" variants={fadeUp}>
                 <div className="stat-value serif">{s.value}</div>
                 <div className="stat-label">{s.label}</div>
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
 
@@ -443,15 +413,15 @@ export default function Home() {
             Stop reading pitch decks and signing NDAs. Relay indexes every KYC, payout, FX,
             treasury and compliance provider — across Africa, LATAM, Europe and beyond.
           </p>
-          <div className="category-grid">
+          <motion.div className="category-grid" variants={stagger} {...inView}>
             {categories.map((c, i) => (
-              <a key={c.name} href="#directory" className="category-card">
+              <motion.a key={c.name} href="#directory" className="category-card" variants={fadeUp}>
                 <span className="category-index mono">{String(i + 1).padStart(2, '0')}</span>
                 <div className="category-name">{c.name}</div>
                 <div className="category-count mono">{c.count} APIs →</div>
-              </a>
+              </motion.a>
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
 
@@ -463,9 +433,9 @@ export default function Home() {
             Trusted by teams building the{' '}
             <span className="serif-italic">next financial rails.</span>
           </h2>
-          <div className="cases-grid">
+          <motion.div className="cases-grid" variants={stagger} {...inView}>
             {caseStudies.map((cs) => (
-              <article key={cs.company} className="case-card">
+              <motion.article key={cs.company} className="case-card" variants={fadeUp}>
                 <div className="case-top">
                   <span className="case-company serif">{cs.company}</span>
                   <span className="case-products mono">{cs.products}</span>
@@ -479,9 +449,9 @@ export default function Home() {
                     </div>
                   ))}
                 </div>
-              </article>
+              </motion.article>
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
 
@@ -598,34 +568,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Waitlist CTA */}
-      <section className="cta-section section--ink" id="waitlist">
-        <div className="section-inner cta-inner">
-          <h2 className="cta-title">
-            Build on the right rails,{' '}
-            <span className="serif-italic">from the first call.</span>
-          </h2>
-          <p className="cta-desc">
-            Request access to the full directory, comparison tools and warm introductions.
-          </p>
-          <form
-            className="waitlist-form"
-            onSubmit={(e) => {
-              e.preventDefault()
-              const form = e.currentTarget
-              const input = form.querySelector('input') as HTMLInputElement
-              if (input.value) {
-                form.classList.add('waitlist-form--success')
-              }
-            }}
-          >
-            <input type="email" placeholder="Work email" required aria-label="Work email" />
-            <button type="submit" className="btn btn-light">Request access</button>
-          </form>
-          <p className="waitlist-note mono">Free for builders · No credit card required</p>
-        </div>
-      </section>
-
       {/* Editorial pre-footer with scattered imagery */}
       <section className="editorial" id="pricing">
         <div className="editorial-scatter" aria-hidden>
@@ -635,16 +577,16 @@ export default function Home() {
           <Image src="/editorial/palm-sky.png" alt="" width={160} height={110} className="ed ed--palm" />
           <Image src="/editorial/ink-river.png" alt="" width={150} height={100} className="ed ed--river" />
         </div>
-        <div className="editorial-inner">
-          <h2 className="editorial-title">
+        <motion.div className="editorial-inner" variants={stagger} {...inView}>
+          <motion.h2 className="editorial-title" variants={fadeUp}>
             Confident infrastructure decisions,{' '}
             <span className="serif-italic">powered by Relay.</span>
-          </h2>
-          <div className="editorial-actions">
+          </motion.h2>
+          <motion.div className="editorial-actions" variants={fadeUp}>
             <a href="#waitlist" className="btn btn-primary">Request access</a>
             <a href="#directory" className="btn btn-ghost">Explore directory</a>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       </section>
 
       {/* Footer */}
