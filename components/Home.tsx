@@ -212,11 +212,15 @@ export default function Home() {
           </Link>
 
           <div className="nav-actions">
-            <LocaleSwitcher className="nav-locale" label={t('nav.languageLabel')} />
-            <a href="/signin" className="nav-signin">{t('nav.login')}</a>
+            <Link href="/signin" className="nav-signin">{t('nav.login')}</Link>
             <a href="#waitlist" className="nav-signin nav-hide-sm">{t('nav.contactSales')}</a>
-            <a href="#waitlist" className="btn btn-ghost btn-sm nav-hide-sm">{t('nav.startTrial')}</a>
-            <a href="#waitlist" className="btn btn-primary btn-sm">{t('nav.requestAccess')}</a>
+            <Link href="/signup" className="btn btn-ghost btn-sm nav-hide-sm">{t('nav.startTrial')}</Link>
+            <Link href="/signup" className="btn btn-primary btn-sm">{t('nav.requestAccess')}</Link>
+            <LocaleSwitcher
+              className="nav-locale"
+              variant="nav"
+              label={t('nav.languageLabel')}
+            />
           </div>
         </div>
       </header>
@@ -233,7 +237,7 @@ export default function Home() {
             </motion.h1>
             <motion.p className="hero2-lede" variants={fadeUp}>{t('hero.lede')}</motion.p>
             <motion.div className="hero2-actions" variants={fadeUp}>
-              <a href="#waitlist" className="btn btn-primary">{t('hero.requestAccess')}</a>
+              <Link href="/signup" className="btn btn-primary">{t('hero.requestAccess')}</Link>
               <a href="#directory" className="btn btn-ghost">{t('hero.exploreDirectory')}</a>
             </motion.div>
           </motion.div>
@@ -582,7 +586,7 @@ export default function Home() {
             <span className="serif-italic">{t('editorial.titleEmphasis')}</span>
           </motion.h2>
           <motion.div className="editorial-actions" variants={fadeUp}>
-            <a href="#waitlist" className="btn btn-primary">{t('editorial.requestAccess')}</a>
+            <Link href="/signup" className="btn btn-primary">{t('editorial.requestAccess')}</Link>
             <a href="#directory" className="btn btn-ghost">{t('editorial.exploreDirectory')}</a>
           </motion.div>
         </motion.div>
@@ -627,7 +631,7 @@ export default function Home() {
                 <a href="#compare">{t('footer.compare')}</a>
                 <a href="#intros">{t('footer.introductions')}</a>
                 <a href="#resources">{t('footer.intelligence')}</a>
-                <a href="#waitlist">{t('footer.requestAccess')}</a>
+                <Link href="/signup">{t('footer.requestAccess')}</Link>
               </div>
               <div>
                 <h4 className="mono">{t('footer.categories')}</h4>
@@ -657,7 +661,7 @@ export default function Home() {
           </div>
 
           <div className="footer-disclaimer">
-            <LocaleSwitcher className="footer-locale" label={t('footer.language')} />
+            <LocaleSwitcher className="footer-locale" variant="footer" label={t('footer.language')} />
             <p>{t('footer.disclaimer')}</p>
           </div>
 

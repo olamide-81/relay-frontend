@@ -1,7 +1,7 @@
 'use client'
 
-import Link from 'next/link'
 import { useState } from 'react'
+import { Link } from '@/i18n/navigation'
 import { AuthShell, AuthField, GoogleButton } from '@/components/AuthShell'
 
 export default function SignUpPage() {
