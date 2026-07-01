@@ -1,10 +1,13 @@
 'use client'
 
 import { useState } from 'react'
+import { useTranslations } from 'next-intl'
 import { Link } from '@/i18n/navigation'
-import { AuthShell, AuthField, GoogleButton } from '@/components/AuthShell'
+import { AuthShell, AuthAsideTitle, AuthField, GoogleButton } from '@/components/AuthShell'
 
 export default function SignUpPage() {
+  const t = useTranslations('auth.signup')
+  const tAuth = useTranslations('auth')
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
 
@@ -17,59 +20,57 @@ export default function SignUpPage() {
   return (
     <AuthShell
       aside={{
-        eyebrow: 'Get started',
+        eyebrow: t('asideEyebrow'),
         title: (
-          <>
-            Build on the right rails, <span className="serif-italic">from the first call.</span>
-          </>
+          <AuthAsideTitle
+            before={t('asideTitleBefore')}
+            emphasis={t('asideTitleEmphasis')}
+          />
         ),
-        points: [
-          'Free for builders — no credit card required',
-          'Full access to the directory and comparison tools',
-          'Request warm introductions to vetted providers',
-        ],
+        points: t.raw('asidePoints') as string[],
       }}
     >
       <div className="auth-head">
-        <h2 className="auth-title">Create your account</h2>
+        <h2 className="auth-title">{t('title')}</h2>
         <p className="auth-subtitle">
-          Already have an account? <Link href="/signin">Sign in</Link>
+          {t('subtitleBefore')}{' '}
+          <Link href="/signin">{t('signIn')}</Link>
         </p>
       </div>
 
-      <GoogleButton label="Sign up with Google" />
+      <GoogleButton label={t('google')} />
 
-      <div className="auth-divider">or</div>
+      <div className="auth-divider">{tAuth('or')}</div>
 
       <form className="auth-form" onSubmit={onSubmit}>
         <AuthField
           id="name"
-          label="Full name"
-          placeholder="Ada Lovelace"
+          label={t('nameLabel')}
+          placeholder={t('namePlaceholder')}
           autoComplete="name"
         />
         <AuthField
           id="company"
-          label="Company"
-          placeholder="Your fintech"
+          label={t('companyLabel')}
+          placeholder={t('companyPlaceholder')}
           autoComplete="organization"
         />
         <AuthField
           id="email"
-          label="Work email"
+          label={t('emailLabel')}
           type="email"
-          placeholder="you@company.com"
+          placeholder={t('emailPlaceholder')}
           autoComplete="email"
         />
 
         <div className="auth-field">
-          <label htmlFor="password">Password</label>
+          <label htmlFor="password">{t('passwordLabel')}</label>
           <div className="auth-input-wrap">
             <input
               id="password"
               name="password"
               type={showPassword ? 'text' : 'password'}
-              placeholder="At least 8 characters"
+              placeholder={t('passwordPlaceholder')}
               autoComplete="new-password"
               minLength={8}
               required
@@ -79,24 +80,22 @@ export default function SignUpPage() {
               className="auth-reveal"
               onClick={() => setShowPassword((s) => !s)}
             >
-              {showPassword ? 'Hide' : 'Show'}
+              {showPassword ? tAuth('hide') : tAuth('show')}
             </button>
           </div>
         </div>
 
         <label className="auth-check">
           <input type="checkbox" name="terms" required />
-          I agree to the Terms and Privacy Policy
+          {t('termsAgree')}
         </label>
 
         <button type="submit" className="auth-submit" disabled={loading}>
-          {loading ? 'Creating account…' : 'Create account'}
+          {loading ? t('submitting') : t('submit')}
         </button>
       </form>
 
-      <p className="auth-legal">
-        Join 140+ fintech teams already building with Relay.
-      </p>
+      <p className="auth-legal">{t('footnote')}</p>
     </AuthShell>
   )
 }

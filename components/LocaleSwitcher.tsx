@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useLocale } from 'next-intl'
 import { usePathname, useRouter } from '@/i18n/navigation'
 import { localeLabels, locales, type Locale } from '@/i18n/routing'
+import './locale-switcher.css'
 
 type Props = {
   className?: string

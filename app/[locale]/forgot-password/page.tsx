@@ -1,10 +1,12 @@
 'use client'
 
 import { useState } from 'react'
+import { useTranslations } from 'next-intl'
 import { Link } from '@/i18n/navigation'
-import { AuthShell, AuthField } from '@/components/AuthShell'
+import { AuthShell, AuthAsideTitle, AuthField } from '@/components/AuthShell'
 
 export default function ForgotPasswordPage() {
+  const t = useTranslations('auth.forgotPassword')
   const [loading, setLoading] = useState(false)
   const [sent, setSent] = useState(false)
   const [email, setEmail] = useState('')
@@ -23,17 +25,14 @@ export default function ForgotPasswordPage() {
   return (
     <AuthShell
       aside={{
-        eyebrow: 'Account recovery',
+        eyebrow: t('asideEyebrow'),
         title: (
-          <>
-            Back to building <span className="serif-italic">in a moment.</span>
-          </>
+          <AuthAsideTitle
+            before={t('asideTitleBefore')}
+            emphasis={t('asideTitleEmphasis')}
+          />
         ),
-        points: [
-          'Enter the email associated with your account',
-          'We’ll send a secure reset link that expires in 30 minutes',
-          'Still stuck? Our team is one message away',
-        ],
+        points: t.raw('asidePoints') as string[],
       }}
     >
       {sent ? (
@@ -43,10 +42,10 @@ export default function ForgotPasswordPage() {
               <path d="M5 12.5 10 17.5 19 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </span>
-          <h2 className="auth-title">Check your inbox</h2>
+          <h2 className="auth-title">{t('successTitle')}</h2>
           <p className="auth-subtitle">
-            We sent a password reset link to{' '}
-            <strong>{email || 'your email'}</strong>. It expires in 30 minutes.
+            {t('successBefore')}{' '}
+            <strong>{email || t('yourEmail')}</strong>. {t('successAfter')}
           </p>
           <button
             type="button"
@@ -54,36 +53,36 @@ export default function ForgotPasswordPage() {
             style={{ marginTop: 24 }}
             onClick={() => setSent(false)}
           >
-            Resend email
+            {t('resend')}
           </button>
           <p className="auth-foot-note">
-            Back to <Link href="/signin">Sign in</Link>
+            {t('backToSignIn')}{' '}
+            <Link href="/signin">{t('signIn')}</Link>
           </p>
         </div>
       ) : (
         <>
           <div className="auth-head">
-            <h2 className="auth-title">Reset your password</h2>
-            <p className="auth-subtitle">
-              Enter your email and we’ll send you a link to reset your password.
-            </p>
+            <h2 className="auth-title">{t('title')}</h2>
+            <p className="auth-subtitle">{t('subtitle')}</p>
           </div>
 
           <form className="auth-form" onSubmit={onSubmit}>
             <AuthField
               id="email"
-              label="Work email"
+              label={t('emailLabel')}
               type="email"
-              placeholder="you@company.com"
+              placeholder={t('emailPlaceholder')}
               autoComplete="email"
             />
             <button type="submit" className="auth-submit" disabled={loading}>
-              {loading ? 'Sending link…' : 'Send reset link'}
+              {loading ? t('submitting') : t('submit')}
             </button>
           </form>
 
           <p className="auth-foot-note">
-            Remember your password? <Link href="/signin">Sign in</Link>
+            {t('rememberPassword')}{' '}
+            <Link href="/signin">{t('signIn')}</Link>
           </p>
         </>
       )}

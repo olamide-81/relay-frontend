@@ -317,5 +317,89 @@
     { "provider": "Provider A", "fee": "1.4%", "setup": "2 weeks" },
     { "provider": "Provider B", "fee": "0.9%", "setup": "6 weeks" },
     { "provider": "Provider C", "fee": "1.1%", "setup": "3 weeks" }
-  ]
+  ],
+  "auth": {
+    "brand": "Relay",
+    "backToSite": "← Back to site",
+    "copyright": "© 2026 GrateBridge Labs",
+    "languageLabel": "Language",
+    "or": "or",
+    "show": "Show",
+    "hide": "Hide",
+    "terms": "Terms",
+    "privacyPolicy": "Privacy Policy",
+    "signin": {
+      "asideEyebrow": "Welcome back",
+      "asideTitleBefore": "Infrastructure intelligence,",
+      "asideTitleEmphasis": "at your fingertips.",
+      "asidePoints": [
+        "240+ APIs benchmarked on fees, settlement and coverage",
+        "Compare providers side by side in one workspace",
+        "Warm introductions to the right teams within 48 hours"
+      ],
+      "title": "Sign in to Relay",
+      "subtitleBefore": "New to Relay?",
+      "createAccount": "Create an account",
+      "google": "Continue with Google",
+      "emailLabel": "Work email",
+      "emailPlaceholder": "you@company.com",
+      "passwordLabel": "Password",
+      "forgotPassword": "Forgot password?",
+      "remember": "Keep me signed in",
+      "submit": "Sign in",
+      "submitting": "Signing in…",
+      "legalBefore": "Protected by industry-standard encryption. By continuing you agree to our",
+      "legalAnd": "and"
+    },
+    "signup": {
+      "asideEyebrow": "Get started",
+      "asideTitleBefore": "Build on the right rails,",
+      "asideTitleEmphasis": "from the first call.",
+      "asidePoints": [
+        "Free for builders — no credit card required",
+        "Full access to the directory and comparison tools",
+        "Request warm introductions to vetted providers"
+      ],
+      "title": "Create your account",
+      "subtitleBefore": "Already have an account?",
+      "signIn": "Sign in",
+      "google": "Sign up with Google",
+      "nameLabel": "Full name",
+      "namePlaceholder": "Ada Lovelace",
+      "companyLabel": "Company",
+      "companyPlaceholder": "Your fintech",
+      "emailLabel": "Work email",
+      "emailPlaceholder": "you@company.com",
+      "passwordLabel": "Password",
+      "passwordPlaceholder": "At least 8 characters",
+      "termsAgree": "I agree to the Terms and Privacy Policy",
+      "submit": "Create account",
+      "submitting": "Creating account…",
+      "footnote": "Join 140+ fintech teams already building with Relay."
+    },
+    "forgotPassword": {
+      "asideEyebrow": "Account recovery",
+      "asideTitleBefore": "Back to building",
+      "asideTitleEmphasis": "in a moment.",
+      "asidePoints": [
+        "Enter the email associated with your account",
+        "We'll send a secure reset link that expires in 30 minutes",
+        "Still stuck? Our team is one message away"
+      ],
+      "title": "Reset your password",
+      "subtitle": "Enter your email and we'll send you a link to reset your password.",
+      "emailLabel": "Work email",
+      "emailPlaceholder": "you@company.com",
+      "submit": "Send reset link",
+      "submitting": "Sending link…",
+      "rememberPassword": "Remember your password?",
+      "signIn": "Sign in",
+      "successTitle": "Check your inbox",
+      "successBefore": "We sent a password reset link to",
+      "successAfter": "It expires in 30 minutes.",
+      "yourEmail": "your email",
+      "resend": "Resend email",
+      "backToSignIn": "Back to"
+    }
+  }
 }

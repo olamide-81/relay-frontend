@@ -317,5 +317,89 @@
     { "provider": "Proveedor A", "fee": "1,4 %", "setup": "2 semanas" },
     { "provider": "Proveedor B", "fee": "0,9 %", "setup": "6 semanas" },
     { "provider": "Proveedor C", "fee": "1,1 %", "setup": "3 semanas" }
-  ]
+  ],
+  "auth": {
+    "brand": "Relay",
+    "backToSite": "← Volver al sitio",
+    "copyright": "© 2026 GrateBridge Labs",
+    "languageLabel": "Idioma",
+    "or": "o",
+    "show": "Mostrar",
+    "hide": "Ocultar",
+    "terms": "Términos",
+    "privacyPolicy": "Política de privacidad",
+    "signin": {
+      "asideEyebrow": "Bienvenido de nuevo",
+      "asideTitleBefore": "Inteligencia de infraestructura,",
+      "asideTitleEmphasis": "al alcance de tu mano.",
+      "asidePoints": [
+        "240+ APIs comparadas en comisiones, liquidación y cobertura",
+        "Compara proveedores lado a lado en un solo espacio",
+        "Introducciones directas a los equipos adecuados en 48 horas"
+      ],
+      "title": "Iniciar sesión en Relay",
+      "subtitleBefore": "¿Nuevo en Relay?",
+      "createAccount": "Crear una cuenta",
+      "google": "Continuar con Google",
+      "emailLabel": "Correo de trabajo",
+      "emailPlaceholder": "tu@empresa.com",
+      "passwordLabel": "Contraseña",
+      "forgotPassword": "¿Olvidaste tu contraseña?",
+      "remember": "Mantener sesión iniciada",
+      "submit": "Iniciar sesión",
+      "submitting": "Iniciando sesión…",
+      "legalBefore": "Protegido con cifrado estándar. Al continuar aceptas nuestros",
+      "legalAnd": "y nuestra"
+    },
+    "signup": {
+      "asideEyebrow": "Empezar",
+      "asideTitleBefore": "Construye sobre los rails correctos,",
+      "asideTitleEmphasis": "desde la primera llamada.",
+      "asidePoints": [
+        "Gratis para builders — sin tarjeta de crédito",
+        "Acceso completo al directorio y herramientas de comparación",
+        "Solicita introducciones con proveedores verificados"
+      ],
+      "title": "Crea tu cuenta",
+      "subtitleBefore": "¿Ya tienes una cuenta?",
+      "signIn": "Iniciar sesión",
+      "google": "Registrarse con Google",
+      "nameLabel": "Nombre completo",
+      "namePlaceholder": "Ada Lovelace",
+      "companyLabel": "Empresa",
+      "companyPlaceholder": "Tu fintech",
+      "emailLabel": "Correo de trabajo",
+      "emailPlaceholder": "tu@empresa.com",
+      "passwordLabel": "Contraseña",
+      "passwordPlaceholder": "Al menos 8 caracteres",
+      "termsAgree": "Acepto los Términos y la Política de privacidad",
+      "submit": "Crear cuenta",
+      "submitting": "Creando cuenta…",
+      "footnote": "Únete a más de 140 equipos fintech que ya construyen con Relay."
+    },
+    "forgotPassword": {
+      "asideEyebrow": "Recuperación de cuenta",
+      "asideTitleBefore": "De vuelta a construir",
+      "asideTitleEmphasis": "en un momento.",
+      "asidePoints": [
+        "Introduce el correo asociado a tu cuenta",
+        "Enviaremos un enlace seguro que expira en 30 minutos",
+        "¿Necesitas ayuda? Nuestro equipo está disponible"
+      ],
+      "title": "Restablecer tu contraseña",
+      "subtitle": "Introduce tu correo y te enviaremos un enlace para restablecer tu contraseña.",
+      "emailLabel": "Correo de trabajo",
+      "emailPlaceholder": "tu@empresa.com",
+      "submit": "Enviar enlace",
+      "submitting": "Enviando…",
+      "rememberPassword": "¿Recuerdas tu contraseña?",
+      "signIn": "Iniciar sesión",
+      "successTitle": "Revisa tu bandeja de entrada",
+      "successBefore": "Enviamos un enlace de restablecimiento a",
+      "successAfter": "Expira en 30 minutos.",
+      "yourEmail": "tu correo",
+      "resend": "Reenviar correo",
+      "backToSignIn": "Volver a"
+    }
+  }
 }

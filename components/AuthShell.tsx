@@ -1,7 +1,9 @@
 'use client'
 
 import Image from 'next/image'
+import { useTranslations } from 'next-intl'
 import { Link } from '@/i18n/navigation'
+import { LocaleSwitcher } from '@/components/LocaleSwitcher'
 import './auth.css'
 
 type AuthAside = {
@@ -17,14 +19,15 @@ export function AuthShell({
   aside: AuthAside
   children: React.ReactNode
 }) {
+  const t = useTranslations('auth')
+
   return (
     <div className="auth">
-      {/* Brand panel */}
       <aside className="auth-brand">
         <div className="auth-brand-top">
           <Link href="/" className="auth-logo">
-            <Image src="/relaylight.png" alt="Relay" width={32} height={32} />
-            <span>Relay</span>
+            <Image src="/relaylight.png" alt={t('brand')} width={32} height={32} />
+            <span>{t('brand')}</span>
           </Link>
         </div>
 
@@ -46,19 +49,25 @@ export function AuthShell({
         </div>
 
         <div className="auth-brand-foot mono">
-          <span>© 2026 GrateBridge Labs</span>
-          <span className="auth-brand-wordmark" aria-hidden>Relay</span>
+          <span>{t('copyright')}</span>
+          <span className="auth-brand-wordmark" aria-hidden>{t('brand')}</span>
         </div>
       </aside>
 
-      {/* Form panel */}
       <main className="auth-panel">
         <div className="auth-panel-top">
           <Link href="/" className="auth-logo auth-logo--mobile">
-            <Image src="/relaylight.png" alt="Relay" width={28} height={28} />
-            <span>Relay</span>
+            <Image src="/relaylight.png" alt={t('brand')} width={28} height={28} />
+            <span>{t('brand')}</span>
           </Link>
-          <Link href="/" className="auth-back mono">← Back to site</Link>
+          <div className="auth-panel-actions">
+            <LocaleSwitcher
+              className="auth-locale"
+              variant="nav"
+              label={t('languageLabel')}
+            />
+            <Link href="/" className="auth-back mono">{t('backToSite')}</Link>
+          </div>
         </div>
 
         <div className="auth-form-wrap">{children}</div>
@@ -115,3 +124,20 @@ export function GoogleButton({ label }: { label: string }) {
     </button>
   )
 }
+
+function AuthAsideTitle({
+  before,
+  emphasis,
+}: {
+  before: string
+  emphasis: string
+}) {
+  return (
+    <>
+      {before}{' '}
+      <span className="serif-italic">{emphasis}</span>
+    </>
+  )
+}
+
+export { AuthAsideTitle }

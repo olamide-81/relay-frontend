@@ -317,5 +317,89 @@
     { "provider": "Prestataire A", "fee": "1,4 %", "setup": "2 semaines" },
     { "provider": "Prestataire B", "fee": "0,9 %", "setup": "6 semaines" },
     { "provider": "Prestataire C", "fee": "1,1 %", "setup": "3 semaines" }
-  ]
+  ],
+  "auth": {
+    "brand": "Relay",
+    "backToSite": "← Retour au site",
+    "copyright": "© 2026 GrateBridge Labs",
+    "languageLabel": "Langue",
+    "or": "ou",
+    "show": "Afficher",
+    "hide": "Masquer",
+    "terms": "Conditions",
+    "privacyPolicy": "Politique de confidentialité",
+    "signin": {
+      "asideEyebrow": "Bon retour",
+      "asideTitleBefore": "Intelligence infrastructure,",
+      "asideTitleEmphasis": "à portée de main.",
+      "asidePoints": [
+        "240+ API comparées sur frais, règlement et couverture",
+        "Comparez les prestataires côte à côte dans un seul espace",
+        "Introductions chaleureuses aux bonnes équipes en 48 heures"
+      ],
+      "title": "Connexion à Relay",
+      "subtitleBefore": "Nouveau sur Relay ?",
+      "createAccount": "Créer un compte",
+      "google": "Continuer avec Google",
+      "emailLabel": "E-mail professionnel",
+      "emailPlaceholder": "vous@entreprise.com",
+      "passwordLabel": "Mot de passe",
+      "forgotPassword": "Mot de passe oublié ?",
+      "remember": "Rester connecté",
+      "submit": "Se connecter",
+      "submitting": "Connexion…",
+      "legalBefore": "Protégé par un chiffrement standard. En continuant, vous acceptez nos",
+      "legalAnd": "et notre"
+    },
+    "signup": {
+      "asideEyebrow": "Commencer",
+      "asideTitleBefore": "Construisez sur les bons rails,",
+      "asideTitleEmphasis": "dès le premier appel.",
+      "asidePoints": [
+        "Gratuit pour les builders — sans carte bancaire",
+        "Accès complet à l'annuaire et aux outils de comparaison",
+        "Demandez des introductions auprès de prestataires vérifiés"
+      ],
+      "title": "Créer votre compte",
+      "subtitleBefore": "Vous avez déjà un compte ?",
+      "signIn": "Se connecter",
+      "google": "S'inscrire avec Google",
+      "nameLabel": "Nom complet",
+      "namePlaceholder": "Ada Lovelace",
+      "companyLabel": "Entreprise",
+      "companyPlaceholder": "Votre fintech",
+      "emailLabel": "E-mail professionnel",
+      "emailPlaceholder": "vous@entreprise.com",
+      "passwordLabel": "Mot de passe",
+      "passwordPlaceholder": "Au moins 8 caractères",
+      "termsAgree": "J'accepte les Conditions et la Politique de confidentialité",
+      "submit": "Créer le compte",
+      "submitting": "Création du compte…",
+      "footnote": "Rejoignez plus de 140 équipes fintech qui construisent avec Relay."
+    },
+    "forgotPassword": {
+      "asideEyebrow": "Récupération de compte",
+      "asideTitleBefore": "Retour au travail",
+      "asideTitleEmphasis": "dans un instant.",
+      "asidePoints": [
+        "Saisissez l'e-mail associé à votre compte",
+        "Nous enverrons un lien sécurisé qui expire dans 30 minutes",
+        "Besoin d'aide ? Notre équipe est à votre disposition"
+      ],
+      "title": "Réinitialiser votre mot de passe",
+      "subtitle": "Saisissez votre e-mail et nous vous enverrons un lien de réinitialisation.",
+      "emailLabel": "E-mail professionnel",
+      "emailPlaceholder": "vous@entreprise.com",
+      "submit": "Envoyer le lien",
+      "submitting": "Envoi…",
+      "rememberPassword": "Vous vous souvenez de votre mot de passe ?",
+      "signIn": "Se connecter",
+      "successTitle": "Vérifiez votre boîte mail",
+      "successBefore": "Nous avons envoyé un lien de réinitialisation à",
+      "successAfter": "Il expire dans 30 minutes.",
+      "yourEmail": "votre e-mail",
+      "resend": "Renvoyer l'e-mail",
+      "backToSignIn": "Retour à"
+    }
+  }
 }

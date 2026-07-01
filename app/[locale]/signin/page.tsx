@@ -1,10 +1,13 @@
 'use client'
 
 import { useState } from 'react'
+import { useTranslations } from 'next-intl'
 import { Link } from '@/i18n/navigation'
-import { AuthShell, AuthField, GoogleButton } from '@/components/AuthShell'
+import { AuthShell, AuthAsideTitle, AuthField, GoogleButton } from '@/components/AuthShell'
 
 export default function SignInPage() {
+  const t = useTranslations('auth.signin')
+  const tAuth = useTranslations('auth')
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
 
@@ -17,43 +20,41 @@ export default function SignInPage() {
   return (
     <AuthShell
       aside={{
-        eyebrow: 'Welcome back',
+        eyebrow: t('asideEyebrow'),
         title: (
-          <>
-            Infrastructure intelligence, <span className="serif-italic">at your fingertips.</span>
-          </>
+          <AuthAsideTitle
+            before={t('asideTitleBefore')}
+            emphasis={t('asideTitleEmphasis')}
+          />
         ),
-        points: [
-          '240+ APIs benchmarked on fees, settlement and coverage',
-          'Compare providers side by side in one workspace',
-          'Warm introductions to the right teams within 48 hours',
-        ],
+        points: t.raw('asidePoints') as string[],
       }}
     >
       <div className="auth-head">
-        <h2 className="auth-title">Sign in to Relay</h2>
+        <h2 className="auth-title">{t('title')}</h2>
         <p className="auth-subtitle">
-          New to Relay? <Link href="/signup">Create an account</Link>
+          {t('subtitleBefore')}{' '}
+          <Link href="/signup">{t('createAccount')}</Link>
         </p>
       </div>
 
-      <GoogleButton label="Continue with Google" />
+      <GoogleButton label={t('google')} />
 
-      <div className="auth-divider">or</div>
+      <div className="auth-divider">{tAuth('or')}</div>
 
       <form className="auth-form" onSubmit={onSubmit}>
         <AuthField
           id="email"
-          label="Work email"
+          label={t('emailLabel')}
           type="email"
-          placeholder="you@company.com"
+          placeholder={t('emailPlaceholder')}
           autoComplete="email"
         />
 
         <div className="auth-field">
           <div className="auth-field-row">
-            <label htmlFor="password">Password</label>
-            <Link href="/forgot-password" className="auth-link">Forgot password?</Link>
+            <label htmlFor="password">{t('passwordLabel')}</label>
+            <Link href="/forgot-password" className="auth-link">{t('forgotPassword')}</Link>
           </div>
           <div className="auth-input-wrap">
             <input
@@ -69,24 +70,25 @@ export default function SignInPage() {
               className="auth-reveal"
               onClick={() => setShowPassword((s) => !s)}
             >
-              {showPassword ? 'Hide' : 'Show'}
+              {showPassword ? tAuth('hide') : tAuth('show')}
             </button>
           </div>
         </div>
 
         <label className="auth-check">
           <input type="checkbox" name="remember" defaultChecked />
-          Keep me signed in
+          {t('remember')}
         </label>
 
         <button type="submit" className="auth-submit" disabled={loading}>
-          {loading ? 'Signing in…' : 'Sign in'}
+          {loading ? t('submitting') : t('submit')}
         </button>
       </form>
 
       <p className="auth-legal">
-        Protected by industry-standard encryption. By continuing you agree to our{' '}
-        <a href="#">Terms</a> and <a href="#">Privacy Policy</a>.
+        {t('legalBefore')}{' '}
+        <a href="#">{tAuth('terms')}</a> {t('legalAnd')}{' '}
+        <a href="#">{tAuth('privacyPolicy')}</a>.
       </p>
     </AuthShell>
   )
