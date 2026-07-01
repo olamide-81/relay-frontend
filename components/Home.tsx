@@ -3,20 +3,10 @@
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import { motion, AnimatePresence, type Variants } from 'framer-motion'
-import {
-  caseStudies,
-  categories,
-  channels,
-  comparisonRows,
-  featuredTestimonial,
-  features,
-  heroTabs,
-  logoWall,
-  newsItems,
-  stats,
-  testimonials,
-  valueCards,
-} from '@/data/providers'
+import { useTranslations } from 'next-intl'
+import { Link } from '@/i18n/navigation'
+import { LocaleSwitcher } from '@/components/LocaleSwitcher'
+import { channelIcons, logoWall, valueMocks } from '@/data/providers'
 import './home.css'
 
 const EASE = [0.22, 1, 0.36, 1] as const
@@ -37,6 +27,21 @@ const inView = {
   viewport: { once: true, margin: '-80px' },
 }
 
+type MockCopy = {
+  assistantChip: string
+  assistantTitle: string
+  assistantBubble: string
+  assistantSource: string
+  compareAll: string
+  requestIntro: string
+  compareChip: string
+  compareNote: string
+  reportChip: string
+  reportKpiLabel: string
+}
+
+type ComparisonRow = { provider: string; fee: string; setup: string }
+
 function SectionLabel({ index, children }: { index: string; children: React.ReactNode }) {
   return (
     <div className="section-label">
@@ -47,33 +52,34 @@ function SectionLabel({ index, children }: { index: string; children: React.Reac
   )
 }
 
-/* ── CSS-built product mockups (no external screenshots) ── */
-
-function AssistantMock() {
+function AssistantMock({ copy }: { copy: MockCopy }) {
   return (
     <div className="snap snap--assistant">
-      <div className="snap-chip mono">RELAY ASSISTANT</div>
-      <div className="snap-title">Which payout API for NG + KE?</div>
-      <div className="snap-bubble">
-        Three providers cover both markets. Provider B has the lowest fee at 0.9% with a 3-day
-        sandbox and 28-country coverage.
-      </div>
-      <div className="snap-source mono">SOURCE · benchmark report Q2 2026</div>
+      <div className="snap-chip mono">{copy.assistantChip}</div>
+      <div className="snap-title">{copy.assistantTitle}</div>
+      <div className="snap-bubble">{copy.assistantBubble}</div>
+      <div className="snap-source mono">{copy.assistantSource}</div>
       <div className="snap-pills">
-        <span>Compare all 3 →</span>
-        <span>Request intro →</span>
+        <span>{copy.compareAll}</span>
+        <span>{copy.requestIntro}</span>
       </div>
     </div>
   )
 }
 
-function CompareMock() {
+function CompareMock({
+  copy,
+  rows,
+}: {
+  copy: MockCopy
+  rows: ComparisonRow[]
+}) {
   return (
     <div className="snap snap--compare">
-      <div className="snap-chip mono">SIDE-BY-SIDE</div>
+      <div className="snap-chip mono">{copy.compareChip}</div>
       <table className="snap-table">
         <tbody>
-          {comparisonRows.map((r, i) => (
+          {rows.map((r, i) => (
             <tr key={r.provider} className={i === 1 ? 'is-hl' : ''}>
               <td className="mono">{r.provider}</td>
               <td>{r.fee}</td>
@@ -82,19 +88,19 @@ function CompareMock() {
           ))}
         </tbody>
       </table>
-      <div className="snap-note mono">Provider B — best fee + coverage</div>
+      <div className="snap-note mono">{copy.compareNote}</div>
     </div>
   )
 }
 
-function ReportingMock() {
+function ReportingMock({ copy }: { copy: MockCopy }) {
   const bars = [42, 58, 36, 72, 50, 64, 88]
   return (
     <div className="snap snap--report">
-      <div className="snap-chip mono">BENCHMARKS</div>
+      <div className="snap-chip mono">{copy.reportChip}</div>
       <div className="snap-kpi">
         <span className="snap-kpi-val serif">94.1%</span>
-        <span className="snap-kpi-label mono">coverage confidence</span>
+        <span className="snap-kpi-label mono">{copy.reportKpiLabel}</span>
       </div>
       <div className="snap-chart">
         {bars.map((h, i) => (
@@ -106,11 +112,55 @@ function ReportingMock() {
 }
 
 export default function Home() {
+  const t = useTranslations()
   const [navScrolled, setNavScrolled] = useState(false)
   const [bannerOpen, setBannerOpen] = useState(true)
   const [activeNews, setActiveNews] = useState(0)
-  const [activeTab, setActiveTab] = useState(0)
   const [activeQuote, setActiveQuote] = useState(0)
+
+  const mockCopy = {
+    assistantChip: t('mocks.assistantChip'),
+    assistantTitle: t('mocks.assistantTitle'),
+    assistantBubble: t('mocks.assistantBubble'),
+    assistantSource: t('mocks.assistantSource'),
+    compareAll: t('mocks.compareAll'),
+    requestIntro: t('mocks.requestIntro'),
+    compareChip: t('mocks.compareChip'),
+    compareNote: t('mocks.compareNote'),
+    reportChip: t('mocks.reportChip'),
+    reportKpiLabel: t('mocks.reportKpiLabel'),
+  }
+
+  const valueCards = t.raw('valueCards') as Array<{ title: string; description: string }>
+  const channels = t.raw('channels.items') as Array<{ title: string; description: string }>
+  const testimonials = t.raw('testimonials') as Array<{
+    company: string
+    quote: string
+    name: string
+    role: string
+  }>
+  const featuredTestimonial = t.raw('featuredTestimonial') as {
+    brand: string
+    quote: string
+    name: string
+    role: string
+  }
+  const features = t.raw('features') as Array<{ title: string; description: string }>
+  const stats = t.raw('stats') as Array<{ value: string; label: string }>
+  const categories = t.raw('categories') as Array<{ name: string; count: number }>
+  const caseStudies = t.raw('caseStudies.items') as Array<{
+    company: string
+    headline: string
+    products: string
+    stats: Array<{ value: string; label: string }>
+  }>
+  const introSteps = t.raw('intros.steps') as Array<{ title: string; detail: string }>
+  const newsItems = t.raw('dispatch.items') as Array<{
+    title: string
+    description: string
+    tag: string
+  }>
+  const comparisonRows = t.raw('comparisonRows') as ComparisonRow[]
 
   useEffect(() => {
     const onScroll = () => setNavScrolled(window.scrollY > 16)
@@ -123,30 +173,29 @@ export default function Home() {
       setActiveNews((n) => (n + 1) % newsItems.length)
     }, 5000)
     return () => clearInterval(timer)
-  }, [])
+  }, [newsItems.length])
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setActiveQuote((q) => (q + 1) % testimonials.length)
     }, 7000)
     return () => clearTimeout(timer)
-  }, [activeQuote])
+  }, [activeQuote, testimonials.length])
 
   return (
     <div className={`relay-home ${bannerOpen ? 'has-banner' : ''}`}>
-      {/* Announcement banner */}
       {bannerOpen && (
         <div className="banner">
           <div className="banner-inner">
             <span className="banner-text">
-              <span className="banner-tag mono">NEW</span>
-              Introducing the Relay 2026 Benchmark — 240+ fintech APIs, fully compared.
+              <span className="banner-tag mono">{t('banner.tag')}</span>
+              {t('banner.text')}
             </span>
-            <a href="#resources" className="banner-link">Learn more →</a>
+            <a href="#resources" className="banner-link">{t('banner.link')}</a>
             <button
               type="button"
               className="banner-close"
-              aria-label="Dismiss announcement"
+              aria-label={t('banner.dismiss')}
               onClick={() => setBannerOpen(false)}
             >
               ×
@@ -155,70 +204,45 @@ export default function Home() {
         </div>
       )}
 
-      {/* Navigation */}
       <header className={`nav ${navScrolled ? 'nav--scrolled' : ''}`}>
         <div className="nav-inner">
-          <a href="/" className="nav-brand">
-            <Image src="/relaylight.png" alt="Relay" width={30} height={30} className="nav-logo" />
-            <span>Relay</span>
-          </a>
+          <Link href="/" className="nav-brand">
+            <Image src="/relaylight.png" alt={t('nav.brand')} width={30} height={30} className="nav-logo" />
+            <span>{t('nav.brand')}</span>
+          </Link>
 
           <div className="nav-actions">
-            <a href="/signin" className="nav-signin">Log in</a>
-            <a href="#waitlist" className="nav-signin nav-hide-sm">Contact sales</a>
-            <a href="#waitlist" className="btn btn-ghost btn-sm nav-hide-sm">Start free trial</a>
-            <a href="#waitlist" className="btn btn-primary btn-sm">Request access →</a>
+            <LocaleSwitcher className="nav-locale" label={t('nav.languageLabel')} />
+            <a href="/signin" className="nav-signin">{t('nav.login')}</a>
+            <a href="#waitlist" className="nav-signin nav-hide-sm">{t('nav.contactSales')}</a>
+            <a href="#waitlist" className="btn btn-ghost btn-sm nav-hide-sm">{t('nav.startTrial')}</a>
+            <a href="#waitlist" className="btn btn-primary btn-sm">{t('nav.requestAccess')}</a>
           </div>
         </div>
       </header>
 
-      {/* Hero — centered, editorial / art-led */}
       <section className="hero2 hero2--center">
         <div className="hero2-center">
-          <motion.div
-            className="hero2-lead"
-            variants={stagger}
-            initial="hidden"
-            animate="show"
-          >
+          <motion.div className="hero2-lead" variants={stagger} initial="hidden" animate="show">
             <motion.span className="hero2-eyebrow mono" variants={fadeUp}>
-              INFRASTRUCTURE INTELLIGENCE
+              {t('hero.eyebrow')}
             </motion.span>
             <motion.h1 className="hero2-title" variants={fadeUp}>
-              The only directory built for the{' '}
-              <span className="serif-italic">fintech builder era.</span>
+              {t('hero.titleBefore')}{' '}
+              <span className="serif-italic">{t('hero.titleEmphasis')}</span>
             </motion.h1>
-            <motion.p className="hero2-lede" variants={fadeUp}>
-              Relay indexes every API for building financial products — so every infrastructure
-              decision is faster, cheaper and easier to defend than ever before.
-            </motion.p>
+            <motion.p className="hero2-lede" variants={fadeUp}>{t('hero.lede')}</motion.p>
             <motion.div className="hero2-actions" variants={fadeUp}>
-              <a href="#waitlist" className="btn btn-primary">Request access</a>
-              <a href="#directory" className="btn btn-ghost">Explore directory</a>
+              <a href="#waitlist" className="btn btn-primary">{t('hero.requestAccess')}</a>
+              <a href="#directory" className="btn btn-ghost">{t('hero.exploreDirectory')}</a>
             </motion.div>
           </motion.div>
         </div>
-
-        {/* Hero feature strip */}
-        <div className="hero2-tabs">
-          {heroTabs.map((t, i) => (
-            <button
-              key={t.id}
-              type="button"
-              className={`hero2-tab ${i === activeTab ? 'is-active' : ''}`}
-              onClick={() => setActiveTab(i)}
-            >
-              <span className="hero2-tab-label">{t.label}</span>
-              <span className="hero2-tab-cap">{t.caption}</span>
-            </button>
-          ))}
-        </div>
       </section>
 
-      {/* Logo wall */}
-      <section className="logos" aria-label="Providers indexed">
+      <section className="logos" aria-label={t('logos.label')}>
         <motion.p className="logos-label mono" variants={fadeUp} {...inView}>
-          Indexing more than 240 of the APIs fintechs build on
+          {t('logos.label')}
         </motion.p>
         <motion.div className="logos-grid" variants={stagger} {...inView}>
           {logoWall.map((name) => (
@@ -229,20 +253,21 @@ export default function Home() {
         </motion.div>
       </section>
 
-      {/* Three-up value cards with snapshots */}
       <section className="section section--paper-pure">
         <div className="section-inner">
           <motion.h2 className="band-title" variants={fadeUp} {...inView}>
-            A better way to choose infrastructure — for builders, leaders and finance teams.
+            {t('valueBand.title')}
           </motion.h2>
           <motion.div className="value-grid" variants={stagger} {...inView}>
-            {valueCards.map((card) => (
+            {valueCards.map((card, i) => (
               <motion.article key={card.title} className="value-card" variants={fadeUp}>
                 <div className="value-snap">
                   <div className="value-snap-bg" aria-hidden />
-                  {card.mock === 'assistant' && <AssistantMock />}
-                  {card.mock === 'compare' && <CompareMock />}
-                  {card.mock === 'reporting' && <ReportingMock />}
+                  {valueMocks[i] === 'assistant' && <AssistantMock copy={mockCopy} />}
+                  {valueMocks[i] === 'compare' && (
+                    <CompareMock copy={mockCopy} rows={comparisonRows} />
+                  )}
+                  {valueMocks[i] === 'reporting' && <ReportingMock copy={mockCopy} />}
                 </div>
                 <h3>{card.title}</h3>
                 <p>{card.description}</p>
@@ -252,27 +277,21 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Capabilities (Intercom omnichannel style) */}
       <section className="section" id="solutions">
         <div className="section-inner">
           <motion.h2 className="channels-head" variants={fadeUp} {...inView}>
-            <span className="channels-head-muted">Deliver confident decisions</span>
-            <span>across every category</span>
+            <span className="channels-head-muted">{t('channels.headMuted')}</span>
+            <span>{t('channels.head')}</span>
           </motion.h2>
           <div className="channels-list">
             {channels.map((ch, i) => (
-              <motion.div
-                key={ch.title}
-                className="channel-row"
-                variants={fadeUp}
-                {...inView}
-              >
+              <motion.div key={ch.title} className="channel-row" variants={fadeUp} {...inView}>
                 <div className="channel-copy">
                   <h3>{ch.title}</h3>
                   <p>{ch.description}</p>
-                  <a href="#directory" className="text-link">Learn more →</a>
+                  <a href="#directory" className="text-link">{t('channels.learnMore')}</a>
                   <div className="channel-icons">
-                    {ch.icons.map((ic) => (
+                    {channelIcons[i].map((ic) => (
                       <span key={ic} className="channel-icon mono">{ic}</span>
                     ))}
                   </div>
@@ -281,9 +300,9 @@ export default function Home() {
                   {i === 0 ? (
                     <Image src="/editorial/ink-river.png" alt="" width={420} height={280} aria-hidden />
                   ) : i === 1 ? (
-                    <CompareMock />
+                    <CompareMock copy={mockCopy} rows={comparisonRows} />
                   ) : (
-                    <AssistantMock />
+                    <AssistantMock copy={mockCopy} />
                   )}
                 </div>
               </motion.div>
@@ -292,19 +311,18 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Tabbed testimonials */}
       <section className="quotes">
         <div className="section-inner">
           <div className="quotes-tabs">
-            {testimonials.map((t, i) => (
+            {testimonials.map((item, i) => (
               <button
-                key={t.company}
+                key={item.company}
                 type="button"
                 className={`quotes-tab ${i === activeQuote ? 'is-active' : ''}`}
                 onClick={() => setActiveQuote(i)}
               >
                 <span className="quotes-progress" />
-                {t.company}
+                {item.company}
               </button>
             ))}
           </div>
@@ -322,9 +340,7 @@ export default function Home() {
                 transition={{ duration: 0.45, ease: EASE }}
               >
                 <span className="quotes-company serif">{testimonials[activeQuote].company}</span>
-                <blockquote className="quotes-text">
-                  “{testimonials[activeQuote].quote}”
-                </blockquote>
+                <blockquote className="quotes-text">“{testimonials[activeQuote].quote}”</blockquote>
                 <figcaption className="quotes-cite">
                   <span className="quotes-name">{testimonials[activeQuote].name}</span>
                   <span className="quotes-role">{testimonials[activeQuote].role}</span>
@@ -335,7 +351,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Featured editorial testimonial */}
       <section className="feature-quote">
         <span className="fq-marker fq-marker--tl" aria-hidden />
         <span className="fq-marker fq-marker--tr" aria-hidden />
@@ -343,7 +358,7 @@ export default function Home() {
         <span className="fq-marker fq-marker--br" aria-hidden />
         <div className="fq-inner">
           <motion.div className="fq-copy" variants={fadeUp} {...inView}>
-            <span className="fq-brand mono">A FINTECH SCALE-UP</span>
+            <span className="fq-brand mono">{featuredTestimonial.brand}</span>
             <blockquote>“{featuredTestimonial.quote}”</blockquote>
             <div className="fq-cite">
               <span className="fq-name">{featuredTestimonial.name}</span>
@@ -358,7 +373,7 @@ export default function Home() {
             transition={{ duration: 0.7, ease: EASE }}
           >
             <Image
-              src={featuredTestimonial.image}
+              src="/editorial/testimonial-headshot.png"
               alt={featuredTestimonial.name}
               width={320}
               height={400}
@@ -367,13 +382,12 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Features grid */}
       <section className="section section--paper-pure">
         <div className="section-inner">
-          <SectionLabel index="01">Capabilities</SectionLabel>
+          <SectionLabel index="01">{t('capabilities.label')}</SectionLabel>
           <h2 className="section-title">
-            One workspace for every{' '}
-            <span className="serif-italic">infrastructure decision.</span>
+            {t('capabilities.titleBefore')}{' '}
+            <span className="serif-italic">{t('capabilities.titleEmphasis')}</span>
           </h2>
           <motion.div className="feature-grid" variants={stagger} {...inView}>
             {features.map((f, i) => (
@@ -387,7 +401,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Stats */}
       <section className="stats-section">
         <div className="section-inner">
           <motion.div className="stats-grid" variants={stagger} {...inView}>
@@ -401,37 +414,34 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Directory categories */}
       <section className="section" id="directory">
         <div className="section-inner">
-          <SectionLabel index="02">Directory</SectionLabel>
+          <SectionLabel index="02">{t('directory.label')}</SectionLabel>
           <h2 className="section-title">
-            Every category of provider,{' '}
-            <span className="serif-italic">mapped and benchmarked.</span>
+            {t('directory.titleBefore')}{' '}
+            <span className="serif-italic">{t('directory.titleEmphasis')}</span>
           </h2>
-          <p className="section-desc">
-            Stop reading pitch decks and signing NDAs. Relay indexes every KYC, payout, FX,
-            treasury and compliance provider — across Africa, LATAM, Europe and beyond.
-          </p>
+          <p className="section-desc">{t('directory.description')}</p>
           <motion.div className="category-grid" variants={stagger} {...inView}>
             {categories.map((c, i) => (
               <motion.a key={c.name} href="#directory" className="category-card" variants={fadeUp}>
                 <span className="category-index mono">{String(i + 1).padStart(2, '0')}</span>
                 <div className="category-name">{c.name}</div>
-                <div className="category-count mono">{c.count} APIs →</div>
+                <div className="category-count mono">
+                  {t('directory.apis', { count: c.count })}
+                </div>
               </motion.a>
             ))}
           </motion.div>
         </div>
       </section>
 
-      {/* Case studies */}
       <section className="section section--paper-pure" id="compare">
         <div className="section-inner">
-          <SectionLabel index="03">Field notes</SectionLabel>
+          <SectionLabel index="03">{t('caseStudies.label')}</SectionLabel>
           <h2 className="section-title">
-            Trusted by teams building the{' '}
-            <span className="serif-italic">next financial rails.</span>
+            {t('caseStudies.titleBefore')}{' '}
+            <span className="serif-italic">{t('caseStudies.titleEmphasis')}</span>
           </h2>
           <motion.div className="cases-grid" variants={stagger} {...inView}>
             {caseStudies.map((cs) => (
@@ -455,93 +465,90 @@ export default function Home() {
         </div>
       </section>
 
-      {/* How intros work */}
       <section className="section section--ink" id="intros">
         <div className="section-inner intro-layout">
           <div className="intro-content">
-            <SectionLabel index="04">Introductions</SectionLabel>
+            <SectionLabel index="04">{t('intros.label')}</SectionLabel>
             <h2 className="section-title section-title--light">
-              Skip cold outreach.{' '}
-              <span className="serif-italic">We make the introduction.</span>
+              {t('intros.titleBefore')}{' '}
+              <span className="serif-italic">{t('intros.titleEmphasis')}</span>
             </h2>
-            <p className="section-desc section-desc--light">
-              Tell us your use case, market and volume. Relay matches you with the right
-              provider team — already briefed and ready to talk.
-            </p>
+            <p className="section-desc section-desc--light">{t('intros.description')}</p>
             <ol className="intro-steps">
-              <li>
-                <strong>Share your requirements</strong>
-                <span>Category, markets, volume, timeline</span>
-              </li>
-              <li>
-                <strong>Receive a shortlist</strong>
-                <span>Ranked by fit, fees and integration speed</span>
-              </li>
-              <li>
-                <strong>Meet the right team</strong>
-                <span>Warm introduction within 48 hours on average</span>
-              </li>
+              {introSteps.map((step) => (
+                <li key={step.title}>
+                  <strong>{step.title}</strong>
+                  <span>{step.detail}</span>
+                </li>
+              ))}
             </ol>
-            <a href="#waitlist" className="btn btn-light">Request an introduction</a>
+            <a href="#waitlist" className="btn btn-light">{t('intros.cta')}</a>
           </div>
           <div className="intro-visual">
             <div className="intro-card">
               <div className="intro-card-row">
-                <span className="intro-card-label mono">YOUR REQUEST</span>
-                <span className="intro-card-badge mono">Payouts · NG, KE, GH</span>
+                <span className="intro-card-label mono">{t('intros.cardRequest')}</span>
+                <span className="intro-card-badge mono">{t('intros.cardBadge')}</span>
               </div>
               <div className="intro-card-divider" />
               <div className="intro-match">
                 <div className="intro-match-avatar mono">PA</div>
                 <div>
-                  <div className="intro-match-name">Provider matched</div>
-                  <div className="intro-match-detail mono">0.9% · 28 countries · 3-day sandbox</div>
+                  <div className="intro-match-name">{t('intros.providerMatched')}</div>
+                  <div className="intro-match-detail mono">{t('intros.providerDetailA')}</div>
                 </div>
-                <span className="intro-match-status mono">SENT</span>
+                <span className="intro-match-status mono">{t('intros.sent')}</span>
               </div>
               <div className="intro-match">
                 <div className="intro-match-avatar intro-match-avatar--alt mono">PB</div>
                 <div>
-                  <div className="intro-match-name">Provider matched</div>
-                  <div className="intro-match-detail mono">1.1% · 19 countries · instant sandbox</div>
+                  <div className="intro-match-name">{t('intros.providerMatched')}</div>
+                  <div className="intro-match-detail mono">{t('intros.providerDetailB')}</div>
                 </div>
-                <span className="intro-match-status mono">SENT</span>
+                <span className="intro-match-status mono">{t('intros.sent')}</span>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Intelligence / data section */}
       <section className="section" id="resources">
         <div className="section-inner">
-          <SectionLabel index="05">Intelligence</SectionLabel>
+          <SectionLabel index="05">{t('intelligence.label')}</SectionLabel>
           <h2 className="section-title">
-            Verified data behind{' '}
-            <span className="serif-italic">every listing.</span>
+            {t('intelligence.titleBefore')}{' '}
+            <span className="serif-italic">{t('intelligence.titleEmphasis')}</span>
           </h2>
           <div className="dev-grid">
             <div className="dev-card">
-              <h3>Compare with confidence</h3>
-              <p>Side-by-side fee tables, settlement timelines and coverage maps — updated quarterly from provider data and builder reports.</p>
+              <h3>{t('intelligence.compareTitle')}</h3>
+              <p>{t('intelligence.compareDescription')}</p>
             </div>
             <div className="dev-card">
-              <h3>Filter by what matters</h3>
-              <p>Market, currency, regulatory requirements, API type, sandbox access and minimum volume — all searchable in one view.</p>
+              <h3>{t('intelligence.filterTitle')}</h3>
+              <p>{t('intelligence.filterDescription')}</p>
             </div>
             <div className="dev-card dev-card--stats">
-              <div className="dev-stat"><strong className="serif">240+</strong><span className="mono">API listings</span></div>
-              <div className="dev-stat"><strong className="serif">12</strong><span className="mono">categories</span></div>
-              <div className="dev-stat"><strong className="serif">45</strong><span className="mono">countries</span></div>
+              <div className="dev-stat">
+                <strong className="serif">240+</strong>
+                <span className="mono">{t('intelligence.statListings')}</span>
+              </div>
+              <div className="dev-stat">
+                <strong className="serif">12</strong>
+                <span className="mono">{t('intelligence.statCategories')}</span>
+              </div>
+              <div className="dev-stat">
+                <strong className="serif">45</strong>
+                <span className="mono">{t('intelligence.statCountries')}</span>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* News carousel */}
       <section className="section section--paper-pure">
         <div className="section-inner">
-          <SectionLabel index="06">Dispatch</SectionLabel>
+          <SectionLabel index="06">{t('dispatch.label')}</SectionLabel>
           <div className="news-carousel">
             <div className="news-track" style={{ transform: `translateX(-${activeNews * 100}%)` }}>
               {newsItems.map((item) => (
@@ -549,7 +556,7 @@ export default function Home() {
                   <span className="news-tag mono">{item.tag}</span>
                   <h3 className="serif">{item.title}</h3>
                   <p>{item.description}</p>
-                  <a href="#" className="text-link">Read more →</a>
+                  <a href="#" className="text-link">{t('dispatch.readMore')}</a>
                 </article>
               ))}
             </div>
@@ -559,7 +566,7 @@ export default function Home() {
                   key={i}
                   type="button"
                   className={`news-dot ${i === activeNews ? 'news-dot--active' : ''}`}
-                  aria-label={`Go to slide ${i + 1}`}
+                  aria-label={t('dispatch.goToSlide', { index: i + 1 })}
                   onClick={() => setActiveNews(i)}
                 />
               ))}
@@ -568,55 +575,44 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Editorial pre-footer with scattered imagery */}
       <section className="editorial" id="pricing">
-        <div className="editorial-scatter" aria-hidden>
-          <Image src="/editorial/shadows.png" alt="" width={170} height={120} className="ed ed--shadows" />
-          <Image src="/editorial/ink-flower.png" alt="" width={96} height={134} className="ed ed--flower" />
-          <Image src="/editorial/bubbles.png" alt="" width={150} height={100} className="ed ed--bubbles" />
-          <Image src="/editorial/palm-sky.png" alt="" width={160} height={110} className="ed ed--palm" />
-          <Image src="/editorial/ink-river.png" alt="" width={150} height={100} className="ed ed--river" />
-        </div>
         <motion.div className="editorial-inner" variants={stagger} {...inView}>
           <motion.h2 className="editorial-title" variants={fadeUp}>
-            Confident infrastructure decisions,{' '}
-            <span className="serif-italic">powered by Relay.</span>
+            {t('editorial.titleBefore')}{' '}
+            <span className="serif-italic">{t('editorial.titleEmphasis')}</span>
           </motion.h2>
           <motion.div className="editorial-actions" variants={fadeUp}>
-            <a href="#waitlist" className="btn btn-primary">Request access</a>
-            <a href="#directory" className="btn btn-ghost">Explore directory</a>
+            <a href="#waitlist" className="btn btn-primary">{t('editorial.requestAccess')}</a>
+            <a href="#directory" className="btn btn-ghost">{t('editorial.exploreDirectory')}</a>
           </motion.div>
         </motion.div>
       </section>
 
-      {/* Footer */}
       <footer className="footer">
         <div className="footer-inner">
           <div className="footer-top">
             <div className="footer-brand">
               <div className="footer-brand-top">
-                <Image src="/relaylight.png" alt="Relay" width={30} height={30} />
-                <span>Relay</span>
+                <Image src="/relaylight.png" alt={t('nav.brand')} width={30} height={30} />
+                <span>{t('nav.brand')}</span>
               </div>
-              <p className="footer-tagline">
-                Infrastructure intelligence for the people building financial products.
-              </p>
+              <p className="footer-tagline">{t('footer.tagline')}</p>
               <a href="#" className="footer-status">
                 <span className="footer-status-dot" />
-                <span className="mono">All systems operational</span>
+                <span className="mono">{t('footer.status')}</span>
               </a>
               <div className="footer-social">
-                <a href="#" aria-label="Relay on X" className="footer-social-link">
+                <a href="#" aria-label={t('footer.socialX')} className="footer-social-link">
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
                     <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24h-6.66l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231 5.45-6.231Zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77Z" />
                   </svg>
                 </a>
-                <a href="#" aria-label="Relay on LinkedIn" className="footer-social-link">
+                <a href="#" aria-label={t('footer.socialLinkedIn')} className="footer-social-link">
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
                     <path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.42v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13ZM7.12 20.45H3.55V9h3.57v11.45ZM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.22.79 24 1.77 24h20.45c.98 0 1.78-.78 1.78-1.73V1.73C24 .77 23.2 0 22.22 0Z" />
                   </svg>
                 </a>
-                <a href="#" aria-label="Relay on GitHub" className="footer-social-link">
+                <a href="#" aria-label={t('footer.socialGitHub')} className="footer-social-link">
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
                     <path d="M12 .5C5.37.5 0 5.87 0 12.5c0 5.3 3.44 9.8 8.21 11.39.6.11.82-.26.82-.58v-2.03c-3.34.73-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.09-.75.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.5 1 .11-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.29-1.55 3.3-1.23 3.3-1.23.66 1.66.24 2.88.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.8 5.62-5.48 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.83.58A12 12 0 0 0 24 12.5C24 5.87 18.63.5 12 .5Z" />
                   </svg>
@@ -626,66 +622,54 @@ export default function Home() {
 
             <nav className="footer-links">
               <div>
-                <h4 className="mono">Product</h4>
-                <a href="#directory">Directory</a>
-                <a href="#compare">Compare</a>
-                <a href="#intros">Introductions</a>
-                <a href="#resources">Intelligence</a>
-                <a href="#waitlist">Request access</a>
+                <h4 className="mono">{t('footer.product')}</h4>
+                <a href="#directory">{t('footer.directory')}</a>
+                <a href="#compare">{t('footer.compare')}</a>
+                <a href="#intros">{t('footer.introductions')}</a>
+                <a href="#resources">{t('footer.intelligence')}</a>
+                <a href="#waitlist">{t('footer.requestAccess')}</a>
               </div>
               <div>
-                <h4 className="mono">Categories</h4>
-                <a href="#directory">KYC &amp; Identity</a>
-                <a href="#directory">Payments</a>
-                <a href="#directory">Payouts</a>
-                <a href="#directory">FX &amp; Treasury</a>
-                <a href="#directory">Compliance &amp; AML</a>
+                <h4 className="mono">{t('footer.categories')}</h4>
+                <a href="#directory">{t('footer.kyc')}</a>
+                <a href="#directory">{t('footer.payments')}</a>
+                <a href="#directory">{t('footer.payouts')}</a>
+                <a href="#directory">{t('footer.fx')}</a>
+                <a href="#directory">{t('footer.compliance')}</a>
               </div>
               <div>
-                <h4 className="mono">Resources</h4>
-                <a href="#resources">Intelligence reports</a>
-                <a href="#">Benchmarks</a>
-                <a href="/blog">Dispatch</a>
-                <a href="#">Provider directory</a>
-                <a href="#">Methodology</a>
+                <h4 className="mono">{t('footer.resources')}</h4>
+                <a href="#resources">{t('footer.reports')}</a>
+                <a href="#">{t('footer.benchmarks')}</a>
+                <a href="/blog">{t('footer.dispatch')}</a>
+                <a href="#">{t('footer.providerDirectory')}</a>
+                <a href="#">{t('footer.methodology')}</a>
               </div>
               <div>
-                <h4 className="mono">Company</h4>
-                <a href="#">About</a>
-                <a href="#">Careers</a>
-                <a href="/blog">Blog</a>
-                <a href="#">Contact</a>
-                <a href="#">Press</a>
+                <h4 className="mono">{t('footer.company')}</h4>
+                <a href="#">{t('footer.about')}</a>
+                <a href="#">{t('footer.careers')}</a>
+                <a href="/blog">{t('footer.blog')}</a>
+                <a href="#">{t('footer.contact')}</a>
+                <a href="#">{t('footer.press')}</a>
               </div>
             </nav>
           </div>
 
           <div className="footer-disclaimer">
-            <span className="mono">Region</span>
-            <select className="footer-region" aria-label="Select region" defaultValue="global">
-              <option value="global">Global (English)</option>
-              <option value="ng">Nigeria</option>
-              <option value="ke">Kenya</option>
-              <option value="za">South Africa</option>
-              <option value="uk">United Kingdom</option>
-            </select>
-            <p>
-              Relay is an infrastructure directory and introduction service. Listed fees,
-              settlement times and coverage are indicative, compiled from provider documentation
-              and builder reports, and may change without notice. Relay is not a payment
-              institution and does not provide financial, legal or regulatory advice.
-            </p>
+            <LocaleSwitcher className="footer-locale" label={t('footer.language')} />
+            <p>{t('footer.disclaimer')}</p>
           </div>
 
-          <div className="footer-wordmark" aria-hidden>Relay</div>
+          <div className="footer-wordmark" aria-hidden>{t('nav.brand')}</div>
 
           <div className="footer-bottom">
-            <span className="mono">© 2026 GrateBridge Labs — All rights reserved</span>
+            <span className="mono">{t('footer.copyright')}</span>
             <div className="footer-legal mono">
-              <a href="#">Privacy</a>
-              <a href="#">Terms</a>
-              <a href="#">Security</a>
-              <a href="#">Cookies</a>
+              <a href="#">{t('footer.privacy')}</a>
+              <a href="#">{t('footer.terms')}</a>
+              <a href="#">{t('footer.security')}</a>
+              <a href="#">{t('footer.cookies')}</a>
             </div>
           </div>
         </div>

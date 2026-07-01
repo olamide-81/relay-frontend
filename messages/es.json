@@ -1,0 +1,321 @@
+{
+  "metadata": {
+    "title": "Relay — Inteligencia de infraestructura para fintech",
+    "description": "El directorio institucional para equipos fintech. Descubre APIs, compara comisiones y tiempos de integración, y obtén introducciones directas con los proveedores adecuados."
+  },
+  "nav": {
+    "brand": "Relay",
+    "login": "Iniciar sesión",
+    "contactSales": "Contactar ventas",
+    "startTrial": "Prueba gratuita",
+    "requestAccess": "Solicitar acceso →",
+    "languageLabel": "Idioma"
+  },
+  "banner": {
+    "tag": "NUEVO",
+    "text": "Presentamos el benchmark Relay 2026 — más de 240 APIs fintech, totalmente comparadas.",
+    "link": "Saber más →",
+    "dismiss": "Cerrar anuncio"
+  },
+  "hero": {
+    "eyebrow": "INTELIGENCIA DE INFRAESTRUCTURA",
+    "titleBefore": "El único directorio creado para",
+    "titleEmphasis": "la era del builder fintech.",
+    "lede": "Relay indexa cada API para construir productos financieros — para que cada decisión de infraestructura sea más rápida, más barata y más fácil de defender.",
+    "requestAccess": "Solicitar acceso",
+    "exploreDirectory": "Explorar directorio"
+  },
+  "logos": {
+    "label": "Indexando más de 240 APIs sobre las que se construyen las fintechs"
+  },
+  "valueBand": {
+    "title": "Una mejor forma de elegir infraestructura — para builders, líderes y equipos de finanzas."
+  },
+  "valueCards": [
+    {
+      "title": "Decisiones más rápidas, menos incertidumbre",
+      "description": "Evalúa cada proveedor de una categoría en minutos — no en semanas de llamadas comerciales y NDAs. Preselecciona según comisiones reales, cobertura y tiempos de go-live."
+    },
+    {
+      "title": "Compara lo que realmente importa",
+      "description": "Tablas de comisiones, plazos de liquidación y cobertura regulatoria lado a lado, para que tu equipo defienda cada elección de infraestructura con datos."
+    },
+    {
+      "title": "Inteligencia y benchmarks",
+      "description": "Informes trimestrales, mapas de cobertura por mercado y datos de tiempos de integración basados en reportes reales de builders en 45 mercados."
+    }
+  ],
+  "mocks": {
+    "assistantChip": "ASISTENTE RELAY",
+    "assistantTitle": "¿Qué API de payout para NG + KE?",
+    "assistantBubble": "Tres proveedores cubren ambos mercados. El proveedor B tiene la comisión más baja al 0,9 % con sandbox en 3 días y cobertura en 28 países.",
+    "assistantSource": "FUENTE · informe benchmark Q2 2026",
+    "compareAll": "Comparar los 3 →",
+    "requestIntro": "Solicitar intro →",
+    "compareChip": "COMPARATIVA",
+    "compareNote": "Proveedor B — mejor comisión + cobertura",
+    "reportChip": "BENCHMARKS",
+    "reportKpiLabel": "confianza de cobertura"
+  },
+  "channels": {
+    "headMuted": "Toma decisiones con confianza",
+    "head": "en cada categoría",
+    "learnMore": "Saber más →",
+    "items": [
+      {
+        "title": "Un directorio, todas las categorías",
+        "description": "Reúne KYC, pagos, payouts, FX, tesorería, emisión de tarjetas y cumplimiento en un índice único — para que tu equipo evalúe desde un solo lugar."
+      },
+      {
+        "title": "Inteligencia de proveedores en vivo",
+        "description": "Accede a fichas completas y re-verificadas — comisiones, cobertura, SDKs, webhooks y acceso sandbox — actualizadas trimestralmente."
+      },
+      {
+        "title": "Conecta con tu stack",
+        "description": "Exporta shortlists, sincroniza con Notion, Slack y Linear, o consulta benchmarks vía la API de Relay para acelerar la contratación."
+      }
+    ]
+  },
+  "testimonials": [
+    {
+      "company": "Nomba",
+      "quote": "Empezamos a usar Relay para evaluar proveedores de payout y nos encanta. En un trimestre redujimos la evaluación de ocho semanas a cinco días — se ha convertido en nuestra forma de decidir infraestructura.",
+      "name": "Tola Adeyemi",
+      "role": "Head of Payments en Nomba"
+    },
+    {
+      "company": "Chipper Cash",
+      "quote": "Relay es una visión completa del mercado. Los benchmarks son honestos, los datos de cobertura son precisos y las introducciones nos ahorraron meses de contacto en frío.",
+      "name": "Lerato Mokoena",
+      "role": "Infrastructure Lead en Chipper Cash"
+    },
+    {
+      "company": "Kuda",
+      "quote": "Relay mapeó cada proveedor AML y KYC en tres reguladores en días. Liberó a nuestro equipo para construir en lugar de perseguir decks comerciales.",
+      "name": "Emeka Obi",
+      "role": "Director of Compliance en Kuda"
+    }
+  ],
+  "featuredTestimonial": {
+    "brand": "UNA FINTECH EN CRECIMIENTO",
+    "quote": "Si dudas entre mapear el mercado por tu cuenta o usar un directorio, mi consejo es simple — usa Relay.",
+    "name": "Amara Bello",
+    "role": "VP Operations en una fintech en expansión"
+  },
+  "capabilities": {
+    "label": "Capacidades",
+    "titleBefore": "Un espacio de trabajo para cada",
+    "titleEmphasis": "decisión de infraestructura."
+  },
+  "features": [
+    {
+      "title": "Descubre APIs por categoría",
+      "description": "Explora KYC, payouts, FX, tesorería, cumplimiento y emisión de tarjetas — mapeados por región, caso de uso y profundidad de integración."
+    },
+    {
+      "title": "Compara comisiones lado a lado",
+      "description": "Consulta costos por transacción, mínimos mensuales y niveles de volumen — sin NDA para empezar."
+    },
+    {
+      "title": "Benchmark de tiempos de integración",
+      "description": "Conoce cuánto tardan realmente el acceso sandbox, la revisión de cumplimiento y el go-live — según reportes reales de builders."
+    },
+    {
+      "title": "Cobertura por mercado",
+      "description": "Filtra por país, moneda y requisitos regulatorios. Encuentra quién opera realmente donde lo necesitas."
+    },
+    {
+      "title": "Introducciones directas",
+      "description": "Evita el contacto en frío. Relay te conecta con el equipo adecuado — ya informado sobre tu caso de uso."
+    },
+    {
+      "title": "Construye con datos verificados",
+      "description": "Cada ficha incluye enlaces a docs, disponibilidad de SDK, soporte de webhooks y detalles de acceso sandbox."
+    }
+  ],
+  "stats": [
+    { "value": "240+", "label": "APIs catalogadas en 12 categorías" },
+    { "value": "60+", "label": "proveedores evaluados y comparados" },
+    { "value": "45", "label": "países con datos de cobertura" },
+    { "value": "48h", "label": "tiempo medio hasta la primera intro" }
+  ],
+  "directory": {
+    "label": "Directorio",
+    "titleBefore": "Cada categoría de proveedor,",
+    "titleEmphasis": "mapeada y comparada.",
+    "description": "Deja de leer pitch decks y firmar NDAs. Relay indexa cada proveedor de KYC, payout, FX, tesorería y cumplimiento — en África, LATAM, Europa y más allá.",
+    "apis": "{count} APIs →"
+  },
+  "categories": [
+    { "name": "KYC e identidad", "count": 34 },
+    { "name": "Pagos", "count": 52 },
+    { "name": "Payouts y desembolsos", "count": 28 },
+    { "name": "FX y tesorería", "count": 19 },
+    { "name": "Open Banking", "count": 24 },
+    { "name": "Cumplimiento y AML", "count": 31 },
+    { "name": "Emisión de tarjetas", "count": 16 },
+    { "name": "Fraude y riesgo", "count": 22 }
+  ],
+  "caseStudies": {
+    "label": "Notas de campo",
+    "titleBefore": "La confianza de equipos que construyen",
+    "titleEmphasis": "los próximos rails financieros.",
+    "items": [
+      {
+        "company": "Nomba",
+        "headline": "Nomba redujo la evaluación de proveedores de 8 semanas a 5 días con Relay.",
+        "products": "KYC, Payouts, FX",
+        "stats": [
+          { "value": "8→5", "label": "semanas para preseleccionar" },
+          { "value": "12", "label": "proveedores comparados" },
+          { "value": "3", "label": "mercados lanzados" }
+        ]
+      },
+      {
+        "company": "Chipper Cash",
+        "headline": "Chipper Cash unificó proveedores de payout transfronterizos en una sola vista.",
+        "products": "Payouts, FX, Cumplimiento",
+        "stats": [
+          { "value": "6", "label": "APIs payout comparadas" },
+          { "value": "40%", "label": "reducción de comisiones" },
+          { "value": "4", "label": "nuevos corredores" }
+        ]
+      },
+      {
+        "company": "Kuda",
+        "headline": "Kuda aceleró la selección de proveedores de cumplimiento en 3 reguladores.",
+        "products": "Cumplimiento, KYC, Banking",
+        "stats": [
+          { "value": "100%", "label": "proveedores AML mapeados" },
+          { "value": "2 sem.", "label": "hasta la primera intro" },
+          { "value": "5", "label": "proveedores preseleccionados" }
+        ]
+      },
+      {
+        "company": "Paga",
+        "headline": "Paga encontró la API de red de agentes adecuada para desembolsos rurales.",
+        "products": "Payouts, KYC, Pagos",
+        "stats": [
+          { "value": "18", "label": "APIs de agentes revisadas" },
+          { "value": "3x", "label": "onboarding más rápido" },
+          { "value": "NG", "label": "cobertura total" }
+        ]
+      }
+    ]
+  },
+  "intros": {
+    "label": "Introducciones",
+    "titleBefore": "Evita el contacto en frío.",
+    "titleEmphasis": "Nosotros hacemos la introducción.",
+    "description": "Cuéntanos tu caso de uso, mercado y volumen. Relay te conecta con el equipo adecuado — ya informado y listo para hablar.",
+    "steps": [
+      {
+        "title": "Comparte tus requisitos",
+        "detail": "Categoría, mercados, volumen, calendario"
+      },
+      {
+        "title": "Recibe una shortlist",
+        "detail": "Ordenada por encaje, comisiones y velocidad de integración"
+      },
+      {
+        "title": "Conoce al equipo adecuado",
+        "detail": "Introducción directa en 48 horas de media"
+      }
+    ],
+    "cta": "Solicitar una introducción",
+    "cardRequest": "TU SOLICITUD",
+    "cardBadge": "Payouts · NG, KE, GH",
+    "providerMatched": "Proveedor identificado",
+    "providerDetailA": "0,9 % · 28 países · sandbox 3 días",
+    "providerDetailB": "1,1 % · 19 países · sandbox instantáneo",
+    "sent": "ENVIADO"
+  },
+  "intelligence": {
+    "label": "Inteligencia",
+    "titleBefore": "Datos verificados detrás de",
+    "titleEmphasis": "cada ficha.",
+    "compareTitle": "Compara con confianza",
+    "compareDescription": "Tablas de comisiones, plazos de liquidación y mapas de cobertura — actualizados trimestralmente con documentación de proveedores y reportes de builders.",
+    "filterTitle": "Filtra por lo que importa",
+    "filterDescription": "Mercado, moneda, requisitos regulatorios, tipo de API, acceso sandbox y volumen mínimo — todo buscable en una sola vista.",
+    "statListings": "fichas API",
+    "statCategories": "categorías",
+    "statCountries": "países"
+  },
+  "dispatch": {
+    "label": "Dispatch",
+    "readMore": "Leer más →",
+    "goToSlide": "Ir a la diapositiva {index}",
+    "items": [
+      {
+        "title": "240 APIs ya catalogadas en África, LATAM y Europa.",
+        "description": "Nuestra actualización Q1 añade 40 nuevos proveedores con benchmarks completos de comisiones e integración.",
+        "tag": "Producto"
+      },
+      {
+        "title": "Cómo las neobancos eligen proveedores KYC en menos de una semana.",
+        "description": "Un marco para evaluar proveedores de identidad por mercado, volumen y profundidad de cumplimiento.",
+        "tag": "Guía"
+      },
+      {
+        "title": "Las intros de Relay alcanzan 48 h de respuesta media.",
+        "description": "Las introducciones conectan ahora a builders con equipos de partners en dos días hábiles.",
+        "tag": "Actualización"
+      },
+      {
+        "title": "Benchmark de comisiones API payout: informe África 2026.",
+        "description": "Compara costos por transacción de 18 proveedores de desembolso activos en África subsahariana.",
+        "tag": "Informe"
+      }
+    ]
+  },
+  "editorial": {
+    "titleBefore": "Decisiones de infraestructura con confianza,",
+    "titleEmphasis": "impulsadas por Relay.",
+    "requestAccess": "Solicitar acceso",
+    "exploreDirectory": "Explorar directorio"
+  },
+  "footer": {
+    "tagline": "Inteligencia de infraestructura para quienes construyen productos financieros.",
+    "status": "Todos los sistemas operativos",
+    "product": "Producto",
+    "directory": "Directorio",
+    "compare": "Comparar",
+    "introductions": "Introducciones",
+    "intelligence": "Inteligencia",
+    "requestAccess": "Solicitar acceso",
+    "categories": "Categorías",
+    "kyc": "KYC e identidad",
+    "payments": "Pagos",
+    "payouts": "Payouts",
+    "fx": "FX y tesorería",
+    "compliance": "Cumplimiento y AML",
+    "resources": "Recursos",
+    "reports": "Informes de inteligencia",
+    "benchmarks": "Benchmarks",
+    "dispatch": "Dispatch",
+    "providerDirectory": "Directorio de proveedores",
+    "methodology": "Metodología",
+    "company": "Empresa",
+    "about": "Acerca de",
+    "careers": "Carreras",
+    "blog": "Blog",
+    "contact": "Contacto",
+    "press": "Prensa",
+    "language": "Idioma",
+    "disclaimer": "Relay es un directorio de infraestructura y un servicio de introducción. Las comisiones, plazos de liquidación y coberturas indicadas son orientativas, compiladas a partir de documentación de proveedores y reportes de builders, y pueden cambiar sin previo aviso. Relay no es una entidad de pago y no proporciona asesoramiento financiero, legal o regulatorio.",
+    "copyright": "© 2026 GrateBridge Labs — Todos los derechos reservados",
+    "privacy": "Privacidad",
+    "terms": "Términos",
+    "security": "Seguridad",
+    "cookies": "Cookies",
+    "socialX": "Relay en X",
+    "socialLinkedIn": "Relay en LinkedIn",
+    "socialGitHub": "Relay en GitHub"
+  },
+  "comparisonRows": [
+    { "provider": "Proveedor A", "fee": "1,4 %", "setup": "2 semanas" },
+    { "provider": "Proveedor B", "fee": "0,9 %", "setup": "6 semanas" },
+    { "provider": "Proveedor C", "fee": "1,1 %", "setup": "3 semanas" }
+  ]
+}
