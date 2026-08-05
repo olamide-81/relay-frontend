@@ -23,12 +23,12 @@
     "productLabel": "Ce que vous obtenez",
     "indexLabel": "Dans Relay",
     "markets": [
-      "Lagos",
-      "Nairobi",
-      "Le Caire",
-      "Lisbonne",
       "Bogotá",
-      "São Paulo"
+      "Mexico",
+      "São Paulo",
+      "Lisbonne",
+      "Dubaï",
+      "Madrid"
     ],
     "offerings": [
       {
@@ -122,7 +122,7 @@
     "signin": {
       "metadata": {
         "title": "Connexion | Annuaire prestataires fintech Relay",
-        "description": "Connectez-vous à Relay pour comparer prestataires fintech, consulter les rails de paiement et gérer vos introductions au Nigeria, Colombie, Égypte, Portugal et ailleurs."
+        "description": "Connectez-vous à Relay pour comparer prestataires fintech, consulter les rails de paiement et gérer vos introductions en Colombie, Mexique, Brésil, Portugal, Golfe et ailleurs."
       },
       "asideEyebrow": "Bon retour",
       "asideTitleBefore": "Votre annuaire prestataires fintech",
@@ -149,7 +149,7 @@
     "signup": {
       "metadata": {
         "title": "Créer un compte | Annuaire fintech Relay",
-        "description": "Créez un compte Relay gratuit pour comparer prestataires fintech, consulter les rails de paiement et demander des introductions au Nigeria, Colombie, Égypte, Portugal et ailleurs."
+        "description": "Créez un compte Relay gratuit pour comparer prestataires fintech, consulter les rails de paiement et demander des introductions en Colombie, Mexique, Brésil, Portugal, Golfe et ailleurs."
       },
       "asideEyebrow": "Commencer",
       "asideTitleBefore": "Comparez prestataires et consultez les données marché",
@@ -281,22 +281,17 @@
         "id": "act",
         "title": "Agir",
         "lede": "De la recherche aux relations.",
-        "layout": "double",
+        "layout": "act",
         "cards": [
           {
-            "title": "Organisez votre workflow",
-            "description": "Créez une shortlist, suivez la progression, assignez owners et priorités, et obtenez des intros — sans quitter Relay.",
+            "title": "Agir",
+            "description": "Constituez votre shortlist, suivez la progression, assignez owners et priorités, et obtenez des intros aux providers — sans quitter Relay.",
             "mock": "workflow",
             "points": [
               "Shortlist → évaluer → échanger → intro",
               "Owners, priorités et activité en direct",
               "Demandez des intros depuis le board"
             ]
-          },
-          {
-            "title": "Les données Relay où vous en avez besoin",
-            "description": "Contexte partenaire instantané pendant la navigation — frais, couverture, sandbox",
-            "mock": "extension"
           }
         ]
       },
@@ -304,28 +299,17 @@
         "id": "ready",
         "title": "Prêt à s’étendre",
         "lede": "Anticipez les mouvements de marché.",
-        "layout": "ready",
+        "layout": "expansion",
         "cards": [
           {
-            "title": "Signaux & alertes marché",
-            "description": "Relay montre où vont les marchés — nouveaux rails, providers, évolutions réglementaires — pour que votre équipe ne soit jamais prise de court.",
+            "title": "Prêt à s’étendre",
+            "description": "Recevez des signaux sur la direction des marchés — nouveaux rails, providers, opportunités. Relay tient votre équipe à jour pour que vous ne soyez jamais pris de court.",
             "mock": "signals",
             "points": [
               "Fil en direct rails, providers et régulation",
               "Statut des marchés en un coup d’œil",
               "Sachez ce qui a bougé cette semaine"
             ]
-          },
-          {
-            "title": "Pas de code ? Pas de souci",
-            "description": "Poussez shortlists et alertes vers les outils déjà utilisés",
-            "mock": "zap"
-          },
-          {
-            "title": "API Relay",
-            "description": "Tirez les données partenaires et marchés dans votre stack",
-            "mock": "api",
-            "cta": "Lire la doc"
           }
         ]
       }
@@ -339,11 +323,29 @@
     "minRead": "min de lecture",
     "indexTitle": "Rapports de données Relay",
     "indexLede": "Analyses approfondies sur frais, rails, fiabilité et licences dans les marchés d’expansion.",
-    "filterAll": "Tous",
+    "reportsPublished": "{count} rapports publiés",
+    "reportsCount": "{count} rapports",
+    "filterAll": "Tous les rapports",
+    "sortLatest": "Plus récents",
+    "sortMarket": "Par marché",
+    "loadMore": "Charger plus",
+    "showing": "Affichage de {shown} sur {total}",
     "getStarted": "Commencer",
     "backToIndex": "Tous les rapports",
+    "published": "Publié",
+    "lastUpdated": "Dernière mise à jour",
+    "whyWeBuilt": "Pourquoi ce rapport",
+    "keyMetrics": "Indicateurs clés",
     "keyFindings": "Points clés",
-    "methodology": "Méthodologie",
+    "whyThisMatters": "Pourquoi c’est important :",
+    "marketContext": "Contexte marché",
+    "providerLandscape": "Paysage prestataires",
+    "implications": "Ce que cela signifie pour vous",
+    "exploreProviders": "Prêt à shortlister des partenaires ?",
+    "exploreProvidersLede": "Ouvrez l’annuaire et filtrez sur les marchés couverts par ce rapport.",
+    "exploreProvidersCta": "Explorer les prestataires de ce marché",
+    "methodology": "Sources et méthodologie",
+    "showMethodology": "Afficher la méthodologie",
     "related": "Rapports liés"
   }
 }

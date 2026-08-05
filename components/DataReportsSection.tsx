@@ -21,13 +21,16 @@ export default function DataReportsSection() {
             </h2>
             <p className="dr-lede">{t('lede')}</p>
           </div>
-          <Link href="/reports" className="btn btn-ghost btn-sm dr-cta">
+          <Link href="/reports" className="dr-cta">
             {t('cta')}
           </Link>
         </div>
 
         <div className="dr-grid">
-          <Link href={`/reports/${featured.slug}`} className="dr-card dr-card--featured">
+          <Link
+            href={`/reports/${featured.slug}`}
+            className="dr-card dr-card--featured"
+          >
             <div className="dr-card-top">
               <span className="dr-card-cat">{featured.category}</span>
               <span className="dr-card-market">{featured.market}</span>
@@ -35,17 +38,23 @@ export default function DataReportsSection() {
             <h3 className="dr-card-title">{featured.title}</h3>
             <p className="dr-card-excerpt">{featured.excerpt}</p>
             <div className="dr-card-stat">
-              <strong className="dr-card-stat-value">{featured.heroStat.value}</strong>
-              <span className="dr-card-stat-label">{featured.heroStat.label}</span>
+              <strong className="dr-card-stat-value">
+                {featured.heroStat.value}
+              </strong>
+              <span className="dr-card-stat-label">
+                {featured.heroStat.label}
+              </span>
               {featured.heroStat.delta ? (
-                <span className={`dr-card-delta is-${featured.heroStat.tone || 'flat'}`}>
+                <span
+                  className={`dr-delta is-${featured.heroStat.tone || 'flat'}`}
+                >
                   {featured.heroStat.delta}
                 </span>
               ) : null}
             </div>
             <div className="dr-card-meta">
               <span>{formatReportDate(featured.publishedAt)}</span>
-              <span>·</span>
+              <span aria-hidden>·</span>
               <span>
                 {featured.readMinutes} {t('minRead')}
               </span>
@@ -53,7 +62,11 @@ export default function DataReportsSection() {
           </Link>
 
           {rest.map((report) => (
-            <Link key={report.slug} href={`/reports/${report.slug}`} className="dr-card">
+            <Link
+              key={report.slug}
+              href={`/reports/${report.slug}`}
+              className="dr-card"
+            >
               <div className="dr-card-top">
                 <span className="dr-card-cat">{report.category}</span>
                 <span className="dr-card-market">{report.market}</span>
@@ -61,12 +74,16 @@ export default function DataReportsSection() {
               <h3 className="dr-card-title">{report.title}</h3>
               <p className="dr-card-excerpt">{report.excerpt}</p>
               <div className="dr-card-stat">
-                <strong className="dr-card-stat-value">{report.heroStat.value}</strong>
-                <span className="dr-card-stat-label">{report.heroStat.label}</span>
+                <strong className="dr-card-stat-value">
+                  {report.heroStat.value}
+                </strong>
+                <span className="dr-card-stat-label">
+                  {report.heroStat.label}
+                </span>
               </div>
               <div className="dr-card-meta">
                 <span>{formatReportDate(report.publishedAt)}</span>
-                <span>·</span>
+                <span aria-hidden>·</span>
                 <span>
                   {report.readMinutes} {t('minRead')}
                 </span>

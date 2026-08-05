@@ -1,4 +1,3 @@
-import Image from 'next/image'
 import { notFound } from 'next/navigation'
 import { setRequestLocale } from 'next-intl/server'
 import { getTranslations } from 'next-intl/server'
@@ -39,45 +38,64 @@ export default async function ReportDetailPage({ params }: Props) {
   if (!report) notFound()
 
   const t = await getTranslations('dataReports')
-  const related = dataReports.filter((r) => r.slug !== slug).slice(0, 2)
+  const related = dataReports
+    .filter((r) => r.slug !== slug)
+    .sort((a, b) => {
+      // Prefer same category, then same market
+      const score = (r: typeof a) =>
+        (r.category === report.category ? 2 : 0) +
+        (r.market === report.market ? 1 : 0)
+      return score(b) - score(a)
+    })
+    .slice(0, 3)
+
+  const discoverHref = '/#directory'
 
   return (
     <div className="dr-detail">
-      <header className="dr-page-nav">
-        <div className="dr-page-nav-inner">
-          <Link href="/" className="dr-page-brand">
-            <Image src="/relaylight.png" alt="" width={28} height={28} />
-            <span>Relay</span>
-          </Link>
-          <Link href="/signup" className="btn btn-primary btn-sm">
-            {t('getStarted')}
-          </Link>
-        </div>
-      </header>
-
-      <div className="dr-detail-hero">
+      <header className="dr-detail-hero">
         <div className="dr-detail-hero-inner">
           <Link href="/reports" className="dr-detail-back">
             ← {t('backToIndex')}
           </Link>
           <div className="dr-detail-tags">
-            <span>{report.category}</span>
-            <span>{report.market}</span>
+            <span className="dr-tag dr-tag--cat">{report.category}</span>
+            <span className="dr-tag dr-tag--market">{report.market}</span>
           </div>
           <h1>{report.title}</h1>
           <p className="dr-detail-excerpt">{report.excerpt}</p>
           <div className="dr-detail-hero-meta">
-            <span>{formatReportDate(report.publishedAt)}</span>
-            <span>·</span>
+            <span>
+              {t('published')} {formatReportDate(report.publishedAt)}
+            </span>
+            <span aria-hidden>·</span>
             <span>
               {report.readMinutes} {t('minRead')}
             </span>
+            {report.updatedAt ? (
+              <>
+                <span aria-hidden>·</span>
+                <span>
+                  {t('lastUpdated')} {formatReportDate(report.updatedAt)}
+                </span>
+              </>
+            ) : null}
           </div>
         </div>
-      </div>
+      </header>
 
       <article className="dr-detail-body">
-        <div className="dr-metrics">
+        <section className="dr-overview">
+          <p className="dr-overview-lead">{report.overview}</p>
+          {report.background ? (
+            <div className="dr-overview-bg">
+              <h2>{t('whyWeBuilt')}</h2>
+              <p>{report.background}</p>
+            </div>
+          ) : null}
+        </section>
+
+        <section className="dr-metrics" aria-label={t('keyMetrics')}>
           {report.metrics.map((m) => (
             <div key={m.label} className="dr-metric">
               <strong>{m.value}</strong>
@@ -87,31 +105,37 @@ export default async function ReportDetailPage({ params }: Props) {
               ) : null}
             </div>
           ))}
-        </div>
+        </section>
 
-        <h2
-          style={{
-            fontFamily: 'var(--font-display)',
-            fontSize: 24,
-            fontWeight: 500,
-            marginBottom: 16,
-          }}
-        >
-          {t('keyFindings')}
-        </h2>
-        <div className="dr-findings">
-          {report.findings.map((f) => (
-            <div key={f.title} className="dr-finding">
-              <h3>{f.title}</h3>
-              <p>{f.body}</p>
-            </div>
-          ))}
-        </div>
+        <section className="dr-block">
+          <h2 className="dr-block-title">{t('keyFindings')}</h2>
+          <div className="dr-findings">
+            {report.findings.map((f, i) => (
+              <div key={f.title} className="dr-finding">
+                <span className="dr-finding-num" aria-hidden>
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+                <div>
+                  <h3>{f.title}</h3>
+                  <p>{f.body}</p>
+                  {f.dataSupport ? (
+                    <p className="dr-finding-data">{f.dataSupport}</p>
+                  ) : null}
+                  {f.whyItMatters ? (
+                    <p className="dr-finding-why">
+                      <strong>{t('whyThisMatters')}</strong> {f.whyItMatters}
+                    </p>
+                  ) : null}
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
 
         {report.sections.map((section) => (
-          <section key={section.heading} className="dr-section">
-            <h2>{section.heading}</h2>
-            <p>{section.body}</p>
+          <section key={section.heading} className="dr-block dr-section">
+            <h2 className="dr-block-title">{section.heading}</h2>
+            <p className="dr-block-lede">{section.body}</p>
 
             {section.bars && section.bars.length > 0 ? (
               <div className="dr-chart">
@@ -125,13 +149,18 @@ export default async function ReportDetailPage({ params }: Props) {
                       <div className="dr-bar-track">
                         <div
                           className="dr-bar-fill"
-                          style={{ width: `${Math.min(100, Math.max(4, bar.value))}%` }}
+                          style={{
+                            width: `${Math.min(100, Math.max(4, bar.value))}%`,
+                          }}
                         />
                       </div>
                       <span>{bar.display}</span>
                     </div>
                   ))}
                 </div>
+                {section.caption ? (
+                  <p className="dr-chart-caption">{section.caption}</p>
+                ) : null}
               </div>
             ) : null}
 
@@ -160,31 +189,95 @@ export default async function ReportDetailPage({ params }: Props) {
           </section>
         ))}
 
-        <aside className="dr-method">
-          <h2>{t('methodology')}</h2>
-          <p>{report.methodology}</p>
-          <ul>
-            {report.sources.map((s) => (
-              <li key={s}>{s}</li>
-            ))}
-          </ul>
-        </aside>
+        {report.marketContext && report.marketContext.length > 0 ? (
+          <section className="dr-block">
+            <h2 className="dr-block-title">{t('marketContext')}</h2>
+            <div className="dr-prose">
+              {report.marketContext.map((para) => (
+                <p key={para.slice(0, 40)}>{para}</p>
+              ))}
+            </div>
+          </section>
+        ) : null}
 
-        <div className="dr-related">
-          <h2>{t('related')}</h2>
+        {report.providerLandscape && report.providerLandscape.length > 0 ? (
+          <section className="dr-block">
+            <h2 className="dr-block-title">{t('providerLandscape')}</h2>
+            <div className="dr-leads">
+              {report.providerLandscape.map((row) => (
+                <div key={row.metric} className="dr-lead">
+                  <span className="dr-lead-metric">{row.metric}</span>
+                  <strong className="dr-lead-leader">{row.leader}</strong>
+                  <em className="dr-lead-value">{row.value}</em>
+                  {row.note ? <span className="dr-lead-note">{row.note}</span> : null}
+                </div>
+              ))}
+            </div>
+          </section>
+        ) : null}
+
+        <section className="dr-block">
+          <h2 className="dr-block-title">{t('implications')}</h2>
+          <ol className="dr-implications">
+            {report.implications.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ol>
+        </section>
+
+        <div className="dr-next-cta">
+          <div>
+            <h2>{t('exploreProviders')}</h2>
+            <p>{t('exploreProvidersLede')}</p>
+          </div>
+          <Link href={discoverHref} className="dr-next-btn">
+            {t('exploreProvidersCta')}
+          </Link>
+        </div>
+
+        <details className="dr-method">
+          <summary>
+            <span>{t('methodology')}</span>
+            <span className="dr-method-hint">{t('showMethodology')}</span>
+          </summary>
+          <div className="dr-method-body">
+            <p>{report.methodology}</p>
+            <ul>
+              {report.sources.map((s) => (
+                <li key={s}>{s}</li>
+              ))}
+            </ul>
+            {report.updatedAt ? (
+              <p className="dr-method-updated">
+                {t('lastUpdated')} {formatReportDate(report.updatedAt)}
+              </p>
+            ) : null}
+          </div>
+        </details>
+
+        <section className="dr-related">
+          <h2 className="dr-block-title">{t('related')}</h2>
           <div className="dr-related-grid">
             {related.map((r) => (
-              <Link key={r.slug} href={`/reports/${r.slug}`} className="dr-card">
+              <Link
+                key={r.slug}
+                href={`/reports/${r.slug}`}
+                className="dr-card dr-card--related"
+              >
                 <div className="dr-card-top">
                   <span className="dr-card-cat">{r.category}</span>
                   <span className="dr-card-market">{r.market}</span>
                 </div>
                 <h3 className="dr-card-title">{r.title}</h3>
                 <p className="dr-card-excerpt">{r.excerpt}</p>
+                <div className="dr-card-stat">
+                  <strong className="dr-card-stat-value">{r.heroStat.value}</strong>
+                  <span className="dr-card-stat-label">{r.heroStat.label}</span>
+                </div>
               </Link>
             ))}
           </div>
-        </div>
+        </section>
       </article>
     </div>
   )

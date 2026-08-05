@@ -20,8 +20,11 @@ type Block = {
   id: string
   title: string
   lede: string
-  layout: 'triple' | 'double' | 'ready' | 'featured' | 'workflow'
-  cards: Card[]
+  body?: string
+  layout: 'triple' | 'double' | 'ready' | 'featured' | 'workflow' | 'act' | 'expansion' | 'solo'
+  cards?: Card[]
+  cta?: string
+  ctaMeta?: string
 }
 
 export default function Highlights() {
@@ -30,53 +33,105 @@ export default function Highlights() {
 
   return (
     <div className="hl" id="directory">
-      {blocks.map((block) => (
-        <section
-          key={block.id}
-          className={`hl-block hl-block--${block.layout}`}
-          id={block.id}
-        >
-          <header className="hl-head">
-            <h2 className="hl-title">{block.title}</h2>
-            <p className="hl-lede">{block.lede}</p>
-          </header>
-
-          <div className={`hl-grid hl-grid--${block.layout}`}>
-            {block.cards.map((card) => (
-              <article
-                key={card.title}
-                className={`hl-card hl-card--${card.mock}`}
-              >
-                <div className="hl-card-copy">
-                  <h3>{card.title}</h3>
-                  <p>{card.description}</p>
-                  {card.points && card.points.length > 0 ? (
-                    <ul className="hl-points">
-                      {card.points.map((point) => (
-                        <li key={point}>
-                          <span className="hl-point-mark" aria-hidden />
-                          {point}
-                        </li>
-                      ))}
-                    </ul>
-                  ) : null}
-                  {card.cta ? (
-                    <Link href="/signup" className="hl-card-cta">
-                      {card.cta}
-                    </Link>
-                  ) : null}
-                </div>
-                <div className="hl-card-stage" aria-hidden>
-                  <Mock mock={card.mock} />
-                </div>
-              </article>
-            ))}
-          </div>
-        </section>
-      ))}
+      {blocks.map((block) => {
+        if (
+          block.layout === 'act' ||
+          block.layout === 'expansion' ||
+          block.layout === 'solo'
+        ) {
+          return <FeatureSoloSection key={block.id} block={block} />
+        }
+        return <CardGridSection key={block.id} block={block} />
+      })}
     </div>
   )
 }
+
+/** Research-style section head + Discover flagship card (copy left, mock right) */
+function FeatureSoloSection({ block }: { block: Block }) {
+  const card = block.cards?.[0]
+  if (!card) return null
+
+  return (
+    <section
+      className={`hl-block hl-block--solo hl-block--${block.id}`}
+      id={block.id}
+    >
+      <header className="hl-head">
+        <h2 className="hl-title">{block.title}</h2>
+        <p className="hl-lede">{block.lede}</p>
+      </header>
+
+      <div className="hl-grid hl-grid--featured hl-grid--solo">
+        <article className={`hl-card hl-card--${card.mock}`}>
+          <div className="hl-card-copy">
+            <p className="hl-solo-desc">{card.description}</p>
+            {card.points && card.points.length > 0 ? (
+              <ul className="hl-points">
+                {card.points.map((point) => (
+                  <li key={point}>
+                    <span className="hl-point-mark" aria-hidden />
+                    {point}
+                  </li>
+                ))}
+              </ul>
+            ) : null}
+          </div>
+          <div className="hl-card-stage" aria-hidden>
+            <Mock mock={card.mock} />
+          </div>
+        </article>
+      </div>
+    </section>
+  )
+}
+
+function CardGridSection({ block }: { block: Block }) {
+  const cards = block.cards ?? []
+  return (
+    <section
+      className={`hl-block hl-block--${block.layout}`}
+      id={block.id}
+    >
+      <header className="hl-head">
+        <h2 className="hl-title">{block.title}</h2>
+        <p className="hl-lede">{block.lede}</p>
+        {block.body ? <p className="hl-body">{block.body}</p> : null}
+      </header>
+
+      <div className={`hl-grid hl-grid--${block.layout}`}>
+        {cards.map((card) => (
+          <article key={card.title} className={`hl-card hl-card--${card.mock}`}>
+            <div className="hl-card-copy">
+              <h3>{card.title}</h3>
+              <p>{card.description}</p>
+              {card.points && card.points.length > 0 ? (
+                <ul className="hl-points">
+                  {card.points.map((point) => (
+                    <li key={point}>
+                      <span className="hl-point-mark" aria-hidden />
+                      {point}
+                    </li>
+                  ))}
+                </ul>
+              ) : null}
+              {card.cta ? (
+                <Link href="/signup" className="hl-card-cta">
+                  {card.cta}
+                </Link>
+              ) : null}
+            </div>
+            <div className="hl-card-stage" aria-hidden>
+              <Mock mock={card.mock} />
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+  )
+}
+
+/* ─── Provider mark ─── */
 
 function ProviderMark({
   tone = 'a',
@@ -131,409 +186,164 @@ function ProviderMark({
   )
 }
 
-type WorkflowTone = 'a' | 'b' | 'c' | 'd' | 'e'
-type WorkflowGlyph = 'node' | 'rails' | 'card' | 'map' | 'link'
-type PriorityKind = 'high' | 'medium' | 'normal' | 'done'
-type StatusKind = 'shortlisted' | 'evaluating' | 'intalks' | 'pending' | 'introduced'
-
-type WorkflowProvider = {
-  name: string
-  market: string
-  category: string
-  owner: string
-  badge: string
-  badgeKind: PriorityKind | StatusKind
-  updated: string
-  action: string
-  note?: string
-  recent?: boolean
-  tone: WorkflowTone
-  glyph: WorkflowGlyph
-}
-
-type WorkflowStage = {
-  id: string
-  label: string
-  providers: WorkflowProvider[]
-}
-
-const WORKFLOW_STAGES: WorkflowStage[] = [
-  {
-    id: 'shortlist',
-    label: 'Shortlist',
-    providers: [
-      {
-        name: 'Nomba',
-        market: 'Nairobi, KE',
-        category: 'Payouts',
-        owner: 'Unassigned',
-        badge: 'High priority',
-        badgeKind: 'high',
-        updated: 'Updated 3d ago',
-        action: 'Request intro',
-        note: 'Shortlisted 3 days ago',
-        tone: 'a',
-        glyph: 'rails',
-      },
-      {
-        name: 'Paystack',
-        market: 'Accra, GH',
-        category: 'Collections',
-        owner: 'Tom Blake',
-        badge: 'Shortlisted',
-        badgeKind: 'shortlisted',
-        updated: 'Updated 5d ago',
-        action: 'View details',
-        tone: 'c',
-        glyph: 'card',
-      },
-    ],
-  },
-  {
-    id: 'evaluating',
-    label: 'Evaluating',
-    providers: [
-      {
-        name: 'SettleFast',
-        market: 'Nairobi, KE',
-        category: 'Payouts',
-        owner: 'Priya Shah',
-        badge: 'In progress',
-        badgeKind: 'evaluating',
-        updated: 'Updated 6h ago',
-        action: 'Schedule call',
-        tone: 'b',
-        glyph: 'node',
-      },
-      {
-        name: 'Flutterwave',
-        market: 'Accra, GH',
-        category: 'Collections',
-        owner: 'Priya Shah',
-        badge: 'In progress',
-        badgeKind: 'evaluating',
-        updated: 'Updated 1d ago',
-        action: 'View details',
-        tone: 'd',
-        glyph: 'link',
-      },
-    ],
-  },
-  {
-    id: 'intalks',
-    label: 'In talks',
-    providers: [
-      {
-        name: 'Clearpath',
-        market: 'Nairobi, KE',
-        category: 'Payouts',
-        owner: 'Maya Chen',
-        badge: 'In talks',
-        badgeKind: 'intalks',
-        updated: 'Updated 4h ago',
-        action: 'Schedule call',
-        note: 'In talks with Maya Chen',
-        recent: true,
-        tone: 'e',
-        glyph: 'map',
-      },
-      {
-        name: 'Cellulant',
-        market: 'Nairobi, KE',
-        category: 'Collections',
-        owner: 'Maya Chen',
-        badge: 'Pending',
-        badgeKind: 'pending',
-        updated: 'Updated 2d ago',
-        action: 'Request intro',
-        tone: 'a',
-        glyph: 'rails',
-      },
-    ],
-  },
-  {
-    id: 'introduced',
-    label: 'Introduced',
-    providers: [
-      {
-        name: 'Dojah',
-        market: 'Accra, GH',
-        category: 'Identity',
-        owner: 'Tom Blake',
-        badge: 'Introduced',
-        badgeKind: 'introduced',
-        updated: 'Updated 2h ago',
-        action: 'View details',
-        note: 'Introduction sent 2h ago',
-        recent: true,
-        tone: 'c',
-        glyph: 'node',
-      },
-      {
-        name: 'Mono',
-        market: 'Accra, GH',
-        category: 'Banking data',
-        owner: 'Maya Chen',
-        badge: 'Introduced',
-        badgeKind: 'introduced',
-        updated: 'Updated 1d ago',
-        action: 'View details',
-        tone: 'b',
-        glyph: 'card',
-      },
-    ],
-  },
-]
-
-function WorkflowBoard() {
-  const total = WORKFLOW_STAGES.reduce((n, s) => n + s.providers.length, 0)
+function PipelineMock() {
+  const stages = [
+    {
+      label: 'Shortlist',
+      cards: [
+        {
+          name: 'Nomba',
+          meta: 'Nairobi, KE · Payouts',
+          badge: 'High priority',
+          badgeKind: 'high',
+          owner: 'Maya Chen',
+        },
+      ],
+    },
+    {
+      label: 'Evaluating',
+      cards: [
+        {
+          name: 'Clearpath',
+          meta: 'Nairobi, KE · Payouts',
+          badge: 'In progress',
+          badgeKind: 'progress',
+          owner: 'Maya Chen',
+        },
+      ],
+    },
+    {
+      label: 'In talks',
+      cards: [
+        {
+          name: 'SettleFast',
+          meta: 'Nairobi, KE · Payouts',
+          badge: 'In talks',
+          badgeKind: 'intalks',
+          owner: 'Tom Blake',
+        },
+      ],
+    },
+    {
+      label: 'Introduced',
+      cards: [],
+    },
+  ]
 
   return (
-    <div className="mock mock-workflow">
-      <div className="mock-wf-chrome">
-        <div className="mock-wf-dots" aria-hidden>
-          <span />
-          <span />
-          <span />
-        </div>
+    <div className="mock mock-pipeline">
+      <div className="mock-pipe-chrome">
+        <span />
+        <span />
+        <span />
         <em>relay / pipeline</em>
-        <div className="mock-wf-live">
-          <span className="mock-wf-live-dot" />
-          Live
-        </div>
       </div>
-
-      <div className="mock-wf-toolbar">
-        <div className="mock-wf-title-block">
-          <strong>Africa payouts pipeline</strong>
-          <span>
-            {total} providers · Maya Chen · Tom Blake
-          </span>
-        </div>
-        <div className="mock-wf-meta">
-          <span className="mock-wf-pill">High · 1</span>
-          <span className="mock-wf-pill mock-wf-pill--muted">Just now</span>
-        </div>
+      <div className="mock-pipe-toolbar">
+        <strong>Africa payouts pipeline</strong>
+        <span>3 providers · Maya Chen · Tom Blake</span>
       </div>
-
-      <div className="mock-wf-board">
-        {WORKFLOW_STAGES.map((stage) => {
-          // Show lead card + keep count so the board reads as a full pipeline
-          const lead = stage.providers[0]
-          return (
-            <div key={stage.id} className="mock-wf-stage">
-              <div className="mock-wf-stage-head">
-                <h4>{stage.label}</h4>
-                <span className="mock-wf-count">{stage.providers.length}</span>
+      <div className="mock-pipe-board">
+        {stages.map((stage) => (
+          <div key={stage.label} className="mock-pipe-col">
+            <div className="mock-pipe-col-head">{stage.label}</div>
+            {stage.cards.map((c) => (
+              <div key={c.name} className="mock-pipe-card">
+                <strong>{c.name}</strong>
+                <span className="mock-pipe-meta">{c.meta}</span>
+                <span className={`mock-pipe-badge badge-${c.badgeKind}`}>
+                  {c.badge}
+                </span>
+                <span className="mock-pipe-owner">Owner: {c.owner}</span>
               </div>
-              <div className="mock-wf-cards">
-                <div
-                  className={`mock-wf-card${lead.recent ? ' is-recent' : ''}`}
-                >
-                  <div className="mock-wf-card-top">
-                    <ProviderMark tone={lead.tone} glyph={lead.glyph} />
-                    <div className="mock-wf-card-id">
-                      <strong>{lead.name}</strong>
-                      <span>
-                        {lead.market} · {lead.category}
-                      </span>
-                    </div>
-                    {lead.recent ? (
-                      <span className="mock-wf-pulse" title="Recent activity" />
-                    ) : null}
-                  </div>
-
-                  <div className="mock-wf-card-row">
-                    <span className={`mock-wf-badge badge-${lead.badgeKind}`}>
-                      {lead.badge}
-                    </span>
-                    <time>{lead.updated.replace(/^Updated /, '')}</time>
-                  </div>
-
-                  <div className="mock-wf-card-owner">
-                    <span className="mock-wf-owner-label">Owner</span>
-                    <span className="mock-wf-owner-name">{lead.owner}</span>
-                  </div>
-
-                  {lead.note ? (
-                    <p className="mock-wf-note">{lead.note}</p>
-                  ) : null}
-
-                  <button type="button" className="mock-wf-action" tabIndex={-1}>
-                    {lead.action}
-                  </button>
-                </div>
-
-                {stage.providers.length > 1 ? (
-                  <div className="mock-wf-more">
-                    +{stage.providers.length - 1} more
-                  </div>
-                ) : null}
-              </div>
-            </div>
-          )
-        })}
+            ))}
+          </div>
+        ))}
       </div>
     </div>
   )
 }
 
-type SignalKind = 'regulation' | 'provider' | 'rail' | 'heat'
-type MarketTone = 'active' | 'emerging' | 'stable'
+function SignalsMock() {
+  const signals = [
+    {
+      flag: 'CO',
+      market: 'Colombia',
+      kind: 'rail',
+      label: 'New rail',
+      headline: 'PSE instant payments now mandatory for banks',
+      time: 'Just now',
+    },
+    {
+      flag: 'EG',
+      market: 'Egypt',
+      kind: 'heat',
+      label: 'Market heat',
+      headline: 'Central Bank InstaPay adoption push live on corridor',
+      time: '2h ago',
+    },
+    {
+      flag: 'KE',
+      market: 'Kenya',
+      kind: 'provider',
+      label: 'New provider',
+      headline: 'Clearpath expands to Kenya and Uganda',
+      time: '5h ago',
+    },
+    {
+      flag: 'BR',
+      market: 'Brazil',
+      kind: 'regulation',
+      label: 'Regulation',
+      headline: 'Pix rules expand for open-finance payout providers',
+      time: 'Yesterday',
+    },
+  ]
 
-type MarketSignal = {
-  id: string
-  market: string
-  flag: string
-  kind: SignalKind
-  label: string
-  headline: string
-  time: string
-  live?: boolean
-}
-
-type MarketChip = {
-  market: string
-  flag: string
-  tone: MarketTone
-  meta: string
-  trend: string
-}
-
-const MARKET_SIGNALS: MarketSignal[] = [
-  {
-    id: 'co-pse',
-    market: 'Colombia',
-    flag: 'CO',
-    kind: 'rail',
-    label: 'New rail',
-    headline: 'PSE instant payments now mandatory for banks',
-    time: 'Just now',
-    live: true,
-  },
-  {
-    id: 'eg-instapay',
-    market: 'Egypt',
-    flag: 'EG',
-    kind: 'heat',
-    label: 'Market heat',
-    headline: 'Central Bank InstaPay adoption push live on corridor',
-    time: '2h ago',
-  },
-  {
-    id: 'ke-clearpath',
-    market: 'Kenya',
-    flag: 'KE',
-    kind: 'provider',
-    label: 'New provider',
-    headline: 'Clearpath expands to Kenya and Uganda',
-    time: '5h ago',
-  },
-  {
-    id: 'br-pix',
-    market: 'Brazil',
-    flag: 'BR',
-    kind: 'regulation',
-    label: 'Regulation',
-    headline: 'Pix rules expand for open-finance payout providers',
-    time: 'Yesterday',
-  },
-]
-
-const MARKET_CHIPS: MarketChip[] = [
-  {
-    market: 'Colombia',
-    flag: 'CO',
-    tone: 'active',
-    meta: '9 providers',
-    trend: '↑ Hot',
-  },
-  {
-    market: 'Egypt',
-    flag: 'EG',
-    tone: 'emerging',
-    meta: '7 providers',
-    trend: 'Watch',
-  },
-  {
-    market: 'Kenya',
-    flag: 'KE',
-    tone: 'active',
-    meta: '11 providers',
-    trend: '↑ Hot',
-  },
-  {
-    market: 'Brazil',
-    flag: 'BR',
-    tone: 'stable',
-    meta: '16 providers',
-    trend: 'Stable',
-  },
-]
-
-function SignalsMonitor() {
   return (
     <div className="mock mock-signals">
-      <header className="mock-sig-head">
-        <div className="mock-sig-head-left">
-          <span className="mock-sig-live">
-            <span className="mock-sig-live-dot" />
-            Live
-          </span>
-          <strong>Market signals</strong>
-        </div>
-        <span className="mock-sig-count">4 new this week</span>
-      </header>
-
-      <ul className="mock-sig-list">
-        {MARKET_SIGNALS.map((signal) => (
-          <li
-            key={signal.id}
-            className={`mock-sig-row mock-sig-row--${signal.kind}${
-              signal.live ? ' is-live' : ''
-            }`}
+      <div className="mock-sig-chrome">
+        <span />
+        <span />
+        <span />
+        <em>relay / signals</em>
+      </div>
+      <div className="mock-sig-toolbar">
+        <strong>Market signals</strong>
+        <em>4 new this week</em>
+      </div>
+      <div className="mock-sig-list">
+        {signals.map((s) => (
+          <div
+            key={s.flag + s.kind}
+            className={`mock-sig-row mock-sig-row--${s.kind}`}
           >
-            <span className={`mock-sig-dot mock-sig-dot--${signal.kind}`} />
-            <div className="mock-sig-main">
-              <div className="mock-sig-line">
-                <span className="mock-sig-market">
-                  <em>{signal.flag}</em>
-                  {signal.market}
-                </span>
-                <span className={`mock-sig-badge mock-sig-badge--${signal.kind}`}>
-                  {signal.label}
-                </span>
-                <time className={signal.live ? 'is-now' : undefined}>{signal.time}</time>
-              </div>
-              <p>{signal.headline}</p>
+            <div className="mock-sig-row-top">
+              <span className="mock-sig-flag">{s.flag}</span>
+              <span className="mock-sig-market">{s.market}</span>
+              <span className={`mock-sig-type mock-sig-type--${s.kind}`}>
+                {s.label}
+              </span>
+              <time>{s.time}</time>
             </div>
-          </li>
+            <p>{s.headline}</p>
+          </div>
         ))}
-      </ul>
-
-      <footer className="mock-sig-foot">
-        <div className="mock-sig-foot-label">Market status</div>
-        <div className="mock-sig-chips">
-          {MARKET_CHIPS.map((m) => (
-            <div
-              key={m.market}
-              className={`mock-sig-chip mock-sig-chip--${m.tone}`}
-              title={`${m.market}: ${m.meta}`}
-            >
-              <span className="mock-sig-chip-flag">{m.flag}</span>
-              <span className="mock-sig-chip-name">{m.market}</span>
-              <span className="mock-sig-chip-meta">{m.meta}</span>
-              <span className="mock-sig-chip-trend">{m.trend}</span>
-            </div>
-          ))}
-        </div>
-      </footer>
+      </div>
     </div>
   )
 }
+
+/* ─── Discover / Research mocks ─── */
 
 function Mock({ mock }: { mock: string }) {
   switch (mock) {
+    case 'workflow':
+    case 'pipeline':
+      return <PipelineMock />
+
+    case 'signals':
+      return <SignalsMock />
+
     case 'search':
       return (
         <div className="mock mock-search">
@@ -665,7 +475,6 @@ function Mock({ mock }: { mock: string }) {
               <em>relay / shortlists</em>
               <span className="mock-network-badge">Shared</span>
             </div>
-
             <div className="mock-network-head">
               <ProviderMark tone="b" glyph="link" />
               <div className="mock-network-titles">
@@ -678,7 +487,6 @@ function Mock({ mock }: { mock: string }) {
                 <span className="mock-activity-avatar mock-mark--e">P</span>
               </div>
             </div>
-
             <div className="mock-shortlist">
               <div className="mock-shortlist-caption">
                 <span>Provider</span>
@@ -728,7 +536,6 @@ function Mock({ mock }: { mock: string }) {
                 </div>
               ))}
             </div>
-
             <div className="mock-activity">
               <div className="mock-activity-label">Recent activity</div>
               {[
@@ -914,84 +721,6 @@ function Mock({ mock }: { mock: string }) {
               </span>
             </div>
           ))}
-        </div>
-      )
-
-    case 'crm':
-    case 'workflow':
-      return <WorkflowBoard />
-
-    case 'extension':
-      return (
-        <div className="mock mock-ext">
-          <div className="mock-browser">
-            <div className="mock-browser-bar">relay.app/providers/provider-a</div>
-            <div className="mock-ext-panel">
-              <div className="mock-ext-head">
-                <ProviderMark tone="c" glyph="node" />
-                <div>
-                  <strong>Provider A</strong>
-                  <span>Growth stage · multi-market</span>
-                </div>
-              </div>
-              <div className="mock-ext-stats">
-                <div>
-                  <span>Fee</span>
-                  <strong>0.9%</strong>
-                </div>
-                <div>
-                  <span>Sandbox</span>
-                  <strong>3 days</strong>
-                </div>
-                <div>
-                  <span>Markets</span>
-                  <strong>6</strong>
-                </div>
-              </div>
-              <div className="mock-ext-chart">
-                <span className="mock-ext-up">+18% coverage YoY</span>
-                <svg viewBox="0 0 120 36" preserveAspectRatio="none">
-                  <path
-                    d="M0 28 C20 26, 30 20, 45 18 S70 22, 85 12 S105 8, 120 4"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  />
-                </svg>
-              </div>
-            </div>
-          </div>
-        </div>
-      )
-
-    case 'signals':
-      return <SignalsMonitor />
-
-    case 'mcp':
-      return <SignalsMonitor />
-
-    case 'zap':
-      return (
-        <div className="mock mock-zap">
-          {['Zapier', 'Make', 'n8n', 'Relay'].map((name) => (
-            <span key={name} className="mock-zap-tile">
-              {name}
-            </span>
-          ))}
-        </div>
-      )
-
-    case 'api':
-      return (
-        <div className="mock mock-api">
-          <pre>{`query Partners($market: String!) {
-  partners(market: $market) {
-    name
-    categories
-    feeBand
-    sandboxDays
-  }
-}`}</pre>
         </div>
       )
 

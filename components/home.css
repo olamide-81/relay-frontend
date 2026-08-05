@@ -1,10 +1,22 @@
-/* Values sourced from design-tokens.json / deep-metrics.json (Harmonic live extract) */
-
-.relay-home {
+/* Reports routes share landing nav/footer (via SiteNav / SiteFooter) */
+.relay-reports {
   min-height: 100dvh;
-  background: var(--paper-alt);
-  padding-bottom: 96px;
+  display: flex;
+  flex-direction: column;
+  background: var(--paper-alt, #f5f5f5);
 }
+
+.relay-reports .dr-page,
+.relay-reports .dr-detail {
+  flex: 1;
+}
+
+/* Solid nav sits above reports content without competing chrome */
+.relay-reports .nav.nav--scrolled {
+  /* match landing pill; ensure it's above report surfaces */
+  z-index: 100;
+}
+
 
 /* ─── Top banner (Geist) ─── */
 .banner {

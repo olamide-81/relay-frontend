@@ -29,12 +29,12 @@
     "productLabel": "What you get",
     "indexLabel": "Inside Relay",
     "markets": [
-      "Lagos",
-      "Nairobi",
-      "Cairo",
-      "Lisbon",
       "Bogotá",
-      "São Paulo"
+      "Mexico City",
+      "São Paulo",
+      "Lisbon",
+      "Dubai",
+      "Madrid"
     ],
     "offerings": [
       {
@@ -126,7 +126,7 @@
     "signin": {
       "metadata": {
         "title": "Sign In | Relay Fintech Provider Directory",
-        "description": "Sign in to Relay to compare fintech providers, read payment rails data and manage provider introductions across Nigeria, Colombia, Egypt, Portugal and more."
+        "description": "Sign in to Relay to compare fintech providers, read payment rails data and manage provider introductions across Colombia, Mexico, Brazil, Portugal, the Gulf and more."
       },
       "asideEyebrow": "Welcome back",
       "asideTitleBefore": "Your fintech provider directory",
@@ -153,7 +153,7 @@
     "signup": {
       "metadata": {
         "title": "Create Account | Relay Fintech Directory",
-        "description": "Create a free Relay account to compare vetted fintech providers, browse payment rails data and request introductions in Nigeria, Colombia, Egypt, Portugal and more."
+        "description": "Create a free Relay account to compare vetted fintech providers, browse payment rails data and request introductions in Colombia, Mexico, Brazil, Portugal, the Gulf and more."
       },
       "asideEyebrow": "Get started",
       "asideTitleBefore": "Compare providers and read market data",
@@ -178,7 +178,7 @@
       "termsAgree": "I agree to the Terms and Privacy Policy",
       "submit": "Create account",
       "submitting": "Creating account…",
-      "footnote": "Used by fintech teams evaluating infrastructure across Africa, Latin America, Europe and the Middle East."
+      "footnote": "Used by fintech teams evaluating infrastructure across Latin America, Europe, the Middle East and beyond."
     },
     "forgotPassword": {
       "metadata": {
@@ -279,22 +279,17 @@
         "id": "act",
         "title": "Act",
         "lede": "Move from research to relationships.",
-        "layout": "double",
+        "layout": "act",
         "cards": [
           {
-            "title": "Organize your workflow",
-            "description": "Build a shortlist, track progress, assign owners and priorities, and get introduced — without leaving Relay.",
+            "title": "Act",
+            "description": "Build your shortlist, track progress, assign owners and priorities, and get introduced to providers — all without leaving Relay.",
             "mock": "workflow",
             "points": [
               "Shortlist → evaluate → talk → intro",
               "Owners, priorities & live activity",
               "Request intros from the board"
             ]
-          },
-          {
-            "title": "Relay data where you need it",
-            "description": "Instant partner context while you browse — fees, coverage and sandbox timing",
-            "mock": "extension"
           }
         ]
       },
@@ -302,28 +297,17 @@
         "id": "ready",
         "title": "Expansion-ready",
         "lede": "Stay ahead of market moves.",
-        "layout": "ready",
+        "layout": "expansion",
         "cards": [
           {
-            "title": "Market signals & alerts",
-            "description": "Relay surfaces where markets are heading — new rails, new providers, regulatory shifts — so your team is never caught off guard when conditions change.",
+            "title": "Expansion-ready",
+            "description": "Get signals on where markets are heading — new rails, new providers, new opportunities. Relay keeps your team updated as markets shift, so you're never caught off guard.",
             "mock": "signals",
             "points": [
               "Live feed of rails, providers & regulation",
               "Market status at a glance",
               "Know what moved this week"
             ]
-          },
-          {
-            "title": "Not coding? No worries",
-            "description": "Push shortlists and alerts into the tools your team already uses",
-            "mock": "zap"
-          },
-          {
-            "title": "Relay API",
-            "description": "Pull partner and market data into your own stack",
-            "mock": "api",
-            "cta": "Read the docs"
           }
         ]
       }
@@ -337,11 +321,29 @@
     "minRead": "min read",
     "indexTitle": "Relay data reports",
     "indexLede": "Deep dives on fees, rails, reliability and licensing across the markets where teams expand.",
+    "reportsPublished": "{count} reports published",
+    "reportsCount": "{count} reports",
     "filterAll": "All reports",
+    "sortLatest": "Latest first",
+    "sortMarket": "By market",
+    "loadMore": "Load more",
+    "showing": "Showing {shown} of {total}",
     "getStarted": "Get started",
     "backToIndex": "All reports",
+    "published": "Published",
+    "lastUpdated": "Last updated",
+    "whyWeBuilt": "Why we built this",
+    "keyMetrics": "Key metrics",
     "keyFindings": "Key findings",
-    "methodology": "Methodology",
+    "whyThisMatters": "Why this matters:",
+    "marketContext": "Market context",
+    "providerLandscape": "Provider landscape",
+    "implications": "What this means for you",
+    "exploreProviders": "Ready to shortlist partners?",
+    "exploreProvidersLede": "Open the provider directory and filter by the markets covered in this report.",
+    "exploreProvidersCta": "Explore providers in this market",
+    "methodology": "Data sources & methodology",
+    "showMethodology": "Show methodology",
     "related": "Related reports"
   }
 }
