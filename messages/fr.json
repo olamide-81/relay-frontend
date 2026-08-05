@@ -54,9 +54,9 @@
     ]
   },
   "position": {
-    "kicker": "Le coût de l'incertitude",
-    "title": "Un nouveau marché ne devrait pas signifier des partenariats irréversibles.",
-    "lede": "Incertitude sur qui faire confiance. Des options que vous ne voyez jamais. Des erreurs qui prennent un an ou deux à défaire. Relay met partenaires et prestataires devant vous avant que vous ne vous engagiez."
+    "kicker": "The cost of guessing",
+    "title": "Operating in a market shouldn't mean\nflying blind.",
+    "lede": "Good data changes how you operate. It gives you real insight into the infrastructure behind a market,\nhow providers compare, and how the whole system actually works. Relay keeps you a step ahead\nand having the right data helps you focus more on your customers, not hunting for answers."
   },
   "quote": {
     "text": "We cut provider evaluation from eight weeks to five days. Relay is now our default for infrastructure decisions.",
@@ -89,7 +89,6 @@
     "methodology": "Méthodologie",
     "company": "Entreprise",
     "about": "À propos",
-    "careers": "Carrières",
     "blog": "Blog",
     "contact": "Contact",
     "press": "Presse",
@@ -217,54 +216,82 @@
       {
         "id": "discover",
         "title": "Découvrir",
-        "lede": "Trouvez les partenaires et prestataires que les autres manquent",
-        "layout": "triple",
+        "lede": "Prestataires vérifiés par marché et catégorie — filtrables par frais, couverture et sandbox.",
+        "layout": "featured",
         "cards": [
           {
-            "title": "Trouvez des partenaires dès les premiers signaux",
-            "description": "Filtres granulaires sur des prestataires vérifiés par marché et catégorie",
-            "mock": "search"
+            "title": "Annuaire des prestataires",
+            "description": "Recherchez des partenaires par marché et catégorie. Filtrez sur frais, couverture, rails et sandbox — puis shortlistez sans quitter Relay.",
+            "mock": "search",
+            "points": [
+              "Filtrer par marché et catégorie",
+              "Voir frais, rails et couverture",
+              "Shortlist en une vue"
+            ]
           },
           {
-            "title": "Suivez les équipes qui bougent",
-            "description": "Suivez les leads d’expansion et opérateurs sur les marchés qui comptent",
-            "mock": "people"
+            "title": "Carte de couverture",
+            "description": "Voyez quels prestataires opèrent sur chaque corridor avant de commencer l’outreach.",
+            "mock": "people",
+            "points": [
+              "Présence marché en direct",
+              "Couverture par catégorie"
+            ]
           },
           {
-            "title": "Le réseau de votre équipe, cartographié",
-            "description": "Restez à jour en synchronisant boîte mail, calendrier et LinkedIn",
-            "mock": "network"
+            "title": "Shortlists partagées",
+            "description": "Gardez les décisions prestataires avec votre équipe, pas dans des fils d’e-mails.",
+            "mock": "network",
+            "points": [
+              "Visibilité d’équipe",
+              "Historique des décisions"
+            ]
           }
         ]
       },
       {
         "id": "research",
         "title": "Rechercher",
-        "lede": "Le contexte dont vous avez besoin avant de vous engager",
+        "lede": "Comprenez avant de vous engager.",
         "layout": "double",
         "cards": [
           {
-            "title": "Briefs de recherche marché",
-            "description": "Couverture, rails et frais assemblés en briefs actionnables",
-            "mock": "report"
+            "title": "Briefs marché",
+            "description": "Régulation, rails et frais cartographiés en briefs fiables — avant que l’outreach ne verrouille le choix.",
+            "mock": "brief",
+            "points": [
+              "Statut réglementaire par marché",
+              "Rails, frais et délais de règlement",
+              "Prestataires par catégorie"
+            ]
           },
           {
-            "title": "Intelligence prestataires à portée de main",
-            "description": "Comparez les options entre marchés avant de verrouiller un partenariat",
-            "mock": "cloud"
+            "title": "Comparaisons de prestataires",
+            "description": "Voyez exactement comment l’un se compare à l’autre — frais, règlement, couverture et différenciateurs.",
+            "mock": "compare",
+            "points": [
+              "Frais et règlement côte à côte",
+              "Couverture marché en un coup d’œil",
+              "Différenciateurs clés signalés"
+            ]
           }
         ]
       },
       {
         "id": "act",
         "title": "Agir",
-        "lede": "De la shortlist à l’introduction, sans quitter Relay",
+        "lede": "De la recherche aux relations.",
         "layout": "double",
         "cards": [
           {
             "title": "Organisez votre workflow",
-            "description": "Suivez shortlists, owners et priorités pendant l’évaluation",
-            "mock": "crm"
+            "description": "Créez une shortlist, suivez la progression, assignez owners et priorités, et obtenez des intros — sans quitter Relay.",
+            "mock": "workflow",
+            "points": [
+              "Shortlist → évaluer → échanger → intro",
+              "Owners, priorités et activité en direct",
+              "Demandez des intros depuis le board"
+            ]
           },
           {
             "title": "Les données Relay où vous en avez besoin",
@@ -276,13 +303,18 @@
       {
         "id": "ready",
         "title": "Prêt à s’étendre",
-        "lede": "Données live sur les partenaires, marchés et connexions de votre équipe",
+        "lede": "Anticipez les mouvements de marché.",
         "layout": "ready",
         "cards": [
           {
-            "title": "Prédictions & signaux",
-            "description": "Voyez où vont les marchés — corridors, nouveaux rails, momentum — avant d’étendre",
-            "mock": "mcp"
+            "title": "Signaux & alertes marché",
+            "description": "Relay montre où vont les marchés — nouveaux rails, providers, évolutions réglementaires — pour que votre équipe ne soit jamais prise de court.",
+            "mock": "signals",
+            "points": [
+              "Fil en direct rails, providers et régulation",
+              "Statut des marchés en un coup d’œil",
+              "Sachez ce qui a bougé cette semaine"
+            ]
           },
           {
             "title": "Pas de code ? Pas de souci",

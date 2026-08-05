@@ -510,7 +510,7 @@
 }
 
 .position-inner {
-  max-width: var(--max-width-quote);
+  max-width: 1100px;
   margin: 0 auto;
   padding: 0 24px;
 }
@@ -526,18 +526,19 @@
   font-family: var(--font-display);
   font-size: 48px;
   font-weight: 400;
-  line-height: 49.92px;
+  line-height: 1.08;
   letter-spacing: normal;
   color: #262222;
-  margin-bottom: 20px;
+  margin: 0 auto 20px;
+  white-space: pre-line;
 }
 
 .position-lede {
   font-size: 20px;
-  line-height: 28px;
+  line-height: 1.45;
   color: var(--text-secondary);
-  max-width: 40rem;
   margin: 0 auto;
+  white-space: pre-line;
 }
 
 /* ─── Solutions ─── */
@@ -923,11 +924,12 @@
 }
 
 .float-icon {
+  position: relative;
   width: 28px;
   height: 28px;
   border-radius: 50%;
   border: 1.5px solid rgba(255, 255, 255, 0.14);
-  background: rgba(255, 255, 255, 0.06);
+  background: var(--ink);
   display: grid;
   place-items: center;
   color: rgba(255, 255, 255, 0.82);
@@ -935,6 +937,18 @@
 
 .float-icon + .float-icon {
   margin-left: -6px;
+}
+
+.float-icon:nth-child(1) {
+  z-index: 1;
+}
+
+.float-icon:nth-child(2) {
+  z-index: 2;
+}
+
+.float-icon:nth-child(3) {
+  z-index: 3;
 }
 
 .float-icon svg {
@@ -985,6 +999,11 @@
   .section-title {
     font-size: 36px;
     line-height: 40px;
+  }
+
+  .position-title,
+  .position-lede {
+    white-space: normal;
   }
 
   .quote {

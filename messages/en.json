@@ -61,8 +61,8 @@
   },
   "position": {
     "kicker": "The cost of guessing",
-    "title": "New markets shouldn't mean irreversible partnerships.",
-    "lede": "Uncertainty about who to trust. Options you never see. Mistakes that take a year or two to unwind. Relay puts partners and service providers in front of you before you commit."
+    "title": "Operating in a market shouldn't mean\nflying blind.",
+    "lede": "Good data changes how you operate. It gives you real insight into the infrastructure behind a market,\nhow providers compare, and how the whole system actually works. Relay keeps you a step ahead\nand having the right data helps you focus more on your customers, not hunting for answers."
   },
   "quote": {
     "text": "We almost signed a payout partner we couldn't unwind for eighteen months. Relay showed us three better options in a day.",
@@ -95,7 +95,6 @@
     "methodology": "Methodology",
     "company": "Company",
     "about": "About",
-    "careers": "Careers",
     "blog": "Blog",
     "contact": "Contact",
     "press": "Press",
@@ -215,54 +214,82 @@
       {
         "id": "discover",
         "title": "Discover",
-        "lede": "Find the partners and service providers others miss",
-        "layout": "triple",
+        "lede": "Vetted providers by market and category — filter on the criteria that matter, then shortlist in one place.",
+        "layout": "featured",
         "cards": [
           {
-            "title": "Find partners at the earliest signals",
-            "description": "Granular filters on vetted providers by market and category",
-            "mock": "search"
+            "title": "Provider directory",
+            "description": "Search partners by market and category. Filter on fees, coverage, rails, and sandbox access.",
+            "mock": "search",
+            "points": [
+              "Filter by market & category",
+              "See fees, rails & coverage",
+              "Shortlist in one view"
+            ]
           },
           {
-            "title": "Monitor the teams making moves",
-            "description": "Track expansion leads and operators across the markets you care about",
-            "mock": "people"
+            "title": "Market coverage",
+            "description": "See which providers operate in each corridor before you open outreach.",
+            "mock": "people",
+            "points": [
+              "Live market presence",
+              "Category-level coverage"
+            ]
           },
           {
-            "title": "Your team’s network, mapped",
-            "description": "Stay current by syncing connections from inbox, calendar and LinkedIn",
-            "mock": "network"
+            "title": "Shared shortlists",
+            "description": "Keep provider decisions with your team — not buried in email.",
+            "mock": "network",
+            "points": [
+              "Team visibility",
+              "Decision history"
+            ]
           }
         ]
       },
       {
         "id": "research",
         "title": "Research",
-        "lede": "The context you need before you commit to a partner",
+        "lede": "Understand before you commit.",
         "layout": "double",
         "cards": [
           {
-            "title": "Market research briefs",
-            "description": "Coverage, rails and fees assembled into briefs your team can act on",
-            "mock": "report"
+            "title": "Market briefs",
+            "description": "Regulation, rails, and fees mapped into briefs your team can trust — before outreach locks you in.",
+            "mock": "brief",
+            "points": [
+              "Regulation status by market",
+              "Rails, fees & settlement times",
+              "Providers by category"
+            ]
           },
           {
-            "title": "Provider intelligence at your fingertips",
-            "description": "Compare options across markets before a partnership locks you in",
-            "mock": "cloud"
+            "title": "Provider comparisons",
+            "description": "See exactly how one stacks against another — fees, settlement, coverage, and what sets each apart.",
+            "mock": "compare",
+            "points": [
+              "Side-by-side fee & settlement",
+              "Market coverage at a glance",
+              "Key differentiators flagged"
+            ]
           }
         ]
       },
       {
         "id": "act",
         "title": "Act",
-        "lede": "From shortlist to introduction, without leaving Relay",
+        "lede": "Move from research to relationships.",
         "layout": "double",
         "cards": [
           {
             "title": "Organize your workflow",
-            "description": "Track shortlists, owners and priorities as you evaluate partners",
-            "mock": "crm"
+            "description": "Build a shortlist, track progress, assign owners and priorities, and get introduced — without leaving Relay.",
+            "mock": "workflow",
+            "points": [
+              "Shortlist → evaluate → talk → intro",
+              "Owners, priorities & live activity",
+              "Request intros from the board"
+            ]
           },
           {
             "title": "Relay data where you need it",
@@ -274,13 +301,18 @@
       {
         "id": "ready",
         "title": "Expansion-ready",
-        "lede": "Live data on partners, markets and how your team connects to them",
+        "lede": "Stay ahead of market moves.",
         "layout": "ready",
         "cards": [
           {
-            "title": "Predictions & signals",
-            "description": "See where markets are heading — corridor growth, new rails and partner momentum — before you expand",
-            "mock": "mcp"
+            "title": "Market signals & alerts",
+            "description": "Relay surfaces where markets are heading — new rails, new providers, regulatory shifts — so your team is never caught off guard when conditions change.",
+            "mock": "signals",
+            "points": [
+              "Live feed of rails, providers & regulation",
+              "Market status at a glance",
+              "Know what moved this week"
+            ]
           },
           {
             "title": "Not coding? No worries",

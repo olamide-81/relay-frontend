@@ -172,7 +172,6 @@ export default function Home() {
               <div>
                 <h4 className="mono">{t('footer.company')}</h4>
                 <a href="#">{t('footer.about')}</a>
-                <a href="#">{t('footer.careers')}</a>
                 <a href="#">{t('footer.blog')}</a>
                 <a href="#">{t('footer.contact')}</a>
                 <a href="#">{t('footer.press')}</a>
