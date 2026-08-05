@@ -22,9 +22,10 @@
     "title": "Expand into any market with the right partners.",
     "subtext": "Relay gives you the list — vetted partners and service providers — so you can enter a new market without guessing.",
     "emailPlaceholder": "Enter your work email",
-    "cta": "Book a demo",
+    "cta": "Get started",
     "watchPreview": "Watch preview",
-    "bookDemo": "Book a live demo",
+    "bookDemo": "See providers",
+    "secondaryCta": "See providers",
     "productLabel": "What you get",
     "indexLabel": "Inside Relay",
     "markets": [
@@ -68,8 +69,8 @@
     "cite": "— Head of Payments, fintech scale-up"
   },
   "floatCta": {
-    "title": "Book a demo",
-    "subtitle": "30 minutes"
+    "title": "Explore providers",
+    "subtitle": "240+ partners"
   },
   "footer": {
     "tagline": "Infrastructure intelligence for the people building financial products.",

@@ -65,7 +65,7 @@ export default function Hero() {
               {t('nav.getStarted')}
             </Link>
             <Link href="/signup" className="hero-link">
-              {t('hero.bookDemo')}
+              {t('hero.secondaryCta')}
             </Link>
           </motion.div>
         </div>

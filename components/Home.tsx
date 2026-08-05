@@ -19,7 +19,7 @@ export default function Home() {
   useEffect(() => {
     const onScroll = () => {
       const y = window.scrollY
-      setScrolled(y > 8)
+      setScrolled(y > 24)
       setShowFloat(y > 280)
     }
     onScroll()
@@ -209,22 +209,26 @@ export default function Home() {
         href="/signup"
         className={`float-cta ${showFloat ? 'is-visible' : ''}`}
       >
-        <span className="float-avatars" aria-hidden>
-          <span className="float-avatar">
-            <Image
-              src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=112&h=112&fit=crop&crop=faces"
-              alt=""
-              width={28}
-              height={28}
-            />
+        <span className="float-icons" aria-hidden>
+          <span className="float-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
+              <circle cx="11" cy="11" r="6.5" />
+              <path d="M16 16l4 4" strokeLinecap="round" />
+            </svg>
           </span>
-          <span className="float-avatar">
-            <Image
-              src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=112&h=112&fit=crop&crop=faces"
-              alt=""
-              width={28}
-              height={28}
-            />
+          <span className="float-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
+              <circle cx="12" cy="12" r="8" />
+              <path d="M4 12h16M12 4c2.4 2.5 3.6 5.2 3.6 8s-1.2 5.5-3.6 8c-2.4-2.5-3.6-5.2-3.6-8s1.2-5.5 3.6-8z" strokeLinejoin="round" />
+            </svg>
+          </span>
+          <span className="float-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
+              <path d="M8 14a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7z" />
+              <path d="M16 14a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7z" />
+              <path d="M4.5 19c.6-2.2 2.3-3.5 4.5-3.5h1c1 0 1.9.3 2.6.9" strokeLinecap="round" />
+              <path d="M19.5 19c-.6-2.2-2.3-3.5-4.5-3.5h-1c-.6 0-1.1.1-1.6.3" strokeLinecap="round" />
+            </svg>
           </span>
         </span>
         <span className="float-copy">
@@ -232,7 +236,7 @@ export default function Home() {
           <span>{t('floatCta.subtitle')}</span>
         </span>
         <span className="float-arrow" aria-hidden>
-          ↗
+          →
         </span>
       </Link>
     </div>

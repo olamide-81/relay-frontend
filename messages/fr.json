@@ -15,9 +15,10 @@
     "kicker": "Expansion mondiale",
     "title": "Développez-vous sur n'importe quel marché avec les bons partenaires.",
     "emailPlaceholder": "Entrez votre email professionnel",
-    "cta": "Réserver une démo",
+    "cta": "Commencer",
     "watchPreview": "Voir l'aperçu",
-    "bookDemo": "Réserver une démo en direct",
+    "bookDemo": "Voir les prestataires",
+    "secondaryCta": "Voir les prestataires",
     "subtext": "Relay vous donne la liste — partenaires et prestataires vérifiés — pour entrer sur un nouveau marché sans deviner.",
     "productLabel": "Ce que vous obtenez",
     "indexLabel": "Dans Relay",
@@ -62,8 +63,8 @@
     "cite": "— Head of Payments, fintech scale-up"
   },
   "floatCta": {
-    "title": "Request access",
-    "subtitle": "2 minutes"
+    "title": "Explorer les prestataires",
+    "subtitle": "240+ partenaires"
   },
   "footer": {
     "tagline": "Intelligence infrastructure pour ceux qui construisent des produits financiers.",

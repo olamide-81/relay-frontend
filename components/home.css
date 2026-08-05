@@ -138,9 +138,17 @@
   top: 0;
   z-index: 99;
   height: var(--nav-height);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background: transparent;
-  transition: background 0.2s, border-color 0.2s, backdrop-filter 0.2s, top 0.2s;
   border-bottom: 1px solid transparent;
+  transition:
+    height 0.35s var(--ease-hm),
+    padding 0.35s var(--ease-hm),
+    background 0.3s ease,
+    border-color 0.3s ease,
+    top 0.2s;
 }
 
 .has-banner .nav {
@@ -151,14 +159,8 @@
   padding-top: 40px;
 }
 
-.nav--scrolled {
-  background: rgba(245, 246, 250, 0.88);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border-bottom-color: var(--line);
-}
-
 .nav-inner {
+  width: 100%;
   max-width: 1200px;
   height: 100%;
   margin: 0 auto;
@@ -166,6 +168,45 @@
   display: flex;
   align-items: center;
   gap: 40px;
+  transition:
+    max-width 0.4s var(--ease-hm),
+    width 0.4s var(--ease-hm),
+    height 0.35s var(--ease-hm),
+    padding 0.35s var(--ease-hm),
+    background 0.35s ease,
+    border-color 0.35s ease,
+    border-radius 0.4s var(--ease-hm),
+    box-shadow 0.4s var(--ease-hm),
+    gap 0.35s ease;
+}
+
+/* Harmonic floating pill on scroll — same content, new shell */
+.nav--scrolled {
+  height: auto;
+  padding: 12px 16px 0;
+  background: transparent;
+  border-bottom-color: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.has-banner .nav--scrolled {
+  top: 40px;
+  padding-top: 10px;
+}
+
+.nav--scrolled .nav-inner {
+  width: max-content;
+  max-width: min(960px, calc(100vw - 32px));
+  height: 56px;
+  padding: 6px 8px 6px 18px;
+  gap: 18px;
+  background: #ffffff;
+  border: 1px solid rgba(4, 5, 8, 0.08);
+  border-radius: 999px;
+  box-shadow:
+    0 1px 2px rgba(4, 5, 8, 0.04),
+    0 10px 28px rgba(4, 5, 8, 0.08);
 }
 
 .nav-brand {
@@ -189,6 +230,11 @@
   align-items: center;
   gap: 20px;
   margin-left: auto;
+  transition: gap 0.3s ease;
+}
+
+.nav--scrolled .nav-actions {
+  gap: 14px;
 }
 
 .nav-signin {
@@ -203,6 +249,29 @@
   color: var(--text-muted);
 }
 
+.nav--scrolled .nav-signin {
+  color: #6f727a;
+}
+
+.nav--scrolled .nav-signin:hover {
+  color: var(--ink);
+}
+
+/* Scrolled CTA → solid like Harmonic “Book a demo” */
+.nav--scrolled .btn-ghost {
+  background: var(--ink);
+  color: var(--paper-pure);
+  border-color: transparent;
+  padding: 10px 18px;
+}
+
+.nav--scrolled .btn-ghost:hover {
+  background: var(--ink-soft);
+  color: var(--paper-pure);
+  border-color: transparent;
+  transform: none;
+}
+
 .nav-locale .locale-switcher-trigger {
   padding: 9px 18px;
   font-size: 14px;
@@ -212,12 +281,23 @@
   background: transparent;
   border: 1px solid var(--line-strong);
   border-radius: var(--radius-pill);
-  transition: border-color 0.18s ease, color 0.18s ease;
+  transition: border-color 0.18s ease, color 0.18s ease, background 0.18s ease;
 }
 
 .nav-locale .locale-switcher-trigger:hover {
   border-color: var(--ink);
   color: var(--ink);
+}
+
+.nav--scrolled .nav-locale .locale-switcher-trigger {
+  border-color: transparent;
+  color: #6f727a;
+  padding: 8px 12px;
+}
+
+.nav--scrolled .nav-locale .locale-switcher-trigger:hover {
+  color: var(--ink);
+  background: rgba(4, 5, 8, 0.04);
 }
 
 .nav-locale .locale-switcher-menu {
@@ -235,6 +315,17 @@
 
   .nav-actions {
     gap: 10px;
+  }
+
+  .nav--scrolled .nav-inner {
+    width: 100%;
+    max-width: calc(100vw - 24px);
+    padding: 5px 6px 5px 14px;
+    gap: 12px;
+  }
+
+  .nav--scrolled .nav-actions {
+    gap: 8px;
   }
 }
 
@@ -285,6 +376,21 @@
     height: 56px;
   }
 
+  .nav--scrolled {
+    padding: 8px 12px 0;
+  }
+
+  .has-banner .nav--scrolled {
+    top: 44px;
+    padding-top: 8px;
+  }
+
+  .nav--scrolled .nav-inner {
+    height: 50px;
+    max-width: calc(100vw - 20px);
+    padding: 4px 5px 4px 12px;
+  }
+
   .nav-inner {
     padding: 0 14px;
     gap: 12px;
@@ -313,6 +419,11 @@
     font-size: 13px;
   }
 
+  .nav--scrolled .btn-ghost {
+    padding: 8px 14px;
+    font-size: 13px;
+  }
+
   .nav-locale .locale-switcher-trigger {
     padding: 8px 10px;
     font-size: 12px;
@@ -331,6 +442,10 @@
   }
 
   .nav-signin {
+    display: none;
+  }
+
+  .nav--scrolled .nav-locale {
     display: none;
   }
 }
@@ -770,7 +885,7 @@
   color: var(--text-on-ink);
 }
 
-/* ─── Sticky float CTA — extracted shadow + pill ─── */
+/* ─── Sticky float CTA — explore providers ─── */
 .float-cta {
   position: fixed;
   left: 50%;
@@ -781,7 +896,7 @@
   align-items: center;
   gap: 12px;
   height: 56px;
-  padding: 10px;
+  padding: 8px 10px 8px 10px;
   border-radius: var(--radius-pill);
   background: var(--ink);
   color: #f1f1f1;
@@ -789,8 +904,9 @@
   opacity: 0;
   pointer-events: none;
   transition: transform 0.8s var(--ease-hm), opacity 0.4s;
-  max-width: 100%;
-  width: 220px;
+  max-width: calc(100% - 32px);
+  width: auto;
+  min-width: 240px;
   justify-content: space-between;
 }
 
@@ -800,29 +916,31 @@
   pointer-events: auto;
 }
 
-.float-avatars {
+.float-icons {
   display: flex;
   align-items: center;
+  flex-shrink: 0;
 }
 
-.float-avatar {
+.float-icon {
   width: 28px;
   height: 28px;
   border-radius: 50%;
-  border: 2px solid var(--ink);
-  overflow: hidden;
-  background: #333;
+  border: 1.5px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.06);
+  display: grid;
+  place-items: center;
+  color: rgba(255, 255, 255, 0.82);
 }
 
-.float-avatar img {
+.float-icon + .float-icon {
+  margin-left: -6px;
+}
+
+.float-icon svg {
+  width: 14px;
+  height: 14px;
   display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.float-avatar + .float-avatar {
-  margin-left: -8px;
 }
 
 .float-copy {
@@ -830,16 +948,22 @@
   flex-direction: column;
   line-height: 1.15;
   min-width: 0;
+  padding-right: 4px;
 }
 
 .float-copy strong {
   font-size: 13px;
   font-weight: 500;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
 }
 
 .float-copy span {
-  font-size: 11px;
-  color: rgba(255, 255, 255, 0.55);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  color: rgba(255, 255, 255, 0.5);
+  white-space: nowrap;
 }
 
 .float-arrow {
@@ -850,7 +974,8 @@
   place-items: center;
   background: rgba(255, 255, 255, 0.1);
   font-size: 14px;
-  color: rgba(255, 255, 255, 0.75);
+  color: rgba(255, 255, 255, 0.8);
+  flex-shrink: 0;
 }
 
 /* ─── Responsive — Harmonic MQs: 479 / 767 / 991 / 1280 / 1440 / 1920 ─── */
