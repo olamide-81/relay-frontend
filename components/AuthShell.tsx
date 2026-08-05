@@ -26,7 +26,7 @@ export function AuthShell({
       <aside className="auth-brand">
         <div className="auth-brand-top">
           <Link href="/" className="auth-logo">
-            <Image src="/relaylight.png" alt={t('brand')} width={32} height={32} />
+            <Image src="/relaydark.png" alt={t('logoAlt')} width={32} height={32} />
             <span>{t('brand')}</span>
           </Link>
         </div>
@@ -57,7 +57,7 @@ export function AuthShell({
       <main className="auth-panel">
         <div className="auth-panel-top">
           <Link href="/" className="auth-logo auth-logo--mobile">
-            <Image src="/relaylight.png" alt={t('brand')} width={28} height={28} />
+            <Image src="/relaydark.png" alt={t('logoAlt')} width={28} height={28} />
             <span>{t('brand')}</span>
           </Link>
           <div className="auth-panel-actions">
