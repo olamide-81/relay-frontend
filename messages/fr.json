@@ -13,13 +13,13 @@
   },
   "hero": {
     "kicker": "Expansion mondiale",
-    "title": "Développez-vous sur n'importe quel marché avec les bons partenaires.",
+    "title": "The data and partner directory for global fintech infrastructure.",
+    "subtext": "Providers, regulation, payment rails, and market data, all in one place, for every fintech market worldwide.",
     "emailPlaceholder": "Entrez votre email professionnel",
     "cta": "Commencer",
     "watchPreview": "Voir l'aperçu",
     "bookDemo": "Voir les prestataires",
     "secondaryCta": "Voir les prestataires",
-    "subtext": "Relay vous donne la liste — partenaires et prestataires vérifiés — pour entrer sur un nouveau marché sans deviner.",
     "productLabel": "Ce que vous obtenez",
     "indexLabel": "Dans Relay",
     "markets": [
