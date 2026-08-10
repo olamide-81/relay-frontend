@@ -1,31 +1,11 @@
 import type { Metadata } from 'next'
-import { Inter, Fraunces, IBM_Plex_Mono } from 'next/font/google'
+import { GeistSans } from 'geist/font/sans'
+import { GeistMono } from 'geist/font/mono'
 import { NextIntlClientProvider, hasLocale } from 'next-intl'
 import { getMessages, setRequestLocale } from 'next-intl/server'
 import { notFound } from 'next/navigation'
 import { routing } from '@/i18n/routing'
 import '../globals.css'
-
-const inter = Inter({
-  subsets: ['latin'],
-  variable: '--font-sans',
-  display: 'swap',
-})
-
-const fraunces = Fraunces({
-  subsets: ['latin'],
-  weight: ['300', '400', '500'],
-  style: ['normal', 'italic'],
-  variable: '--font-serif',
-  display: 'swap',
-})
-
-const plexMono = IBM_Plex_Mono({
-  subsets: ['latin'],
-  weight: ['400', '500'],
-  variable: '--font-mono',
-  display: 'swap',
-})
 
 type Props = {
   children: React.ReactNode
@@ -43,6 +23,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: messages.metadata.title,
     description: messages.metadata.description,
+    icons: {
+      icon: '/relaydark.png',
+      apple: '/relaydark.png',
+    },
   }
 }
 
@@ -59,7 +43,7 @@ export default async function LocaleLayout({ children, params }: Props) {
   return (
     <html
       lang={locale}
-      className={`${inter.variable} ${fraunces.variable} ${plexMono.variable}`}
+      className={`${GeistSans.variable} ${GeistMono.variable}`}
     >
       <body>
         <NextIntlClientProvider messages={messages}>{children}</NextIntlClientProvider>

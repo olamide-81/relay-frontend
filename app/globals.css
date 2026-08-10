@@ -1,3 +1,71 @@
+@import 'tailwindcss';
+@import '../design-tokens/harmonic/tailwind-theme.css';
+
+/* Extracted Harmonic web fonts (local copies for visual parity) */
+@font-face {
+  font-family: 'PP Neue Montreal';
+  src: url('/fonts/harmonic/PPNeueMontreal-Book.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'PP Neue Montreal';
+  src: url('/fonts/harmonic/PPNeueMontreal-Medium.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'PP Neue Montreal';
+  src: url('/fonts/harmonic/PPNeueMontreal-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'PP Neue Montreal';
+  src: url('/fonts/harmonic/PPNeueMontreal-SemiBoldItalic.otf') format('opentype');
+  font-weight: 600;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Inter';
+  src: url('/fonts/harmonic/Inter-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Inter';
+  src: url('/fonts/harmonic/Inter-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Inter';
+  src: url('/fonts/harmonic/Inter-SemiBold.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Fira Code';
+  src: url('/fonts/harmonic/FiraCode-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'AntikorMono';
+  src: url('/fonts/harmonic/AntikorMono.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 *,
 *::before,
 *::after {
@@ -7,31 +75,58 @@
 }
 
 :root {
-  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
-  --font-serif: 'Fraunces', Georgia, 'Times New Roman', serif;
-  --font-mono: 'IBM Plex Mono', 'SF Mono', Menlo, monospace;
+  /* From design-tokens.json / Harmonic :root */
+  --font-geist: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'PP Neue Montreal', Arial, sans-serif;
+  --font-sans: Inter, Arial, sans-serif;
+  --font-mono: var(--font-geist-mono), 'Fira Code', AntikorMono, ui-monospace, monospace;
 
-  /* Institutional ink + paper palette */
-  --ink: #0b0b0c;
-  --ink-soft: #1a1a1d;
-  --paper: #f6f4ef;
-  --paper-pure: #fbfaf7;
-  --line: #e2ddd2;
-  --line-strong: #cfc8b8;
-  --line-dark: rgba(255, 255, 255, 0.12);
+  --ink: #040508;
+  --ink-soft: #16171a;
+  --ink-warm: #262222;
+  --ink-elevated: #212226;
+  --paper: #f5f6fa;
+  --paper-alt: #f5f5f9;
+  --paper-footer: #f4f5f8;
+  --paper-pure: #ffffff;
+  --scout: #121214;
+  --forest: #06351e;
+  --coral: #fe5d45;
 
-  --text: #15161a;
-  --text-secondary: #54534e;
-  --text-muted: #8a8880;
+  --grey-50: #f0f1f5;
+  --grey-100: #e4e5eb;
+  --grey-150: #d7d9e0;
+  --grey-200: #c4c6cc;
+  --grey-300: #abadb3;
+  --grey-400: #909299;
+  --grey-450: #82858c;
+  --grey-500: #6f727a;
+  --grey-600: #5c5e66;
+  --grey-700: #494b52;
+  --grey-800: #2d2e33;
+
+  --text: #1f2022;
+  --text-secondary: #5c5e66;
+  --text-muted: #82858c;
+  --text-nav: #82858c;
   --text-on-ink: #f4f2ec;
   --text-on-ink-muted: #9b9a93;
 
-  --accent: #1d4ed8;
-  --accent-ink: #0b1f5c;
+  --line: #e4e5eb;
+  --line-strong: #d7d9e0;
+  --line-dark: rgba(255, 255, 255, 0.12);
 
-  --radius: 2px;
-  --nav-height: 72px;
-  --max-width: 1200px;
+  --radius: 10px;
+  --radius-pill: 99px;
+  --radius-card: 12px;
+  --nav-height: 64px;
+  --max-width: 1240px;
+  --max-width-nav: 1240px;
+  --max-width-logos: 1152px;
+  --max-width-quote: 960px;
+  --max-width-form: 420px;
+  --shadow-float: rgba(0, 0, 0, 0.38) 0px 8px 12px 0px;
+  --ease-hm: cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
 html {
@@ -42,13 +137,12 @@ html {
 body {
   min-height: 100%;
   font-family: var(--font-sans);
-  font-size: 16px;
-  line-height: 1.55;
+  font-size: 14px;
+  line-height: 18.2px;
   color: var(--text);
-  background: var(--paper);
+  background: var(--paper-alt);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-feature-settings: 'ss01', 'cv01';
 }
 
 a {
@@ -70,20 +164,13 @@ img {
   display: block;
 }
 
+ul {
+  list-style: none;
+}
+
 ::selection {
   background: var(--ink);
-  color: var(--paper);
-}
-
-.serif {
-  font-family: var(--font-serif);
-  font-weight: 300;
-}
-
-.serif-italic {
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-weight: 300;
+  color: var(--paper-pure);
 }
 
 .mono {

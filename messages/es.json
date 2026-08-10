@@ -1,281 +1,134 @@
 {
   "metadata": {
-    "title": "Relay — Inteligencia de infraestructura para fintech",
-    "description": "El directorio institucional para equipos fintech. Descubre APIs, compara comisiones y tiempos de integración, y obtén introducciones directas con los proveedores adecuados."
+    "title": "Relay | Expande a cualquier mercado con los partners adecuados",
+    "description": "Relay ayuda a las empresas a expandirse globalmente conectándolas con partners y proveedores de servicios verificados — antes de un error de partnership que cueste un año."
   },
   "nav": {
     "brand": "Relay",
+    "brandMark": "relay.",
     "login": "Iniciar sesión",
     "contactSales": "Contactar ventas",
-    "startTrial": "Prueba gratuita",
-    "requestAccess": "Solicitar acceso →",
-    "languageLabel": "Idioma"
-  },
-  "banner": {
-    "tag": "NUEVO",
-    "text": "Presentamos el benchmark Relay 2026 — más de 240 APIs fintech, totalmente comparadas.",
-    "link": "Saber más →",
-    "dismiss": "Cerrar anuncio"
+    "languageLabel": "Idioma",
+    "pricing": "Precios",
+    "getStarted": "Empezar",
+    "getInTouch": "Contactar",
+    "providers": "Proveedores",
+    "reports": "Informes",
+    "research": "Research",
+    "primaryLabel": "Principal"
   },
   "hero": {
-    "eyebrow": "INTELIGENCIA DE INFRAESTRUCTURA",
-    "titleBefore": "El único directorio creado para",
-    "titleEmphasis": "la era del builder fintech.",
-    "lede": "Relay indexa cada API para construir productos financieros — para que cada decisión de infraestructura sea más rápida, más barata y más fácil de defender.",
-    "requestAccess": "Solicitar acceso",
-    "exploreDirectory": "Explorar directorio"
-  },
-  "logos": {
-    "label": "Indexando más de 240 APIs sobre las que se construyen las fintechs"
-  },
-  "valueBand": {
-    "title": "Una mejor forma de elegir infraestructura — para builders, líderes y equipos de finanzas."
-  },
-  "valueCards": [
-    {
-      "title": "Decisiones más rápidas, menos incertidumbre",
-      "description": "Evalúa cada proveedor de una categoría en minutos — no en semanas de llamadas comerciales y NDAs. Preselecciona según comisiones reales, cobertura y tiempos de go-live."
-    },
-    {
-      "title": "Compara lo que realmente importa",
-      "description": "Tablas de comisiones, plazos de liquidación y cobertura regulatoria lado a lado, para que tu equipo defienda cada elección de infraestructura con datos."
-    },
-    {
-      "title": "Inteligencia y benchmarks",
-      "description": "Informes trimestrales, mapas de cobertura por mercado y datos de tiempos de integración basados en reportes reales de builders en 45 mercados."
-    }
-  ],
-  "mocks": {
-    "assistantChip": "ASISTENTE RELAY",
-    "assistantTitle": "¿Qué API de payout para NG + KE?",
-    "assistantBubble": "Tres proveedores cubren ambos mercados. El proveedor B tiene la comisión más baja al 0,9 % con sandbox en 3 días y cobertura en 28 países.",
-    "assistantSource": "FUENTE · informe benchmark Q2 2026",
-    "compareAll": "Comparar los 3 →",
-    "requestIntro": "Solicitar intro →",
-    "compareChip": "COMPARATIVA",
-    "compareNote": "Proveedor B — mejor comisión + cobertura",
-    "reportChip": "BENCHMARKS",
-    "reportKpiLabel": "confianza de cobertura"
-  },
-  "channels": {
-    "headMuted": "Toma decisiones con confianza",
-    "head": "en cada categoría",
-    "learnMore": "Saber más →",
-    "items": [
-      {
-        "title": "Un directorio, todas las categorías",
-        "description": "Reúne KYC, pagos, payouts, FX, tesorería, emisión de tarjetas y cumplimiento en un índice único — para que tu equipo evalúe desde un solo lugar."
-      },
-      {
-        "title": "Inteligencia de proveedores en vivo",
-        "description": "Accede a fichas completas y re-verificadas — comisiones, cobertura, SDKs, webhooks y acceso sandbox — actualizadas trimestralmente."
-      },
-      {
-        "title": "Conecta con tu stack",
-        "description": "Exporta shortlists, sincroniza con Notion, Slack y Linear, o consulta benchmarks vía la API de Relay para acelerar la contratación."
-      }
-    ]
-  },
-  "testimonials": [
-    {
-      "company": "Nomba",
-      "quote": "Empezamos a usar Relay para evaluar proveedores de payout y nos encanta. En un trimestre redujimos la evaluación de ocho semanas a cinco días — se ha convertido en nuestra forma de decidir infraestructura.",
-      "name": "Tola Adeyemi",
-      "role": "Head of Payments en Nomba"
-    },
-    {
-      "company": "Chipper Cash",
-      "quote": "Relay es una visión completa del mercado. Los benchmarks son honestos, los datos de cobertura son precisos y las introducciones nos ahorraron meses de contacto en frío.",
-      "name": "Lerato Mokoena",
-      "role": "Infrastructure Lead en Chipper Cash"
-    },
-    {
-      "company": "Kuda",
-      "quote": "Relay mapeó cada proveedor AML y KYC en tres reguladores en días. Liberó a nuestro equipo para construir en lugar de perseguir decks comerciales.",
-      "name": "Emeka Obi",
-      "role": "Director of Compliance en Kuda"
-    }
-  ],
-  "featuredTestimonial": {
-    "brand": "UNA FINTECH EN CRECIMIENTO",
-    "quote": "Si dudas entre mapear el mercado por tu cuenta o usar un directorio, mi consejo es simple — usa Relay.",
-    "name": "Amara Bello",
-    "role": "VP Operations en una fintech en expansión"
-  },
-  "capabilities": {
-    "label": "Capacidades",
-    "titleBefore": "Un espacio de trabajo para cada",
-    "titleEmphasis": "decisión de infraestructura."
-  },
-  "features": [
-    {
-      "title": "Descubre APIs por categoría",
-      "description": "Explora KYC, payouts, FX, tesorería, cumplimiento y emisión de tarjetas — mapeados por región, caso de uso y profundidad de integración."
-    },
-    {
-      "title": "Compara comisiones lado a lado",
-      "description": "Consulta costos por transacción, mínimos mensuales y niveles de volumen — sin NDA para empezar."
-    },
-    {
-      "title": "Benchmark de tiempos de integración",
-      "description": "Conoce cuánto tardan realmente el acceso sandbox, la revisión de cumplimiento y el go-live — según reportes reales de builders."
-    },
-    {
-      "title": "Cobertura por mercado",
-      "description": "Filtra por país, moneda y requisitos regulatorios. Encuentra quién opera realmente donde lo necesitas."
-    },
-    {
-      "title": "Introducciones directas",
-      "description": "Evita el contacto en frío. Relay te conecta con el equipo adecuado — ya informado sobre tu caso de uso."
-    },
-    {
-      "title": "Construye con datos verificados",
-      "description": "Cada ficha incluye enlaces a docs, disponibilidad de SDK, soporte de webhooks y detalles de acceso sandbox."
-    }
-  ],
-  "stats": [
-    { "value": "240+", "label": "APIs catalogadas en 12 categorías" },
-    { "value": "60+", "label": "proveedores evaluados y comparados" },
-    { "value": "45", "label": "países con datos de cobertura" },
-    { "value": "48h", "label": "tiempo medio hasta la primera intro" }
-  ],
-  "directory": {
-    "label": "Directorio",
-    "titleBefore": "Cada categoría de proveedor,",
-    "titleEmphasis": "mapeada y comparada.",
-    "description": "Deja de leer pitch decks y firmar NDAs. Relay indexa cada proveedor de KYC, payout, FX, tesorería y cumplimiento — en África, LATAM, Europa y más allá.",
-    "apis": "{count} APIs →"
-  },
-  "categories": [
-    { "name": "KYC e identidad", "count": 34 },
-    { "name": "Pagos", "count": 52 },
-    { "name": "Payouts y desembolsos", "count": 28 },
-    { "name": "FX y tesorería", "count": 19 },
-    { "name": "Open Banking", "count": 24 },
-    { "name": "Cumplimiento y AML", "count": 31 },
-    { "name": "Emisión de tarjetas", "count": 16 },
-    { "name": "Fraude y riesgo", "count": 22 }
-  ],
-  "caseStudies": {
-    "label": "Notas de campo",
-    "titleBefore": "La confianza de equipos que construyen",
-    "titleEmphasis": "los próximos rails financieros.",
-    "items": [
-      {
-        "company": "Nomba",
-        "headline": "Nomba redujo la evaluación de proveedores de 8 semanas a 5 días con Relay.",
-        "products": "KYC, Payouts, FX",
-        "stats": [
-          { "value": "8→5", "label": "semanas para preseleccionar" },
-          { "value": "12", "label": "proveedores comparados" },
-          { "value": "3", "label": "mercados lanzados" }
-        ]
-      },
-      {
-        "company": "Chipper Cash",
-        "headline": "Chipper Cash unificó proveedores de payout transfronterizos en una sola vista.",
-        "products": "Payouts, FX, Cumplimiento",
-        "stats": [
-          { "value": "6", "label": "APIs payout comparadas" },
-          { "value": "40%", "label": "reducción de comisiones" },
-          { "value": "4", "label": "nuevos corredores" }
-        ]
-      },
-      {
-        "company": "Kuda",
-        "headline": "Kuda aceleró la selección de proveedores de cumplimiento en 3 reguladores.",
-        "products": "Cumplimiento, KYC, Banking",
-        "stats": [
-          { "value": "100%", "label": "proveedores AML mapeados" },
-          { "value": "2 sem.", "label": "hasta la primera intro" },
-          { "value": "5", "label": "proveedores preseleccionados" }
-        ]
-      },
-      {
-        "company": "Paga",
-        "headline": "Paga encontró la API de red de agentes adecuada para desembolsos rurales.",
-        "products": "Payouts, KYC, Pagos",
-        "stats": [
-          { "value": "18", "label": "APIs de agentes revisadas" },
-          { "value": "3x", "label": "onboarding más rápido" },
-          { "value": "NG", "label": "cobertura total" }
-        ]
-      }
-    ]
-  },
-  "intros": {
-    "label": "Introducciones",
-    "titleBefore": "Evita el contacto en frío.",
-    "titleEmphasis": "Nosotros hacemos la introducción.",
-    "description": "Cuéntanos tu caso de uso, mercado y volumen. Relay te conecta con el equipo adecuado — ya informado y listo para hablar.",
-    "steps": [
-      {
-        "title": "Comparte tus requisitos",
-        "detail": "Categoría, mercados, volumen, calendario"
-      },
-      {
-        "title": "Recibe una shortlist",
-        "detail": "Ordenada por encaje, comisiones y velocidad de integración"
-      },
-      {
-        "title": "Conoce al equipo adecuado",
-        "detail": "Introducción directa en 48 horas de media"
-      }
+    "kicker": "Expansión global",
+    "title": "The data and partner directory for global fintech infrastructure.",
+    "titleLine1": "El directorio de datos y partners",
+    "titleLine2": "para infraestructura fintech global",
+    "subtext": "Providers, regulation, payment rails, and market data, all in one place, for every fintech market worldwide.",
+    "emailPlaceholder": "Introduce tu email de trabajo",
+    "cta": "Empezar",
+    "watchPreview": "Ver preview",
+    "bookDemo": "Ver proveedores",
+    "secondaryCta": "Ver proveedores",
+    "productLabel": "Lo que obtienes",
+    "indexLabel": "Dentro de Relay",
+    "markets": [
+      "Bogotá",
+      "Ciudad de México",
+      "São Paulo",
+      "Lisboa",
+      "Dubái",
+      "Madrid"
     ],
-    "cta": "Solicitar una introducción",
-    "cardRequest": "TU SOLICITUD",
-    "cardBadge": "Payouts · NG, KE, GH",
-    "providerMatched": "Proveedor identificado",
-    "providerDetailA": "0,9 % · 28 países · sandbox 3 días",
-    "providerDetailB": "1,1 % · 19 países · sandbox instantáneo",
-    "sent": "ENVIADO"
+    "offerings": [
+      {
+        "name": "Proveedores",
+        "role": "Partners verificados por mercado y categoría"
+      },
+      {
+        "name": "Datos e insights",
+        "role": "Cobertura, rails y tarifas"
+      },
+      {
+        "name": "Introducciones",
+        "role": "Caminos directos a los equipos que shortlisteas"
+      },
+      {
+        "name": "Análisis",
+        "role": "Compara opciones antes de comprometerte"
+      },
+      {
+        "name": "Predicciones",
+        "role": "Señales sobre hacia dónde van los mercados"
+      }
+    ]
+  },
+  "position": {
+    "kicker": "The cost of guessing",
+    "title": "Operating in a market shouldn't mean\nflying blind.",
+    "lede": "Good data changes how you operate. It gives you real insight into the infrastructure behind a market,\nhow providers compare, and how the whole system actually works. Relay keeps you a step ahead\nand having the right data helps you focus more on your customers, not hunting for answers."
   },
   "intelligence": {
-    "label": "Inteligencia",
-    "titleBefore": "Datos verificados detrás de",
-    "titleEmphasis": "cada ficha.",
-    "compareTitle": "Compara con confianza",
-    "compareDescription": "Tablas de comisiones, plazos de liquidación y mapas de cobertura — actualizados trimestralmente con documentación de proveedores y reportes de builders.",
-    "filterTitle": "Filtra por lo que importa",
-    "filterDescription": "Mercado, moneda, requisitos regulatorios, tipo de API, acceso sandbox y volumen mínimo — todo buscable en una sola vista.",
-    "statListings": "fichas API",
-    "statCategories": "categorías",
-    "statCountries": "países"
-  },
-  "dispatch": {
-    "label": "Dispatch",
-    "readMore": "Leer más →",
-    "goToSlide": "Ir a la diapositiva {index}",
-    "items": [
+    "kicker": "El costo de adivinar",
+    "title": "Operar en un mercado no debería significar ir a ciegas.",
+    "lede": "Los buenos datos cambian cómo operas. Dan una lectura real de la infraestructura de un mercado, cómo se comparan los providers, y cómo funciona el sistema de verdad.",
+    "products": [
       {
-        "title": "240 APIs ya catalogadas en África, LATAM y Europa.",
-        "description": "Nuestra actualización Q1 añade 40 nuevos proveedores con benchmarks completos de comisiones e integración.",
-        "tag": "Producto"
+        "name": "Descubrir",
+        "description": "Providers verificados por mercado y categoría — filtra por lo que importa y shortlistea en un solo lugar.",
+        "points": [
+          "Filtrar por mercado y categoría",
+          "Ver fees, rails y cobertura",
+          "Shortlist en una sola vista",
+          "Presencia de mercado por corredor"
+        ]
       },
       {
-        "title": "Cómo las neobancos eligen proveedores KYC en menos de una semana.",
-        "description": "Un marco para evaluar proveedores de identidad por mercado, volumen y profundidad de cumplimiento.",
-        "tag": "Guía"
+        "name": "Investigar",
+        "description": "Entiende antes de comprometerte. Regulación, rails y fees en briefs que tu equipo puede confiar.",
+        "points": [
+          "Estado regulatorio por mercado",
+          "Rails, fees y settlement",
+          "Comparaciones side-by-side",
+          "Diferenciadores clave marcados"
+        ]
       },
       {
-        "title": "Las intros de Relay alcanzan 48 h de respuesta media.",
-        "description": "Las introducciones conectan ahora a builders con equipos de partners en dos días hábiles.",
-        "tag": "Actualización"
+        "name": "Actuar",
+        "description": "Pasa de la research a relaciones. Arma el shortlist, sigue progreso, asigna owners y consigue intros — sin salir de Relay.",
+        "points": [
+          "Shortlist → evaluar → hablar → intro",
+          "Owners, prioridades y actividad live",
+          "Pedir intros desde el board",
+          "Decisiones fuera del email enterrado"
+        ]
       },
       {
-        "title": "Benchmark de comisiones API payout: informe África 2026.",
-        "description": "Compara costos por transacción de 18 proveedores de desembolso activos en África subsahariana.",
-        "tag": "Informe"
+        "name": "Listo para expandir",
+        "description": "Mantente adelante de los movimientos del mercado. Señales de nuevos rails, providers y oportunidades.",
+        "points": [
+          "Feed live de rails, providers y regulación",
+          "Estado del mercado de un vistazo",
+          "Saber qué se movió esta semana"
+        ]
       }
     ]
   },
-  "editorial": {
-    "titleBefore": "Decisiones de infraestructura con confianza,",
-    "titleEmphasis": "impulsadas por Relay.",
-    "requestAccess": "Solicitar acceso",
-    "exploreDirectory": "Explorar directorio"
+  "quote": {
+    "text": "We cut provider evaluation from eight weeks to five days. Relay is now our default for infrastructure decisions.",
+    "cite": "— Head of Payments, fintech scale-up"
+  },
+  "floatCta": {
+    "title": "Explorar proveedores",
+    "subtitle": "Más de 240 partners"
   },
   "footer": {
+    "closing": "La infraestructura correcta importa más que nunca",
+    "location": "San Francisco",
+    "sitemapLabel": "Pie de página",
+    "support": "Soporte",
+    "supportEmail": "support@relay.app",
+    "careers": "Carreras",
+    "sitemap": "Mapa del sitio",
+    "legalCenter": "Centro legal",
     "tagline": "Inteligencia de infraestructura para quienes construyen productos financieros.",
     "status": "Todos los sistemas operativos",
     "product": "Producto",
@@ -298,7 +151,6 @@
     "methodology": "Metodología",
     "company": "Empresa",
     "about": "Acerca de",
-    "careers": "Carreras",
     "blog": "Blog",
     "contact": "Contacto",
     "press": "Prensa",
@@ -313,13 +165,14 @@
     "socialLinkedIn": "Relay en LinkedIn",
     "socialGitHub": "Relay en GitHub"
   },
-  "comparisonRows": [
-    { "provider": "Proveedor A", "fee": "1,4 %", "setup": "2 semanas" },
-    { "provider": "Proveedor B", "fee": "0,9 %", "setup": "6 semanas" },
-    { "provider": "Proveedor C", "fee": "1,1 %", "setup": "3 semanas" }
-  ],
+  "images": {
+    "logoAlt": "Logo de Relay — directorio de infraestructura fintech",
+    "channelArtAlt": "Ilustración abstracta de rails de pago fintech y datos de proveedores",
+    "testimonialPhotoAlt": "{name}, {role}"
+  },
   "auth": {
     "brand": "Relay",
+    "logoAlt": "Logo de Relay — directorio de infraestructura fintech",
     "backToSite": "← Volver al sitio",
     "copyright": "© 2026 GrateBridge Labs",
     "languageLabel": "Idioma",
@@ -329,77 +182,235 @@
     "terms": "Términos",
     "privacyPolicy": "Política de privacidad",
     "signin": {
+      "metadata": {
+        "title": "Iniciar sesión | Directorio fintech Relay",
+        "description": "Inicie sesión en Relay para comparar proveedores fintech, leer datos de rails de pago y gestionar introducciones en Colombia, México, Brasil, Portugal, el Golfo y más."
+      },
       "asideEyebrow": "Bienvenido de nuevo",
-      "asideTitleBefore": "Inteligencia de infraestructura,",
-      "asideTitleEmphasis": "al alcance de tu mano.",
+      "asideTitleBefore": "Su directorio de proveedores fintech",
+      "asideTitleEmphasis": "y datos de mercado — en una cuenta.",
       "asidePoints": [
-        "240+ APIs comparadas en comisiones, liquidación y cobertura",
-        "Compara proveedores lado a lado en un solo espacio",
-        "Introducciones directas a los equipos adecuados en 48 horas"
+        "240+ APIs fintech con benchmarks de tarifas, cobertura e integración",
+        "Inteligencia por país sobre rails de pago, regulación y política",
+        "Introducciones directas a equipos de proveedores verificados"
       ],
       "title": "Iniciar sesión en Relay",
       "subtitleBefore": "¿Nuevo en Relay?",
       "createAccount": "Crear una cuenta",
       "google": "Continuar con Google",
       "emailLabel": "Correo de trabajo",
-      "emailPlaceholder": "tu@empresa.com",
+      "emailPlaceholder": "usted@empresa.com",
       "passwordLabel": "Contraseña",
-      "forgotPassword": "¿Olvidaste tu contraseña?",
+      "forgotPassword": "¿Olvidó su contraseña?",
       "remember": "Mantener sesión iniciada",
       "submit": "Iniciar sesión",
       "submitting": "Iniciando sesión…",
-      "legalBefore": "Protegido con cifrado estándar. Al continuar aceptas nuestros",
-      "legalAnd": "y nuestra"
+      "legalBefore": "Al continuar acepta nuestros",
+      "legalAnd": "y"
     },
     "signup": {
-      "asideEyebrow": "Empezar",
-      "asideTitleBefore": "Construye sobre los rails correctos,",
-      "asideTitleEmphasis": "desde la primera llamada.",
+      "metadata": {
+        "title": "Crear cuenta | Directorio fintech Relay",
+        "description": "Cree una cuenta gratuita en Relay para comparar proveedores fintech, consultar rails de pago y solicitar introducciones en Colombia, México, Brasil, Portugal, el Golfo y más."
+      },
+      "asideEyebrow": "Comenzar",
+      "asideTitleBefore": "Compare proveedores y lea datos de mercado",
+      "asideTitleEmphasis": "desde el primer día.",
       "asidePoints": [
         "Gratis para builders — sin tarjeta de crédito",
         "Acceso completo al directorio y herramientas de comparación",
-        "Solicita introducciones con proveedores verificados"
+        "Solicite introducciones a proveedores fintech verificados"
       ],
-      "title": "Crea tu cuenta",
-      "subtitleBefore": "¿Ya tienes una cuenta?",
+      "title": "Cree su cuenta Relay",
+      "subtitleBefore": "¿Ya tiene cuenta?",
       "signIn": "Iniciar sesión",
       "google": "Registrarse con Google",
       "nameLabel": "Nombre completo",
       "namePlaceholder": "Ada Lovelace",
       "companyLabel": "Empresa",
-      "companyPlaceholder": "Tu fintech",
+      "companyPlaceholder": "Nombre de su empresa",
       "emailLabel": "Correo de trabajo",
-      "emailPlaceholder": "tu@empresa.com",
+      "emailPlaceholder": "usted@empresa.com",
       "passwordLabel": "Contraseña",
       "passwordPlaceholder": "Al menos 8 caracteres",
       "termsAgree": "Acepto los Términos y la Política de privacidad",
       "submit": "Crear cuenta",
       "submitting": "Creando cuenta…",
-      "footnote": "Únete a más de 140 equipos fintech que ya construyen con Relay."
+      "footnote": "Usado por equipos fintech en África, Latinoamérica, Europa y Oriente Medio."
     },
     "forgotPassword": {
+      "metadata": {
+        "title": "Restablecer contraseña | Relay",
+        "description": "Restablezca su contraseña de Relay. Relay es el directorio de infraestructura fintech para comparar proveedores y leer datos de rails de pago por mercado."
+      },
       "asideEyebrow": "Recuperación de cuenta",
-      "asideTitleBefore": "De vuelta a construir",
-      "asideTitleEmphasis": "en un momento.",
+      "asideTitleBefore": "De vuelta a su directorio",
+      "asideTitleEmphasis": "en unos minutos.",
       "asidePoints": [
-        "Introduce el correo asociado a tu cuenta",
-        "Enviaremos un enlace seguro que expira en 30 minutos",
-        "¿Necesitas ayuda? Nuestro equipo está disponible"
+        "Ingrese el correo asociado a su cuenta Relay",
+        "Enviamos un enlace seguro válido por 30 minutos",
+        "Contacte soporte si aún no puede acceder"
       ],
-      "title": "Restablecer tu contraseña",
-      "subtitle": "Introduce tu correo y te enviaremos un enlace para restablecer tu contraseña.",
+      "title": "Restablecer su contraseña",
+      "subtitle": "Ingrese su correo de trabajo y le enviaremos un enlace para restablecer la contraseña.",
       "emailLabel": "Correo de trabajo",
-      "emailPlaceholder": "tu@empresa.com",
+      "emailPlaceholder": "usted@empresa.com",
       "submit": "Enviar enlace",
       "submitting": "Enviando…",
-      "rememberPassword": "¿Recuerdas tu contraseña?",
+      "rememberPassword": "¿Recuerda su contraseña?",
       "signIn": "Iniciar sesión",
-      "successTitle": "Revisa tu bandeja de entrada",
+      "successTitle": "Revise su bandeja de entrada",
       "successBefore": "Enviamos un enlace de restablecimiento a",
-      "successAfter": "Expira en 30 minutos.",
-      "yourEmail": "tu correo",
+      "successAfter": "El enlace expira en 30 minutos.",
+      "yourEmail": "su correo",
       "resend": "Reenviar correo",
       "backToSignIn": "Volver a"
     }
+  },
+  "banner": {
+    "tag": "NUEVO",
+    "text": "Más de 240 partners mapeados en collections, payouts, banking, FX, KYC y cards.",
+    "link": "Ver informes →",
+    "dismiss": "Cerrar anuncio"
+  },
+  "highlights": {
+    "blocks": [
+      {
+        "id": "discover",
+        "title": "Descubrir",
+        "lede": "Proveedores verificados por mercado y categoría — filtrables por fees, cobertura y sandbox.",
+        "layout": "featured",
+        "cards": [
+          {
+            "title": "Directorio de proveedores",
+            "description": "Busca partners por mercado y categoría. Filtra por fees, cobertura, rails y acceso a sandbox — y shortlistea sin salir de Relay.",
+            "mock": "search",
+            "points": [
+              "Filtra por mercado y categoría",
+              "Ve fees, rails y cobertura",
+              "Shortlist en una vista"
+            ]
+          },
+          {
+            "title": "Mapa de cobertura",
+            "description": "Mira qué proveedores operan en cada corredor antes de empezar outreach.",
+            "mock": "people",
+            "points": [
+              "Presencia de mercado en vivo",
+              "Cobertura por categoría"
+            ]
+          },
+          {
+            "title": "Shortlists compartidas",
+            "description": "Mantén las decisiones de proveedores con tu equipo, no en hilos de email.",
+            "mock": "network",
+            "points": [
+              "Visibilidad de equipo",
+              "Historial de decisiones"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "research",
+        "title": "Investigar",
+        "lede": "Entiende antes de comprometerte.",
+        "layout": "double",
+        "cards": [
+          {
+            "title": "Briefs de mercado",
+            "description": "Regulación, rails y fees mapeados en briefs que tu equipo puede confiar — antes de que el outreach te amarre.",
+            "mock": "brief",
+            "points": [
+              "Estado regulatorio por mercado",
+              "Rails, fees y plazos de settlement",
+              "Proveedores por categoría"
+            ]
+          },
+          {
+            "title": "Comparación de proveedores",
+            "description": "Mira exactamente cómo se compara uno con otro — fees, settlement, cobertura y qué los diferencia.",
+            "mock": "compare",
+            "points": [
+              "Fees y settlement lado a lado",
+              "Cobertura de mercado de un vistazo",
+              "Diferenciadores clave marcados"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "act",
+        "title": "Actuar",
+        "lede": "De la investigación a las relaciones.",
+        "layout": "act",
+        "cards": [
+          {
+            "title": "Actuar",
+            "description": "Crea tu shortlist, sigue el progreso, asigna owners y prioridades, y consigue intros a providers — sin salir de Relay.",
+            "mock": "workflow",
+            "points": [
+              "Shortlist → evaluar → hablar → intro",
+              "Owners, prioridades y actividad en vivo",
+              "Solicita intros desde el tablero"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "ready",
+        "title": "Listo para expandir",
+        "lede": "Adelántate a los movimientos del mercado.",
+        "layout": "expansion",
+        "cards": [
+          {
+            "title": "Listo para expandir",
+            "description": "Recibe señales sobre hacia dónde van los mercados — nuevos rails, providers y oportunidades. Relay mantiene a tu equipo al día para que nunca te pille desprevenido.",
+            "mock": "signals",
+            "points": [
+              "Feed en vivo de rails, providers y regulación",
+              "Estado de mercados de un vistazo",
+              "Sabe qué se movió esta semana"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "dataReports": {
+    "kicker": "Informes de datos",
+    "title": "Research",
+    "lede": "Benchmarks, costos de corredores y mapas de mercado — desde registros de partners y evaluaciones reales, no decks.",
+    "cta": "Ver todos los informes →",
+    "ctaClean": "Ver toda la research",
+    "readReport": "Leer informe →",
+    "moreProviders": "+ {count} más",
+    "minRead": "min de lectura",
+    "indexTitle": "Informes de datos Relay",
+    "indexLede": "Análisis profundos de fees, rails, fiabilidad y licencias en los mercados donde los equipos se expanden.",
+    "reportsPublished": "{count} informes publicados",
+    "reportsCount": "{count} informes",
+    "filterAll": "Todos los informes",
+    "sortLatest": "Más recientes",
+    "sortMarket": "Por mercado",
+    "loadMore": "Cargar más",
+    "showing": "Mostrando {shown} de {total}",
+    "getStarted": "Empezar",
+    "backToIndex": "Todos los informes",
+    "published": "Publicado",
+    "lastUpdated": "Última actualización",
+    "whyWeBuilt": "Por qué lo construimos",
+    "keyMetrics": "Métricas clave",
+    "keyFindings": "Hallazgos clave",
+    "whyThisMatters": "Por qué importa:",
+    "marketContext": "Contexto de mercado",
+    "providerLandscape": "Panorama de proveedores",
+    "implications": "Qué significa para ti",
+    "exploreProviders": "¿Listo para shortlistear partners?",
+    "exploreProvidersLede": "Abre el directorio y filtra por los mercados cubiertos en este informe.",
+    "exploreProvidersCta": "Explorar proveedores de este mercado",
+    "methodology": "Fuentes y metodología",
+    "showMethodology": "Mostrar metodología",
+    "related": "Informes relacionados"
   }
 }

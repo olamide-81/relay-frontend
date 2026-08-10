@@ -1,0 +1,119 @@
+/* Full-bleed cinematic hero — micro1-style atmosphere */
+
+.hero {
+  position: relative;
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  isolation: isolate;
+  background: #121212;
+  color: #fff;
+}
+
+.hero::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 28vh;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(180deg, transparent 0%, #121212 88%);
+}
+
+.hero-media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.hero-media-img {
+  object-fit: cover;
+  object-position: center 45%;
+  transform: scale(1.04);
+  animation: hero-drift 28s ease-in-out infinite alternate;
+}
+
+.hero-media-shade {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 90% 70% at 50% 42%, transparent 0%, rgba(18, 18, 18, 0.22) 72%, rgba(18, 18, 18, 0.5) 100%),
+    linear-gradient(180deg, rgba(18, 18, 18, 0.38) 0%, rgba(18, 18, 18, 0.08) 34%, rgba(18, 18, 18, 0.18) 58%, rgba(18, 18, 18, 0.72) 82%, #121212 100%);
+  pointer-events: none;
+}
+
+.hero-media-grain {
+  position: absolute;
+  inset: 0;
+  opacity: 0.22;
+  mix-blend-mode: soft-light;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.9'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
+}
+
+.hero-center {
+  position: relative;
+  z-index: 1;
+  width: min(920px, calc(100% - 48px));
+  margin: 0 auto;
+  padding: calc(var(--nav-height) + 24px) 0 64px;
+  text-align: center;
+}
+
+.hero-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(28px, 4.6vw, 52px);
+  font-weight: 500;
+  line-height: 1.18;
+  letter-spacing: -0.035em;
+  color: #fff;
+  text-wrap: balance;
+}
+
+.hero-title-line {
+  display: block;
+}
+
+@keyframes hero-drift {
+  from {
+    transform: scale(1.04) translate3d(0, 0, 0);
+  }
+  to {
+    transform: scale(1.08) translate3d(0, -1.2%, 0);
+  }
+}
+
+@media (max-width: 640px) {
+  .hero-center {
+    width: min(100%, calc(100% - 32px));
+    padding-bottom: 48px;
+  }
+
+  .hero-title {
+    font-size: clamp(24px, 7.2vw, 32px);
+    line-height: 1.22;
+    letter-spacing: -0.03em;
+  }
+
+  .hero-media-img {
+    object-position: center 62%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-media-img {
+    animation: none;
+    transform: scale(1.04);
+  }
+
+  .hero * {
+    animation: none !important;
+    transition: none !important;
+  }
+}

@@ -6,21 +6,34 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "tokens:extract": "node scripts/harmonic-extract/extract.mjs",
+    "tokens:deep": "node scripts/harmonic-extract/deep-metrics.mjs",
+    "tokens:theme": "node scripts/harmonic-extract/generate-theme.mjs",
+    "tokens:verify": "node scripts/harmonic-extract/verify-diff.mjs"
   },
   "dependencies": {
+    "clsx": "^2.1.1",
     "framer-motion": "^12.40.0",
+    "geist": "^1.7.2",
     "next": "16.2.3",
     "next-intl": "^4.13.1",
     "react": "19.2.4",
     "react-dom": "19.2.4"
   },
   "devDependencies": {
+    "@tailwindcss/postcss": "^4.3.3",
     "@types/node": "^20",
+    "@types/pngjs": "^6.0.5",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.2.3",
+    "pixelmatch": "^7.2.0",
+    "playwright": "^1.62.1",
+    "pngjs": "^7.0.0",
+    "postcss": "^8.5.25",
+    "tailwindcss": "^4.3.3",
     "typescript": "^5"
   }
 }

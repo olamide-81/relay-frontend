@@ -1,0 +1,84 @@
+/* AUTO-GENERATED from design-tokens.json — do not edit by hand */
+/* Run: node scripts/harmonic-extract/generate-theme.mjs */
+
+@theme {
+  --font-hm-display: "PP Neue Montreal", Arial, sans-serif;
+  --font-hm-sans: Inter, Arial, sans-serif;
+  --font-hm-mono: "Fira Code", AntikorMono, ui-monospace, monospace;
+
+  --color-hm-paper: #f5f6fa;
+  --color-hm-paper-alt: #f5f5f9;
+  --color-hm-paper-footer: #f4f5f8;
+  --color-hm-white: #ffffff;
+  --color-hm-ink: #040508;
+  --color-hm-ink-soft: #16171a;
+  --color-hm-ink-warm: #262222;
+  --color-hm-ink-elevated: #212226;
+  --color-hm-scout: #121214;
+  --color-hm-forest: #06351e;
+  --color-hm-coral: #fe5d45;
+  --color-hm-coral-deep: #dd4e43;
+  --color-hm-grey-50: #f0f1f5;
+  --color-hm-grey-100: #e4e5eb;
+  --color-hm-grey-150: #d7d9e0;
+  --color-hm-grey-200: #c4c6cc;
+  --color-hm-grey-300: #abadb3;
+  --color-hm-grey-400: #909299;
+  --color-hm-grey-450: #82858c;
+  --color-hm-grey-500: #6f727a;
+  --color-hm-grey-600: #5c5e66;
+  --color-hm-grey-700: #494b52;
+  --color-hm-grey-800: #2d2e33;
+  --color-hm-blue: #4a72ff;
+  --color-hm-blue-soft: #b5ceff;
+  --color-hm-purple: #8957da;
+  --color-hm-green: #1de26c;
+  --color-hm-highlight-blue: #53a1d2;
+  --color-hm-highlight-purple: #8d4fda;
+
+  --spacing-hm-0: 0px;
+  --spacing-hm-1: 4px;
+  --spacing-hm-1_5: 6px;
+  --spacing-hm-2: 8px;
+  --spacing-hm-2_5: 10px;
+  --spacing-hm-3: 12px;
+  --spacing-hm-4: 16px;
+  --spacing-hm-5: 20px;
+  --spacing-hm-6: 24px;
+  --spacing-hm-8: 32px;
+  --spacing-hm-10: 40px;
+  --spacing-hm-12: 48px;
+  --spacing-hm-16: 64px;
+  --spacing-hm-24: 96px;
+  --spacing-hm-form-pad: 4.5px;
+  --spacing-hm-nav-x: 96px;
+  --spacing-hm-section-x: 100px;
+  --spacing-hm-section-y: 100px;
+  --spacing-hm-section-y-sm: 70px;
+  --spacing-hm-scout-y: 144px;
+  --spacing-hm-scout-y-bottom: 128px;
+  --spacing-hm-quote-y: 140px;
+  --spacing-hm-quote-y-bottom: 220px;
+  --spacing-hm-footer-cta-y: 100px;
+  --spacing-hm-footer-cta-bottom: 140px;
+  --spacing-hm-logos-bottom: 80px;
+
+  --breakpoint-hm-sm: 375px;
+  --breakpoint-hm-md: 768px;
+  --breakpoint-hm-lg: 1024px;
+  --breakpoint-hm-xl: 1440px;
+  --breakpoint-hm-2xl: 1920px;
+
+  --container-hm-nav: 1240px;
+  --container-hm-logos: 1152px;
+  --container-hm-quote: 960px;
+  --container-hm-solution: 1124px;
+  --container-hm-form: 470px;
+  --container-hm-form-inner: 420px;
+  --container-hm-preview: 1024px;
+
+  --radius-hm-pill: 99px;
+  --radius-hm-card: 12px;
+  --ease-hm: cubic-bezier(0.165, 0.84, 0.44, 1);
+  --ease-hm-snap: cubic-bezier(0.95, 0.05, 0.795, 0.035);
+}

@@ -1,0 +1,56 @@
+{
+  "comparedAt": "2026-08-03T22:43:57.695Z",
+  "original": "https://harmonic.ai/",
+  "clone": "http://localhost:3000/en",
+  "breakpoints": {
+    "375": {
+      "mismatched": 1080927,
+      "total": 3471000,
+      "percent": 31.14,
+      "width": 375,
+      "height": 9256,
+      "note": "Cropped to common 375x9256 (orig 375x13315, clone 375x9256)"
+    },
+    "768": {
+      "mismatched": 2607319,
+      "total": 5944320,
+      "percent": 43.86,
+      "width": 768,
+      "height": 7740,
+      "note": "Cropped to common 768x7740 (orig 768x15801, clone 768x7740)"
+    },
+    "1024": {
+      "mismatched": 3335524,
+      "total": 7003136,
+      "percent": 47.63,
+      "width": 1024,
+      "height": 6839,
+      "note": "Cropped to common 1024x6839 (orig 1024x13561, clone 1024x6839)"
+    },
+    "1440": {
+      "mismatched": 4752051,
+      "total": 9416160,
+      "percent": 50.47,
+      "width": 1440,
+      "height": 6539,
+      "note": "Cropped to common 1440x6539 (orig 1440x14210, clone 1440x6539)"
+    },
+    "1920": {
+      "mismatched": 6549250,
+      "total": 12554880,
+      "percent": 52.16,
+      "width": 1920,
+      "height": 6539,
+      "note": "Cropped to common 1920x6539 (orig 1920x14723, clone 1920x6539)"
+    }
+  },
+  "caveats": [
+    "Content/copy intentionally differs (Relay branding vs Harmonic marketing).",
+    "Pixel diff measures layout/visual chrome, not identical pixels of logos/copy.",
+    "PP Neue Montreal is proprietary — local copies used only for visual parity in this clone.",
+    "Webflow IX2/Lottie scroll choreography partially unreplicated (no GSAP globals detected).",
+    "Purple aurora behind Scout uses CSS radial gradient approximation; exact WebGL/canvas layers not found in CSS.",
+    "Customer story imagery and product UI mockups are placeholders, not Harmonic assets.",
+    "Cookie banner and auth-gated surfaces excluded."
+  ]
+}
