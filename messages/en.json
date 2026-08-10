@@ -5,10 +5,16 @@
   },
   "nav": {
     "brand": "Relay",
+    "brandMark": "relay.",
     "login": "Log in",
     "contactSales": "Contact sales",
     "pricing": "Pricing",
     "getStarted": "Get started",
+    "getInTouch": "Get in touch",
+    "providers": "Providers",
+    "reports": "Reports",
+    "research": "Research",
+    "primaryLabel": "Primary",
     "languageLabel": "Language"
   },
   "banner": {
@@ -20,6 +26,8 @@
   "hero": {
     "kicker": "Global expansion",
     "title": "The data and partner directory for global fintech infrastructure.",
+    "titleLine1": "The data and partner directory",
+    "titleLine2": "for global fintech infrastructure",
     "subtext": "Providers, regulation, payment rails, and market data, all in one place, for every fintech market worldwide.",
     "emailPlaceholder": "Enter your work email",
     "cta": "Get started",
@@ -64,6 +72,52 @@
     "title": "Operating in a market shouldn't mean\nflying blind.",
     "lede": "Good data changes how you operate. It gives you real insight into the infrastructure behind a market,\nhow providers compare, and how the whole system actually works. Relay keeps you a step ahead\nand having the right data helps you focus more on your customers, not hunting for answers."
   },
+  "intelligence": {
+    "kicker": "The cost of guessing",
+    "title": "Operating in a market shouldn't mean flying blind.",
+    "lede": "Good data changes how you operate. It gives you real insight into the infrastructure behind a market, how providers compare, and how the whole system actually works — so you focus on customers, not hunting for answers.",
+    "products": [
+      {
+        "name": "Discover",
+        "description": "Vetted providers by market and category — filter on the criteria that matter, then shortlist in one place.",
+        "points": [
+          "Filter by market & category",
+          "See fees, rails & coverage",
+          "Shortlist in one view",
+          "Live market presence by corridor"
+        ]
+      },
+      {
+        "name": "Research",
+        "description": "Understand before you commit. Regulation, rails, and fees mapped into briefs your team can trust — before outreach locks you in.",
+        "points": [
+          "Regulation status by market",
+          "Rails, fees & settlement times",
+          "Side-by-side provider comparisons",
+          "Key differentiators flagged"
+        ]
+      },
+      {
+        "name": "Act",
+        "description": "Move from research to relationships. Build your shortlist, track progress, assign owners, and get introduced — without leaving Relay.",
+        "points": [
+          "Shortlist → evaluate → talk → intro",
+          "Owners, priorities & live activity",
+          "Request intros from the board",
+          "Keep decisions out of buried email"
+        ]
+      },
+      {
+        "name": "Expansion-ready",
+        "description": "Stay ahead of market moves. Signals on new rails, new providers, and new opportunities — so your team is never caught off guard.",
+        "points": [
+          "Live feed of rails, providers & regulation",
+          "Market status at a glance",
+          "Know what moved this week"
+        ]
+      }
+    ]
+  },
   "quote": {
     "text": "We almost signed a payout partner we couldn't unwind for eighteen months. Relay showed us three better options in a day.",
     "cite": "— Head of Payments, fintech scale-up"
@@ -73,6 +127,14 @@
     "subtitle": "240+ partners"
   },
   "footer": {
+    "closing": "The right infrastructure partners matter more than ever",
+    "location": "San Francisco",
+    "sitemapLabel": "Footer",
+    "support": "Support",
+    "supportEmail": "support@relay.app",
+    "careers": "Careers",
+    "sitemap": "Sitemap",
+    "legalCenter": "Legal Center",
     "tagline": "Infrastructure intelligence for the people building financial products.",
     "status": "All systems operational",
     "product": "Product",
@@ -315,9 +377,12 @@
   },
   "dataReports": {
     "kicker": "Data reports",
-    "title": "Fintech infrastructure, measured",
+    "title": "Research",
     "lede": "Benchmarks, corridor costs and market maps — built from partner records and builder evaluations, not pitch decks.",
     "cta": "Browse all reports →",
+    "ctaClean": "View all research",
+    "readReport": "Read report →",
+    "moreProviders": "+ {count} more",
     "minRead": "min read",
     "indexTitle": "Relay data reports",
     "indexLede": "Deep dives on fees, rails, reliability and licensing across the markets where teams expand.",

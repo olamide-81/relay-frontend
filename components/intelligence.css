@@ -1,0 +1,302 @@
+/* Intelligence — bold type, creative pinned scroll */
+
+.intel {
+  background: #121212;
+  color: #fff;
+}
+
+.intel-intro {
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 110px 24px 56px;
+  text-align: center;
+}
+
+.intel-kicker {
+  margin: 0 0 16px;
+  font-family: var(--font-geist);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.intel-title {
+  margin: 0 0 22px;
+  font-family: var(--font-display);
+  font-size: clamp(36px, 5.4vw, 58px);
+  font-weight: 500;
+  letter-spacing: -0.045em;
+  line-height: 1.05;
+  color: #fff;
+  text-wrap: balance;
+}
+
+.intel-lede {
+  margin: 0 auto;
+  max-width: 40rem;
+  font-family: var(--font-geist);
+  font-size: clamp(16px, 1.8vw, 19px);
+  line-height: 1.65;
+  color: rgba(255, 255, 255, 0.62);
+  text-wrap: pretty;
+}
+
+.intel-track {
+  position: relative;
+}
+
+.intel-sticky {
+  position: sticky;
+  top: 0;
+  height: 100dvh;
+  display: flex;
+  align-items: center;
+  padding: 96px 40px 56px;
+  overflow: hidden;
+}
+
+.intel-stage {
+  display: grid;
+  grid-template-columns: minmax(280px, 0.95fr) minmax(0, 1.05fr);
+  gap: clamp(32px, 5vw, 80px);
+  align-items: center;
+  width: 100%;
+  max-width: 1180px;
+  margin: 0 auto;
+  perspective: 1400px;
+}
+
+.intel-copy {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 36px;
+  min-height: 320px;
+}
+
+.intel-index {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-family: var(--font-display);
+  line-height: 1;
+}
+
+.intel-index-num {
+  display: inline-block;
+  font-size: clamp(40px, 5vw, 56px);
+  font-weight: 500;
+  letter-spacing: -0.05em;
+  color: #fff;
+}
+
+.intel-index-total {
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.32);
+  letter-spacing: -0.02em;
+}
+
+.intel-panel-slot {
+  position: relative;
+  min-height: 180px;
+}
+
+.intel-panel {
+  max-width: 30rem;
+}
+
+.intel-product {
+  margin: 0 0 18px;
+  font-family: var(--font-display);
+  font-size: clamp(40px, 5.2vw, 64px);
+  font-weight: 500;
+  letter-spacing: -0.05em;
+  line-height: 0.98;
+  color: #fff;
+}
+
+.intel-desc {
+  margin: 0;
+  font-family: var(--font-geist);
+  font-size: clamp(17px, 1.7vw, 20px);
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.72);
+  max-width: 36ch;
+  text-wrap: pretty;
+}
+
+.intel-progress {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-width: 240px;
+}
+
+.intel-progress-seg {
+  display: grid;
+  gap: 6px;
+}
+
+.intel-progress-label {
+  font-family: var(--font-geist);
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.28);
+  transition: color 0.25s ease;
+}
+
+.intel-progress-seg.is-done .intel-progress-label,
+.intel-progress-seg.is-active .intel-progress-label {
+  color: #fff;
+}
+
+.intel-progress-track {
+  display: block;
+  height: 2px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  overflow: hidden;
+}
+
+.intel-progress-fill {
+  display: block;
+  width: 100%;
+  height: 100%;
+  transform-origin: left center;
+  transform: scaleX(0);
+  background: #fff;
+  transition: transform 0.12s linear;
+}
+
+.intel-card-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 420px;
+  perspective: 1200px;
+}
+
+.intel-card {
+  width: min(100%, 480px);
+  padding: 40px 36px;
+  will-change: transform, opacity;
+}
+
+.intel-card-top {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.intel-card-step {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.intel-card-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(28px, 3vw, 36px);
+  font-weight: 500;
+  letter-spacing: -0.04em;
+  line-height: 1.05;
+  color: #fff;
+}
+
+.intel-card-body {
+  margin: 0 0 28px;
+  font-family: var(--font-geist);
+  font-size: 16px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.68);
+}
+
+.intel-card-points {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.intel-card-points li {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 16px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  font-family: var(--font-geist);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.4;
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.intel-point-mark {
+  flex-shrink: 0;
+  width: 8px;
+  height: 8px;
+  margin-top: 7px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.08);
+}
+
+@media (max-width: 991px) {
+  .intel-sticky {
+    padding: 84px 20px 40px;
+    height: auto;
+    min-height: 100dvh;
+  }
+
+  .intel-stage {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .intel-copy {
+    min-height: 0;
+    gap: 24px;
+  }
+
+  .intel-panel-slot {
+    min-height: 0;
+  }
+
+  .intel-desc {
+    max-width: none;
+  }
+
+  .intel-progress {
+    max-width: none;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .intel-progress-seg {
+    flex: 1 1 120px;
+  }
+
+  .intel-card-wrap {
+    min-height: 0;
+  }
+
+  .intel-card {
+    width: 100%;
+    padding: 32px 26px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .intel-progress-fill {
+    transition: none;
+  }
+}

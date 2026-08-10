@@ -5,15 +5,23 @@
   },
   "nav": {
     "brand": "Relay",
+    "brandMark": "relay.",
     "login": "Connexion",
     "contactSales": "Contacter les ventes",
     "languageLabel": "Langue",
     "pricing": "Tarifs",
-    "getStarted": "Commencer"
+    "getStarted": "Commencer",
+    "getInTouch": "Nous contacter",
+    "providers": "Prestataires",
+    "reports": "Rapports",
+    "research": "Recherche",
+    "primaryLabel": "Principal"
   },
   "hero": {
     "kicker": "Expansion mondiale",
     "title": "The data and partner directory for global fintech infrastructure.",
+    "titleLine1": "L'annuaire data et partenaires",
+    "titleLine2": "pour l'infrastructure fintech mondiale",
     "subtext": "Providers, regulation, payment rails, and market data, all in one place, for every fintech market worldwide.",
     "emailPlaceholder": "Entrez votre email professionnel",
     "cta": "Commencer",
@@ -58,6 +66,52 @@
     "title": "Operating in a market shouldn't mean\nflying blind.",
     "lede": "Good data changes how you operate. It gives you real insight into the infrastructure behind a market,\nhow providers compare, and how the whole system actually works. Relay keeps you a step ahead\nand having the right data helps you focus more on your customers, not hunting for answers."
   },
+  "intelligence": {
+    "kicker": "Le coût de l'approximation",
+    "title": "Opérer sur un marché ne devrait pas vouloir dire avancer à l'aveugle.",
+    "lede": "De bonnes données changent votre façon d'opérer. Elles donnent une vraie lecture de l'infrastructure d'un marché, de comment les prestataires se comparent, et de comment le système fonctionne vraiment.",
+    "products": [
+      {
+        "name": "Découvrir",
+        "description": "Prestataires vérifiés par marché et catégorie — filtrez sur les critères qui comptent, puis shortlistez au même endroit.",
+        "points": [
+          "Filtrer par marché & catégorie",
+          "Voir frais, rails & couverture",
+          "Shortlister dans une seule vue",
+          "Présence marché par corridor"
+        ]
+      },
+      {
+        "name": "Rechercher",
+        "description": "Comprenez avant de vous engager. Régulation, rails et frais cartographiés dans des briefs que votre équipe peut utiliser.",
+        "points": [
+          "Statut réglementaire par marché",
+          "Rails, frais & délais de règlement",
+          "Comparaisons side-by-side",
+          "Différenciateurs clés signalés"
+        ]
+      },
+      {
+        "name": "Agir",
+        "description": "Passez de la recherche aux relations. Construisez la shortlist, suivez le progrès, assignez des owners, et obtenez des introductions — sans quitter Relay.",
+        "points": [
+          "Shortlist → évaluer → parler → intro",
+          "Owners, priorités & activité live",
+          "Demander des intros depuis le board",
+          "Décisions hors des emails enterrés"
+        ]
+      },
+      {
+        "name": "Prêt à s'étendre",
+        "description": "Restez en avance sur les mouvements de marché. Signaux sur de nouveaux rails, prestataires et opportunités.",
+        "points": [
+          "Flux live rails, prestataires & régulation",
+          "Statut marché en un coup d'œil",
+          "Savoir ce qui a bougé cette semaine"
+        ]
+      }
+    ]
+  },
   "quote": {
     "text": "We cut provider evaluation from eight weeks to five days. Relay is now our default for infrastructure decisions.",
     "cite": "— Head of Payments, fintech scale-up"
@@ -67,6 +121,14 @@
     "subtitle": "240+ partenaires"
   },
   "footer": {
+    "closing": "Les bons partenaires d'infrastructure comptent plus que jamais",
+    "location": "San Francisco",
+    "sitemapLabel": "Pied de page",
+    "support": "Support",
+    "supportEmail": "support@relay.app",
+    "careers": "Carrières",
+    "sitemap": "Plan du site",
+    "legalCenter": "Centre juridique",
     "tagline": "Intelligence infrastructure pour ceux qui construisent des produits financiers.",
     "status": "Tous les systèmes opérationnels",
     "product": "Produit",
@@ -317,9 +379,12 @@
   },
   "dataReports": {
     "kicker": "Rapports de données",
-    "title": "L’infrastructure fintech, mesurée",
+    "title": "Recherche",
     "lede": "Benchmarks, coûts de corridors et cartes marché — issus des fiches partenaires et évaluations builders, pas des pitch decks.",
     "cta": "Voir tous les rapports →",
+    "ctaClean": "Voir toute la recherche",
+    "readReport": "Lire le rapport →",
+    "moreProviders": "+ {count} de plus",
     "minRead": "min de lecture",
     "indexTitle": "Rapports de données Relay",
     "indexLede": "Analyses approfondies sur frais, rails, fiabilité et licences dans les marchés d’expansion.",
