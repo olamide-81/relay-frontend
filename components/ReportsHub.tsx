@@ -2,17 +2,18 @@
 
 import { useMemo, useState } from 'react'
 import { useTranslations } from 'next-intl'
-import { Link } from '@/i18n/navigation'
 import {
   dataReports,
-  formatReportDate,
   getReportCategories,
   type DataReport,
 } from '@/data/reports'
+import ReportPaperCard from '@/components/ReportPaperCard'
+import Reveal from '@/components/Reveal'
+import './report-hub.css'
 
 type SortMode = 'latest' | 'market'
 
-const PAGE_SIZE = 10
+const PAGE_SIZE = 9
 
 export default function ReportsHub() {
   const t = useTranslations('dataReports')
@@ -30,7 +31,7 @@ export default function ReportsHub() {
     if (sort === 'latest') {
       list.sort(
         (a, b) =>
-          new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
+          new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime(),
       )
     } else {
       list.sort((a, b) => {
@@ -47,14 +48,14 @@ export default function ReportsHub() {
   const hasMore = visible < filtered.length
 
   return (
-    <div className="dr-hub">
-      <div className="dr-hub-toolbar">
-        <div className="dr-page-filters" role="tablist" aria-label="Report categories">
+    <div className="rph">
+      <div className="rph-toolbar">
+        <div className="rph-filters" role="tablist" aria-label="Report categories">
           <button
             type="button"
             role="tab"
             aria-selected={category === 'all'}
-            className={`dr-filter${category === 'all' ? ' is-active' : ''}`}
+            className={`rph-filter${category === 'all' ? ' is-active' : ''}`}
             onClick={() => {
               setCategory('all')
               setVisible(PAGE_SIZE)
@@ -68,7 +69,7 @@ export default function ReportsHub() {
               type="button"
               role="tab"
               aria-selected={category === cat}
-              className={`dr-filter${category === cat ? ' is-active' : ''}`}
+              className={`rph-filter${category === cat ? ' is-active' : ''}`}
               onClick={() => {
                 setCategory(cat)
                 setVisible(PAGE_SIZE)
@@ -79,10 +80,10 @@ export default function ReportsHub() {
           ))}
         </div>
 
-        <div className="dr-hub-meta-row">
-          <p className="dr-hub-count">{t('reportsCount', { count: filtered.length })}</p>
-          <label className="dr-sort">
-            <span className="dr-sort-label">Sort</span>
+        <div className="rph-meta">
+          <p className="rph-count">{t('reportsCount', { count: filtered.length })}</p>
+          <label className="rph-sort">
+            <span>Sort</span>
             <select
               value={sort}
               onChange={(e) => setSort(e.target.value as SortMode)}
@@ -95,51 +96,28 @@ export default function ReportsHub() {
         </div>
       </div>
 
-      <div className="dr-list" role="list">
-        {shown.map((report) => (
-          <Link
-            key={report.slug}
-            href={`/reports/${report.slug}`}
-            className="dr-list-item"
-            role="listitem"
-          >
-            <div className="dr-list-main">
-              <div className="dr-list-tags">
-                <span className="dr-tag dr-tag--cat">{report.category}</span>
-                <span className="dr-tag dr-tag--market">{report.market}</span>
-              </div>
-              <h2 className="dr-list-title">{report.title}</h2>
-              <p className="dr-list-excerpt">{report.excerpt}</p>
-              <div className="dr-list-meta">
-                <span>{formatReportDate(report.publishedAt)}</span>
-                <span aria-hidden>·</span>
-                <span>
-                  {report.readMinutes} {t('minRead')}
-                </span>
-              </div>
-            </div>
-            <div className="dr-list-stat">
-              <strong>{report.heroStat.value}</strong>
-              <span>{report.heroStat.label}</span>
-            </div>
-          </Link>
+      <div className="rph-grid">
+        {shown.map((report, i) => (
+          <Reveal key={report.slug} delay={0.04 * (i % 3)} y={24}>
+            <ReportPaperCard report={report} />
+          </Reveal>
         ))}
       </div>
 
-      <div className="dr-hub-footer">
-        <p className="dr-hub-showing">
-          {t('showing', { shown: shown.length, total: filtered.length })}
-        </p>
-        {hasMore ? (
+      {hasMore ? (
+        <div className="rph-more">
           <button
             type="button"
-            className="dr-load-more"
-            onClick={() => setVisible((v) => v + PAGE_SIZE)}
+            className="rph-more-btn"
+            onClick={() => setVisible((n) => n + PAGE_SIZE)}
           >
             {t('loadMore')}
           </button>
-        ) : null}
-      </div>
+          <p>
+            {t('showing', { shown: shown.length, total: filtered.length })}
+          </p>
+        </div>
+      ) : null}
     </div>
   )
 }

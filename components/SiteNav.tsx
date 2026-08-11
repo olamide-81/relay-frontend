@@ -4,7 +4,7 @@ import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import { useTranslations } from 'next-intl'
 import { Link } from '@/i18n/navigation'
-import { LocaleSwitcher } from '@/components/LocaleSwitcher'
+import { useWaitlist } from '@/components/WaitlistModal'
 import './home.css'
 
 type Props = {
@@ -12,8 +12,13 @@ type Props = {
   solid?: boolean
 }
 
+/**
+ * Cinema nav — same links everywhere: Providers, Reports, Contact sales.
+ * Overlay on home hero; dark glass pill when scrolled or on solid pages.
+ */
 export default function SiteNav({ solid = false }: Props) {
   const t = useTranslations()
+  const { openWaitlist } = useWaitlist()
   const [scrolled, setScrolled] = useState(solid)
 
   useEffect(() => {
@@ -28,19 +33,30 @@ export default function SiteNav({ solid = false }: Props) {
   }, [solid])
 
   const overlay = !solid && !scrolled
-  const homeScrolled = !solid && scrolled
+  const pill = solid || scrolled
+
+  const links = (
+    <>
+      <Link href="/#providers">{t('nav.providers')}</Link>
+      <Link href="/reports">{t('nav.reports')}</Link>
+      <a
+        href="https://calendly.com/gratebridgelabs/30min?month=2026-08"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        {t('nav.contactSales')}
+      </a>
+    </>
+  )
 
   return (
     <header
-      className={`nav${solid ? '' : ' nav--home'}${scrolled || solid ? ' nav--scrolled' : ''}${overlay ? ' nav--overlay' : ''}${homeScrolled ? ' nav--dark' : ''}`}
+      className={`nav${solid ? '' : ' nav--home'}${pill ? ' nav--scrolled nav--dark' : ''}${overlay ? ' nav--overlay' : ''}`}
     >
       {overlay ? (
         <div className="nav-overlay-inner">
           <nav className="nav-overlay-links" aria-label={t('nav.primaryLabel')}>
-            <Link href="/#directory">{t('nav.providers')}</Link>
-            <Link href="/reports">{t('nav.reports')}</Link>
-            <Link href="/#research">{t('nav.research')}</Link>
-            <a href="#footer">{t('nav.contactSales')}</a>
+            {links}
           </nav>
 
           <Link href="/" className="nav-overlay-brand">
@@ -51,15 +67,15 @@ export default function SiteNav({ solid = false }: Props) {
             <Link href="/signin" className="nav-overlay-login">
               {t('nav.login')}
             </Link>
-            <a href="#footer" className="nav-cta">
-              <span>{t('nav.getInTouch')}</span>
+            <button type="button" className="nav-cta" onClick={openWaitlist}>
+              <span>{t('nav.joinWaitlist')}</span>
               <span className="nav-cta-icon" aria-hidden>
                 <Chevron />
               </span>
-            </a>
+            </button>
           </div>
         </div>
-      ) : homeScrolled ? (
+      ) : (
         <div className="nav-inner nav-inner--dark">
           <Link href="/" className="nav-brand-mark">
             <Image
@@ -73,59 +89,19 @@ export default function SiteNav({ solid = false }: Props) {
           </Link>
 
           <nav className="nav-pill-links" aria-label={t('nav.primaryLabel')}>
-            <Link href="/#directory">{t('nav.providers')}</Link>
-            <Link href="/reports">{t('nav.reports')}</Link>
-            <Link href="/#research" className="nav-hide-sm">
-              {t('nav.research')}
-            </Link>
-            <a href="#footer" className="nav-hide-sm">
-              {t('nav.contactSales')}
-            </a>
+            {links}
           </nav>
 
           <div className="nav-actions">
             <Link href="/signin" className="nav-signin nav-hide-sm">
               {t('nav.login')}
             </Link>
-            <a href="#footer" className="nav-cta">
-              <span>{t('nav.getInTouch')}</span>
+            <button type="button" className="nav-cta" onClick={openWaitlist}>
+              <span>{t('nav.joinWaitlist')}</span>
               <span className="nav-cta-icon" aria-hidden>
                 <Chevron />
               </span>
-            </a>
-          </div>
-        </div>
-      ) : (
-        <div className="nav-inner">
-          <Link href="/" className="nav-brand">
-            <Image
-              src="/relaylight.png"
-              alt={t('images.logoAlt')}
-              width={30}
-              height={30}
-              className="nav-logo"
-            />
-            <span>{t('nav.brand')}</span>
-          </Link>
-
-          <div className="nav-actions">
-            <Link href="/signin" className="nav-signin">
-              {t('nav.login')}
-            </Link>
-            <a href="#footer" className="nav-signin nav-hide-sm">
-              {t('nav.contactSales')}
-            </a>
-            <Link href="/#pricing" className="nav-signin nav-hide-sm">
-              {t('nav.pricing')}
-            </Link>
-            <Link href="/signup" className="btn btn-ghost btn-sm">
-              {t('nav.getStarted')}
-            </Link>
-            <LocaleSwitcher
-              className="nav-locale"
-              variant="nav"
-              label={t('nav.languageLabel')}
-            />
+            </button>
           </div>
         </div>
       )}

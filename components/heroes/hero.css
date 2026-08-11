@@ -28,13 +28,22 @@
   position: absolute;
   inset: 0;
   z-index: 0;
+  will-change: transform, opacity;
+}
+
+.hero-veil {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: #121212;
 }
 
 .hero-media-img {
   object-fit: cover;
   object-position: center 45%;
   transform: scale(1.04);
-  animation: hero-drift 28s ease-in-out infinite alternate;
+  animation: hero-drift 28s ease-in-out 2s infinite alternate;
 }
 
 .hero-media-shade {
@@ -58,7 +67,7 @@
 
 .hero-center {
   position: relative;
-  z-index: 1;
+  z-index: 3;
   width: min(920px, calc(100% - 48px));
   margin: 0 auto;
   padding: calc(var(--nav-height) + 24px) 0 64px;
@@ -110,6 +119,10 @@
   .hero-media-img {
     animation: none;
     transform: scale(1.04);
+  }
+
+  .nav--overlay {
+    animation: none;
   }
 
   .hero * {

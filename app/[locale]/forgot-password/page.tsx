@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { useTranslations } from 'next-intl'
 import { Link } from '@/i18n/navigation'
-import { AuthShell, AuthAsideTitle, AuthField } from '@/components/AuthShell'
+import { AuthShell, AuthField } from '@/components/AuthShell'
 
 export default function ForgotPasswordPage() {
   const t = useTranslations('auth.forgotPassword')
@@ -19,42 +19,37 @@ export default function ForgotPasswordPage() {
     setTimeout(() => {
       setLoading(false)
       setSent(true)
-    }, 1000)
+    }, 900)
   }
 
   return (
-    <AuthShell
-      aside={{
-        eyebrow: t('asideEyebrow'),
-        title: (
-          <AuthAsideTitle
-            before={t('asideTitleBefore')}
-            emphasis={t('asideTitleEmphasis')}
-          />
-        ),
-        points: t.raw('asidePoints') as string[],
-      }}
-    >
+    <AuthShell aside={{ line: t('asideLine') }}>
       {sent ? (
         <div className="auth-success">
           <span className="auth-success-icon" aria-hidden>
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-              <path d="M5 12.5 10 17.5 19 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+              <path
+                d="M5 12.5 10 17.5 19 7"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
             </svg>
           </span>
-          <h2 className="auth-title">{t('successTitle')}</h2>
+          <h1 className="auth-title">{t('successTitle')}</h1>
           <p className="auth-subtitle">
-            {t('successBefore')}{' '}
-            <strong>{email || t('yourEmail')}</strong>. {t('successAfter')}
+            {t('successBefore')} <strong>{email || t('yourEmail')}</strong>.{' '}
+            {t('successAfter')}
           </p>
-          <button
-            type="button"
-            className="auth-submit"
-            style={{ marginTop: 24 }}
-            onClick={() => setSent(false)}
-          >
-            {t('resend')}
-          </button>
+          <div className="auth-success-actions">
+            <Link href="/reset-password" className="auth-submit">
+              {t('openReset')}
+            </Link>
+            <button type="button" className="auth-submit auth-submit--ghost" onClick={() => setSent(false)}>
+              {t('resend')}
+            </button>
+          </div>
           <p className="auth-foot-note">
             {t('backToSignIn')}{' '}
             <Link href="/signin">{t('signIn')}</Link>
@@ -63,7 +58,7 @@ export default function ForgotPasswordPage() {
       ) : (
         <>
           <div className="auth-head">
-            <h2 className="auth-title">{t('title')}</h2>
+            <h1 className="auth-title">{t('title')}</h1>
             <p className="auth-subtitle">{t('subtitle')}</p>
           </div>
 

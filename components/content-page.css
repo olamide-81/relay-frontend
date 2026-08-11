@@ -1,0 +1,73 @@
+.relay-content {
+  background: #121212;
+  color: #fff;
+  min-height: 100vh;
+}
+
+.cp {
+  padding: 120px 24px 80px;
+}
+
+.cp-inner {
+  width: min(720px, 100%);
+  margin: 0 auto;
+}
+
+.cp-head {
+  margin-bottom: 40px;
+}
+
+.cp-title {
+  margin: 0 0 14px;
+  font-size: clamp(2rem, 4vw, 2.75rem);
+  font-weight: 600;
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+}
+
+.cp-lede {
+  margin: 0;
+  font-size: 1.05rem;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.cp-body {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.cp-body h2 {
+  margin: 12px 0 0;
+  font-size: 1.15rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.cp-body p,
+.cp-body li {
+  margin: 0;
+  font-size: 0.98rem;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.68);
+}
+
+.cp-body ul {
+  margin: 0;
+  padding-left: 1.15rem;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.cp-body a {
+  color: #fff;
+  text-decoration: underline;
+  text-decoration-color: rgba(255, 255, 255, 0.28);
+  text-underline-offset: 3px;
+}
+
+.cp-body a:hover {
+  text-decoration-color: rgba(255, 255, 255, 0.7);
+}
