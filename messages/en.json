@@ -1,16 +1,17 @@
 {
   "metadata": {
-    "title": "Relay | Expand into any market with the right partners",
-    "description": "Relay helps businesses expand globally by connecting them with vetted partners and service providers — before a partnership mistake costs a year."
+    "title": "Relay | Data directory and insights on fintech infrastructure across markets worldwide",
+    "description": "Data directory and insights on fintech infrastructure across markets worldwide."
   },
   "nav": {
     "brand": "Relay",
-    "brandMark": "relay.",
+    "brandMark": "Relay.",
     "login": "Log in",
     "contactSales": "Contact sales",
     "pricing": "Pricing",
     "getStarted": "Get started",
     "getInTouch": "Get in touch",
+    "joinWaitlist": "Join the waitlist",
     "providers": "Providers",
     "reports": "Reports",
     "research": "Research",
@@ -118,6 +119,33 @@
       }
     ]
   },
+  "providers": {
+    "kicker": "Providers",
+    "title": "Find the right infrastructure partners before you commit a year.",
+    "lede": "Search, compare, and shortlist vetted fintech providers by market and category. Built for teams expanding into new corridors who can't afford a partnership mistake.",
+    "items": [
+      {
+        "title": "Search by market",
+        "description": "Filter 240+ providers by country, category, rails, fees, and sandbox access — then see who actually operates where you need to go.",
+        "visual": "search"
+      },
+      {
+        "title": "Compare side by side",
+        "description": "Stack fees, settlement times, coverage, and licensing next to each other. Score options on measured data, not brochure claims.",
+        "visual": "compare"
+      },
+      {
+        "title": "Build a shortlist",
+        "description": "Keep the shortlist with your team — owners, priorities, and notes in one place instead of scattered across decks and email threads.",
+        "visual": "shortlist"
+      },
+      {
+        "title": "Request introductions",
+        "description": "When you're ready to talk, request a warm intro to the provider team without leaving Relay.",
+        "visual": "intros"
+      }
+    ]
+  },
   "quote": {
     "text": "We almost signed a payout partner we couldn't unwind for eighteen months. Relay showed us three better options in a day.",
     "cite": "— Head of Payments, fintech scale-up"
@@ -126,58 +154,61 @@
     "title": "Explore providers",
     "subtitle": "240+ partners"
   },
+  "waitlist": {
+    "title": "Join the waitlist",
+    "lede": "Tell us a bit about yourself and we’ll reach out when access opens.",
+    "fullName": "Full name",
+    "fullNamePlaceholder": "Ada Lovelace",
+    "email": "Email address",
+    "emailPlaceholder": "ada@company.com",
+    "role": "Role",
+    "rolePlaceholder": "Select your role",
+    "roles": {
+      "founder": "Founder",
+      "engineer": "Engineer",
+      "productManager": "Product Manager",
+      "other": "Others"
+    },
+    "company": "Name of company",
+    "companyPlaceholder": "Company name",
+    "submit": "Join waitlist",
+    "close": "Close",
+    "successTitle": "You’re on the list",
+    "successLede": "Thanks — we’ll be in touch when Relay is ready for you.",
+    "done": "Done"
+  },
   "footer": {
     "closing": "The right infrastructure partners matter more than ever",
-    "location": "San Francisco",
     "sitemapLabel": "Footer",
     "support": "Support",
-    "supportEmail": "support@relay.app",
-    "careers": "Careers",
-    "sitemap": "Sitemap",
-    "legalCenter": "Legal Center",
-    "tagline": "Infrastructure intelligence for the people building financial products.",
-    "status": "All systems operational",
+    "supportEmail": "support@relay.gratebridge.com",
     "product": "Product",
-    "directory": "Directory",
-    "compare": "Compare",
-    "introductions": "Introductions",
-    "intelligence": "Intelligence",
-    "requestAccess": "Request access",
-    "categories": "Categories",
-    "kyc": "KYC & Identity",
-    "payments": "Payments",
-    "payouts": "Payouts",
-    "fx": "FX & Treasury",
-    "compliance": "Compliance & AML",
+    "providers": "Providers",
+    "howItWorks": "How it works",
+    "reports": "Reports",
+    "joinWaitlist": "Join the waitlist",
     "resources": "Resources",
-    "reports": "Intelligence reports",
-    "benchmarks": "Benchmarks",
-    "dispatch": "Dispatch",
-    "providerDirectory": "Provider directory",
+    "researchPapers": "Research papers",
     "methodology": "Methodology",
-    "company": "Company",
     "about": "About",
-    "blog": "Blog",
-    "contact": "Contact",
-    "press": "Press",
+    "contactSales": "Contact sales",
+    "account": "Account",
+    "signIn": "Sign in",
+    "createAccount": "Create account",
     "language": "Language",
     "disclaimer": "Relay is an infrastructure directory and introduction service. Listed fees, settlement times and coverage are indicative, compiled from provider documentation and builder reports, and may change without notice. Relay is not a payment institution and does not provide financial, legal or regulatory advice.",
     "copyright": "© 2026 GrateBridge Labs — All rights reserved",
     "privacy": "Privacy",
-    "terms": "Terms",
-    "security": "Security",
-    "cookies": "Cookies",
-    "socialX": "Relay on X",
-    "socialLinkedIn": "Relay on LinkedIn",
-    "socialGitHub": "Relay on GitHub"
+    "terms": "Terms"
   },
   "images": {
     "logoAlt": "Relay logo — fintech infrastructure directory"
   },
   "auth": {
     "brand": "Relay",
+    "brandMark": "Relay.",
     "logoAlt": "Relay logo — fintech infrastructure directory",
-    "backToSite": "← Back to site",
+    "backToSite": "Back to site",
     "copyright": "© 2026 GrateBridge Labs",
     "languageLabel": "Language",
     "or": "or",
@@ -190,15 +221,8 @@
         "title": "Sign In | Relay Fintech Provider Directory",
         "description": "Sign in to Relay to compare fintech providers, read payment rails data and manage provider introductions across Colombia, Mexico, Brazil, Portugal, the Gulf and more."
       },
-      "asideEyebrow": "Welcome back",
-      "asideTitleBefore": "Your fintech provider directory",
-      "asideTitleEmphasis": "and market data — in one account.",
-      "asidePoints": [
-        "240+ fintech APIs with fee, coverage and integration benchmarks",
-        "Country intelligence on payment rails, regulation and policy",
-        "Direct introductions to vetted provider teams"
-      ],
-      "title": "Sign in to Relay",
+      "asideLine": "Provider data and market intelligence, in one place.",
+      "title": "Sign in",
       "subtitleBefore": "New to Relay?",
       "createAccount": "Create an account",
       "google": "Continue with Google",
@@ -217,18 +241,11 @@
         "title": "Create Account | Relay Fintech Directory",
         "description": "Create a free Relay account to compare vetted fintech providers, browse payment rails data and request introductions in Colombia, Mexico, Brazil, Portugal, the Gulf and more."
       },
-      "asideEyebrow": "Get started",
-      "asideTitleBefore": "Compare providers and read market data",
-      "asideTitleEmphasis": "from day one.",
-      "asidePoints": [
-        "Free for builders — no credit card required",
-        "Full access to the provider directory and comparison tools",
-        "Request introductions to vetted fintech providers"
-      ],
-      "title": "Create your Relay account",
+      "asideLine": "Start with the directory. Shortlist partners that fit.",
+      "title": "Create account",
       "subtitleBefore": "Already have an account?",
       "signIn": "Sign in",
-      "google": "Sign up with Google",
+      "google": "Continue with Google",
       "nameLabel": "Full name",
       "namePlaceholder": "Ada Lovelace",
       "companyLabel": "Company",
@@ -240,23 +257,16 @@
       "termsAgree": "I agree to the Terms and Privacy Policy",
       "submit": "Create account",
       "submitting": "Creating account…",
-      "footnote": "Used by fintech teams evaluating infrastructure across Latin America, Europe, the Middle East and beyond."
+      "footnote": "Built for teams evaluating fintech infrastructure worldwide."
     },
     "forgotPassword": {
       "metadata": {
         "title": "Reset Password | Relay",
         "description": "Reset your Relay account password. Relay is the fintech infrastructure directory for comparing providers and reading payment rails data by market."
       },
-      "asideEyebrow": "Account recovery",
-      "asideTitleBefore": "Back to your directory",
-      "asideTitleEmphasis": "in a few minutes.",
-      "asidePoints": [
-        "Enter the email address on your Relay account",
-        "We send a secure reset link valid for 30 minutes",
-        "Contact support if you still cannot access your account"
-      ],
-      "title": "Reset your password",
-      "subtitle": "Enter your work email and we will send a link to reset your password.",
+      "asideLine": "We’ll get you back into Relay in a few minutes.",
+      "title": "Forgot password",
+      "subtitle": "Enter your work email and we’ll send a link to reset your password.",
       "emailLabel": "Work email",
       "emailPlaceholder": "you@company.com",
       "submit": "Send reset link",
@@ -268,7 +278,29 @@
       "successAfter": "The link expires in 30 minutes.",
       "yourEmail": "your email",
       "resend": "Resend email",
+      "openReset": "Continue to reset password",
       "backToSignIn": "Back to"
+    },
+    "resetPassword": {
+      "metadata": {
+        "title": "Set New Password | Relay",
+        "description": "Choose a new password for your Relay account."
+      },
+      "asideLine": "Choose a strong password you haven’t used here before.",
+      "title": "Set new password",
+      "subtitle": "Enter a new password for your Relay account.",
+      "passwordLabel": "New password",
+      "passwordPlaceholder": "At least 8 characters",
+      "confirmLabel": "Confirm password",
+      "confirmPlaceholder": "Repeat your new password",
+      "submit": "Update password",
+      "submitting": "Updating…",
+      "cancel": "Cancel and sign in",
+      "errorShort": "Password must be at least 8 characters.",
+      "errorMismatch": "Passwords do not match.",
+      "successTitle": "Password updated",
+      "successLede": "Your password has been reset. You can sign in with your new credentials.",
+      "backToSignIn": "Sign in"
     }
   },
   "highlights": {
@@ -377,10 +409,11 @@
   },
   "dataReports": {
     "kicker": "Data reports",
-    "title": "Research",
+    "title": "Reports",
+    "papersTitle": "Research papers",
     "lede": "Benchmarks, corridor costs and market maps — built from partner records and builder evaluations, not pitch decks.",
     "cta": "Browse all reports →",
-    "ctaClean": "View all research",
+    "ctaClean": "View all reports",
     "readReport": "Read report →",
     "moreProviders": "+ {count} more",
     "minRead": "min read",
@@ -410,5 +443,110 @@
     "methodology": "Data sources & methodology",
     "showMethodology": "Show methodology",
     "related": "Related reports"
+  },
+  "pages": {
+    "about": {
+      "title": "About Relay",
+      "lede": "Relay is the data directory and insights layer for fintech infrastructure across markets worldwide.",
+      "sections": [
+        {
+          "title": "What we do",
+          "body": [
+            "Teams expanding into new corridors need more than a sales deck. Relay maps vetted providers by market and category, surfaces fees, rails, coverage, and reliability signals, and helps you shortlist partners you can actually ship with.",
+            "When you are ready, Relay can introduce you to provider teams — so outreach starts with context, not cold guessing."
+          ]
+        },
+        {
+          "title": "Who we are",
+          "body": [
+            "Relay is built by GrateBridge Labs. We work with builders and operators evaluating payment, KYC, FX, and banking infrastructure as they expand globally."
+          ]
+        },
+        {
+          "title": "Talk to us",
+          "body": [
+            "For product access, join the waitlist from the site. For partnerships and sales conversations, book time on Calendly or email support@relay.gratebridge.com."
+          ]
+        }
+      ]
+    },
+    "methodology": {
+      "title": "Methodology",
+      "lede": "How we compile provider data, benchmarks, and market reports.",
+      "sections": [
+        {
+          "title": "Sources",
+          "body": [
+            "Provider entries and report findings are compiled from public documentation, product materials, builder reports, and direct conversations with operators. Where figures are indicative, we say so."
+          ]
+        },
+        {
+          "title": "What we publish",
+          "body": [
+            "Directory fields focus on category, markets, rails, fees ranges, coverage, and integration signals. Research papers go deeper on a corridor, rail, or category — with methodology notes on each report."
+          ]
+        },
+        {
+          "title": "Limits",
+          "body": [
+            "Fees, settlement times, and coverage change. Relay is not a payment institution and does not provide financial, legal, or regulatory advice. Always validate critical terms with the provider before you commit."
+          ]
+        }
+      ]
+    },
+    "privacy": {
+      "title": "Privacy",
+      "lede": "How GrateBridge Labs handles information you share with Relay.",
+      "sections": [
+        {
+          "title": "What we collect",
+          "body": [
+            "When you join the waitlist, create an account, or contact us, we collect the details you provide — such as name, work email, role, and company. We also collect basic usage data needed to operate and improve the product."
+          ]
+        },
+        {
+          "title": "How we use it",
+          "body": [
+            "We use this information to operate Relay, respond to requests, improve the directory and reports experience, and communicate about access or product updates. We do not sell your personal information."
+          ]
+        },
+        {
+          "title": "Contact",
+          "body": [
+            "Questions about privacy can be sent to support@relay.gratebridge.com."
+          ]
+        }
+      ]
+    },
+    "terms": {
+      "title": "Terms",
+      "lede": "Terms of use for the Relay website and related services.",
+      "sections": [
+        {
+          "title": "Using Relay",
+          "body": [
+            "Relay provides directory information, research, and introduction workflows for informational purposes. You are responsible for how you use that information when evaluating providers or making commercial decisions."
+          ]
+        },
+        {
+          "title": "Accuracy",
+          "body": [
+            "We work to keep data current, but listings and report figures may be incomplete or change without notice. Confirm critical details directly with providers before contracting."
+          ]
+        },
+        {
+          "title": "Accounts",
+          "body": [
+            "If you create an account, keep your credentials secure and provide accurate information. We may suspend access that abuses the service or violates these terms."
+          ]
+        },
+        {
+          "title": "Contact",
+          "body": [
+            "For questions about these terms, email support@relay.gratebridge.com."
+          ]
+        }
+      ]
+    }
   }
 }

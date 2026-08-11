@@ -5,6 +5,7 @@ import { NextIntlClientProvider, hasLocale } from 'next-intl'
 import { getMessages, setRequestLocale } from 'next-intl/server'
 import { notFound } from 'next/navigation'
 import { routing } from '@/i18n/routing'
+import { WaitlistProvider } from '@/components/WaitlistModal'
 import '../globals.css'
 
 type Props = {
@@ -19,13 +20,46 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params
   const messages = (await import(`@/messages/${locale}.json`)).default
+  const title = messages.metadata.title as string
+  const description = messages.metadata.description as string
+  const siteUrl =
+    process.env.NEXT_PUBLIC_SITE_URL ??
+    (process.env.VERCEL_PROJECT_PRODUCTION_URL
+      ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+      : 'https://relay.gratebridge.com')
 
   return {
-    title: messages.metadata.title,
-    description: messages.metadata.description,
+    metadataBase: new URL(siteUrl),
+    title,
+    description,
     icons: {
-      icon: '/relaydark.png',
-      apple: '/relaydark.png',
+      icon: [
+        { url: '/favicon.ico', sizes: 'any' },
+        { url: '/favicon.png', type: 'image/png', sizes: '512x512' },
+      ],
+      apple: [{ url: '/apple-icon.png', sizes: '180x180', type: 'image/png' }],
+      shortcut: '/favicon.ico',
+    },
+    openGraph: {
+      title,
+      description,
+      type: 'website',
+      locale,
+      siteName: 'Relay',
+      images: [
+        {
+          url: '/og-image.png',
+          width: 1768,
+          height: 931,
+          alt: title,
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: ['/og-image.png'],
     },
   }
 }
@@ -46,7 +80,9 @@ export default async function LocaleLayout({ children, params }: Props) {
       className={`${GeistSans.variable} ${GeistMono.variable}`}
     >
       <body>
-        <NextIntlClientProvider messages={messages}>{children}</NextIntlClientProvider>
+        <NextIntlClientProvider messages={messages}>
+          <WaitlistProvider>{children}</WaitlistProvider>
+        </NextIntlClientProvider>
       </body>
     </html>
   )

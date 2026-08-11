@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { useTranslations } from 'next-intl'
 import { Link } from '@/i18n/navigation'
-import { AuthShell, AuthAsideTitle, AuthField, GoogleButton } from '@/components/AuthShell'
+import { AuthShell, AuthField, GoogleButton } from '@/components/AuthShell'
 
 export default function SignUpPage() {
   const t = useTranslations('auth.signup')
@@ -18,20 +18,9 @@ export default function SignUpPage() {
   }
 
   return (
-    <AuthShell
-      aside={{
-        eyebrow: t('asideEyebrow'),
-        title: (
-          <AuthAsideTitle
-            before={t('asideTitleBefore')}
-            emphasis={t('asideTitleEmphasis')}
-          />
-        ),
-        points: t.raw('asidePoints') as string[],
-      }}
-    >
+    <AuthShell aside={{ line: t('asideLine') }}>
       <div className="auth-head">
-        <h2 className="auth-title">{t('title')}</h2>
+        <h1 className="auth-title">{t('title')}</h1>
         <p className="auth-subtitle">
           {t('subtitleBefore')}{' '}
           <Link href="/signin">{t('signIn')}</Link>

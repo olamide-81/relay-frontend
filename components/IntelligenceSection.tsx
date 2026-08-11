@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import { useTranslations } from 'next-intl'
 import { EASE } from '@/components/heroes/ease'
+import Reveal from '@/components/Reveal'
 import './intelligence.css'
 
 type Product = {
@@ -98,11 +99,13 @@ export default function IntelligenceSection() {
 
   return (
     <section className="intel" id="directory" aria-label={t('title')}>
-      <div className="intel-intro">
-        <p className="intel-kicker">{t('kicker')}</p>
-        <h2 className="intel-title">{t('title')}</h2>
-        <p className="intel-lede">{t('lede')}</p>
-      </div>
+      <Reveal>
+        <div className="intel-intro">
+          <p className="intel-kicker">{t('kicker')}</p>
+          <h2 className="intel-title">{t('title')}</h2>
+          <p className="intel-lede">{t('lede')}</p>
+        </div>
+      </Reveal>
 
       <div
         className="intel-track"
