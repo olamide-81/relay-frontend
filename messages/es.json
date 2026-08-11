@@ -175,7 +175,7 @@
     "closing": "La infraestructura correcta importa más que nunca",
     "sitemapLabel": "Pie de página",
     "support": "Soporte",
-    "supportEmail": "support@relay.app",
+    "supportEmail": "support@relay.gratebridge.com",
     "product": "Producto",
     "providers": "Proveedores",
     "howItWorks": "Cómo funciona",
@@ -467,7 +467,7 @@
         {
           "title": "Habla con nosotros",
           "body": [
-            "Para acceso al producto, únete a la lista de espera desde el sitio. Para partnerships y ventas, reserva en Calendly o escribe a support@relay.app."
+            "Para acceso al producto, únete a la lista de espera desde el sitio. Para partnerships y ventas, reserva en Calendly o escribe a support@relay.gratebridge.com."
           ]
         }
       ]
@@ -515,7 +515,7 @@
         {
           "title": "Contacto",
           "body": [
-            "Preguntas sobre privacidad: support@relay.app."
+            "Preguntas sobre privacidad: support@relay.gratebridge.com."
           ]
         }
       ]
@@ -545,7 +545,7 @@
         {
           "title": "Contacto",
           "body": [
-            "Para preguntas sobre estos términos, escribe a support@relay.app."
+            "Para preguntas sobre estos términos, escribe a support@relay.gratebridge.com."
           ]
         }
       ]

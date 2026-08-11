@@ -65,7 +65,7 @@ export default function SiteFooter() {
                 </div>
                 <div className="footer-group">
                   <h4>{t('footer.support')}</h4>
-                  <a href="mailto:support@relay.app">{t('footer.supportEmail')}</a>
+                  <a href="mailto:support@relay.gratebridge.com">{t('footer.supportEmail')}</a>
                   <a
                     href={CALENDLY}
                     target="_blank"

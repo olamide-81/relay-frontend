@@ -9,7 +9,8 @@ import {
   getReport,
 } from '@/data/reports'
 import { routing } from '@/i18n/routing'
-import '@/components/data-reports.css'
+import ReportPaperCard from '@/components/ReportPaperCard'
+import '@/components/report-detail.css'
 
 type Props = {
   params: Promise<{ locale: string; slug: string }>
@@ -17,7 +18,7 @@ type Props = {
 
 export function generateStaticParams() {
   return routing.locales.flatMap((locale) =>
-    getAllReportSlugs().map((slug) => ({ locale, slug }))
+    getAllReportSlugs().map((slug) => ({ locale, slug })),
   )
 }
 
@@ -41,7 +42,6 @@ export default async function ReportDetailPage({ params }: Props) {
   const related = dataReports
     .filter((r) => r.slug !== slug)
     .sort((a, b) => {
-      // Prefer same category, then same market
       const score = (r: typeof a) =>
         (r.category === report.category ? 2 : 0) +
         (r.market === report.market ? 1 : 0)
@@ -49,22 +49,20 @@ export default async function ReportDetailPage({ params }: Props) {
     })
     .slice(0, 3)
 
-  const discoverHref = '/#directory'
-
   return (
-    <div className="dr-detail">
-      <header className="dr-detail-hero">
-        <div className="dr-detail-hero-inner">
-          <Link href="/reports" className="dr-detail-back">
+    <div className="rd">
+      <header className="rd-hero">
+        <div className="rd-hero-inner">
+          <Link href="/reports" className="rd-back">
             ← {t('backToIndex')}
           </Link>
-          <div className="dr-detail-tags">
-            <span className="dr-tag dr-tag--cat">{report.category}</span>
-            <span className="dr-tag dr-tag--market">{report.market}</span>
+          <div className="rd-tags">
+            <span className="rd-tag">{report.category}</span>
+            <span className="rd-tag rd-tag--market">{report.market}</span>
           </div>
           <h1>{report.title}</h1>
-          <p className="dr-detail-excerpt">{report.excerpt}</p>
-          <div className="dr-detail-hero-meta">
+          <p className="rd-excerpt">{report.excerpt}</p>
+          <div className="rd-meta">
             <span>
               {t('published')} {formatReportDate(report.publishedAt)}
             </span>
@@ -84,20 +82,20 @@ export default async function ReportDetailPage({ params }: Props) {
         </div>
       </header>
 
-      <article className="dr-detail-body">
-        <section className="dr-overview">
-          <p className="dr-overview-lead">{report.overview}</p>
+      <article className="rd-body">
+        <section className="rd-overview">
+          <p className="rd-overview-lead">{report.overview}</p>
           {report.background ? (
-            <div className="dr-overview-bg">
+            <div className="rd-overview-bg">
               <h2>{t('whyWeBuilt')}</h2>
               <p>{report.background}</p>
             </div>
           ) : null}
         </section>
 
-        <section className="dr-metrics" aria-label={t('keyMetrics')}>
+        <section className="rd-metrics" aria-label={t('keyMetrics')}>
           {report.metrics.map((m) => (
-            <div key={m.label} className="dr-metric">
+            <div key={m.label} className="rd-metric">
               <strong>{m.value}</strong>
               <span>{m.label}</span>
               {m.delta ? (
@@ -107,22 +105,22 @@ export default async function ReportDetailPage({ params }: Props) {
           ))}
         </section>
 
-        <section className="dr-block">
-          <h2 className="dr-block-title">{t('keyFindings')}</h2>
-          <div className="dr-findings">
+        <section className="rd-block">
+          <h2 className="rd-block-title">{t('keyFindings')}</h2>
+          <div className="rd-findings">
             {report.findings.map((f, i) => (
-              <div key={f.title} className="dr-finding">
-                <span className="dr-finding-num" aria-hidden>
+              <div key={f.title} className="rd-finding">
+                <span className="rd-finding-num" aria-hidden>
                   {String(i + 1).padStart(2, '0')}
                 </span>
                 <div>
                   <h3>{f.title}</h3>
                   <p>{f.body}</p>
                   {f.dataSupport ? (
-                    <p className="dr-finding-data">{f.dataSupport}</p>
+                    <p className="rd-finding-data">{f.dataSupport}</p>
                   ) : null}
                   {f.whyItMatters ? (
-                    <p className="dr-finding-why">
+                    <p className="rd-finding-why">
                       <strong>{t('whyThisMatters')}</strong> {f.whyItMatters}
                     </p>
                   ) : null}
@@ -133,22 +131,22 @@ export default async function ReportDetailPage({ params }: Props) {
         </section>
 
         {report.sections.map((section) => (
-          <section key={section.heading} className="dr-block dr-section">
-            <h2 className="dr-block-title">{section.heading}</h2>
-            <p className="dr-block-lede">{section.body}</p>
+          <section key={section.heading} className="rd-block">
+            <h2 className="rd-block-title">{section.heading}</h2>
+            <p className="rd-block-lede">{section.body}</p>
 
             {section.bars && section.bars.length > 0 ? (
-              <div className="dr-chart">
+              <div className="rd-chart">
                 {section.chartTitle ? (
-                  <div className="dr-chart-title">{section.chartTitle}</div>
+                  <div className="rd-chart-title">{section.chartTitle}</div>
                 ) : null}
-                <div className="dr-bars">
+                <div className="rd-bars">
                   {section.bars.map((bar) => (
-                    <div key={bar.label} className="dr-bar-row">
+                    <div key={bar.label} className="rd-bar-row">
                       <span>{bar.label}</span>
-                      <div className="dr-bar-track">
+                      <div className="rd-bar-track">
                         <div
-                          className="dr-bar-fill"
+                          className="rd-bar-fill"
                           style={{
                             width: `${Math.min(100, Math.max(4, bar.value))}%`,
                           }}
@@ -159,14 +157,14 @@ export default async function ReportDetailPage({ params }: Props) {
                   ))}
                 </div>
                 {section.caption ? (
-                  <p className="dr-chart-caption">{section.caption}</p>
+                  <p className="rd-chart-caption">{section.caption}</p>
                 ) : null}
               </div>
             ) : null}
 
             {section.table ? (
-              <div className="dr-table-wrap">
-                <table className="dr-table">
+              <div className="rd-table-wrap">
+                <table className="rd-table">
                   <thead>
                     <tr>
                       {section.table.columns.map((col) => (
@@ -190,9 +188,9 @@ export default async function ReportDetailPage({ params }: Props) {
         ))}
 
         {report.marketContext && report.marketContext.length > 0 ? (
-          <section className="dr-block">
-            <h2 className="dr-block-title">{t('marketContext')}</h2>
-            <div className="dr-prose">
+          <section className="rd-block">
+            <h2 className="rd-block-title">{t('marketContext')}</h2>
+            <div className="rd-prose">
               {report.marketContext.map((para) => (
                 <p key={para.slice(0, 40)}>{para}</p>
               ))}
@@ -201,46 +199,46 @@ export default async function ReportDetailPage({ params }: Props) {
         ) : null}
 
         {report.providerLandscape && report.providerLandscape.length > 0 ? (
-          <section className="dr-block">
-            <h2 className="dr-block-title">{t('providerLandscape')}</h2>
-            <div className="dr-leads">
+          <section className="rd-block">
+            <h2 className="rd-block-title">{t('providerLandscape')}</h2>
+            <div className="rd-leads">
               {report.providerLandscape.map((row) => (
-                <div key={row.metric} className="dr-lead">
-                  <span className="dr-lead-metric">{row.metric}</span>
-                  <strong className="dr-lead-leader">{row.leader}</strong>
-                  <em className="dr-lead-value">{row.value}</em>
-                  {row.note ? <span className="dr-lead-note">{row.note}</span> : null}
+                <div key={row.metric} className="rd-lead">
+                  <span className="rd-lead-metric">{row.metric}</span>
+                  <strong className="rd-lead-leader">{row.leader}</strong>
+                  <em className="rd-lead-value">{row.value}</em>
+                  {row.note ? <span className="rd-lead-note">{row.note}</span> : null}
                 </div>
               ))}
             </div>
           </section>
         ) : null}
 
-        <section className="dr-block">
-          <h2 className="dr-block-title">{t('implications')}</h2>
-          <ol className="dr-implications">
+        <section className="rd-block">
+          <h2 className="rd-block-title">{t('implications')}</h2>
+          <ol className="rd-implications">
             {report.implications.map((item) => (
               <li key={item}>{item}</li>
             ))}
           </ol>
         </section>
 
-        <div className="dr-next-cta">
+        <div className="rd-next-cta">
           <div>
             <h2>{t('exploreProviders')}</h2>
             <p>{t('exploreProvidersLede')}</p>
           </div>
-          <Link href={discoverHref} className="dr-next-btn">
+          <Link href="/#providers" className="rd-next-btn">
             {t('exploreProvidersCta')}
           </Link>
         </div>
 
-        <details className="dr-method">
+        <details className="rd-method">
           <summary>
             <span>{t('methodology')}</span>
-            <span className="dr-method-hint">{t('showMethodology')}</span>
+            <span className="rd-method-hint">{t('showMethodology')}</span>
           </summary>
-          <div className="dr-method-body">
+          <div className="rd-method-body">
             <p>{report.methodology}</p>
             <ul>
               {report.sources.map((s) => (
@@ -248,33 +246,18 @@ export default async function ReportDetailPage({ params }: Props) {
               ))}
             </ul>
             {report.updatedAt ? (
-              <p className="dr-method-updated">
+              <p className="rd-method-updated">
                 {t('lastUpdated')} {formatReportDate(report.updatedAt)}
               </p>
             ) : null}
           </div>
         </details>
 
-        <section className="dr-related">
-          <h2 className="dr-block-title">{t('related')}</h2>
-          <div className="dr-related-grid">
+        <section className="rd-related">
+          <h2 className="rd-block-title">{t('related')}</h2>
+          <div className="rd-related-grid">
             {related.map((r) => (
-              <Link
-                key={r.slug}
-                href={`/reports/${r.slug}`}
-                className="dr-card dr-card--related"
-              >
-                <div className="dr-card-top">
-                  <span className="dr-card-cat">{r.category}</span>
-                  <span className="dr-card-market">{r.market}</span>
-                </div>
-                <h3 className="dr-card-title">{r.title}</h3>
-                <p className="dr-card-excerpt">{r.excerpt}</p>
-                <div className="dr-card-stat">
-                  <strong className="dr-card-stat-value">{r.heroStat.value}</strong>
-                  <span className="dr-card-stat-label">{r.heroStat.label}</span>
-                </div>
-              </Link>
+              <ReportPaperCard key={r.slug} report={r} />
             ))}
           </div>
         </section>

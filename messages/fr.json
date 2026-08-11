@@ -175,7 +175,7 @@
     "closing": "Les bons partenaires d'infrastructure comptent plus que jamais",
     "sitemapLabel": "Pied de page",
     "support": "Support",
-    "supportEmail": "support@relay.app",
+    "supportEmail": "support@relay.gratebridge.com",
     "product": "Produit",
     "providers": "Prestataires",
     "howItWorks": "Comment ça marche",
@@ -467,7 +467,7 @@
         {
           "title": "Nous contacter",
           "body": [
-            "Pour l’accès produit, rejoignez la liste d’attente depuis le site. Pour les partenariats et les échanges commerciaux, réservez un créneau Calendly ou écrivez à support@relay.app."
+            "Pour l’accès produit, rejoignez la liste d’attente depuis le site. Pour les partenariats et les échanges commerciaux, réservez un créneau Calendly ou écrivez à support@relay.gratebridge.com."
           ]
         }
       ]
@@ -515,7 +515,7 @@
         {
           "title": "Contact",
           "body": [
-            "Pour toute question sur la confidentialité, écrivez à support@relay.app."
+            "Pour toute question sur la confidentialité, écrivez à support@relay.gratebridge.com."
           ]
         }
       ]
@@ -545,7 +545,7 @@
         {
           "title": "Contact",
           "body": [
-            "Pour toute question sur ces conditions, écrivez à support@relay.app."
+            "Pour toute question sur ces conditions, écrivez à support@relay.gratebridge.com."
           ]
         }
       ]
