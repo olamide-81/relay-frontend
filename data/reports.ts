@@ -10,6 +10,14 @@ export type ReportFinding = {
   body: string
   dataSupport?: string
   whyItMatters?: string
+  /** Large figure — primary scan path for the finding */
+  stat?: {
+    value: string
+    label: string
+    compare?: string
+  }
+  /** Optional side-by-side comparisons under the primary figure */
+  compareStats?: { value: string; label: string }[]
 }
 
 export type ReportChartBar = {
@@ -42,10 +50,16 @@ export type ReportSection = {
 }
 
 export type ProviderLead = {
+  /** Market segment */
   metric: string
+  /** Who currently clears or controls it */
   leader: string
+  /** Position label — Leading / Gaining / Holding / Losing share */
   value: string
   note?: string
+  /** Concrete signal readers can verify */
+  signal?: string
+  tone?: 'up' | 'down' | 'flat' | 'alert'
 }
 
 export type DataReport = {
@@ -162,50 +176,90 @@ export const dataReports: DataReport[] = [
       href: 'https://calendly.com/gratebridgelabs/30min?month=2026-08',
     },
     keyTakeaways: [
-      'Fintech is no longer a side channel. It clears over 10% of a $35T+ daily flow stack that includes FX, derivatives, retail payments, and institutional transfers — up from less than 1% a decade ago.',
-      'The decisive pattern is geographic: Asia, Latin America, and Africa built mobile-first rails with thin legacy resistance. North America still holds outsized value via cards and the dollar — but loses on velocity.',
-      'Instant government rails plus fintech apps (Pix, UPI, mobile money) are the winning template. Cards are forecast to fall toward about 15% of digital transactions by 2028.',
-      'The next prize is infrastructure: B2B treasury, stablecoin settlement, compliance plumbing, and intelligence on payment flows — not another consumer wallet.',
+      'Fintech clears over 10% of a $35T+ daily flow stack spanning FX, derivatives, retail payments, and institutional transfers — up from less than 1% a decade ago.',
+      'Asia, Latin America, and Africa scaled mobile-first rails with less card-era lock-in. North America still holds outsized value through cards and the dollar; it lags on velocity.',
+      'Public instant rails plus fintech apps (Pix, UPI, mobile money) are the pattern that scales. Cards are forecast near 15% of digital transactions by 2028.',
+      'The buildable prize is infrastructure: B2B treasury, stablecoin settlement, compliance plumbing, and payment-flow intelligence — more than another consumer wallet.',
     ],
     overview:
-      'Global financial and market transaction volumes exceed $35 trillion in value every day. That figure is not a single retail payment network — it is the combined movement of money and market risk across FX, derivatives, consumer payments, B2B transfers, and emerging crypto rails. The story that matters for operators and builders is not the size of the pie. It is who is clearing it. Fintech now captures more than 10% of that flow, up from less than 1% a decade ago. Most of the companies moving that volume did not exist fifteen years ago. This report maps where the $35T moves, which categories fintech is winning, how regions diverge, and where the next decade of infrastructure will be built.',
+      'Global financial and market transaction volumes exceed $35 trillion in value every day. That is not one retail network — it is FX, derivatives, consumer payments, B2B transfers, and crypto rails moving in the same 24-hour window. Fintech now clears more than 10% of that flow, up from less than 1% a decade ago. Most of the firms moving that volume did not exist fifteen years ago. This report maps where the $35T sits, which categories fintech is taking, how regions diverge, and where infrastructure gets built next.',
     background:
-      'Relay’s first flagship report is deliberately wide-aperture. Builders expanding across markets keep asking the same question: is fintech still “disrupting” finance, or has it become the operating system? The data says the latter — unevenly. We synthesize central-bank and industry sources (BIS, Capgemini, NPCI, Banco Central do Brasil, World Bank remittance monitors, and market research) to separate durable structural shifts from hype. Where figures are directional or definition-sensitive, we say so.',
+      'This flagship is wide on purpose. Operators expanding corridors keep asking whether fintech is still “disrupting” finance or whether it is already the operating layer. The data says the second — unevenly by region and by rail. We draw on BIS, Capgemini, NPCI, Banco Central do Brasil, World Bank remittance monitors, and market research. Where a figure is directional or definition-sensitive, we mark it.',
     findings: [
       {
-        title: 'Share, not slogans: fintech cleared the 10% line',
-        body: 'A decade ago fintech sat under 1% of global transactional flow. Crossing 10% means fintech now clears more daily value than many national banking systems — not as a niche, but as core rails.',
-        dataSupport: 'Less than 1% to over 10% share of $35T+ daily flow',
+        title: 'Fintech now clears more than a tenth of daily global flow',
+        body: 'Ten years ago, non-bank payment and market platforms sat below 1% of the combined $35T+ daily stack. That share is now above 10%. The volume cleared through those rails each day exceeds the domestic payment systems of most countries.',
+        stat: {
+          value: 'Over 10%',
+          label: 'Fintech share of daily flow',
+          compare: 'From less than 1% a decade ago',
+        },
+        compareStats: [
+          { value: '$35T+', label: 'Daily global stack' },
+          { value: '10×', label: 'Share increase' },
+        ],
         whyItMatters:
-          'Product and partnership strategy that still treats fintech as optional overlay is already behind the settlement map.',
+          'Treating fintech as a side channel understates who already settles the customer.',
       },
       {
-        title: 'Wallets won retail. Cards are in structural retreat.',
-        body: 'Digital wallets account for roughly 54% of global e-commerce transaction value in 2026. Cards are forecast to fall from ~21% to ~15% of digital transactions by 2028 — a ~29% share decline in five years.',
-        dataSupport: '54% wallet e-comm share · cards toward about 15% by 2028',
+        title: 'Wallets are the default in digital commerce; cards are not',
+        body: 'Wallets take about 54% of global e-commerce value in 2026. Industry forecasts put card share of digital transactions near 15% by 2028, down from roughly 21% in 2023.',
+        stat: {
+          value: '54%',
+          label: 'Wallet share of e-commerce value',
+          compare: '2026',
+        },
+        compareStats: [
+          { value: '~21%', label: 'Cards, 2023' },
+          { value: '~15%', label: 'Cards, 2028e' },
+        ],
         whyItMatters:
-          'Merchant acquiring, fraud stacks, and treasury assumptions built only on card economics will misprice emerging corridors.',
+          'Acquiring, fraud, and treasury models built only on scheme economics misread markets where A2A and wallets already dominate checkout.',
       },
       {
-        title: 'Instant rails are the new national infrastructure',
-        body: 'Instant payments are on track for roughly $27.7T by 2026, from about $4.8T in 2021 — ~470% growth in five years. Pix and UPI show how government rails + fintech UX can rewire an entire market in under half a decade.',
-        dataSupport: '$4.8T to $27.7T instant payments (2021–2026)',
+        title: 'Instant payment value grew nearly fivefold in five years',
+        body: 'Real-time rails are projected near $27.7T in 2026, from about $4.8T in 2021. Pix and UPI show the pattern: a public settlement fabric, private fintech interfaces, and adoption measured in years—not decades.',
+        stat: {
+          value: '$27.7T',
+          label: 'Instant payments, 2026e',
+          compare: 'From $4.8T in 2021 (~470%)',
+        },
+        compareStats: [
+          { value: 'Pix', label: 'Brazil mass rail' },
+          { value: 'UPI', label: 'India mass rail' },
+        ],
         whyItMatters:
-          'Float-based banking economics erode when settlement compresses from days to seconds.',
+          'Weekend float and multi-day wires stop looking like products once credit lands in seconds.',
       },
       {
-        title: 'Emerging markets set the template; the West follows',
-        body: 'Brazil’s Pix, India’s UPI, and African mobile money scaled without defending a credit-card middle. Developed markets still hold volume, but innovation velocity has shifted toward São Paulo, Bangalore, Lagos, and Nairobi.',
-        dataSupport: 'LatAm & Africa ~15%+ CAGR vs 2–5% in mature markets',
+        title: 'The growth template is coming from emerging markets',
+        body: 'Pix, UPI, and African mobile money scaled without a credit-card middle. Mature markets still hold most absolute volume. The product patterns that travel are being written in São Paulo, Bangalore, Lagos, and Nairobi.',
+        stat: {
+          value: '15%+',
+          label: 'LatAm & Africa payment CAGR',
+          compare: 'Vs ~2–5% in mature markets',
+        },
+        compareStats: [
+          { value: '2–5%', label: 'Mature-market CAGR' },
+          { value: 'EM', label: 'Template source' },
+        ],
         whyItMatters:
-          'Global product roadmaps that copy Silicon Valley card patterns will underfit the markets growing fastest.',
+          'Roadmaps that export Silicon Valley card UX into the fastest-growing corridors will keep missing fit.',
       },
       {
-        title: 'Stablecoins are small in share — large in trajectory',
-        body: 'Crypto and stablecoins remain a thin slice of the $35T daily stack (~0.4%), but grow 2–3× faster than traditional categories and already move trillions annually on settlement-like use cases.',
-        dataSupport: '~$144B/day crypto · 2–3× category growth',
+        title: 'Stablecoins are a thin slice of the stack—and the fastest-moving one',
+        body: 'Crypto and stablecoin flow is on the order of $144B a day, about 0.4% of the $35T stack. Growth runs two to three times traditional payment categories, with the clearest pressure on remittance and SMB cross-border corridors.',
+        stat: {
+          value: '~$144B',
+          label: 'Crypto / stablecoin daily flow',
+          compare: '~0.4% of the $35T stack',
+        },
+        compareStats: [
+          { value: '2–3×', label: 'Vs traditional growth' },
+          { value: 'XB', label: 'First pressure point' },
+        ],
         whyItMatters:
-          'Cross-border B2B and remittance corridors are where stablecoin rails threaten correspondent banking first.',
+          'Correspondent economics feel the squeeze first on retail and SMB cross-border legs—not on wholesale FX desks.',
       },
     ],
     sections: [
@@ -229,7 +283,7 @@ export const dataReports: DataReport[] = [
         caption:
           'Order-of-magnitude composition of the $35T+ daily flow stack. Definitions vary by source; use for structural reading, not precise accounting.',
         pullQuote:
-          'The story isn’t the size of the pie. It’s who’s clearing it — and fintech is reshaping the table.',
+          'Fintech’s share is concentrated where UX, mobile distribution, and instant settlement compound. It is thinner where bank credit and clearing membership still set the table.',
       },
       {
         heading: 'Retail payments: the wallet era',
@@ -459,40 +513,52 @@ export const dataReports: DataReport[] = [
     ],
     providerLandscape: [
       {
-        metric: 'Domestic retail default',
-        leader: 'Gov rails + local wallets (UPI, Pix, Alipay/WeChat, M-Pesa)',
-        value: 'Winner',
-        note: 'Public settlement + private UX',
+        metric: 'Domestic retail payments',
+        leader: 'Public instant rails and local wallets',
+        value: 'Leading',
+        tone: 'up',
+        signal:
+          'UPI, Pix, Alipay/WeChat Pay, and M-Pesa set the checkout default in their home markets',
+        note: 'Public settlement fabric; private apps on top',
       },
       {
-        metric: 'Cross-border consumer',
-        leader: 'Corridor fintechs + stablecoin ramps',
-        value: 'Disrupting',
-        note: 'Fee compression vs 5–10% legacy',
+        metric: 'Consumer cross-border',
+        leader: 'Corridor specialists and stablecoin ramps',
+        value: 'Gaining',
+        tone: 'up',
+        signal:
+          'Legacy remittance fees still run 5–10% on many Africa and LatAm corridors',
+        note: 'Pressure is fee and speed, not brand',
       },
       {
-        metric: 'Wholesale FX / derivatives',
-        leader: 'Bank franchises & CCPs',
-        value: 'Incumbent',
-        note: 'Fintech eats SMB edges',
+        metric: 'Wholesale FX and derivatives',
+        leader: 'Bank franchises and central clearing',
+        value: 'Holding',
+        tone: 'flat',
+        signal:
+          'Daily FX still on the order of $7.5T; fintech share is mostly SMB and mid-market tickets',
+        note: 'Balance-sheet and membership barriers remain high',
       },
       {
-        metric: 'Card schemes',
-        leader: 'Global networks',
-        value: 'Defending',
-        note: 'Share down; integrating crypto/wallet',
+        metric: 'Card networks',
+        leader: 'Global schemes',
+        value: 'Losing share',
+        tone: 'down',
+        signal:
+          'Cards forecast near ~15% of digital transactions by 2028, from ~21% in 2023',
+        note: 'Integrating wallets and crypto-linked products at the edge',
       },
     ],
     implications: [
-      'If you expand into Asia, LatAm, or Africa, design for A2A and wallet-native checkout first — cards are the fallback, not the foundation.',
-      'Price total cost of settlement (fee + FX + delay + failure) rather than sticker MDR. Instant rails change working-capital math.',
-      'Treat stablecoins as a treasury and corridor option, not a speculation sidebar — especially for B2B cross-border.',
-      'Build compliance and data layers as products: every new rail multiplies KYC/AML and analytics demand.',
-      'Watch government instant systems as platform risk and platform opportunity — distribution can shift in months, not decades.',
-      'Use Relay to shortlist providers by corridor reality (coverage, rails, fees, reliability), not by deck narrative.',
+      'In Asia, LatAm, and Africa, design for account-to-account and wallet checkout first. Cards are the fallback.',
+      'Price the full cost of settlement — fee, FX, delay, and failure — not sticker MDR alone. Instant rails change working-capital math.',
+      'Treat stablecoins as a treasury and corridor option for B2B cross-border, not a speculative sidebar.',
+      'Ship compliance and data layers as products: every new rail multiplies KYC/AML and analytics demand.',
+      'Watch government instant systems as both platform risk and distribution opportunity. Share can move in months.',
+      'Shortlist providers by corridor reality — coverage, rails, fees, reliability — not by pitch-deck narrative.',
     ],
     closing:
-      'Digital wallets are on track toward roughly 61% of digital transactions by 2028. Instant rails are compounding. Emerging markets are exporting the playbook. Fintech won the consumer interface war. The next war is infrastructure, intelligence, and B2B efficiency — on top of a $35 trillion daily flow that will not wait for slow settlers.',
+      'Wallets are headed toward roughly 61% of digital transactions by 2028. Instant rails keep compounding. Emerging markets are exporting the playbook. Fintech already owns much of the consumer interface. The next contest is infrastructure, intelligence, and B2B efficiency — against a $35 trillion daily flow that does not wait for slow settlers.',
     methodology:
       'This flagship synthesizes publicly reported figures from central banks and industry research into a single comparative frame. The $35T daily figure is a composite of global financial and market transaction flows (FX, derivatives, payments, transfers, and crypto), not a single operator’s throughput. Regional daily allocations are compositional estimates for structural comparison. UPI and Pix statistics prioritize NPCI and Banco Central do Brasil releases; remittance fee benchmarks follow World Bank-style corridor monitors; FX levels reference BIS Triennial Survey publications. Where forecasts (wallet share, instant payments totals, 2028 card mix) come from industry payment reports, they are labeled as directional. Relay does not provide financial, legal, or investment advice.',
     sources: [

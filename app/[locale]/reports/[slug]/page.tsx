@@ -218,47 +218,95 @@ export default async function ReportDetailPage({ params }: Props) {
         </section>
 
         <nav className="rd-toc" aria-label="Contents">
-          <h2>In this report</h2>
-          <ol>
-            <li>
-              <a href="#findings">{t('keyFindings')}</a>
-            </li>
-            {report.sections.map((section) => (
-              <li key={section.heading}>
-                <a href={`#${slugify(section.heading)}`}>{section.heading}</a>
+          <div className="rd-toc-head">
+            <h2>In this report</h2>
+            <span className="rd-toc-count">
+              {String(report.sections.length + 3).padStart(2, '0')} chapters
+            </span>
+          </div>
+          <ol className="rd-toc-list">
+            {[
+              { href: '#findings', label: t('keyFindings') },
+              ...report.sections.map((section) => ({
+                href: `#${slugify(section.heading)}`,
+                label: section.heading,
+              })),
+              { href: '#implications', label: t('implications') },
+              { href: '#methodology', label: t('methodology') },
+            ].map((item, i) => (
+              <li key={item.href}>
+                <a href={item.href} className="rd-toc-link">
+                  <span className="rd-toc-num" aria-hidden>
+                    {String(i + 1).padStart(2, '0')}
+                  </span>
+                  <span className="rd-toc-label">{item.label}</span>
+                  <span className="rd-toc-go" aria-hidden>
+                    →
+                  </span>
+                </a>
               </li>
             ))}
-            <li>
-              <a href="#implications">{t('implications')}</a>
-            </li>
-            <li>
-              <a href="#methodology">{t('methodology')}</a>
-            </li>
           </ol>
         </nav>
 
         <section className="rd-block" id="findings">
           <h2 className="rd-block-title">{t('keyFindings')}</h2>
           <div className="rd-findings">
-            {report.findings.map((f, i) => (
-              <div key={f.title} className="rd-finding">
-                <span className="rd-finding-num" aria-hidden>
-                  {String(i + 1).padStart(2, '0')}
-                </span>
-                <div>
-                  <h3>{f.title}</h3>
-                  <p>{f.body}</p>
-                  {f.dataSupport ? (
+            {report.findings.map((f, i) => {
+              const featured = i === 0
+              return (
+                <article
+                  key={f.title}
+                  className={`rd-finding${featured ? ' rd-finding--lead' : ''}`}
+                >
+                  <header className="rd-finding-top">
+                    <span className="rd-finding-num" aria-hidden>
+                      {String(i + 1).padStart(2, '0')}
+                    </span>
+                    {f.stat ? (
+                      <div className="rd-finding-stat">
+                        <strong className="rd-finding-stat-value">
+                          {f.stat.value}
+                        </strong>
+                        <span className="rd-finding-stat-label">
+                          {f.stat.label}
+                        </span>
+                        {f.stat.compare ? (
+                          <span className="rd-finding-stat-compare">
+                            {f.stat.compare}
+                          </span>
+                        ) : null}
+                      </div>
+                    ) : null}
+                  </header>
+
+                  <div className="rd-finding-copy">
+                    <h3>{f.title}</h3>
+                    <p>{f.body}</p>
+                  </div>
+
+                  {f.compareStats && f.compareStats.length > 0 ? (
+                    <dl className="rd-finding-comps">
+                      {f.compareStats.map((c) => (
+                        <div key={`${f.title}-${c.label}`} className="rd-finding-comp">
+                          <dt>{c.label}</dt>
+                          <dd>{c.value}</dd>
+                        </div>
+                      ))}
+                    </dl>
+                  ) : f.dataSupport ? (
                     <p className="rd-finding-data">{f.dataSupport}</p>
                   ) : null}
+
                   {f.whyItMatters ? (
                     <p className="rd-finding-why">
-                      <strong>{t('whyThisMatters')}</strong> {f.whyItMatters}
+                      <span className="rd-finding-why-label">Implication</span>
+                      {f.whyItMatters}
                     </p>
                   ) : null}
-                </div>
-              </div>
-            ))}
+                </article>
+              )
+            })}
           </div>
         </section>
 
@@ -376,13 +424,36 @@ export default async function ReportDetailPage({ params }: Props) {
         {report.providerLandscape && report.providerLandscape.length > 0 ? (
           <section className="rd-block">
             <h2 className="rd-block-title">{t('providerLandscape')}</h2>
-            <div className="rd-leads">
+            <p className="rd-block-lede">
+              Who clears volume today, by segment — and whether that position is
+              expanding or eroding.
+            </p>
+            <div className="rd-landscape" role="table" aria-label={t('providerLandscape')}>
+              <div className="rd-landscape-head" role="row">
+                <span role="columnheader">Segment</span>
+                <span role="columnheader">Providers</span>
+                <span role="columnheader">Position</span>
+                <span role="columnheader">Signal</span>
+              </div>
               {report.providerLandscape.map((row) => (
-                <div key={row.metric} className="rd-lead">
-                  <span className="rd-lead-metric">{row.metric}</span>
-                  <strong className="rd-lead-leader">{row.leader}</strong>
-                  <em className="rd-lead-value">{row.value}</em>
-                  {row.note ? <span className="rd-lead-note">{row.note}</span> : null}
+                <div
+                  key={row.metric}
+                  className={`rd-landscape-row${row.tone ? ` is-${row.tone}` : ''}`}
+                  role="row"
+                >
+                  <div className="rd-landscape-seg" role="cell">
+                    <strong>{row.metric}</strong>
+                    {row.note ? <span>{row.note}</span> : null}
+                  </div>
+                  <div className="rd-landscape-who" role="cell">
+                    {row.leader}
+                  </div>
+                  <div className="rd-landscape-pos" role="cell">
+                    <span className="rd-landscape-badge">{row.value}</span>
+                  </div>
+                  <div className="rd-landscape-signal" role="cell">
+                    {row.signal ?? row.note}
+                  </div>
                 </div>
               ))}
             </div>
