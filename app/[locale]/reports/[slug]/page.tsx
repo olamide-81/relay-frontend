@@ -133,9 +133,6 @@ export default async function ReportDetailPage({ params }: Props) {
             <span className="rd-tag rd-tag--market">{report.market}</span>
           </div>
           <h1 className="rd-title">{report.title}</h1>
-          {report.dek ? <p className="rd-dek">{report.dek}</p> : (
-            <p className="rd-dek">{report.excerpt}</p>
-          )}
           <div className="rd-meta">
             <span>
               {t('published')}{' '}
@@ -163,6 +160,10 @@ export default async function ReportDetailPage({ params }: Props) {
       </header>
 
       <div className="rd-body">
+        {report.dek || report.excerpt ? (
+          <p className="rd-dek rd-dek--body">{report.dek ?? report.excerpt}</p>
+        ) : null}
+
         {report.keyTakeaways && report.keyTakeaways.length > 0 ? (
           <section className="rd-takeaways" aria-label="Key takeaways">
             <h2 className="rd-takeaways-title">Key takeaways</h2>

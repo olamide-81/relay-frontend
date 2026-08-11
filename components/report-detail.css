@@ -19,11 +19,12 @@
 /* ── Cover ── */
 .rd-cover {
   position: relative;
-  min-height: min(78vh, 760px);
+  min-height: min(68vh, 640px);
   display: flex;
   align-items: flex-end;
   isolation: isolate;
   border-bottom: 1px solid var(--rd-line);
+  background: var(--rd-bg);
 }
 
 .rd-cover-media {
@@ -34,15 +35,23 @@
 
 .rd-cover-img {
   object-fit: cover;
-  object-position: center 35%;
+  object-position: center 32%;
 }
 
+/* Image lives in the top band, then dissolves into the page black early
+   so the long header reads on solid ground — not over busy pixels. */
 .rd-cover-shade {
   position: absolute;
   inset: 0;
-  background:
-    linear-gradient(180deg, rgba(8, 8, 8, 0.35) 0%, rgba(8, 8, 8, 0.55) 42%, rgba(14, 14, 14, 0.96) 100%),
-    linear-gradient(90deg, rgba(14, 14, 14, 0.35), transparent 55%);
+  background: linear-gradient(
+    180deg,
+    rgba(14, 14, 14, 0.22) 0%,
+    rgba(14, 14, 14, 0.38) 28%,
+    rgba(14, 14, 14, 0.78) 52%,
+    rgba(14, 14, 14, 0.96) 68%,
+    var(--rd-bg) 82%,
+    var(--rd-bg) 100%
+  );
 }
 
 .rd-cover-inner {
@@ -50,7 +59,7 @@
   z-index: 1;
   width: min(820px, calc(100% - 48px));
   margin: 0 auto;
-  padding: 120px 0 48px;
+  padding: 160px 0 40px;
 }
 
 .rd-back {
@@ -99,8 +108,8 @@
   font-family: var(--font-display);
   font-size: clamp(1.55rem, 3.2vw, 2.55rem);
   font-weight: 500;
-  letter-spacing: -0.04em;
-  line-height: 1.12;
+  letter-spacing: -1px;
+  line-height: 1.4;
   text-wrap: balance;
   color: #fff;
 }
@@ -111,6 +120,12 @@
   font-size: clamp(1.05rem, 1.6vw, 1.2rem);
   line-height: 1.55;
   color: rgba(255, 255, 255, 0.72);
+}
+
+.rd-dek--body {
+  margin: 0 0 36px;
+  max-width: 42rem;
+  color: var(--rd-muted);
 }
 
 .rd-meta {
@@ -1169,11 +1184,14 @@
 
   .rd-title {
     font-size: clamp(1.35rem, 7vw, 1.85rem);
+    letter-spacing: -1px;
+    line-height: 1.4;
     overflow-wrap: anywhere;
   }
 
-  .rd-dek {
+  .rd-dek--body {
     font-size: 1rem;
+    margin-bottom: 28px;
   }
 
   .rd-meta {
