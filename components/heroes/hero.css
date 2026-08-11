@@ -101,7 +101,7 @@
 @media (max-width: 640px) {
   .hero-center {
     width: min(100%, calc(100% - 32px));
-    padding-bottom: 48px;
+    padding: calc(var(--nav-height) + 36px + env(safe-area-inset-top, 0px)) 0 48px;
   }
 
   .hero-title {

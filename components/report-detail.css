@@ -648,6 +648,8 @@
   border-radius: 14px;
   border: 1px solid var(--rd-line);
   background: var(--rd-elevated);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .rd-chart-title {
@@ -1152,16 +1154,82 @@
 }
 
 @media (max-width: 640px) {
+  .rd-cover {
+    min-height: min(72vh, 640px);
+  }
+
   .rd-cover-inner,
   .rd-body {
     width: calc(100% - 32px);
   }
 
   .rd-cover-inner {
-    padding: 100px 0 36px;
+    padding: calc(88px + env(safe-area-inset-top, 0px)) 0 32px;
+  }
+
+  .rd-title {
+    font-size: clamp(1.35rem, 7vw, 1.85rem);
+    overflow-wrap: anywhere;
+  }
+
+  .rd-dek {
+    font-size: 1rem;
+  }
+
+  .rd-meta {
+    font-size: 12px;
   }
 
   .rd-takeaways {
-    padding: 20px;
+    padding: 18px 16px;
+  }
+
+  .rd-statbar {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .rd-stat {
+    min-height: 0;
+  }
+
+  .rd-finding {
+    padding: 22px 18px 20px;
+  }
+
+  .rd-finding-stat-value {
+    font-size: clamp(1.85rem, 10vw, 2.6rem);
+  }
+
+  .rd-finding--lead .rd-finding-stat-value {
+    font-size: clamp(2.2rem, 12vw, 3.2rem);
+  }
+
+  .rd-finding-comps {
+    grid-template-columns: 1fr;
+  }
+
+  .rd-chart,
+  .rd-table-wrap {
+    padding: 16px 14px;
+    margin-left: -4px;
+    margin-right: -4px;
+  }
+
+  .rd-table {
+    min-width: 520px;
+  }
+
+  .rd-implications li {
+    padding: 14px 14px 14px 48px;
+    font-size: 0.92rem;
+  }
+
+  .rd-closing {
+    padding: 22px 18px;
+  }
+
+  .rd-landscape-row {
+    padding: 16px 14px;
   }
 }

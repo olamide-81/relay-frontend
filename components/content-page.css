@@ -2,6 +2,8 @@
   background: #121212;
   color: #fff;
   min-height: 100vh;
+  min-height: 100dvh;
+  overflow-x: clip;
 }
 
 .cp {
@@ -70,4 +72,27 @@
 
 .cp-body a:hover {
   text-decoration-color: rgba(255, 255, 255, 0.7);
+}
+
+@media (max-width: 640px) {
+  .cp {
+    padding: calc(96px + env(safe-area-inset-top, 0px)) 16px 64px;
+  }
+
+  .cp-title {
+    font-size: clamp(1.65rem, 8vw, 2.1rem);
+  }
+
+  .cp-lede {
+    font-size: 0.98rem;
+  }
+
+  .cp-body {
+    gap: 22px;
+  }
+
+  .cp-body p,
+  .cp-body li {
+    font-size: 0.95rem;
+  }
 }

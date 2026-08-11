@@ -94,10 +94,14 @@
     "getStarted": "Empezar",
     "getInTouch": "Contactar",
     "joinWaitlist": "Únete a la lista de espera",
+    "joinWaitlistShort": "Lista de espera",
     "providers": "Proveedores",
     "reports": "Informes",
     "research": "Research",
-    "primaryLabel": "Principal"
+    "primaryLabel": "Principal",
+    "openMenu": "Abrir menú",
+    "closeMenu": "Cerrar menú",
+    "menuLabel": "Menú del sitio"
   },
   "hero": {
     "kicker": "Expansión global",

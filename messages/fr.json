@@ -94,10 +94,14 @@
     "getStarted": "Commencer",
     "getInTouch": "Nous contacter",
     "joinWaitlist": "Rejoindre la liste d'attente",
+    "joinWaitlistShort": "Liste d'attente",
     "providers": "Prestataires",
     "reports": "Rapports",
     "research": "Recherche",
-    "primaryLabel": "Principal"
+    "primaryLabel": "Principal",
+    "openMenu": "Ouvrir le menu",
+    "closeMenu": "Fermer le menu",
+    "menuLabel": "Menu du site"
   },
   "hero": {
     "kicker": "Expansion mondiale",

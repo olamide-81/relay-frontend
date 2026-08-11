@@ -201,11 +201,16 @@
 
 @media (max-width: 560px) {
   .wl-sheet {
-    padding: 14px 16px 32px;
-    max-height: 94vh;
+    padding: 14px 16px calc(28px + env(safe-area-inset-bottom, 0px));
+    max-height: min(94vh, 100dvh);
   }
 
   .wl-inner {
     width: 100%;
+  }
+
+  .wl-close {
+    top: 12px;
+    right: 12px;
   }
 }

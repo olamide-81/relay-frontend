@@ -160,11 +160,31 @@
 
 @media (max-width: 640px) {
   .relay-reports .dr-page {
-    padding-top: 76px;
+    padding-top: calc(76px + env(safe-area-inset-top, 0px));
+  }
+
+  .rph-hero {
+    padding: 28px 16px 20px;
+  }
+
+  .rph {
+    padding: 0 16px 72px;
   }
 
   .rph-grid {
     grid-template-columns: 1fr;
     max-width: 400px;
+  }
+
+  .rph-filters {
+    gap: 6px;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    padding-bottom: 4px;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .rph-filter {
+    flex-shrink: 0;
   }
 }

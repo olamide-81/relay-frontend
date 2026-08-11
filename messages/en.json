@@ -93,11 +93,15 @@
     "getStarted": "Get started",
     "getInTouch": "Get in touch",
     "joinWaitlist": "Join the waitlist",
+    "joinWaitlistShort": "Waitlist",
     "providers": "Providers",
     "reports": "Reports",
     "research": "Research",
     "primaryLabel": "Primary",
-    "languageLabel": "Language"
+    "languageLabel": "Language",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "menuLabel": "Site menu"
   },
   "banner": {
     "tag": "NEW",

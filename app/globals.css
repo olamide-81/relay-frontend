@@ -132,10 +132,12 @@
 html {
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
+  overflow-x: clip;
 }
 
 body {
   min-height: 100%;
+  min-height: 100dvh;
   font-family: var(--font-sans);
   font-size: 14px;
   line-height: 18.2px;
@@ -143,6 +145,7 @@ body {
   background: var(--paper-alt);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: clip;
 }
 
 a {
