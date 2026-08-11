@@ -27,6 +27,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     (process.env.VERCEL_PROJECT_PRODUCTION_URL
       ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
       : 'https://relay.gratebridge.com')
+  const ogImage = {
+    url: '/og-image.png',
+    width: 1768,
+    height: 931,
+    alt: 'Relay hero — the data and partner directory for global fintech infrastructure',
+    type: 'image/png',
+  }
 
   return {
     metadataBase: new URL(siteUrl),
@@ -45,21 +52,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description,
       type: 'website',
       locale,
+      url: siteUrl,
       siteName: 'Relay',
-      images: [
-        {
-          url: '/og-image.png',
-          width: 1768,
-          height: 931,
-          alt: title,
-        },
-      ],
+      images: [ogImage],
     },
     twitter: {
       card: 'summary_large_image',
       title,
       description,
-      images: ['/og-image.png'],
+      images: [ogImage],
     },
   }
 }
