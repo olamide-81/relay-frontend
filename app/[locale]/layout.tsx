@@ -6,6 +6,9 @@ import { getMessages, setRequestLocale } from 'next-intl/server'
 import { notFound } from 'next/navigation'
 import { routing } from '@/i18n/routing'
 import { WaitlistProvider } from '@/components/WaitlistModal'
+import JsonLd from '@/components/JsonLd'
+import { buildMetadata } from '@/lib/seo'
+import { organizationJsonLd, websiteJsonLd } from '@/lib/jsonld'
 import '../globals.css'
 
 type Props = {
@@ -20,25 +23,21 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params
   const messages = (await import(`@/messages/${locale}.json`)).default
-  const title = messages.metadata.title as string
-  const description = messages.metadata.description as string
-  const siteUrl =
-    process.env.NEXT_PUBLIC_SITE_URL ??
-    (process.env.VERCEL_PROJECT_PRODUCTION_URL
-      ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
-      : 'https://relay.gratebridge.com')
-  const ogImage = {
-    url: '/og-image.png',
-    width: 1768,
-    height: 931,
-    alt: 'Relay hero — the data and partner directory for global fintech infrastructure',
-    type: 'image/png',
+  const seo = messages.seo as {
+    title: string
+    description: string
+    keywords: string[]
   }
 
   return {
-    metadataBase: new URL(siteUrl),
-    title,
-    description,
+    ...buildMetadata({
+      locale,
+      title: seo.title,
+      description: seo.description,
+      path: '/',
+      keywords: seo.keywords,
+      titleTemplate: true,
+    }),
     icons: {
       icon: [
         { url: '/favicon.ico', sizes: 'any' },
@@ -47,20 +46,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       apple: [{ url: '/apple-icon.png', sizes: '180x180', type: 'image/png' }],
       shortcut: '/favicon.ico',
     },
-    openGraph: {
-      title,
-      description,
-      type: 'website',
-      locale,
-      url: siteUrl,
-      siteName: 'Relay',
-      images: [ogImage],
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title,
-      description,
-      images: [ogImage],
+    verification: {
+      // Set NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION in production when ready
+      google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || undefined,
     },
   }
 }
@@ -81,6 +69,7 @@ export default async function LocaleLayout({ children, params }: Props) {
       className={`${GeistSans.variable} ${GeistMono.variable}`}
     >
       <body>
+        <JsonLd data={[organizationJsonLd(), websiteJsonLd(locale)]} />
         <NextIntlClientProvider messages={messages}>
           <WaitlistProvider>{children}</WaitlistProvider>
         </NextIntlClientProvider>

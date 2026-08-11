@@ -1,7 +1,88 @@
 {
   "metadata": {
-    "title": "Relay | Data directory and insights on fintech infrastructure across markets worldwide",
-    "description": "Data directory and insights on fintech infrastructure across markets worldwide."
+    "title": "Relay | Annuaire et recherche sur l'infrastructure fintech mondiale",
+    "description": "Annuaire de données et recherche sur l'infrastructure fintech, les rails de paiement et les fournisseurs aux États-Unis, en Europe, en Afrique et sur les marchés émergents."
+  },
+  "seo": {
+    "title": "Relay | Annuaire d'infrastructure fintech et recherche de marché",
+    "description": "Cartographiez les fournisseurs fintech, rails de paiement, KYC, FX et l'intelligence de marché aux États-Unis, en Europe, en Afrique, en Amérique latine et sur les corridors mondiaux. Listes de partenaires fondées sur la recherche pour les équipes en expansion.",
+    "keywords": [
+      "annuaire infrastructure fintech",
+      "fournisseurs rails de paiement",
+      "recherche marché fintech",
+      "paiements transfrontaliers Afrique",
+      "open banking Europe",
+      "fournisseurs paiements États-Unis",
+      "annuaire KYC",
+      "corridors FX",
+      "portefeuilles numériques marchés émergents",
+      "paiements instantanés",
+      "infrastructure transferts d'argent",
+      "partenaires fintech",
+      "GrateBridge Labs Relay"
+    ],
+    "faq": [
+      {
+        "question": "Qu'est-ce que Relay ?",
+        "answer": "Relay est l'annuaire de données et la couche de recherche pour l'infrastructure fintech. Il cartographie les fournisseurs, les rails de paiement, les frais, la couverture et l'intelligence de marché pour aider les équipes qui s'étendent aux Amériques, en Europe, en Afrique et ailleurs."
+      },
+      {
+        "question": "Quelles régions Relay couvre-t-il ?",
+        "answer": "Relay se concentre sur les corridors d'expansion mondiale, avec une profondeur aux États-Unis, au Canada, en Europe, au Royaume-Uni, en Afrique, en Amérique latine, au Moyen-Orient et en Asie-Pacifique."
+      },
+      {
+        "question": "Quel type de recherche Relay publie-t-il ?",
+        "answer": "Relay Research publie des cartes de marché, des benchmarks de corridors et des analyses d'infrastructure — y compris des rapports phares sur les volumes transactionnels mondiaux, les portefeuilles numériques, les paiements instantanés et les remises."
+      },
+      {
+        "question": "Comment contacter l'équipe commerciale Relay ?",
+        "answer": "Réservez un entretien sur Calendly via Contact sales, ou écrivez à support@relay.gratebridge.com. Rejoignez la liste d'attente sur le site pour l'accès produit."
+      }
+    ],
+    "reports": {
+      "title": "Rapports de recherche fintech et cartes de marché | Relay Research",
+      "description": "Recherche fintech sur les paiements mondiaux, portefeuilles numériques, rails instantanés, remises et infrastructure aux États-Unis, en Europe, en Afrique et sur les marchés émergents.",
+      "keywords": [
+        "rapports recherche fintech",
+        "recherche paiements mondiaux",
+        "part de marché portefeuilles numériques",
+        "recherche paiements instantanés",
+        "fintech Afrique remises",
+        "recherche open banking Europe",
+        "infrastructure fintech États-Unis",
+        "corridors paiements transfrontaliers",
+        "Relay Research"
+      ]
+    },
+    "about": {
+      "title": "À propos de Relay | Annuaire fintech par GrateBridge Labs",
+      "description": "Relay, créé par GrateBridge Labs, cartographie l'infrastructure fintech et publie de la recherche pour les équipes qui s'étendent en Amérique, Europe, Afrique et corridors mondiaux.",
+      "keywords": [
+        "à propos Relay",
+        "GrateBridge Labs",
+        "données fintech",
+        "intelligence infrastructure paiements"
+      ]
+    },
+    "methodology": {
+      "title": "Méthodologie de recherche | Données et rapports Relay",
+      "description": "Comment Relay compile les données d'annuaire, les benchmarks de rails de paiement et la recherche de marché — sources, standards et limites.",
+      "keywords": [
+        "méthodologie recherche fintech",
+        "sources données paiements",
+        "méthodologie annuaire fournisseurs"
+      ]
+    },
+    "privacy": {
+      "title": "Politique de confidentialité | Relay",
+      "description": "Comment GrateBridge Labs collecte et utilise les informations lorsque vous utilisez Relay, rejoignez la liste d'attente ou contactez les ventes.",
+      "keywords": ["confidentialité Relay", "vie privée GrateBridge Labs"]
+    },
+    "terms": {
+      "title": "Conditions d'utilisation | Relay",
+      "description": "Conditions d'utilisation du site Relay, de l'annuaire et des services de recherche opérés par GrateBridge Labs.",
+      "keywords": ["conditions Relay", "conditions GrateBridge Labs"]
+    }
   },
   "nav": {
     "brand": "Relay",
@@ -412,7 +493,7 @@
   "dataReports": {
     "kicker": "Rapports de données",
     "title": "Rapports",
-    "papersTitle": "Research papers",
+    "papersTitle": "Rapports de recherche fintech",
     "lede": "Benchmarks, coûts de corridors et cartes marché — issus des fiches partenaires et évaluations builders, pas des pitch decks.",
     "cta": "Voir tous les rapports →",
     "ctaClean": "Voir tous les rapports",
@@ -420,7 +501,7 @@
     "moreProviders": "+ {count} de plus",
     "minRead": "min de lecture",
     "indexTitle": "Rapports de données Relay",
-    "indexLede": "Analyses approfondies sur frais, rails, fiabilité et licences dans les marchés d’expansion.",
+    "indexLede": "Analyses approfondies sur les paiements mondiaux, portefeuilles numériques, rails instantanés, remises et infrastructure fintech aux États-Unis, en Europe, en Afrique et sur les marchés émergents.",
     "reportsPublished": "{count} rapports publiés",
     "reportsCount": "{count} rapports",
     "filterAll": "Tous les rapports",

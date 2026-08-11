@@ -1,7 +1,88 @@
 {
   "metadata": {
-    "title": "Relay | Data directory and insights on fintech infrastructure across markets worldwide",
-    "description": "Data directory and insights on fintech infrastructure across markets worldwide."
+    "title": "Relay | Directorio y reseña de infraestructura fintech global",
+    "description": "Directorio de datos e investigación sobre infraestructura fintech, rieles de pago y proveedores en Estados Unidos, Europa, África y mercados emergentes."
+  },
+  "seo": {
+    "title": "Relay | Directorio de infraestructura fintech e investigación de mercado",
+    "description": "Mapea proveedores fintech, rieles de pago, KYC, FX e inteligencia de mercado en Estados Unidos, Europa, África, Latinoamérica y corredores globales. Listas de socios respaldadas por investigación para equipos en expansión.",
+    "keywords": [
+      "directorio infraestructura fintech",
+      "proveedores rieles de pago",
+      "investigación mercado fintech",
+      "pagos transfronterizos África",
+      "open banking Europa",
+      "proveedores pagos Estados Unidos",
+      "directorio KYC",
+      "corredores FX",
+      "billeteras digitales mercados emergentes",
+      "pagos instantáneos Pix",
+      "infraestructura remesas",
+      "socios fintech",
+      "GrateBridge Labs Relay"
+    ],
+    "faq": [
+      {
+        "question": "¿Qué es Relay?",
+        "answer": "Relay es el directorio de datos y la capa de investigación para infraestructura fintech. Mapea proveedores, rieles de pago, tarifas, cobertura e inteligencia de mercado para equipos que se expanden por América, Europa, África y otras regiones."
+      },
+      {
+        "question": "¿Qué regiones cubre Relay?",
+        "answer": "Relay se centra en corredores de expansión global, con profundidad en Estados Unidos, Canadá, Europa, Reino Unido, África, Latinoamérica, Oriente Medio y Asia-Pacífico."
+      },
+      {
+        "question": "¿Qué tipo de investigación publica Relay?",
+        "answer": "Relay Research publica mapas de mercado, benchmarks de corredores y análisis de infraestructura — incluyendo reportes emblemáticos sobre volúmenes transaccionales globales, billeteras digitales, pagos instantáneos y remesas."
+      },
+      {
+        "question": "¿Cómo contacto al equipo comercial de Relay?",
+        "answer": "Agenda una conversación en Calendly vía Contact sales, o escribe a support@relay.gratebridge.com. Únete a la lista de espera en el sitio para acceso al producto."
+      }
+    ],
+    "reports": {
+      "title": "Informes de investigación fintech y mapas de mercado | Relay Research",
+      "description": "Investigación fintech sobre pagos globales, billeteras digitales, rieles instantáneos, remesas e infraestructura en EE. UU., Europa, África y mercados emergentes.",
+      "keywords": [
+        "informes investigación fintech",
+        "investigación pagos globales",
+        "cuota de mercado billeteras digitales",
+        "investigación pagos instantáneos",
+        "fintech África remesas",
+        "investigación open banking Europa",
+        "infraestructura fintech Estados Unidos",
+        "corredores pagos transfronterizos",
+        "Relay Research"
+      ]
+    },
+    "about": {
+      "title": "Acerca de Relay | Directorio fintech de GrateBridge Labs",
+      "description": "Relay, creado por GrateBridge Labs, mapea infraestructura fintech y publica investigación para equipos que se expanden en América, Europa, África y corredores globales.",
+      "keywords": [
+        "acerca de Relay",
+        "GrateBridge Labs",
+        "datos fintech",
+        "inteligencia infraestructura de pagos"
+      ]
+    },
+    "methodology": {
+      "title": "Metodología de investigación | Datos e informes Relay",
+      "description": "Cómo Relay compila datos del directorio, benchmarks de rieles de pago e investigación de mercado — fuentes, estándares y límites.",
+      "keywords": [
+        "metodología investigación fintech",
+        "fuentes datos de pagos",
+        "metodología directorio proveedores"
+      ]
+    },
+    "privacy": {
+      "title": "Política de privacidad | Relay",
+      "description": "Cómo GrateBridge Labs recopila y usa la información cuando usas Relay, te unes a la lista de espera o contactas ventas.",
+      "keywords": ["privacidad Relay", "privacidad GrateBridge Labs"]
+    },
+    "terms": {
+      "title": "Términos de uso | Relay",
+      "description": "Términos de uso del sitio Relay, el directorio y los servicios de investigación operados por GrateBridge Labs.",
+      "keywords": ["términos Relay", "términos GrateBridge Labs"]
+    }
   },
   "nav": {
     "brand": "Relay",
@@ -412,7 +493,7 @@
   "dataReports": {
     "kicker": "Informes de datos",
     "title": "Reports",
-    "papersTitle": "Research papers",
+    "papersTitle": "Informes de investigación fintech",
     "lede": "Benchmarks, costos de corredores y mapas de mercado — desde registros de partners y evaluaciones reales, no decks.",
     "cta": "Ver todos los informes →",
     "ctaClean": "Ver todos los reports",
@@ -420,7 +501,7 @@
     "moreProviders": "+ {count} más",
     "minRead": "min de lectura",
     "indexTitle": "Informes de datos Relay",
-    "indexLede": "Análisis profundos de fees, rails, fiabilidad y licencias en los mercados donde los equipos se expanden.",
+    "indexLede": "Análisis profundos sobre pagos globales, billeteras digitales, rieles instantáneos, remesas e infraestructura fintech en Estados Unidos, Europa, África y mercados emergentes.",
     "reportsPublished": "{count} informes publicados",
     "reportsCount": "{count} informes",
     "filterAll": "Todos los informes",

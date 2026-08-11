@@ -1,5 +1,4 @@
 import type { Metadata } from 'next'
-import { getTranslations } from 'next-intl/server'
 import { buildMetadata } from '@/lib/seo'
 
 type Props = {
@@ -9,18 +8,23 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params
-  const t = await getTranslations({ locale, namespace: 'auth.forgotPassword' })
+  const messages = (await import(`@/messages/${locale}.json`)).default
+  const seo = messages.seo.methodology as {
+    title: string
+    description: string
+    keywords: string[]
+  }
 
   return buildMetadata({
     locale,
-    title: t('metadata.title'),
-    description: t('metadata.description'),
-    path: '/forgot-password',
-    noIndex: true,
+    title: seo.title,
+    description: seo.description,
+    path: '/methodology',
+    keywords: seo.keywords,
   })
 }
 
-export default function ForgotPasswordLayout({
+export default function MethodologyLayout({
   children,
 }: {
   children: React.ReactNode

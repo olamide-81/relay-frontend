@@ -1,7 +1,88 @@
 {
   "metadata": {
-    "title": "Relay | Data directory and insights on fintech infrastructure across markets worldwide",
-    "description": "Data directory and insights on fintech infrastructure across markets worldwide."
+    "title": "Relay | Fintech infrastructure directory & research for global markets",
+    "description": "Data directory and research on fintech infrastructure, payment rails, and providers across the United States, Europe, Africa, and emerging markets."
+  },
+  "seo": {
+    "title": "Relay | Fintech Infrastructure Directory & Market Research",
+    "description": "Map fintech providers, payment rails, KYC, FX, and market intelligence across the United States, Europe, Africa, Latin America, and global corridors. Research-backed partner shortlists for builders expanding worldwide.",
+    "keywords": [
+      "fintech infrastructure directory",
+      "payment rails providers",
+      "fintech market research",
+      "cross-border payments Africa",
+      "fintech Europe open banking",
+      "US payments providers",
+      "KYC providers directory",
+      "FX corridors",
+      "digital wallets emerging markets",
+      "instant payments Pix UPI",
+      "remittance infrastructure",
+      "fintech partner shortlist",
+      "GrateBridge Labs Relay"
+    ],
+    "faq": [
+      {
+        "question": "What is Relay?",
+        "answer": "Relay is the data directory and research layer for fintech infrastructure. It maps providers, payment rails, fees, coverage, and market intelligence so teams expanding across the Americas, Europe, Africa, and other regions can shortlist partners with evidence."
+      },
+      {
+        "question": "Which regions does Relay cover?",
+        "answer": "Relay focuses on global expansion corridors with depth in the United States, Canada, Europe, the United Kingdom, Africa, Latin America, the Middle East, and Asia-Pacific payment markets."
+      },
+      {
+        "question": "What kind of research does Relay publish?",
+        "answer": "Relay Research publishes market maps, corridor benchmarks, and infrastructure deep dives — including flagship analysis on global transactional volumes, digital wallets, instant payments, remittances, and regional fintech rails."
+      },
+      {
+        "question": "How do I contact Relay sales?",
+        "answer": "Book a conversation on Calendly via Contact sales, or email support@relay.gratebridge.com. Join the waitlist on the site for product access."
+      }
+    ],
+    "reports": {
+      "title": "Fintech Research Papers & Market Maps | Relay Research",
+      "description": "Bloomberg-grade fintech research on global payments, digital wallets, instant rails, remittances, and infrastructure across the US, Europe, Africa, and emerging markets. Free research papers from Relay.",
+      "keywords": [
+        "fintech research papers",
+        "global payments research",
+        "digital wallet market share",
+        "instant payments research",
+        "Africa fintech remittances",
+        "Europe open banking research",
+        "US fintech infrastructure",
+        "cross-border payment corridors",
+        "Relay Research"
+      ]
+    },
+    "about": {
+      "title": "About Relay | Fintech Data Directory by GrateBridge Labs",
+      "description": "Relay, built by GrateBridge Labs, maps fintech infrastructure providers and publishes market research for teams expanding across America, Europe, Africa, and global corridors.",
+      "keywords": [
+        "about Relay",
+        "GrateBridge Labs",
+        "fintech data company",
+        "payment infrastructure intelligence"
+      ]
+    },
+    "methodology": {
+      "title": "Research Methodology | Relay Fintech Data & Reports",
+      "description": "How Relay compiles provider directory data, payment rail benchmarks, and market research — sources, publishing standards, and limits for US, Europe, Africa, and global markets.",
+      "keywords": [
+        "fintech research methodology",
+        "payment data sources",
+        "provider directory methodology"
+      ]
+    },
+    "privacy": {
+      "title": "Privacy Policy | Relay",
+      "description": "How GrateBridge Labs collects and uses information when you use Relay, join the waitlist, or contact sales.",
+      "keywords": ["Relay privacy policy", "GrateBridge Labs privacy"]
+    },
+    "terms": {
+      "title": "Terms of Use | Relay",
+      "description": "Terms of use for the Relay website, directory, and research services operated by GrateBridge Labs.",
+      "keywords": ["Relay terms of use", "GrateBridge Labs terms"]
+    }
   },
   "nav": {
     "brand": "Relay",
@@ -410,7 +491,7 @@
   "dataReports": {
     "kicker": "Data reports",
     "title": "Reports",
-    "papersTitle": "Research papers",
+    "papersTitle": "Fintech research papers",
     "lede": "Benchmarks, corridor costs and market maps — built from partner records and builder evaluations, not pitch decks.",
     "cta": "Browse all reports →",
     "ctaClean": "View all reports",
@@ -418,7 +499,7 @@
     "moreProviders": "+ {count} more",
     "minRead": "min read",
     "indexTitle": "Relay data reports",
-    "indexLede": "Deep dives on fees, rails, reliability and licensing across the markets where teams expand.",
+    "indexLede": "Deep dives on global payments, digital wallets, instant rails, remittances, and fintech infrastructure across the United States, Europe, Africa, and emerging markets.",
     "reportsPublished": "{count} reports published",
     "reportsCount": "{count} reports",
     "filterAll": "All reports",
@@ -440,6 +521,9 @@
     "exploreProviders": "Ready to shortlist partners?",
     "exploreProvidersLede": "Open the provider directory and filter by the markets covered in this report.",
     "exploreProvidersCta": "Explore providers in this market",
+    "reportCtaTitle": "Turn this map into decisions for your markets",
+    "reportCtaLede": "Relay helps teams translate global payment shifts into partner shortlists, fee reality, and introductions — by market.",
+    "reportCtaLabel": "Contact sales",
     "methodology": "Data sources & methodology",
     "showMethodology": "Show methodology",
     "related": "Related reports"

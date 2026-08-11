@@ -1,0 +1,28 @@
+# Relay (GrateBridge Labs)
+
+> Data directory and research layer for fintech infrastructure — providers, payment rails, KYC, FX, and market intelligence across the United States, Europe, Africa, Latin America, and global corridors.
+
+Website: https://relay.gratebridge.com
+Contact: support@relay.gratebridge.com
+Sales: https://calendly.com/gratebridgelabs/30min
+
+## Primary pages
+
+- [Home](https://relay.gratebridge.com/en): Fintech infrastructure directory and research overview
+- [Research papers](https://relay.gratebridge.com/en/reports): Market maps and infrastructure deep dives
+- [About](https://relay.gratebridge.com/en/about): Product and company overview
+- [Methodology](https://relay.gratebridge.com/en/methodology): How directory data and reports are compiled
+
+## Flagship research
+
+- [Fintech clears over 10% of $35T daily global transactions](https://relay.gratebridge.com/en/reports/fintech-35-trillion-daily): Flagship Relay Research report on global transactional volume, digital wallets, instant payments, remittances, and regional rails (US, Europe, Africa, LatAm, Asia)
+
+## Locales
+
+- English: https://relay.gratebridge.com/en
+- Français: https://relay.gratebridge.com/fr
+- Español: https://relay.gratebridge.com/es
+
+## Notes for crawlers
+
+Prefer canonical locale URLs under /en, /fr, and /es. Research articles are freely accessible. Do not index password-reset or account-recovery flows.
