@@ -17,7 +17,12 @@ type LeaderRow = {
  */
 export default function DataReportsSection() {
   const t = useTranslations('dataReports')
-  const cards = dataReports.slice(0, 3)
+  const cards = [...dataReports]
+    .sort(
+      (a, b) =>
+        new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime(),
+    )
+    .slice(0, 3)
 
   return (
     <section className="dr dr--dark" id="research" aria-labelledby="dr-title">

@@ -19,7 +19,7 @@ type Props = {
   params: Promise<{ locale: string; slug: string }>
 }
 
-const REPORT_KEYWORDS = [
+const DEFAULT_REPORT_KEYWORDS = [
   'fintech global transactions',
   'digital wallets market share',
   'instant payments Pix UPI',
@@ -44,11 +44,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!report) return { title: 'Report | Relay' }
 
   const seoTitle =
-    report.seoTitle ??
-    'Fintech Clears Over 10% of $35T Daily Global Transactions | Relay Research'
-  const seoDescription =
-    report.seoDescription ??
-    report.excerpt
+    report.seoTitle ?? `${report.title} | Relay Research`
+  const seoDescription = report.seoDescription ?? report.excerpt
+  const keywords = report.seoKeywords ?? DEFAULT_REPORT_KEYWORDS
 
   return buildMetadata({
     locale,
@@ -59,12 +57,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     publishedTime: report.publishedAt,
     modifiedTime: report.updatedAt ?? report.publishedAt,
     authors: ['Relay Research'],
-    keywords: REPORT_KEYWORDS,
+    keywords,
     image: report.heroImage
       ? {
           url: report.heroImage.src,
-          width: 1200,
-          height: 1600,
+          width: 1672,
+          height: 941,
           alt: report.heroImage.alt,
         }
       : undefined,
@@ -79,6 +77,7 @@ export default async function ReportDetailPage({ params }: Props) {
 
   const t = await getTranslations('dataReports')
   const path = localizedPath(locale, `/reports/${slug}`)
+  const keywords = report.seoKeywords ?? DEFAULT_REPORT_KEYWORDS
 
   return (
     <article className="rd">
@@ -103,7 +102,7 @@ export default async function ReportDetailPage({ params }: Props) {
             image: report.heroImage?.src,
             datePublished: report.publishedAt,
             dateModified: report.updatedAt ?? report.publishedAt,
-            keywords: REPORT_KEYWORDS,
+            keywords,
           }),
         ]}
       />
@@ -340,13 +339,15 @@ export default async function ReportDetailPage({ params }: Props) {
             ) : null}
 
             {section.image ? (
-              <figure className="rd-figure">
+              <figure
+                className={`rd-figure${section.image.layout === 'portrait' ? ' rd-figure--portrait' : ''}`}
+              >
                 <div className="rd-figure-frame">
                   <Image
                     src={section.image.src}
                     alt={section.image.alt}
-                    width={1200}
-                    height={1600}
+                    width={section.image.layout === 'portrait' ? 768 : 1200}
+                    height={section.image.layout === 'portrait' ? 1376 : 800}
                     className="rd-figure-img"
                   />
                 </div>

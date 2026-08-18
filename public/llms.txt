@@ -16,6 +16,7 @@ Sales: https://calendly.com/gratebridgelabs/30min
 ## Flagship research
 
 - [Fintech clears over 10% of $35T daily global transactions](https://relay.gratebridge.com/en/reports/fintech-35-trillion-daily): Flagship Relay Research report on global transactional volume, digital wallets, instant payments, remittances, and regional rails (US, Europe, Africa, LatAm, Asia)
+- [Asia Pacific deep dive: the world financial powerhouse waking up](https://relay.gratebridge.com/en/reports/asia-pacific-payment-rails): Scale, history, fintech players, country gaps, foreign setup, government demand, culture, and where operators can still win across twelve Asia Pacific markets
 
 ## Locales
 

@@ -1,3 +1,5 @@
+import { asiaPacificReport } from './asia-pacific-report'
+
 export type ReportMetric = {
   label: string
   value: string
@@ -30,6 +32,8 @@ export type ReportImage = {
   src: string
   alt: string
   caption?: string
+  /** Portrait mid-report figures sit narrower; landscape fills the column. */
+  layout?: 'portrait' | 'landscape'
 }
 
 export type ReportSection = {
@@ -98,6 +102,7 @@ export type DataReport = {
   /** Shorter title for <title>, OG, and SERP (keep H1 as full title). */
   seoTitle?: string
   seoDescription?: string
+  seoKeywords?: string[]
 }
 
 export const REPORT_CATEGORIES = [
@@ -573,6 +578,7 @@ export const dataReports: DataReport[] = [
       'Company filings and blockchain analytics summaries for stablecoin transfer value',
     ],
   },
+  asiaPacificReport,
 ]
 
 export function getReport(slug: string): DataReport | undefined {

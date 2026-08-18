@@ -464,6 +464,11 @@
   height: auto;
 }
 
+.rd-figure--portrait .rd-figure-frame {
+  max-width: min(420px, 100%);
+  margin: 0 auto;
+}
+
 .rd-figure figcaption {
   margin-top: 10px;
   font-size: 13px;

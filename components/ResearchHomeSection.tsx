@@ -12,7 +12,12 @@ import './research-home.css'
  */
 export default function ResearchHomeSection() {
   const t = useTranslations('dataReports')
-  const cards = dataReports.slice(0, 6)
+  const cards = [...dataReports]
+    .sort(
+      (a, b) =>
+        new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime(),
+    )
+    .slice(0, 6)
 
   return (
     <section className="rh" id="research" aria-labelledby="rh-title">
