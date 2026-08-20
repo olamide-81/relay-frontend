@@ -3,7 +3,7 @@ import { setRequestLocale } from 'next-intl/server'
 import { getTranslations } from 'next-intl/server'
 import ReportsHub from '@/components/ReportsHub'
 import JsonLd from '@/components/JsonLd'
-import { dataReports } from '@/data/reports'
+import { getDataReports } from '@/data/reports'
 import { breadcrumbJsonLd, researchIndexJsonLd } from '@/lib/jsonld'
 import { buildMetadata } from '@/lib/seo'
 import '@/components/report-hub.css'
@@ -34,6 +34,7 @@ export default async function ReportsPage({ params }: Props) {
   const { locale } = await params
   setRequestLocale(locale)
   const t = await getTranslations('dataReports')
+  const reports = getDataReports(locale)
 
   return (
     <>
@@ -48,7 +49,7 @@ export default async function ReportsPage({ params }: Props) {
           ),
           researchIndexJsonLd(
             locale,
-            dataReports.map((r) => ({
+            reports.map((r) => ({
               title: r.seoTitle ?? r.title,
               description: r.seoDescription ?? r.excerpt,
               slug: r.slug,
@@ -62,7 +63,7 @@ export default async function ReportsPage({ params }: Props) {
           <h1>{t('papersTitle')}</h1>
           <p>{t('indexLede')}</p>
           <p className="rph-hero-count">
-            {t('reportsPublished', { count: dataReports.length })}
+            {t('reportsPublished', { count: reports.length })}
           </p>
         </div>
 

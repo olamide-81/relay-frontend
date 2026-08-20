@@ -1,8 +1,8 @@
 'use client'
 
 import { Link } from '@/i18n/navigation'
-import { useTranslations } from 'next-intl'
-import { dataReports } from '@/data/reports'
+import { useLocale, useTranslations } from 'next-intl'
+import { getDataReports } from '@/data/reports'
 import './data-reports.css'
 
 type LeaderRow = {
@@ -17,7 +17,8 @@ type LeaderRow = {
  */
 export default function DataReportsSection() {
   const t = useTranslations('dataReports')
-  const cards = [...dataReports]
+  const locale = useLocale()
+  const cards = [...getDataReports(locale)]
     .sort(
       (a, b) =>
         new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime(),

@@ -1,8 +1,8 @@
 'use client'
 
 import { Link } from '@/i18n/navigation'
-import { useTranslations } from 'next-intl'
-import { dataReports } from '@/data/reports'
+import { useLocale, useTranslations } from 'next-intl'
+import { getDataReports } from '@/data/reports'
 import ReportPaperCard from '@/components/ReportPaperCard'
 import Reveal from '@/components/Reveal'
 import './research-home.css'
@@ -12,7 +12,8 @@ import './research-home.css'
  */
 export default function ResearchHomeSection() {
   const t = useTranslations('dataReports')
-  const cards = [...dataReports]
+  const locale = useLocale()
+  const cards = [...getDataReports(locale)]
     .sort(
       (a, b) =>
         new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime(),

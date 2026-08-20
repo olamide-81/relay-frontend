@@ -40,7 +40,7 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale, slug } = await params
-  const report = getReport(slug)
+  const report = getReport(slug, locale)
   if (!report) return { title: 'Report | Relay' }
 
   const seoTitle =
@@ -72,7 +72,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function ReportDetailPage({ params }: Props) {
   const { locale, slug } = await params
   setRequestLocale(locale)
-  const report = getReport(slug)
+  const report = getReport(slug, locale)
   if (!report) notFound()
 
   const t = await getTranslations('dataReports')
@@ -136,7 +136,7 @@ export default async function ReportDetailPage({ params }: Props) {
             <span>
               {t('published')}{' '}
               <time dateTime={report.publishedAt}>
-                {formatReportDate(report.publishedAt)}
+                {formatReportDate(report.publishedAt, locale)}
               </time>
             </span>
             <span aria-hidden>·</span>
@@ -149,7 +149,7 @@ export default async function ReportDetailPage({ params }: Props) {
                 <span>
                   {t('lastUpdated')}{' '}
                   <time dateTime={report.updatedAt}>
-                    {formatReportDate(report.updatedAt)}
+                    {formatReportDate(report.updatedAt, locale)}
                   </time>
                 </span>
               </>
@@ -512,7 +512,7 @@ export default async function ReportDetailPage({ params }: Props) {
             </ul>
             {report.updatedAt ? (
               <p className="rd-method-updated">
-                {t('lastUpdated')} {formatReportDate(report.updatedAt)}
+                {t('lastUpdated')} {formatReportDate(report.updatedAt, locale)}
               </p>
             ) : null}
           </div>

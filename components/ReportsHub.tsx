@@ -1,9 +1,9 @@
 'use client'
 
 import { useMemo, useState } from 'react'
-import { useTranslations } from 'next-intl'
+import { useLocale, useTranslations } from 'next-intl'
 import {
-  dataReports,
+  getDataReports,
   getReportCategories,
   type DataReport,
 } from '@/data/reports'
@@ -17,7 +17,9 @@ const PAGE_SIZE = 9
 
 export default function ReportsHub() {
   const t = useTranslations('dataReports')
-  const categories = useMemo(() => getReportCategories(), [])
+  const locale = useLocale()
+  const reports = useMemo(() => getDataReports(locale), [locale])
+  const categories = useMemo(() => getReportCategories(locale), [locale])
   const [category, setCategory] = useState<string>('all')
   const [sort, setSort] = useState<SortMode>('latest')
   const [visible, setVisible] = useState(PAGE_SIZE)
@@ -25,8 +27,8 @@ export default function ReportsHub() {
   const filtered = useMemo(() => {
     let list: DataReport[] =
       category === 'all'
-        ? [...dataReports]
-        : dataReports.filter((r) => r.category === category)
+        ? [...reports]
+        : reports.filter((r) => r.category === category)
 
     if (sort === 'latest') {
       list.sort(
@@ -42,7 +44,7 @@ export default function ReportsHub() {
       })
     }
     return list
-  }, [category, sort])
+  }, [category, sort, reports])
 
   const shown = filtered.slice(0, visible)
   const hasMore = visible < filtered.length
@@ -80,25 +82,31 @@ export default function ReportsHub() {
           ))}
         </div>
 
-        <div className="rph-meta">
-          <p className="rph-count">{t('reportsCount', { count: filtered.length })}</p>
-          <label className="rph-sort">
-            <span>Sort</span>
-            <select
-              value={sort}
-              onChange={(e) => setSort(e.target.value as SortMode)}
-              aria-label="Sort reports"
-            >
-              <option value="latest">{t('sortLatest')}</option>
-              <option value="market">{t('sortMarket')}</option>
-            </select>
-          </label>
+        <div className="rph-sort">
+          <button
+            type="button"
+            className={`rph-sort-btn${sort === 'latest' ? ' is-active' : ''}`}
+            onClick={() => setSort('latest')}
+          >
+            {t('sortLatest')}
+          </button>
+          <button
+            type="button"
+            className={`rph-sort-btn${sort === 'market' ? ' is-active' : ''}`}
+            onClick={() => setSort('market')}
+          >
+            {t('sortMarket')}
+          </button>
         </div>
       </div>
 
+      <p className="rph-count">
+        {t('showing', { shown: shown.length, total: filtered.length })}
+      </p>
+
       <div className="rph-grid">
-        {shown.map((report, i) => (
-          <Reveal key={report.slug} delay={0.04 * (i % 3)} y={24}>
+        {shown.map((report) => (
+          <Reveal key={report.slug}>
             <ReportPaperCard report={report} />
           </Reveal>
         ))}
@@ -109,13 +117,10 @@ export default function ReportsHub() {
           <button
             type="button"
             className="rph-more-btn"
-            onClick={() => setVisible((n) => n + PAGE_SIZE)}
+            onClick={() => setVisible((v) => v + PAGE_SIZE)}
           >
             {t('loadMore')}
           </button>
-          <p>
-            {t('showing', { shown: shown.length, total: filtered.length })}
-          </p>
         </div>
       ) : null}
     </div>

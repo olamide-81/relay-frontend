@@ -1,6 +1,7 @@
 'use client'
 
 import Image from 'next/image'
+import { useLocale } from 'next-intl'
 import { Link } from '@/i18n/navigation'
 import { formatReportDate, type DataReport } from '@/data/reports'
 import './report-paper.css'
@@ -14,10 +15,11 @@ type Props = {
  * Research-paper card — hero visual / date / title.
  */
 export default function ReportPaperCard({ report, dateStyle = 'monthYear' }: Props) {
+  const locale = useLocale()
   const date =
     dateStyle === 'monthYear'
-      ? formatMonthYear(report.publishedAt)
-      : formatReportDate(report.publishedAt)
+      ? formatMonthYear(report.publishedAt, locale)
+      : formatReportDate(report.publishedAt, locale)
 
   return (
     <Link href={`/reports/${report.slug}`} className="rp-card">
@@ -42,8 +44,9 @@ export default function ReportPaperCard({ report, dateStyle = 'monthYear' }: Pro
   )
 }
 
-function formatMonthYear(iso: string) {
-  return new Date(iso).toLocaleDateString('en-US', {
+function formatMonthYear(iso: string, locale: string) {
+  const tag = locale === 'en' ? 'en-US' : locale
+  return new Date(iso).toLocaleDateString(tag, {
     month: 'long',
     year: 'numeric',
     timeZone: 'UTC',
