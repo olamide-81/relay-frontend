@@ -76,12 +76,18 @@
     "privacy": {
       "title": "Kebijakan Privasi | Relay",
       "description": "Bagaimana GrateBridge Labs mengumpulkan dan menggunakan informasi saat Anda menggunakan Relay, bergabung ke waitlist, atau menghubungi sales.",
-      "keywords": ["kebijakan privasi Relay", "privasi GrateBridge Labs"]
+      "keywords": [
+        "kebijakan privasi Relay",
+        "privasi GrateBridge Labs"
+      ]
     },
     "terms": {
       "title": "Ketentuan Penggunaan | Relay",
       "description": "Ketentuan penggunaan untuk situs web, direktori, dan layanan riset Relay yang dioperasikan oleh GrateBridge Labs.",
-      "keywords": ["ketentuan penggunaan Relay", "ketentuan GrateBridge Labs"]
+      "keywords": [
+        "ketentuan penggunaan Relay",
+        "ketentuan GrateBridge Labs"
+      ]
     }
   },
   "nav": {
@@ -194,7 +200,7 @@
         ]
       },
       {
-        "name": "Expansion-ready",
+        "name": "Siap ekspansi",
         "description": "Tetap unggul dari pergerakan pasar. Sinyal tentang jalur baru, penyedia baru, dan peluang baru — agar tim Anda tidak pernah terkejut.",
         "points": [
           "Feed langsung jalur, penyedia & regulasi",
@@ -233,7 +239,7 @@
   },
   "quote": {
     "text": "Kami hampir menandatangani mitra payout yang tidak bisa kami lepaskan selama delapan belas bulan. Relay menunjukkan tiga opsi yang lebih baik dalam sehari.",
-    "cite": "— Head of Payments, fintech scale-up"
+    "cite": "— Kepala Pembayaran, fintech yang sedang berkembang"
   },
   "floatCta": {
     "title": "Jelajahi penyedia",
@@ -243,7 +249,7 @@
     "title": "Gabung waitlist",
     "lede": "Ceritakan sedikit tentang diri Anda dan kami akan menghubungi saat akses dibuka.",
     "fullName": "Nama lengkap",
-    "fullNamePlaceholder": "Ada Lovelace",
+    "fullNamePlaceholder": "Budi Santoso",
     "email": "Alamat email",
     "emailPlaceholder": "ada@company.com",
     "role": "Peran",
@@ -251,7 +257,7 @@
     "roles": {
       "founder": "Founder",
       "engineer": "Engineer",
-      "productManager": "Product Manager",
+      "productManager": "Manajer Produk",
       "other": "Lainnya"
     },
     "company": "Nama perusahaan",
@@ -332,7 +338,7 @@
       "signIn": "Masuk",
       "google": "Lanjutkan dengan Google",
       "nameLabel": "Nama lengkap",
-      "namePlaceholder": "Ada Lovelace",
+      "namePlaceholder": "Budi Santoso",
       "companyLabel": "Perusahaan",
       "companyPlaceholder": "Nama perusahaan Anda",
       "emailLabel": "Email kerja",
@@ -474,12 +480,12 @@
       },
       {
         "id": "ready",
-        "title": "Expansion-ready",
+        "title": "Siap ekspansi",
         "lede": "Tetap unggul dari pergerakan pasar.",
         "layout": "expansion",
         "cards": [
           {
-            "title": "Expansion-ready",
+            "title": "Siap ekspansi",
             "description": "Dapatkan sinyal arah pasar — jalur baru, penyedia baru, peluang baru. Relay terus memperbarui tim Anda saat pasar bergeser, sehingga Anda tidak pernah terkejut.",
             "mock": "signals",
             "points": [

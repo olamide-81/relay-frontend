@@ -76,12 +76,18 @@
     "privacy": {
       "title": "개인정보 처리방침 | Relay",
       "description": "Relay 이용, 대기자 명단 가입, 영업팀 문의 시 GrateBridge Labs가 정보를 수집·이용하는 방식.",
-      "keywords": ["Relay 개인정보 처리방침", "GrateBridge Labs 개인정보"]
+      "keywords": [
+        "Relay 개인정보 처리방침",
+        "GrateBridge Labs 개인정보"
+      ]
     },
     "terms": {
       "title": "이용약관 | Relay",
       "description": "GrateBridge Labs가 운영하는 Relay 웹사이트, 디렉터리 및 리서치 서비스의 이용약관.",
-      "keywords": ["Relay 이용약관", "GrateBridge Labs 약관"]
+      "keywords": [
+        "Relay 이용약관",
+        "GrateBridge Labs 약관"
+      ]
     }
   },
   "nav": {
@@ -194,7 +200,7 @@
         ]
       },
       {
-        "name": "Expansion-ready",
+        "name": "확장 준비 완료",
         "description": "시장 움직임에 앞서세요. 새로운 레일, 새로운 제공업체, 새로운 기회에 대한 시그널 — 팀이 방심하지 않도록.",
         "points": [
           "레일·제공업체·규제의 라이브 피드",
@@ -243,7 +249,7 @@
     "title": "대기자 명단 가입",
     "lede": "간단한 소개를 남겨 주시면 액세스가 열릴 때 연락드리겠습니다.",
     "fullName": "성명",
-    "fullNamePlaceholder": "Ada Lovelace",
+    "fullNamePlaceholder": "홍길동",
     "email": "이메일 주소",
     "emailPlaceholder": "ada@company.com",
     "role": "역할",
@@ -332,7 +338,7 @@
       "signIn": "로그인",
       "google": "Google로 계속",
       "nameLabel": "성명",
-      "namePlaceholder": "Ada Lovelace",
+      "namePlaceholder": "홍길동",
       "companyLabel": "회사",
       "companyPlaceholder": "회사명",
       "emailLabel": "업무용 이메일",
@@ -474,12 +480,12 @@
       },
       {
         "id": "ready",
-        "title": "Expansion-ready",
+        "title": "확장 준비 완료",
         "lede": "시장 움직임에 앞서세요.",
         "layout": "expansion",
         "cards": [
           {
-            "title": "Expansion-ready",
+            "title": "확장 준비 완료",
             "description": "시장이 향하는 곳 — 새로운 레일, 새로운 제공업체, 새로운 기회에 대한 시그널을 받으세요. Relay는 시장이 변할 때 팀을 업데이트해 방심하지 않게 합니다.",
             "mock": "signals",
             "points": [

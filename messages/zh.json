@@ -76,12 +76,18 @@
     "privacy": {
       "title": "隐私政策 | Relay",
       "description": "您在使用 Relay、加入候补名单或联系销售时，GrateBridge Labs 如何收集与使用信息。",
-      "keywords": ["Relay 隐私政策", "GrateBridge Labs 隐私"]
+      "keywords": [
+        "Relay 隐私政策",
+        "GrateBridge Labs 隐私"
+      ]
     },
     "terms": {
       "title": "使用条款 | Relay",
       "description": "由 GrateBridge Labs 运营的 Relay 网站、目录与研究服务的使用条款。",
-      "keywords": ["Relay 使用条款", "GrateBridge Labs 条款"]
+      "keywords": [
+        "Relay 使用条款",
+        "GrateBridge Labs 条款"
+      ]
     }
   },
   "nav": {
@@ -194,7 +200,7 @@
         ]
       },
       {
-        "name": "Expansion-ready",
+        "name": "可扩展部署",
         "description": "领先于市场变化。关于新通道、新服务商与新机会的信号——让你的团队永远不会措手不及。",
         "points": [
           "通道、服务商与监管的实时动态",
@@ -243,7 +249,7 @@
     "title": "加入候补名单",
     "lede": "告诉我们一些关于您的信息，开放访问时我们会与您联系。",
     "fullName": "全名",
-    "fullNamePlaceholder": "Ada Lovelace",
+    "fullNamePlaceholder": "张三",
     "email": "电子邮箱",
     "emailPlaceholder": "ada@company.com",
     "role": "职位",
@@ -332,7 +338,7 @@
       "signIn": "登录",
       "google": "使用 Google 继续",
       "nameLabel": "全名",
-      "namePlaceholder": "Ada Lovelace",
+      "namePlaceholder": "张三",
       "companyLabel": "公司",
       "companyPlaceholder": "您的公司名称",
       "emailLabel": "工作邮箱",
@@ -474,12 +480,12 @@
       },
       {
         "id": "ready",
-        "title": "Expansion-ready",
+        "title": "可扩展部署",
         "lede": "领先于市场变化。",
         "layout": "expansion",
         "cards": [
           {
-            "title": "Expansion-ready",
+            "title": "可扩展部署",
             "description": "获取市场走向信号——新通道、新服务商、新机会。Relay 在市场变化时持续更新您的团队，让您永远不会措手不及。",
             "mock": "signals",
             "points": [

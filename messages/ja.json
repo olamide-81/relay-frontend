@@ -76,12 +76,18 @@
     "privacy": {
       "title": "プライバシーポリシー | Relay",
       "description": "Relayの利用、ウェイトリスト登録、セールスへの連絡時にGrateBridge Labsが情報をどのように収集・利用するか。",
-      "keywords": ["Relayプライバシーポリシー", "GrateBridge Labsプライバシー"]
+      "keywords": [
+        "Relayプライバシーポリシー",
+        "GrateBridge Labsプライバシー"
+      ]
     },
     "terms": {
       "title": "利用規約 | Relay",
       "description": "GrateBridge Labsが運営するRelayウェブサイト、ディレクトリ、リサーチサービスの利用規約。",
-      "keywords": ["Relay利用規約", "GrateBridge Labs利用規約"]
+      "keywords": [
+        "Relay利用規約",
+        "GrateBridge Labs利用規約"
+      ]
     }
   },
   "nav": {
@@ -194,7 +200,7 @@
         ]
       },
       {
-        "name": "Expansion-ready",
+        "name": "拡張対応",
         "description": "市場の動きを先取り。新しいレール、新しいプロバイダー、新しい機会のシグナル——チームが不意をつかれないように。",
         "points": [
           "レール・プロバイダー・規制のライブフィード",
@@ -243,7 +249,7 @@
     "title": "ウェイトリストに登録",
     "lede": "少し自己紹介をいただければ、アクセス開始時にご連絡します。",
     "fullName": "氏名",
-    "fullNamePlaceholder": "Ada Lovelace",
+    "fullNamePlaceholder": "山田 太郎",
     "email": "メールアドレス",
     "emailPlaceholder": "ada@company.com",
     "role": "役職",
@@ -332,7 +338,7 @@
       "signIn": "サインイン",
       "google": "Googleで続行",
       "nameLabel": "氏名",
-      "namePlaceholder": "Ada Lovelace",
+      "namePlaceholder": "山田 太郎",
       "companyLabel": "会社",
       "companyPlaceholder": "会社名",
       "emailLabel": "勤務先メール",
@@ -474,12 +480,12 @@
       },
       {
         "id": "ready",
-        "title": "Expansion-ready",
+        "title": "拡張対応",
         "lede": "市場の動きを先取り。",
         "layout": "expansion",
         "cards": [
           {
-            "title": "Expansion-ready",
+            "title": "拡張対応",
             "description": "市場の方向性——新しいレール、新しいプロバイダー、新しい機会のシグナルを取得。Relayは市場の変化に合わせてチームを更新し、不意をつかれないようにします。",
             "mock": "signals",
             "points": [
