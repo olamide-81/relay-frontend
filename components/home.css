@@ -298,6 +298,37 @@
   padding-top: 2px;
 }
 
+.nav-overlay-actions .nav-locale .locale-switcher-trigger {
+  color: rgba(255, 255, 255, 0.88);
+  border-color: rgba(255, 255, 255, 0.22);
+  background: transparent;
+}
+
+.nav-overlay-actions .nav-locale .locale-switcher-trigger:hover {
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.45);
+}
+
+.nav-overlay-actions .nav-locale .locale-switcher-menu {
+  background: #121212;
+  border-color: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+}
+
+.nav-overlay-actions .nav-locale .locale-switcher-option {
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.nav-overlay-actions .nav-locale .locale-switcher-option:hover,
+.nav-overlay-actions .nav-locale .locale-switcher-option.is-active {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+}
+
+.nav-overlay-actions .nav-locale .locale-switcher-divider {
+  background: rgba(255, 255, 255, 0.12);
+}
+
 .nav-overlay-login {
   font-family: var(--font-geist);
   font-size: 13px;
@@ -482,6 +513,54 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
+}
+
+.nav-drawer-locale {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 4px 0 8px;
+}
+
+.nav-drawer-locale-label {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.nav-drawer-locale .nav-locale {
+  align-self: flex-start;
+}
+
+.nav-drawer-locale .locale-switcher-trigger {
+  color: rgba(255, 255, 255, 0.88);
+  border-color: rgba(255, 255, 255, 0.16);
+  background: transparent;
+  padding: 8px 12px;
+  border-radius: 999px;
+}
+
+.nav-drawer-locale .locale-switcher-menu {
+  left: 0;
+  right: auto;
+  background: #121212;
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.nav-drawer-locale .locale-switcher-option {
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.nav-drawer-locale .locale-switcher-option:hover,
+.nav-drawer-locale .locale-switcher-option.is-active {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+}
+
+.nav-drawer-locale .locale-switcher-divider {
+  background: rgba(255, 255, 255, 0.12);
 }
 
 .nav-drawer-login {
@@ -1488,6 +1567,14 @@
   font-size: 13px;
 }
 
+.footer--cinema .footer-locale .locale-switcher-divider {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.footer--cinema .footer-locale .locale-switcher-menu {
+  z-index: 40;
+}
+
 @media (max-width: 900px) {
   .footer--cinema {
     padding: 0 20px 0;
@@ -1718,6 +1805,10 @@
 .footer-locale .locale-switcher-option.is-active {
   background: rgba(255, 255, 255, 0.06);
   color: var(--text-on-ink);
+}
+
+.footer-locale .locale-switcher-divider {
+  background: rgba(255, 255, 255, 0.12);
 }
 
 .footer-disclaimer p {

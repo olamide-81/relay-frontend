@@ -2,6 +2,12 @@
   position: relative;
   display: inline-flex;
   align-items: center;
+  z-index: 5;
+}
+
+.locale-switcher-wrap.is-pending {
+  opacity: 0.72;
+  pointer-events: none;
 }
 
 .locale-switcher-trigger {
@@ -26,7 +32,7 @@
   position: absolute;
   top: calc(100% + 8px);
   right: 0;
-  z-index: 120;
+  z-index: 200;
   min-width: 188px;
   max-height: min(70vh, 360px);
   overflow-y: auto;
@@ -37,6 +43,26 @@
   border: 1px solid var(--line);
   background: var(--paper-pure);
   box-shadow: 0 12px 32px rgba(11, 11, 12, 0.08);
+  -webkit-overflow-scrolling: touch;
+}
+
+.locale-switcher-wrap--footer .locale-switcher-menu {
+  /* Open upward in the footer so the menu is not clipped by the page edge. */
+  top: auto;
+  bottom: calc(100% + 8px);
+}
+
+.locale-switcher-group,
+.locale-switcher-group-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.locale-switcher-divider {
+  height: 1px;
+  margin: 4px 8px;
+  background: var(--line);
 }
 
 .locale-switcher-option {

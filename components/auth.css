@@ -144,6 +144,10 @@
   color: #fff;
 }
 
+.auth-locale .locale-switcher-divider {
+  background: rgba(255, 255, 255, 0.12);
+}
+
 .auth-logo--mobile {
   display: none;
   align-items: center;
@@ -425,6 +429,13 @@
 
 .auth-legal a:hover {
   color: #fff;
+}
+
+.auth-error {
+  margin: 0 0 16px;
+  font-size: 0.85rem;
+  line-height: 1.45;
+  color: #fe5d45;
 }
 
 /* ─── Success ─── */

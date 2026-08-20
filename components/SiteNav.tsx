@@ -4,6 +4,7 @@ import Image from 'next/image'
 import { useEffect, useId, useState } from 'react'
 import { useTranslations } from 'next-intl'
 import { Link } from '@/i18n/navigation'
+import { LocaleSwitcher } from '@/components/LocaleSwitcher'
 import { useWaitlist } from '@/components/WaitlistModal'
 import './home.css'
 
@@ -105,6 +106,11 @@ export default function SiteNav({ solid = false }: Props) {
           </Link>
 
           <div className="nav-overlay-actions">
+            <LocaleSwitcher
+              className="nav-locale nav-hide-sm"
+              variant="nav"
+              label={t('nav.languageLabel')}
+            />
             <Link href="/signin" className="nav-overlay-login">
               {t('nav.login')}
             </Link>
@@ -142,6 +148,11 @@ export default function SiteNav({ solid = false }: Props) {
           </nav>
 
           <div className="nav-actions">
+            <LocaleSwitcher
+              className="nav-locale nav-hide-sm"
+              variant="nav"
+              label={t('nav.languageLabel')}
+            />
             <Link href="/signin" className="nav-signin nav-hide-sm">
               {t('nav.login')}
             </Link>
@@ -179,6 +190,14 @@ export default function SiteNav({ solid = false }: Props) {
             {links}
           </nav>
           <div className="nav-drawer-actions">
+            <div className="nav-drawer-locale">
+              <span className="nav-drawer-locale-label">{t('nav.languageLabel')}</span>
+              <LocaleSwitcher
+                className="nav-locale"
+                variant="nav"
+                label={t('nav.languageLabel')}
+              />
+            </div>
             <Link href="/signin" className="nav-drawer-login" onClick={closeMenu}>
               {t('nav.login')}
             </Link>

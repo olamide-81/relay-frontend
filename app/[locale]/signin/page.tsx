@@ -2,19 +2,50 @@
 
 import { useState } from 'react'
 import { useTranslations } from 'next-intl'
-import { Link } from '@/i18n/navigation'
+import { Link, useRouter } from '@/i18n/navigation'
 import { AuthShell, AuthField, GoogleButton } from '@/components/AuthShell'
+import { login, loginWithGoogle } from '@/lib/api/auth'
+import { ApiError } from '@/lib/api/simulate'
 
 export default function SignInPage() {
   const t = useTranslations('auth.signin')
   const tAuth = useTranslations('auth')
+  const router = useRouter()
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [googleLoading, setGoogleLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const busy = loading || googleLoading
 
-  const onSubmit = (e: React.FormEvent) => {
+  const goDashboard = () => router.push('/dashboard')
+
+  const onGoogle = async () => {
+    setError(null)
+    setGoogleLoading(true)
+    try {
+      await loginWithGoogle()
+      goDashboard()
+    } catch (e) {
+      setError(e instanceof ApiError ? e.message : 'Could not sign in with Google')
+      setGoogleLoading(false)
+    }
+  }
+
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    setError(null)
     setLoading(true)
-    setTimeout(() => setLoading(false), 1200)
+    const form = new FormData(e.currentTarget)
+    try {
+      await login({
+        email: String(form.get('email') ?? ''),
+        password: String(form.get('password') ?? ''),
+      })
+      goDashboard()
+    } catch (err) {
+      setError(err instanceof ApiError ? err.message : 'Could not sign in')
+      setLoading(false)
+    }
   }
 
   return (
@@ -27,9 +58,16 @@ export default function SignInPage() {
         </p>
       </div>
 
-      <GoogleButton label={t('google')} />
+      <GoogleButton
+        label={googleLoading ? t('submitting') : t('google')}
+        loading={googleLoading}
+        disabled={busy}
+        onClick={onGoogle}
+      />
 
       <div className="auth-divider">{tAuth('or')}</div>
+
+      {error && <p className="auth-error">{error}</p>}
 
       <form className="auth-form" onSubmit={onSubmit}>
         <AuthField
@@ -71,7 +109,7 @@ export default function SignInPage() {
           {t('remember')}
         </label>
 
-        <button type="submit" className="auth-submit" disabled={loading}>
+        <button type="submit" className="auth-submit" disabled={busy}>
           {loading ? t('submitting') : t('submit')}
         </button>
       </form>
