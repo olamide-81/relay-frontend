@@ -1,11 +1,19 @@
 import { asiaPacificReport } from './asia-pacific-report'
 import { asiaPacificReportEs } from './asia-pacific-report.es'
 import { asiaPacificReportFr } from './asia-pacific-report.fr'
+import { asiaPacificReportId } from './asia-pacific-report.id'
+import { asiaPacificReportJa } from './asia-pacific-report.ja'
+import { asiaPacificReportKo } from './asia-pacific-report.ko'
+import { asiaPacificReportZh } from './asia-pacific-report.zh'
 import { fintech35TrillionReport } from './fintech-35-trillion-report'
 import { fintech35TrillionReportEs } from './fintech-35-trillion-report.es'
 import { fintech35TrillionReportFr } from './fintech-35-trillion-report.fr'
+import { fintech35TrillionReportId } from './fintech-35-trillion-report.id'
+import { fintech35TrillionReportJa } from './fintech-35-trillion-report.ja'
+import { fintech35TrillionReportKo } from './fintech-35-trillion-report.ko'
+import { fintech35TrillionReportZh } from './fintech-35-trillion-report.zh'
 import type { Locale } from '@/i18n/routing'
-import { routing } from '@/i18n/routing'
+import { localeTags, routing } from '@/i18n/routing'
 
 export type ReportMetric = {
   label: string
@@ -134,6 +142,10 @@ const reportsByLocale: Record<Locale, DataReport[]> = {
   en: dataReports,
   fr: [fintech35TrillionReportFr, asiaPacificReportFr],
   es: [fintech35TrillionReportEs, asiaPacificReportEs],
+  zh: [fintech35TrillionReportZh, asiaPacificReportZh],
+  ja: [fintech35TrillionReportJa, asiaPacificReportJa],
+  ko: [fintech35TrillionReportKo, asiaPacificReportKo],
+  id: [fintech35TrillionReportId, asiaPacificReportId],
 }
 
 function resolveLocale(locale?: string): Locale {
@@ -169,8 +181,7 @@ export function getReportCategories(locale?: string): string[] {
 
 export function formatReportDate(iso: string, locale?: string): string {
   const loc = resolveLocale(locale)
-  const tag = loc === 'en' ? 'en-GB' : loc
-  return new Date(iso).toLocaleDateString(tag, {
+  return new Date(iso).toLocaleDateString(localeTags[loc], {
     day: 'numeric',
     month: 'short',
     year: 'numeric',

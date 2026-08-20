@@ -3,6 +3,7 @@
 import Image from 'next/image'
 import { useLocale } from 'next-intl'
 import { Link } from '@/i18n/navigation'
+import { localeTags } from '@/i18n/routing'
 import { formatReportDate, type DataReport } from '@/data/reports'
 import './report-paper.css'
 
@@ -45,8 +46,13 @@ export default function ReportPaperCard({ report, dateStyle = 'monthYear' }: Pro
 }
 
 function formatMonthYear(iso: string, locale: string) {
-  const tag = locale === 'en' ? 'en-US' : locale
-  return new Date(iso).toLocaleDateString(tag, {
+  const tag =
+    locale in localeTags
+      ? localeTags[locale as keyof typeof localeTags]
+      : locale === 'en'
+        ? 'en-US'
+        : locale
+  return new Date(iso).toLocaleDateString(tag === 'en-GB' ? 'en-US' : tag, {
     month: 'long',
     year: 'numeric',
     timeZone: 'UTC',

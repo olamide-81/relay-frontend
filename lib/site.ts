@@ -14,6 +14,10 @@ export const OG_LOCALE: Record<string, string> = {
   en: 'en_US',
   fr: 'fr_FR',
   es: 'es_ES',
+  zh: 'zh_CN',
+  ja: 'ja_JP',
+  ko: 'ko_KR',
+  id: 'id_ID',
 }
 
 /** Markets we explicitly optimize discovery for. */
@@ -25,4 +29,11 @@ export const SEO_REGIONS = [
   'Africa',
   'Latin America',
   'Middle East',
+  'Asia Pacific',
+  'China',
+  'Japan',
+  'South Korea',
+  'India',
+  'Southeast Asia',
+  'Indonesia',
 ] as const

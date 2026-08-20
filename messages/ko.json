@@ -1,0 +1,640 @@
+{
+  "metadata": {
+    "title": "Relay | 글로벌 시장을 위한 핀테크 인프라 디렉터리 및 리서치",
+    "description": "미국, 유럽, 아프리카 및 신흥 시장에 걸친 핀테크 인프라, 결제 레일, 제공업체에 대한 데이터 디렉터리와 리서치."
+  },
+  "seo": {
+    "title": "Relay | 핀테크 인프라 디렉터리 및 시장 조사",
+    "description": "미국, 유럽, 아프리카, 라틴아메리카 및 글로벌 복도에 걸친 핀테크 제공업체, 결제 레일, KYC, FX, 시장 인텔리전스를 매핑합니다. 전 세계로 확장하는 빌더를 위한 리서치 기반 파트너 숏리스트.",
+    "keywords": [
+      "핀테크 인프라 디렉터리",
+      "결제 레일 제공업체",
+      "핀테크 시장 조사",
+      "아프리카 국경 간 결제",
+      "유럽 오픈 뱅킹 핀테크",
+      "미국 결제 제공업체",
+      "KYC 제공업체 디렉터리",
+      "FX 복도",
+      "신흥 시장 디지털 지갑",
+      "즉시 결제 Pix UPI",
+      "송금 인프라",
+      "핀테크 파트너 숏리스트",
+      "GrateBridge Labs Relay"
+    ],
+    "faq": [
+      {
+        "question": "Relay란 무엇인가요?",
+        "answer": "Relay는 핀테크 인프라를 위한 데이터 디렉터리이자 리서치 레이어입니다. 제공업체, 결제 레일, 수수료, 커버리지, 시장 인텔리전스를 매핑하여 미주, 유럽, 아프리카 및 기타 지역으로 확장하는 팀이 근거를 바탕으로 파트너를 숏리스트할 수 있도록 돕습니다."
+      },
+      {
+        "question": "Relay는 어떤 지역을 다루나요?",
+        "answer": "Relay는 글로벌 확장 복도에 초점을 두며, 미국, 캐나다, 유럽, 영국, 아프리카, 라틴아메리카, 중동, 아시아태평양 결제 시장에서 깊이 있는 커버리지를 제공합니다."
+      },
+      {
+        "question": "Relay는 어떤 종류의 리서치를 발행하나요?",
+        "answer": "Relay Research는 시장 맵, 복도 벤치마크, 인프라 심층 분석을 발행합니다. 글로벌 거래량, 디지털 지갑, 즉시 결제, 송금, 지역 핀테크 레일에 대한 플래그십 분석을 포함합니다."
+      },
+      {
+        "question": "Relay 영업팀에 어떻게 연락하나요?",
+        "answer": "Contact sales를 통해 Calendly에서 대화를 예약하거나 support@relay.gratebridge.com으로 이메일을 보내세요. 제품 액세스를 위해 사이트에서 대기자 명단에 가입하세요."
+      }
+    ],
+    "reports": {
+      "title": "핀테크 리서치 페이퍼 및 시장 맵 | Relay Research",
+      "description": "글로벌 결제, 디지털 지갑, 즉시 레일, 송금, 그리고 미국·유럽·아프리카·신흥 시장 인프라에 대한 Bloomberg급 핀테크 리서치. Relay의 무료 리서치 페이퍼.",
+      "keywords": [
+        "핀테크 리서치 페이퍼",
+        "글로벌 결제 리서치",
+        "디지털 지갑 시장 점유율",
+        "즉시 결제 리서치",
+        "아프리카 핀테크 송금",
+        "유럽 오픈 뱅킹 리서치",
+        "미국 핀테크 인프라",
+        "국경 간 결제 복도",
+        "Relay Research"
+      ]
+    },
+    "about": {
+      "title": "Relay 소개 | GrateBridge Labs의 핀테크 데이터 디렉터리",
+      "description": "GrateBridge Labs가 구축한 Relay는 핀테크 인프라 제공업체를 매핑하고, 미주·유럽·아프리카·글로벌 복도로 확장하는 팀을 위한 시장 조사를 발행합니다.",
+      "keywords": [
+        "Relay 소개",
+        "GrateBridge Labs",
+        "핀테크 데이터 회사",
+        "결제 인프라 인텔리전스"
+      ]
+    },
+    "methodology": {
+      "title": "리서치 방법론 | Relay 핀테크 데이터 및 리포트",
+      "description": "Relay가 제공업체 디렉터리 데이터, 결제 레일 벤치마크, 시장 조사를 어떻게 구성하는가 — 미국, 유럽, 아프리카 및 글로벌 시장을 위한 출처, 발행 기준, 한계.",
+      "keywords": [
+        "핀테크 리서치 방법론",
+        "결제 데이터 출처",
+        "제공업체 디렉터리 방법론"
+      ]
+    },
+    "privacy": {
+      "title": "개인정보 처리방침 | Relay",
+      "description": "Relay 이용, 대기자 명단 가입, 영업팀 문의 시 GrateBridge Labs가 정보를 수집·이용하는 방식.",
+      "keywords": ["Relay 개인정보 처리방침", "GrateBridge Labs 개인정보"]
+    },
+    "terms": {
+      "title": "이용약관 | Relay",
+      "description": "GrateBridge Labs가 운영하는 Relay 웹사이트, 디렉터리 및 리서치 서비스의 이용약관.",
+      "keywords": ["Relay 이용약관", "GrateBridge Labs 약관"]
+    }
+  },
+  "nav": {
+    "brand": "Relay",
+    "brandMark": "Relay.",
+    "login": "로그인",
+    "contactSales": "영업팀 문의",
+    "pricing": "요금",
+    "getStarted": "시작하기",
+    "getInTouch": "문의하기",
+    "joinWaitlist": "대기자 명단 가입",
+    "joinWaitlistShort": "대기자 명단",
+    "providers": "제공업체",
+    "reports": "리포트",
+    "research": "리서치",
+    "primaryLabel": "기본",
+    "languageLabel": "언어",
+    "openMenu": "메뉴 열기",
+    "closeMenu": "메뉴 닫기",
+    "menuLabel": "사이트 메뉴"
+  },
+  "banner": {
+    "tag": "NEW",
+    "text": "수금, 지급, 뱅킹, FX, KYC, 카드에 걸쳐 240개 이상의 파트너를 매핑했습니다.",
+    "link": "리포트 보기 →",
+    "dismiss": "공지 닫기"
+  },
+  "hero": {
+    "kicker": "글로벌 확장",
+    "title": "글로벌 핀테크 인프라를 위한 데이터 및 파트너 디렉터리.",
+    "titleLine1": "데이터 및 파트너 디렉터리",
+    "titleLine2": "글로벌 핀테크 인프라를 위해",
+    "subtext": "제공업체, 규제, 결제 레일, 시장 데이터 — 전 세계 모든 핀테크 시장을 한곳에.",
+    "emailPlaceholder": "업무용 이메일을 입력하세요",
+    "cta": "시작하기",
+    "watchPreview": "미리보기 시청",
+    "bookDemo": "제공업체 보기",
+    "secondaryCta": "제공업체 보기",
+    "productLabel": "제공 내용",
+    "indexLabel": "Relay 내부",
+    "markets": [
+      "보고타",
+      "멕시코시티",
+      "상파울루",
+      "리스본",
+      "두바이",
+      "마드리드"
+    ],
+    "offerings": [
+      {
+        "name": "제공업체",
+        "role": "시장·카테고리별 검증된 파트너"
+      },
+      {
+        "name": "데이터 및 인사이트",
+        "role": "시장 커버리지, 레일, 수수료"
+      },
+      {
+        "name": "소개",
+        "role": "숏리스트한 팀으로의 따뜻한 연결"
+      },
+      {
+        "name": "분석",
+        "role": "결정 전에 옵션을 비교"
+      },
+      {
+        "name": "예측",
+        "role": "시장 방향에 대한 시그널"
+      }
+    ]
+  },
+  "position": {
+    "kicker": "추측의 대가",
+    "title": "시장에서 운영한다는 것이\n맹목적인 탐색을 의미해서는 안 됩니다.",
+    "lede": "좋은 데이터는 운영 방식을 바꿉니다. 시장 이면의 인프라,\n제공업체 비교, 전체 시스템의 실제 작동 방식에 대한 실질적 인사이트를 제공합니다. Relay는 한발 앞서 나가며,\n올바른 데이터가 있으면 답을 찾는 대신 고객에게 더 집중할 수 있습니다."
+  },
+  "intelligence": {
+    "kicker": "추측의 대가",
+    "title": "시장에서 운영한다는 것이 맹목적인 탐색을 의미해서는 안 됩니다.",
+    "lede": "좋은 데이터는 운영 방식을 바꿉니다. 시장 이면의 인프라, 제공업체 비교, 전체 시스템의 실제 작동 방식에 대한 실질적 인사이트를 제공해 — 답을 찾는 대신 고객에게 집중할 수 있게 합니다.",
+    "products": [
+      {
+        "name": "Discover",
+        "description": "시장·카테고리별 검증된 제공업체 — 중요한 기준으로 필터링한 뒤 한곳에서 숏리스트.",
+        "points": [
+          "시장·카테고리별 필터",
+          "수수료, 레일, 커버리지 확인",
+          "한 화면에서 숏리스트",
+          "복도별 실시간 시장 존재"
+        ]
+      },
+      {
+        "name": "Research",
+        "description": "결정하기 전에 이해하세요. 규제, 레일, 수수료를 팀이 신뢰할 수 있는 브리프로 매핑 — 아웃리치가 고정되기 전에.",
+        "points": [
+          "시장별 규제 상태",
+          "레일, 수수료, 정산 시간",
+          "제공업체 나란히 비교",
+          "핵심 차별화 요소 표시"
+        ]
+      },
+      {
+        "name": "Act",
+        "description": "리서치에서 관계로. 숏리스트 작성, 진행 추적, 담당자 지정, 소개 받기 — Relay를 떠나지 않고.",
+        "points": [
+          "숏리스트 → 평가 → 대화 → 소개",
+          "담당자, 우선순위, 실시간 활동",
+          "보드에서 소개 요청",
+          "의사결정을 묻힌 이메일에서 지키기"
+        ]
+      },
+      {
+        "name": "Expansion-ready",
+        "description": "시장 움직임에 앞서세요. 새로운 레일, 새로운 제공업체, 새로운 기회에 대한 시그널 — 팀이 방심하지 않도록.",
+        "points": [
+          "레일·제공업체·규제의 라이브 피드",
+          "시장 상태를 한눈에",
+          "이번 주 변화를 파악"
+        ]
+      }
+    ]
+  },
+  "providers": {
+    "kicker": "제공업체",
+    "title": "1년을 투입하기 전에 적합한 인프라 파트너를 찾으세요.",
+    "lede": "시장·카테고리별로 검증된 핀테크 제공업체를 검색, 비교, 숏리스트하세요. 파트너십 실수를 감당할 수 없는, 새 복도로 확장하는 팀을 위해 설계되었습니다.",
+    "items": [
+      {
+        "title": "시장별 검색",
+        "description": "국가, 카테고리, 레일, 수수료, 샌드박스 액세스로 240개 이상 제공업체를 필터링 — 실제로 필요한 곳에서 운영하는 업체를 확인하세요.",
+        "visual": "search"
+      },
+      {
+        "title": "나란히 비교",
+        "description": "수수료, 정산 시간, 커버리지, 라이선스를 나란히 배치하세요. 브로슈어 주장이 아닌 측정 가능한 데이터로 점수를 매기세요.",
+        "visual": "compare"
+      },
+      {
+        "title": "숏리스트 작성",
+        "description": "팀과 숏리스트를 공유하세요 — 담당자, 우선순위, 노트를 한곳에 모아 덱과 이메일 스레드에 흩어지지 않게.",
+        "visual": "shortlist"
+      },
+      {
+        "title": "소개 요청",
+        "description": "대화할 준비가 되면 Relay를 떠나지 않고 제공업체 팀에 대한 따뜻한 소개를 요청하세요.",
+        "visual": "intros"
+      }
+    ]
+  },
+  "quote": {
+    "text": "18개월간 풀 수 없는 지급 파트너와 거의 계약할 뻔했습니다. Relay는 하루 만에 세 가지 더 나은 옵션을 보여 주었습니다.",
+    "cite": "— 결제 책임자, 핀테크 스케일업"
+  },
+  "floatCta": {
+    "title": "제공업체 탐색",
+    "subtitle": "240개 이상 파트너"
+  },
+  "waitlist": {
+    "title": "대기자 명단 가입",
+    "lede": "간단한 소개를 남겨 주시면 액세스가 열릴 때 연락드리겠습니다.",
+    "fullName": "성명",
+    "fullNamePlaceholder": "Ada Lovelace",
+    "email": "이메일 주소",
+    "emailPlaceholder": "ada@company.com",
+    "role": "역할",
+    "rolePlaceholder": "역할을 선택하세요",
+    "roles": {
+      "founder": "창업자",
+      "engineer": "엔지니어",
+      "productManager": "프로덕트 매니저",
+      "other": "기타"
+    },
+    "company": "회사명",
+    "companyPlaceholder": "회사명",
+    "submit": "대기자 명단 가입",
+    "close": "닫기",
+    "successTitle": "명단에 등록되었습니다",
+    "successLede": "감사합니다 — Relay가 준비되면 연락드리겠습니다.",
+    "done": "완료"
+  },
+  "footer": {
+    "closing": "올바른 인프라 파트너는 그 어느 때보다 중요합니다",
+    "sitemapLabel": "푸터",
+    "support": "지원",
+    "supportEmail": "support@relay.gratebridge.com",
+    "product": "제품",
+    "providers": "제공업체",
+    "howItWorks": "작동 방식",
+    "reports": "리포트",
+    "joinWaitlist": "대기자 명단 가입",
+    "resources": "리소스",
+    "researchPapers": "리서치 페이퍼",
+    "methodology": "방법론",
+    "about": "소개",
+    "contactSales": "영업팀 문의",
+    "account": "계정",
+    "signIn": "로그인",
+    "createAccount": "계정 만들기",
+    "language": "언어",
+    "disclaimer": "Relay는 인프라 디렉터리 및 소개 서비스입니다. 게시된 수수료, 정산 시간, 커버리지는 참고용이며 제공업체 문서와 빌더 보고에서 취합되었고 사전 고지 없이 변경될 수 있습니다. Relay는 결제 기관이 아니며 금융·법률·규제 자문을 제공하지 않습니다.",
+    "copyright": "© 2026 GrateBridge Labs — All rights reserved",
+    "privacy": "개인정보",
+    "terms": "약관"
+  },
+  "images": {
+    "logoAlt": "Relay 로고 — 핀테크 인프라 디렉터리"
+  },
+  "auth": {
+    "brand": "Relay",
+    "brandMark": "Relay.",
+    "logoAlt": "Relay 로고 — 핀테크 인프라 디렉터리",
+    "backToSite": "사이트로 돌아가기",
+    "copyright": "© 2026 GrateBridge Labs",
+    "languageLabel": "언어",
+    "or": "또는",
+    "show": "표시",
+    "hide": "숨기기",
+    "terms": "약관",
+    "privacyPolicy": "개인정보 처리방침",
+    "signin": {
+      "metadata": {
+        "title": "로그인 | Relay 핀테크 제공업체 디렉터리",
+        "description": "Relay에 로그인하여 핀테크 제공업체를 비교하고, 결제 레일 데이터를 확인하며, 콜롬비아, 멕시코, 브라질, 포르투갈, 걸프 등에서 제공업체 소개를 관리하세요."
+      },
+      "asideLine": "제공업체 데이터와 시장 인텔리전스를 한곳에.",
+      "title": "로그인",
+      "subtitleBefore": "Relay가 처음이신가요?",
+      "createAccount": "계정 만들기",
+      "google": "Google로 계속",
+      "emailLabel": "업무용 이메일",
+      "emailPlaceholder": "you@company.com",
+      "passwordLabel": "비밀번호",
+      "forgotPassword": "비밀번호를 잊으셨나요?",
+      "remember": "로그인 상태 유지",
+      "submit": "로그인",
+      "submitting": "로그인 중…",
+      "legalBefore": "계속하면 다음에 동의하는 것입니다:",
+      "legalAnd": "및"
+    },
+    "signup": {
+      "metadata": {
+        "title": "계정 만들기 | Relay 핀테크 디렉터리",
+        "description": "무료 Relay 계정을 만들어 검증된 핀테크 제공업체를 비교하고, 결제 레일 데이터를 탐색하며, 콜롬비아, 멕시코, 브라질, 포르투갈, 걸프 등에서 소개를 요청하세요."
+      },
+      "asideLine": "디렉터리부터 시작하세요. 맞는 파트너를 숏리스트하세요.",
+      "title": "계정 만들기",
+      "subtitleBefore": "이미 계정이 있으신가요?",
+      "signIn": "로그인",
+      "google": "Google로 계속",
+      "nameLabel": "성명",
+      "namePlaceholder": "Ada Lovelace",
+      "companyLabel": "회사",
+      "companyPlaceholder": "회사명",
+      "emailLabel": "업무용 이메일",
+      "emailPlaceholder": "you@company.com",
+      "passwordLabel": "비밀번호",
+      "passwordPlaceholder": "최소 8자",
+      "termsAgree": "이용약관 및 개인정보 처리방침에 동의합니다",
+      "submit": "계정 만들기",
+      "submitting": "계정 생성 중…",
+      "footnote": "전 세계 핀테크 인프라를 평가하는 팀을 위해 구축되었습니다."
+    },
+    "forgotPassword": {
+      "metadata": {
+        "title": "비밀번호 재설정 | Relay",
+        "description": "Relay 계정 비밀번호를 재설정하세요. Relay는 제공업체 비교와 시장별 결제 레일 데이터 확인을 위한 핀테크 인프라 디렉터리입니다."
+      },
+      "asideLine": "몇 분 안에 Relay로 돌아오실 수 있습니다.",
+      "title": "비밀번호 찾기",
+      "subtitle": "업무용 이메일을 입력하시면 비밀번호 재설정 링크를 보내 드립니다.",
+      "emailLabel": "업무용 이메일",
+      "emailPlaceholder": "you@company.com",
+      "submit": "재설정 링크 보내기",
+      "submitting": "링크 전송 중…",
+      "rememberPassword": "비밀번호가 기억나시나요?",
+      "signIn": "로그인",
+      "successTitle": "받은편지함을 확인하세요",
+      "successBefore": "비밀번호 재설정 링크를 다음으로 보냈습니다:",
+      "successAfter": "링크는 30분 후 만료됩니다.",
+      "yourEmail": "귀하의 이메일",
+      "resend": "이메일 다시 보내기",
+      "openReset": "비밀번호 재설정으로 계속",
+      "backToSignIn": "돌아가기"
+    },
+    "resetPassword": {
+      "metadata": {
+        "title": "새 비밀번호 설정 | Relay",
+        "description": "Relay 계정의 새 비밀번호를 선택하세요."
+      },
+      "asideLine": "여기서 사용한 적 없는 강력한 비밀번호를 선택하세요.",
+      "title": "새 비밀번호 설정",
+      "subtitle": "Relay 계정의 새 비밀번호를 입력하세요.",
+      "passwordLabel": "새 비밀번호",
+      "passwordPlaceholder": "최소 8자",
+      "confirmLabel": "비밀번호 확인",
+      "confirmPlaceholder": "새 비밀번호를 다시 입력",
+      "submit": "비밀번호 업데이트",
+      "submitting": "업데이트 중…",
+      "cancel": "취소하고 로그인",
+      "errorShort": "비밀번호는 최소 8자여야 합니다.",
+      "errorMismatch": "비밀번호가 일치하지 않습니다.",
+      "successTitle": "비밀번호가 업데이트되었습니다",
+      "successLede": "비밀번호가 재설정되었습니다. 새 자격 증명으로 로그인할 수 있습니다.",
+      "backToSignIn": "로그인"
+    }
+  },
+  "highlights": {
+    "blocks": [
+      {
+        "id": "discover",
+        "title": "Discover",
+        "lede": "시장·카테고리별 검증된 제공업체 — 중요한 기준으로 필터링한 뒤 한곳에서 숏리스트.",
+        "layout": "featured",
+        "cards": [
+          {
+            "title": "제공업체 디렉터리",
+            "description": "시장·카테고리로 파트너를 검색하세요. 수수료, 커버리지, 레일, 샌드박스 액세스로 필터링.",
+            "mock": "search",
+            "points": [
+              "시장·카테고리별 필터",
+              "수수료, 레일, 커버리지 확인",
+              "한 화면에서 숏리스트"
+            ]
+          },
+          {
+            "title": "시장 커버리지",
+            "description": "아웃리치를 시작하기 전에 각 복도에서 어떤 제공업체가 운영하는지 확인하세요.",
+            "mock": "people",
+            "points": [
+              "실시간 시장 존재",
+              "카테고리 수준 커버리지"
+            ]
+          },
+          {
+            "title": "공유 숏리스트",
+            "description": "제공업체 결정을 팀과 함께 — 이메일에 묻히지 않게.",
+            "mock": "network",
+            "points": [
+              "팀 가시성",
+              "의사결정 이력"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "research",
+        "title": "Research",
+        "lede": "결정하기 전에 이해하세요.",
+        "layout": "double",
+        "cards": [
+          {
+            "title": "시장 브리프",
+            "description": "규제, 레일, 수수료를 팀이 신뢰할 수 있는 브리프로 매핑 — 아웃리치가 고정되기 전에.",
+            "mock": "brief",
+            "points": [
+              "시장별 규제 상태",
+              "레일, 수수료, 정산 시간",
+              "카테고리별 제공업체"
+            ]
+          },
+          {
+            "title": "제공업체 비교",
+            "description": "수수료, 정산, 커버리지, 차별화 요소까지 — 한쪽이 다른 쪽과 어떻게 비교되는지 정확히 확인.",
+            "mock": "compare",
+            "points": [
+              "수수료·정산 나란히 비교",
+              "시장 커버리지를 한눈에",
+              "핵심 차별화 요소 표시"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "act",
+        "title": "Act",
+        "lede": "리서치에서 관계로.",
+        "layout": "act",
+        "cards": [
+          {
+            "title": "Act",
+            "description": "숏리스트 작성, 진행 추적, 담당자와 우선순위 지정, 제공업체 소개 — 모두 Relay를 떠나지 않고.",
+            "mock": "workflow",
+            "points": [
+              "숏리스트 → 평가 → 대화 → 소개",
+              "담당자, 우선순위, 실시간 활동",
+              "보드에서 소개 요청"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "ready",
+        "title": "Expansion-ready",
+        "lede": "시장 움직임에 앞서세요.",
+        "layout": "expansion",
+        "cards": [
+          {
+            "title": "Expansion-ready",
+            "description": "시장이 향하는 곳 — 새로운 레일, 새로운 제공업체, 새로운 기회에 대한 시그널을 받으세요. Relay는 시장이 변할 때 팀을 업데이트해 방심하지 않게 합니다.",
+            "mock": "signals",
+            "points": [
+              "레일·제공업체·규제의 라이브 피드",
+              "시장 상태를 한눈에",
+              "이번 주 변화를 파악"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "dataReports": {
+    "kicker": "데이터 리포트",
+    "title": "리포트",
+    "papersTitle": "핀테크 리서치 페이퍼",
+    "lede": "벤치마크, 복도 비용, 시장 맵 — 피치 덱이 아닌 파트너 기록과 빌더 평가로 구축.",
+    "cta": "모든 리포트 둘러보기 →",
+    "ctaClean": "모든 리포트 보기",
+    "readReport": "리포트 읽기 →",
+    "moreProviders": "+ {count}개 더",
+    "minRead": "분 읽기",
+    "indexTitle": "Relay 데이터 리포트",
+    "indexLede": "글로벌 결제, 디지털 지갑, 즉시 레일, 송금, 그리고 미국·유럽·아프리카·신흥 시장의 핀테크 인프라에 대한 심층 분석.",
+    "reportsPublished": "{count}개 리포트 발행",
+    "reportsCount": "{count}개 리포트",
+    "filterAll": "모든 리포트",
+    "sortLatest": "최신순",
+    "sortMarket": "시장별",
+    "loadMore": "더 보기",
+    "showing": "{total}개 중 {shown}개 표시",
+    "getStarted": "시작하기",
+    "backToIndex": "모든 리포트",
+    "published": "발행일",
+    "lastUpdated": "최종 업데이트",
+    "whyWeBuilt": "이 리포트를 만든 이유",
+    "keyMetrics": "핵심 지표",
+    "keyFindings": "주요 발견",
+    "whyThisMatters": "이것이 중요한 이유:",
+    "marketContext": "시장 맥락",
+    "providerLandscape": "제공업체 지형",
+    "implications": "귀하에게 의미하는 바",
+    "exploreProviders": "파트너를 숏리스트할 준비가 되셨나요?",
+    "exploreProvidersLede": "제공업체 디렉터리를 열고 이 리포트에서 다룬 시장으로 필터링하세요.",
+    "exploreProvidersCta": "이 시장의 제공업체 탐색",
+    "reportCtaTitle": "이 맵을 귀하의 시장 의사결정으로 바꾸세요",
+    "reportCtaLede": "Relay는 팀이 글로벌 결제 변화를 파트너 숏리스트, 실제 수수료, 소개 — 시장별로 — 로 전환하도록 돕습니다.",
+    "reportCtaLabel": "영업팀 문의",
+    "methodology": "데이터 출처 및 방법론",
+    "showMethodology": "방법론 보기",
+    "related": "관련 리포트"
+  },
+  "pages": {
+    "about": {
+      "title": "Relay 소개",
+      "lede": "Relay는 전 세계 시장에 걸친 핀테크 인프라를 위한 데이터 디렉터리이자 인사이트 레이어입니다.",
+      "sections": [
+        {
+          "title": "우리가 하는 일",
+          "body": [
+            "새 복도로 확장하는 팀에게는 세일즈 덱 이상의 것이 필요합니다. Relay는 시장·카테고리별 검증된 제공업체를 매핑하고, 수수료·레일·커버리지·신뢰성 시그널을 표면화하며, 실제로 출시할 수 있는 파트너를 숏리스트하도록 돕습니다.",
+            "준비가 되면 Relay가 제공업체 팀에 소개해 드립니다 — 아웃리치는 차가운 추측이 아닌 맥락에서 시작됩니다."
+          ]
+        },
+        {
+          "title": "우리는 누구인가",
+          "body": [
+            "Relay는 GrateBridge Labs가 구축합니다. 글로벌 확장에 따라 결제, KYC, FX, 뱅킹 인프라를 평가하는 빌더와 운영자와 함께 일합니다."
+          ]
+        },
+        {
+          "title": "문의하기",
+          "body": [
+            "제품 액세스는 사이트에서 대기자 명단에 가입하세요. 파트너십 및 세일즈 대화는 Calendly에서 시간을 예약하거나 support@relay.gratebridge.com으로 이메일을 보내세요."
+          ]
+        }
+      ]
+    },
+    "methodology": {
+      "title": "방법론",
+      "lede": "제공업체 데이터, 벤치마크, 시장 리포트를 구성하는 방식.",
+      "sections": [
+        {
+          "title": "출처",
+          "body": [
+            "제공업체 항목과 리포트 결과는 공개 문서, 제품 자료, 빌더 보고, 운영자와의 직접 대화에서 취합됩니다. 수치가 참고용인 경우 명시합니다."
+          ]
+        },
+        {
+          "title": "발행 내용",
+          "body": [
+            "디렉터리 필드는 카테고리, 시장, 레일, 수수료 범위, 커버리지, 통합 시그널에 초점을 둡니다. 리서치 페이퍼는 복도, 레일, 카테고리를 더 깊이 다루며 — 각 리포트에 방법론 노트를 포함합니다."
+          ]
+        },
+        {
+          "title": "한계",
+          "body": [
+            "수수료, 정산 시간, 커버리지는 변경됩니다. Relay는 결제 기관이 아니며 금융·법률·규제 자문을 제공하지 않습니다. 결정하기 전에 반드시 제공업체와 핵심 조건을 확인하세요."
+          ]
+        }
+      ]
+    },
+    "privacy": {
+      "title": "개인정보",
+      "lede": "GrateBridge Labs가 Relay와 공유한 정보를 처리하는 방식.",
+      "sections": [
+        {
+          "title": "수집하는 정보",
+          "body": [
+            "대기자 명단 가입, 계정 생성, 문의 시 성명, 업무용 이메일, 역할, 회사 등 제공하신 세부 정보를 수집합니다. 제품 운영과 개선에 필요한 기본 사용 데이터도 수집합니다."
+          ]
+        },
+        {
+          "title": "이용 방법",
+          "body": [
+            "이 정보는 Relay 운영, 요청 응답, 디렉터리 및 리포트 경험 개선, 액세스 또는 제품 업데이트 안내에 사용합니다. 개인정보를 판매하지 않습니다."
+          ]
+        },
+        {
+          "title": "문의",
+          "body": [
+            "개인정보 관련 질문은 support@relay.gratebridge.com으로 보내 주세요."
+          ]
+        }
+      ]
+    },
+    "terms": {
+      "title": "약관",
+      "lede": "Relay 웹사이트 및 관련 서비스의 이용약관.",
+      "sections": [
+        {
+          "title": "Relay 이용",
+          "body": [
+            "Relay는 정보 제공 목적으로 디렉터리 정보, 리서치, 소개 워크플로를 제공합니다. 제공업체 평가나 상업적 의사결정에 해당 정보를 어떻게 사용하는지에 대한 책임은 귀하에게 있습니다."
+          ]
+        },
+        {
+          "title": "정확성",
+          "body": [
+            "데이터 최신성 유지를 위해 노력하지만, 목록과 리포트 수치가 불완전하거나 사전 고지 없이 변경될 수 있습니다. 계약 전에 중요한 세부 사항은 제공업체에 직접 확인하세요."
+          ]
+        },
+        {
+          "title": "계정",
+          "body": [
+            "계정을 만들면 자격 증명을 안전하게 보관하고 정확한 정보를 제공하세요. 서비스 남용 또는 본 약관 위반 시 액세스를 정지할 수 있습니다."
+          ]
+        },
+        {
+          "title": "문의",
+          "body": [
+            "본 약관에 관한 질문은 support@relay.gratebridge.com으로 이메일을 보내 주세요."
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,640 @@
+{
+  "metadata": {
+    "title": "Relay | Direktori infrastruktur fintech & riset untuk pasar global",
+    "description": "Direktori data dan riset tentang infrastruktur fintech, jalur pembayaran, dan penyedia di Amerika Serikat, Eropa, Afrika, dan pasar emerging."
+  },
+  "seo": {
+    "title": "Relay | Direktori Infrastruktur Fintech & Riset Pasar",
+    "description": "Petakan penyedia fintech, jalur pembayaran, KYC, FX, dan intelijen pasar di Amerika Serikat, Eropa, Afrika, Amerika Latin, dan koridor global. Daftar singkat mitra berbasis riset untuk builder yang ekspansi ke seluruh dunia.",
+    "keywords": [
+      "direktori infrastruktur fintech",
+      "penyedia jalur pembayaran",
+      "riset pasar fintech",
+      "pembayaran lintas batas Afrika",
+      "fintech Eropa open banking",
+      "penyedia pembayaran AS",
+      "direktori penyedia KYC",
+      "koridor FX",
+      "dompet digital pasar emerging",
+      "pembayaran instan Pix UPI",
+      "infrastruktur remittance",
+      "daftar singkat mitra fintech",
+      "GrateBridge Labs Relay"
+    ],
+    "faq": [
+      {
+        "question": "Apa itu Relay?",
+        "answer": "Relay adalah direktori data dan lapisan riset untuk infrastruktur fintech. Relay memetakan penyedia, jalur pembayaran, biaya, cakupan, dan intelijen pasar agar tim yang ekspansi di Amerika, Eropa, Afrika, dan wilayah lain dapat menyusun daftar singkat mitra dengan bukti."
+      },
+      {
+        "question": "Wilayah mana saja yang dicakup Relay?",
+        "answer": "Relay berfokus pada koridor ekspansi global dengan kedalaman di Amerika Serikat, Kanada, Eropa, Inggris, Afrika, Amerika Latin, Timur Tengah, dan pasar pembayaran Asia-Pasifik."
+      },
+      {
+        "question": "Jenis riset apa yang diterbitkan Relay?",
+        "answer": "Relay Research menerbitkan peta pasar, tolok ukur koridor, dan deep dive infrastruktur — termasuk analisis unggulan tentang volume transaksi global, dompet digital, pembayaran instan, remittance, dan jalur fintech regional."
+      },
+      {
+        "question": "Bagaimana cara menghubungi sales Relay?",
+        "answer": "Jadwalkan percakapan di Calendly melalui Contact sales, atau email support@relay.gratebridge.com. Bergabunglah ke waitlist di situs untuk akses produk."
+      }
+    ],
+    "reports": {
+      "title": "Makalah Riset Fintech & Peta Pasar | Relay Research",
+      "description": "Riset fintech tingkat Bloomberg tentang pembayaran global, dompet digital, jalur instan, remittance, dan infrastruktur di AS, Eropa, Afrika, dan pasar emerging. Makalah riset gratis dari Relay.",
+      "keywords": [
+        "makalah riset fintech",
+        "riset pembayaran global",
+        "pangsa pasar dompet digital",
+        "riset pembayaran instan",
+        "fintech Afrika remittance",
+        "riset open banking Eropa",
+        "infrastruktur fintech AS",
+        "koridor pembayaran lintas batas",
+        "Relay Research"
+      ]
+    },
+    "about": {
+      "title": "Tentang Relay | Direktori Data Fintech oleh GrateBridge Labs",
+      "description": "Relay, dibangun oleh GrateBridge Labs, memetakan penyedia infrastruktur fintech dan menerbitkan riset pasar untuk tim yang ekspansi di Amerika, Eropa, Afrika, dan koridor global.",
+      "keywords": [
+        "tentang Relay",
+        "GrateBridge Labs",
+        "perusahaan data fintech",
+        "intelijen infrastruktur pembayaran"
+      ]
+    },
+    "methodology": {
+      "title": "Metodologi Riset | Data & Laporan Fintech Relay",
+      "description": "Bagaimana Relay menyusun data direktori penyedia, tolok ukur jalur pembayaran, dan riset pasar — sumber, standar penerbitan, dan batasannya untuk pasar AS, Eropa, Afrika, dan global.",
+      "keywords": [
+        "metodologi riset fintech",
+        "sumber data pembayaran",
+        "metodologi direktori penyedia"
+      ]
+    },
+    "privacy": {
+      "title": "Kebijakan Privasi | Relay",
+      "description": "Bagaimana GrateBridge Labs mengumpulkan dan menggunakan informasi saat Anda menggunakan Relay, bergabung ke waitlist, atau menghubungi sales.",
+      "keywords": ["kebijakan privasi Relay", "privasi GrateBridge Labs"]
+    },
+    "terms": {
+      "title": "Ketentuan Penggunaan | Relay",
+      "description": "Ketentuan penggunaan untuk situs web, direktori, dan layanan riset Relay yang dioperasikan oleh GrateBridge Labs.",
+      "keywords": ["ketentuan penggunaan Relay", "ketentuan GrateBridge Labs"]
+    }
+  },
+  "nav": {
+    "brand": "Relay",
+    "brandMark": "Relay.",
+    "login": "Masuk",
+    "contactSales": "Hubungi sales",
+    "pricing": "Harga",
+    "getStarted": "Mulai",
+    "getInTouch": "Hubungi kami",
+    "joinWaitlist": "Gabung waitlist",
+    "joinWaitlistShort": "Waitlist",
+    "providers": "Penyedia",
+    "reports": "Laporan",
+    "research": "Riset",
+    "primaryLabel": "Utama",
+    "languageLabel": "Bahasa",
+    "openMenu": "Buka menu",
+    "closeMenu": "Tutup menu",
+    "menuLabel": "Menu situs"
+  },
+  "banner": {
+    "tag": "NEW",
+    "text": "240+ mitra dipetakan di collections, payouts, banking, FX, KYC, dan kartu.",
+    "link": "Lihat laporan →",
+    "dismiss": "Tutup pengumuman"
+  },
+  "hero": {
+    "kicker": "Ekspansi global",
+    "title": "Direktori data dan mitra untuk infrastruktur fintech global.",
+    "titleLine1": "Direktori data dan mitra",
+    "titleLine2": "untuk infrastruktur fintech global",
+    "subtext": "Penyedia, regulasi, jalur pembayaran, dan data pasar — semuanya di satu tempat, untuk setiap pasar fintech di seluruh dunia.",
+    "emailPlaceholder": "Masukkan email kerja Anda",
+    "cta": "Mulai",
+    "watchPreview": "Tonton pratinjau",
+    "bookDemo": "Lihat penyedia",
+    "secondaryCta": "Lihat penyedia",
+    "productLabel": "Yang Anda dapatkan",
+    "indexLabel": "Di dalam Relay",
+    "markets": [
+      "Bogotá",
+      "Mexico City",
+      "São Paulo",
+      "Lisbon",
+      "Dubai",
+      "Madrid"
+    ],
+    "offerings": [
+      {
+        "name": "Penyedia",
+        "role": "Mitra terverifikasi menurut pasar dan kategori"
+      },
+      {
+        "name": "Data & insight",
+        "role": "Cakupan pasar, jalur, dan biaya"
+      },
+      {
+        "name": "Perkenalan",
+        "role": "Jalur hangat ke tim yang Anda shortlist"
+      },
+      {
+        "name": "Analisis",
+        "role": "Bandingkan opsi sebelum berkomitmen"
+      },
+      {
+        "name": "Prediksi",
+        "role": "Sinyal arah pergerakan pasar"
+      }
+    ]
+  },
+  "position": {
+    "kicker": "Biaya menebak-nebak",
+    "title": "Beroperasi di suatu pasar seharusnya tidak berarti\nberjalan dalam gelap.",
+    "lede": "Data yang baik mengubah cara Anda beroperasi. Data memberi insight nyata tentang infrastruktur di balik suatu pasar,\nbagaimana penyedia dibandingkan, dan bagaimana sistem secara keseluruhan benar-benar bekerja. Relay membuat Anda selangkah lebih maju\ndan data yang tepat membantu Anda lebih fokus pada pelanggan, bukan mencari jawaban."
+  },
+  "intelligence": {
+    "kicker": "Biaya menebak-nebak",
+    "title": "Beroperasi di suatu pasar seharusnya tidak berarti berjalan dalam gelap.",
+    "lede": "Data yang baik mengubah cara Anda beroperasi. Data memberi insight nyata tentang infrastruktur di balik suatu pasar, bagaimana penyedia dibandingkan, dan bagaimana sistem secara keseluruhan benar-benar bekerja — sehingga Anda fokus pada pelanggan, bukan mencari jawaban.",
+    "products": [
+      {
+        "name": "Discover",
+        "description": "Penyedia terverifikasi menurut pasar dan kategori — filter berdasarkan kriteria yang penting, lalu shortlist di satu tempat.",
+        "points": [
+          "Filter menurut pasar & kategori",
+          "Lihat biaya, jalur & cakupan",
+          "Shortlist dalam satu tampilan",
+          "Kehadiran pasar langsung menurut koridor"
+        ]
+      },
+      {
+        "name": "Research",
+        "description": "Pahami sebelum berkomitmen. Regulasi, jalur, dan biaya dipetakan menjadi brief yang dapat dipercaya tim Anda — sebelum outreach mengunci Anda.",
+        "points": [
+          "Status regulasi menurut pasar",
+          "Jalur, biaya & waktu settlement",
+          "Perbandingan penyedia berdampingan",
+          "Pembedaan utama ditandai"
+        ]
+      },
+      {
+        "name": "Act",
+        "description": "Bergerak dari riset ke hubungan. Bangun shortlist, lacak progres, tetapkan pemilik, dan dapatkan perkenalan — tanpa meninggalkan Relay.",
+        "points": [
+          "Shortlist → evaluasi → bicara → intro",
+          "Pemilik, prioritas & aktivitas langsung",
+          "Minta intro dari papan",
+          "Jaga keputusan agar tidak terkubur di email"
+        ]
+      },
+      {
+        "name": "Expansion-ready",
+        "description": "Tetap unggul dari pergerakan pasar. Sinyal tentang jalur baru, penyedia baru, dan peluang baru — agar tim Anda tidak pernah terkejut.",
+        "points": [
+          "Feed langsung jalur, penyedia & regulasi",
+          "Status pasar sekilas",
+          "Ketahui apa yang berubah minggu ini"
+        ]
+      }
+    ]
+  },
+  "providers": {
+    "kicker": "Penyedia",
+    "title": "Temukan mitra infrastruktur yang tepat sebelum Anda mengikat setahun.",
+    "lede": "Cari, bandingkan, dan shortlist penyedia fintech terverifikasi menurut pasar dan kategori. Dibangun untuk tim yang ekspansi ke koridor baru dan tidak mampu salah memilih mitra.",
+    "items": [
+      {
+        "title": "Cari menurut pasar",
+        "description": "Filter 240+ penyedia menurut negara, kategori, jalur, biaya, dan akses sandbox — lalu lihat siapa yang benar-benar beroperasi di tempat yang Anda butuhkan.",
+        "visual": "search"
+      },
+      {
+        "title": "Bandingkan berdampingan",
+        "description": "Susun biaya, waktu settlement, cakupan, dan lisensi berdampingan. Nilai opsi berdasarkan data terukur, bukan klaim brosur.",
+        "visual": "compare"
+      },
+      {
+        "title": "Bangun shortlist",
+        "description": "Simpan shortlist bersama tim — pemilik, prioritas, dan catatan di satu tempat, bukan tersebar di deck dan utas email.",
+        "visual": "shortlist"
+      },
+      {
+        "title": "Minta perkenalan",
+        "description": "Saat siap berbicara, minta intro hangat ke tim penyedia tanpa meninggalkan Relay.",
+        "visual": "intros"
+      }
+    ]
+  },
+  "quote": {
+    "text": "Kami hampir menandatangani mitra payout yang tidak bisa kami lepaskan selama delapan belas bulan. Relay menunjukkan tiga opsi yang lebih baik dalam sehari.",
+    "cite": "— Head of Payments, fintech scale-up"
+  },
+  "floatCta": {
+    "title": "Jelajahi penyedia",
+    "subtitle": "240+ mitra"
+  },
+  "waitlist": {
+    "title": "Gabung waitlist",
+    "lede": "Ceritakan sedikit tentang diri Anda dan kami akan menghubungi saat akses dibuka.",
+    "fullName": "Nama lengkap",
+    "fullNamePlaceholder": "Ada Lovelace",
+    "email": "Alamat email",
+    "emailPlaceholder": "ada@company.com",
+    "role": "Peran",
+    "rolePlaceholder": "Pilih peran Anda",
+    "roles": {
+      "founder": "Founder",
+      "engineer": "Engineer",
+      "productManager": "Product Manager",
+      "other": "Lainnya"
+    },
+    "company": "Nama perusahaan",
+    "companyPlaceholder": "Nama perusahaan",
+    "submit": "Gabung waitlist",
+    "close": "Tutup",
+    "successTitle": "Anda sudah di daftar",
+    "successLede": "Terima kasih — kami akan menghubungi saat Relay siap untuk Anda.",
+    "done": "Selesai"
+  },
+  "footer": {
+    "closing": "Mitra infrastruktur yang tepat lebih penting dari sebelumnya",
+    "sitemapLabel": "Footer",
+    "support": "Dukungan",
+    "supportEmail": "support@relay.gratebridge.com",
+    "product": "Produk",
+    "providers": "Penyedia",
+    "howItWorks": "Cara kerja",
+    "reports": "Laporan",
+    "joinWaitlist": "Gabung waitlist",
+    "resources": "Sumber daya",
+    "researchPapers": "Makalah riset",
+    "methodology": "Metodologi",
+    "about": "Tentang",
+    "contactSales": "Hubungi sales",
+    "account": "Akun",
+    "signIn": "Masuk",
+    "createAccount": "Buat akun",
+    "language": "Bahasa",
+    "disclaimer": "Relay adalah direktori infrastruktur dan layanan perkenalan. Biaya, waktu settlement, dan cakupan yang tercantum bersifat indikatif, disusun dari dokumentasi penyedia dan laporan builder, serta dapat berubah tanpa pemberitahuan. Relay bukan lembaga pembayaran dan tidak memberikan saran keuangan, hukum, atau regulasi.",
+    "copyright": "© 2026 GrateBridge Labs — Hak cipta dilindungi",
+    "privacy": "Privasi",
+    "terms": "Ketentuan"
+  },
+  "images": {
+    "logoAlt": "Logo Relay — direktori infrastruktur fintech"
+  },
+  "auth": {
+    "brand": "Relay",
+    "brandMark": "Relay.",
+    "logoAlt": "Logo Relay — direktori infrastruktur fintech",
+    "backToSite": "Kembali ke situs",
+    "copyright": "© 2026 GrateBridge Labs",
+    "languageLabel": "Bahasa",
+    "or": "atau",
+    "show": "Tampilkan",
+    "hide": "Sembunyikan",
+    "terms": "Ketentuan",
+    "privacyPolicy": "Kebijakan Privasi",
+    "signin": {
+      "metadata": {
+        "title": "Masuk | Direktori Penyedia Fintech Relay",
+        "description": "Masuk ke Relay untuk membandingkan penyedia fintech, membaca data jalur pembayaran, dan mengelola perkenalan penyedia di Kolombia, Meksiko, Brasil, Portugal, Teluk, dan lainnya."
+      },
+      "asideLine": "Data penyedia dan intelijen pasar, di satu tempat.",
+      "title": "Masuk",
+      "subtitleBefore": "Baru di Relay?",
+      "createAccount": "Buat akun",
+      "google": "Lanjutkan dengan Google",
+      "emailLabel": "Email kerja",
+      "emailPlaceholder": "you@company.com",
+      "passwordLabel": "Kata sandi",
+      "forgotPassword": "Lupa kata sandi?",
+      "remember": "Biarkan saya tetap masuk",
+      "submit": "Masuk",
+      "submitting": "Sedang masuk…",
+      "legalBefore": "Dengan melanjutkan Anda menyetujui",
+      "legalAnd": "dan"
+    },
+    "signup": {
+      "metadata": {
+        "title": "Buat Akun | Direktori Fintech Relay",
+        "description": "Buat akun Relay gratis untuk membandingkan penyedia fintech terverifikasi, menjelajahi data jalur pembayaran, dan meminta perkenalan di Kolombia, Meksiko, Brasil, Portugal, Teluk, dan lainnya."
+      },
+      "asideLine": "Mulai dari direktori. Shortlist mitra yang cocok.",
+      "title": "Buat akun",
+      "subtitleBefore": "Sudah punya akun?",
+      "signIn": "Masuk",
+      "google": "Lanjutkan dengan Google",
+      "nameLabel": "Nama lengkap",
+      "namePlaceholder": "Ada Lovelace",
+      "companyLabel": "Perusahaan",
+      "companyPlaceholder": "Nama perusahaan Anda",
+      "emailLabel": "Email kerja",
+      "emailPlaceholder": "you@company.com",
+      "passwordLabel": "Kata sandi",
+      "passwordPlaceholder": "Minimal 8 karakter",
+      "termsAgree": "Saya menyetujui Ketentuan dan Kebijakan Privasi",
+      "submit": "Buat akun",
+      "submitting": "Membuat akun…",
+      "footnote": "Dibangun untuk tim yang mengevaluasi infrastruktur fintech di seluruh dunia."
+    },
+    "forgotPassword": {
+      "metadata": {
+        "title": "Atur Ulang Kata Sandi | Relay",
+        "description": "Atur ulang kata sandi akun Relay Anda. Relay adalah direktori infrastruktur fintech untuk membandingkan penyedia dan membaca data jalur pembayaran menurut pasar."
+      },
+      "asideLine": "Kami akan mengembalikan Anda ke Relay dalam beberapa menit.",
+      "title": "Lupa kata sandi",
+      "subtitle": "Masukkan email kerja Anda dan kami akan mengirim tautan untuk mengatur ulang kata sandi.",
+      "emailLabel": "Email kerja",
+      "emailPlaceholder": "you@company.com",
+      "submit": "Kirim tautan reset",
+      "submitting": "Mengirim tautan…",
+      "rememberPassword": "Ingat kata sandi Anda?",
+      "signIn": "Masuk",
+      "successTitle": "Periksa kotak masuk Anda",
+      "successBefore": "Kami mengirim tautan pengaturan ulang kata sandi ke",
+      "successAfter": "Tautan kedaluwarsa dalam 30 menit.",
+      "yourEmail": "email Anda",
+      "resend": "Kirim ulang email",
+      "openReset": "Lanjutkan ke atur ulang kata sandi",
+      "backToSignIn": "Kembali ke"
+    },
+    "resetPassword": {
+      "metadata": {
+        "title": "Atur Kata Sandi Baru | Relay",
+        "description": "Pilih kata sandi baru untuk akun Relay Anda."
+      },
+      "asideLine": "Pilih kata sandi yang kuat yang belum pernah Anda gunakan di sini.",
+      "title": "Atur kata sandi baru",
+      "subtitle": "Masukkan kata sandi baru untuk akun Relay Anda.",
+      "passwordLabel": "Kata sandi baru",
+      "passwordPlaceholder": "Minimal 8 karakter",
+      "confirmLabel": "Konfirmasi kata sandi",
+      "confirmPlaceholder": "Ulangi kata sandi baru Anda",
+      "submit": "Perbarui kata sandi",
+      "submitting": "Memperbarui…",
+      "cancel": "Batal dan masuk",
+      "errorShort": "Kata sandi harus minimal 8 karakter.",
+      "errorMismatch": "Kata sandi tidak cocok.",
+      "successTitle": "Kata sandi diperbarui",
+      "successLede": "Kata sandi Anda telah diatur ulang. Anda dapat masuk dengan kredensial baru.",
+      "backToSignIn": "Masuk"
+    }
+  },
+  "highlights": {
+    "blocks": [
+      {
+        "id": "discover",
+        "title": "Discover",
+        "lede": "Penyedia terverifikasi menurut pasar dan kategori — filter berdasarkan kriteria yang penting, lalu shortlist di satu tempat.",
+        "layout": "featured",
+        "cards": [
+          {
+            "title": "Direktori penyedia",
+            "description": "Cari mitra menurut pasar dan kategori. Filter berdasarkan biaya, cakupan, jalur, dan akses sandbox.",
+            "mock": "search",
+            "points": [
+              "Filter menurut pasar & kategori",
+              "Lihat biaya, jalur & cakupan",
+              "Shortlist dalam satu tampilan"
+            ]
+          },
+          {
+            "title": "Cakupan pasar",
+            "description": "Lihat penyedia mana yang beroperasi di setiap koridor sebelum membuka outreach.",
+            "mock": "people",
+            "points": [
+              "Kehadiran pasar langsung",
+              "Cakupan tingkat kategori"
+            ]
+          },
+          {
+            "title": "Shortlist bersama",
+            "description": "Jaga keputusan penyedia bersama tim — bukan terkubur di email.",
+            "mock": "network",
+            "points": [
+              "Visibilitas tim",
+              "Riwayat keputusan"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "research",
+        "title": "Research",
+        "lede": "Pahami sebelum berkomitmen.",
+        "layout": "double",
+        "cards": [
+          {
+            "title": "Brief pasar",
+            "description": "Regulasi, jalur, dan biaya dipetakan menjadi brief yang dapat dipercaya tim Anda — sebelum outreach mengunci Anda.",
+            "mock": "brief",
+            "points": [
+              "Status regulasi menurut pasar",
+              "Jalur, biaya & waktu settlement",
+              "Penyedia menurut kategori"
+            ]
+          },
+          {
+            "title": "Perbandingan penyedia",
+            "description": "Lihat persis bagaimana satu dibandingkan dengan yang lain — biaya, settlement, cakupan, dan apa yang membedakan masing-masing.",
+            "mock": "compare",
+            "points": [
+              "Biaya & settlement berdampingan",
+              "Cakupan pasar sekilas",
+              "Pembedaan utama ditandai"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "act",
+        "title": "Act",
+        "lede": "Bergerak dari riset ke hubungan.",
+        "layout": "act",
+        "cards": [
+          {
+            "title": "Act",
+            "description": "Bangun shortlist, lacak progres, tetapkan pemilik dan prioritas, dan dapatkan perkenalan ke penyedia — semuanya tanpa meninggalkan Relay.",
+            "mock": "workflow",
+            "points": [
+              "Shortlist → evaluasi → bicara → intro",
+              "Pemilik, prioritas & aktivitas langsung",
+              "Minta intro dari papan"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "ready",
+        "title": "Expansion-ready",
+        "lede": "Tetap unggul dari pergerakan pasar.",
+        "layout": "expansion",
+        "cards": [
+          {
+            "title": "Expansion-ready",
+            "description": "Dapatkan sinyal arah pasar — jalur baru, penyedia baru, peluang baru. Relay terus memperbarui tim Anda saat pasar bergeser, sehingga Anda tidak pernah terkejut.",
+            "mock": "signals",
+            "points": [
+              "Feed langsung jalur, penyedia & regulasi",
+              "Status pasar sekilas",
+              "Ketahui apa yang berubah minggu ini"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "dataReports": {
+    "kicker": "Laporan data",
+    "title": "Laporan",
+    "papersTitle": "Makalah riset fintech",
+    "lede": "Tolok ukur, biaya koridor, dan peta pasar — dibangun dari catatan mitra dan evaluasi builder, bukan pitch deck.",
+    "cta": "Jelajahi semua laporan →",
+    "ctaClean": "Lihat semua laporan",
+    "readReport": "Baca laporan →",
+    "moreProviders": "+ {count} lagi",
+    "minRead": "mnt baca",
+    "indexTitle": "Laporan data Relay",
+    "indexLede": "Deep dive tentang pembayaran global, dompet digital, jalur instan, remittance, dan infrastruktur fintech di Amerika Serikat, Eropa, Afrika, dan pasar emerging.",
+    "reportsPublished": "{count} laporan diterbitkan",
+    "reportsCount": "{count} laporan",
+    "filterAll": "Semua laporan",
+    "sortLatest": "Terbaru dulu",
+    "sortMarket": "Menurut pasar",
+    "loadMore": "Muat lebih banyak",
+    "showing": "Menampilkan {shown} dari {total}",
+    "getStarted": "Mulai",
+    "backToIndex": "Semua laporan",
+    "published": "Diterbitkan",
+    "lastUpdated": "Terakhir diperbarui",
+    "whyWeBuilt": "Mengapa kami membangun ini",
+    "keyMetrics": "Metrik utama",
+    "keyFindings": "Temuan utama",
+    "whyThisMatters": "Mengapa ini penting:",
+    "marketContext": "Konteks pasar",
+    "providerLandscape": "Lanskap penyedia",
+    "implications": "Apa artinya bagi Anda",
+    "exploreProviders": "Siap shortlist mitra?",
+    "exploreProvidersLede": "Buka direktori penyedia dan filter menurut pasar yang dibahas dalam laporan ini.",
+    "exploreProvidersCta": "Jelajahi penyedia di pasar ini",
+    "reportCtaTitle": "Ubah peta ini menjadi keputusan untuk pasar Anda",
+    "reportCtaLede": "Relay membantu tim menerjemahkan pergeseran pembayaran global menjadi daftar singkat mitra, realitas biaya, dan perkenalan — menurut pasar.",
+    "reportCtaLabel": "Hubungi sales",
+    "methodology": "Sumber data & metodologi",
+    "showMethodology": "Tampilkan metodologi",
+    "related": "Laporan terkait"
+  },
+  "pages": {
+    "about": {
+      "title": "Tentang Relay",
+      "lede": "Relay adalah direktori data dan lapisan insight untuk infrastruktur fintech di pasar di seluruh dunia.",
+      "sections": [
+        {
+          "title": "Yang kami lakukan",
+          "body": [
+            "Tim yang ekspansi ke koridor baru membutuhkan lebih dari sekadar sales deck. Relay memetakan penyedia terverifikasi menurut pasar dan kategori, menampilkan biaya, jalur, cakupan, dan sinyal keandalan, serta membantu Anda shortlist mitra yang benar-benar bisa dikirimkan.",
+            "Saat siap, Relay dapat memperkenalkan Anda ke tim penyedia — sehingga outreach dimulai dengan konteks, bukan tebakan dingin."
+          ]
+        },
+        {
+          "title": "Siapa kami",
+          "body": [
+            "Relay dibangun oleh GrateBridge Labs. Kami bekerja dengan builder dan operator yang mengevaluasi infrastruktur pembayaran, KYC, FX, dan perbankan saat mereka ekspansi secara global."
+          ]
+        },
+        {
+          "title": "Hubungi kami",
+          "body": [
+            "Untuk akses produk, gabung waitlist dari situs. Untuk kemitraan dan percakapan sales, jadwalkan waktu di Calendly atau email support@relay.gratebridge.com."
+          ]
+        }
+      ]
+    },
+    "methodology": {
+      "title": "Metodologi",
+      "lede": "Bagaimana kami menyusun data penyedia, tolok ukur, dan laporan pasar.",
+      "sections": [
+        {
+          "title": "Sumber",
+          "body": [
+            "Entri penyedia dan temuan laporan disusun dari dokumentasi publik, materi produk, laporan builder, dan percakapan langsung dengan operator. Jika angka bersifat indikatif, kami menyebutkannya."
+          ]
+        },
+        {
+          "title": "Yang kami terbitkan",
+          "body": [
+            "Bidang direktori berfokus pada kategori, pasar, jalur, rentang biaya, cakupan, dan sinyal integrasi. Makalah riset menggali lebih dalam tentang koridor, jalur, atau kategori — dengan catatan metodologi di setiap laporan."
+          ]
+        },
+        {
+          "title": "Batasan",
+          "body": [
+            "Biaya, waktu settlement, dan cakupan berubah. Relay bukan lembaga pembayaran dan tidak memberikan saran keuangan, hukum, atau regulasi. Selalu validasikan ketentuan penting dengan penyedia sebelum berkomitmen."
+          ]
+        }
+      ]
+    },
+    "privacy": {
+      "title": "Privasi",
+      "lede": "Bagaimana GrateBridge Labs menangani informasi yang Anda bagikan dengan Relay.",
+      "sections": [
+        {
+          "title": "Yang kami kumpulkan",
+          "body": [
+            "Saat Anda bergabung ke waitlist, membuat akun, atau menghubungi kami, kami mengumpulkan detail yang Anda berikan — seperti nama, email kerja, peran, dan perusahaan. Kami juga mengumpulkan data penggunaan dasar yang diperlukan untuk mengoperasikan dan meningkatkan produk."
+          ]
+        },
+        {
+          "title": "Bagaimana kami menggunakannya",
+          "body": [
+            "Kami menggunakan informasi ini untuk mengoperasikan Relay, merespons permintaan, meningkatkan pengalaman direktori dan laporan, serta berkomunikasi tentang akses atau pembaruan produk. Kami tidak menjual informasi pribadi Anda."
+          ]
+        },
+        {
+          "title": "Kontak",
+          "body": [
+            "Pertanyaan tentang privasi dapat dikirim ke support@relay.gratebridge.com."
+          ]
+        }
+      ]
+    },
+    "terms": {
+      "title": "Ketentuan",
+      "lede": "Ketentuan penggunaan untuk situs web Relay dan layanan terkait.",
+      "sections": [
+        {
+          "title": "Menggunakan Relay",
+          "body": [
+            "Relay menyediakan informasi direktori, riset, dan alur kerja perkenalan untuk tujuan informasi. Anda bertanggung jawab atas cara Anda menggunakan informasi tersebut saat mengevaluasi penyedia atau membuat keputusan komersial."
+          ]
+        },
+        {
+          "title": "Akurasi",
+          "body": [
+            "Kami berupaya menjaga data tetap terkini, tetapi daftar dan angka laporan mungkin tidak lengkap atau berubah tanpa pemberitahuan. Konfirmasikan detail penting langsung dengan penyedia sebelum berkontrak."
+          ]
+        },
+        {
+          "title": "Akun",
+          "body": [
+            "Jika Anda membuat akun, jaga keamanan kredensial Anda dan berikan informasi yang akurat. Kami dapat menangguhkan akses yang menyalahgunakan layanan atau melanggar ketentuan ini."
+          ]
+        },
+        {
+          "title": "Kontak",
+          "body": [
+            "Untuk pertanyaan tentang ketentuan ini, email support@relay.gratebridge.com."
+          ]
+        }
+      ]
+    }
+  }
+}

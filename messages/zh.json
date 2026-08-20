@@ -1,0 +1,640 @@
+{
+  "metadata": {
+    "title": "Relay | 面向全球市场的金融科技基础设施目录与研究",
+    "description": "覆盖美国、欧洲、非洲及新兴市场的金融科技基础设施、支付通道与服务商的数据目录与研究。"
+  },
+  "seo": {
+    "title": "Relay | 金融科技基础设施目录与市场研究",
+    "description": "绘制美国、欧洲、非洲、拉丁美洲及全球走廊的金融科技服务商、支付通道、KYC、外汇与市场情报。为正在全球扩张的建设者提供有研究支撑的合作伙伴短名单。",
+    "keywords": [
+      "金融科技基础设施目录",
+      "支付通道服务商",
+      "金融科技市场研究",
+      "非洲跨境支付",
+      "欧洲开放银行金融科技",
+      "美国支付服务商",
+      "KYC服务商目录",
+      "外汇走廊",
+      "新兴市场数字钱包",
+      "即时支付 Pix UPI",
+      "汇款基础设施",
+      "金融科技合作伙伴短名单",
+      "GrateBridge Labs Relay"
+    ],
+    "faq": [
+      {
+        "question": "什么是 Relay？",
+        "answer": "Relay 是金融科技基础设施的数据目录与研究层。它绘制服务商、支付通道、费用、覆盖范围与市场情报，帮助在美洲、欧洲、非洲及其他地区扩张的团队基于证据筛选合作伙伴。"
+      },
+      {
+        "question": "Relay 覆盖哪些地区？",
+        "answer": "Relay 聚焦全球扩张走廊，在美国、加拿大、欧洲、英国、非洲、拉丁美洲、中东以及亚太支付市场具有深度覆盖。"
+      },
+      {
+        "question": "Relay 发布哪些类型的研究？",
+        "answer": "Relay Research 发布市场地图、走廊基准与基础设施深度分析——包括全球交易量、数字钱包、即时支付、汇款及区域金融科技通道等旗舰研究。"
+      },
+      {
+        "question": "如何联系 Relay 销售团队？",
+        "answer": "通过 Contact sales 在 Calendly 预约沟通，或发送邮件至 support@relay.gratebridge.com。也可在网站加入候补名单以获取产品访问权限。"
+      }
+    ],
+    "reports": {
+      "title": "金融科技研究报告与市场地图 | Relay Research",
+      "description": "Bloomberg 级金融科技研究，覆盖全球支付、数字钱包、即时通道、汇款以及美国、欧洲、非洲与新兴市场的基础设施。来自 Relay 的免费研究报告。",
+      "keywords": [
+        "金融科技研究报告",
+        "全球支付研究",
+        "数字钱包市场份额",
+        "即时支付研究",
+        "非洲金融科技汇款",
+        "欧洲开放银行研究",
+        "美国金融科技基础设施",
+        "跨境支付走廊",
+        "Relay Research"
+      ]
+    },
+    "about": {
+      "title": "关于 Relay | GrateBridge Labs 打造的金融科技数据目录",
+      "description": "由 GrateBridge Labs 打造的 Relay，绘制金融科技基础设施服务商，并为在美洲、欧洲、非洲及全球走廊扩张的团队发布市场研究。",
+      "keywords": [
+        "关于 Relay",
+        "GrateBridge Labs",
+        "金融科技数据公司",
+        "支付基础设施情报"
+      ]
+    },
+    "methodology": {
+      "title": "研究方法 | Relay 金融科技数据与报告",
+      "description": "Relay 如何汇编服务商目录数据、支付通道基准与市场研究——面向美国、欧洲、非洲及全球市场的来源、发布标准与局限说明。",
+      "keywords": [
+        "金融科技研究方法",
+        "支付数据来源",
+        "服务商目录方法"
+      ]
+    },
+    "privacy": {
+      "title": "隐私政策 | Relay",
+      "description": "您在使用 Relay、加入候补名单或联系销售时，GrateBridge Labs 如何收集与使用信息。",
+      "keywords": ["Relay 隐私政策", "GrateBridge Labs 隐私"]
+    },
+    "terms": {
+      "title": "使用条款 | Relay",
+      "description": "由 GrateBridge Labs 运营的 Relay 网站、目录与研究服务的使用条款。",
+      "keywords": ["Relay 使用条款", "GrateBridge Labs 条款"]
+    }
+  },
+  "nav": {
+    "brand": "Relay",
+    "brandMark": "Relay.",
+    "login": "登录",
+    "contactSales": "联系销售",
+    "pricing": "定价",
+    "getStarted": "开始使用",
+    "getInTouch": "联系我们",
+    "joinWaitlist": "加入候补名单",
+    "joinWaitlistShort": "候补名单",
+    "providers": "服务商",
+    "reports": "报告",
+    "research": "研究",
+    "primaryLabel": "主导航",
+    "languageLabel": "语言",
+    "openMenu": "打开菜单",
+    "closeMenu": "关闭菜单",
+    "menuLabel": "站点菜单"
+  },
+  "banner": {
+    "tag": "NEW",
+    "text": "已覆盖收款、付款、银行、外汇、KYC 与卡业务等 240+ 合作伙伴。",
+    "link": "查看报告 →",
+    "dismiss": "关闭公告"
+  },
+  "hero": {
+    "kicker": "全球扩张",
+    "title": "面向全球金融科技基础设施的数据与合作伙伴目录。",
+    "titleLine1": "数据与合作伙伴目录",
+    "titleLine2": "服务全球金融科技基础设施",
+    "subtext": "服务商、监管、支付通道与市场数据，一站汇集，覆盖全球每一个金融科技市场。",
+    "emailPlaceholder": "输入您的工作邮箱",
+    "cta": "开始使用",
+    "watchPreview": "观看预览",
+    "bookDemo": "查看服务商",
+    "secondaryCta": "查看服务商",
+    "productLabel": "您将获得",
+    "indexLabel": "Relay 内含",
+    "markets": [
+      "波哥大",
+      "墨西哥城",
+      "圣保罗",
+      "里斯本",
+      "迪拜",
+      "马德里"
+    ],
+    "offerings": [
+      {
+        "name": "服务商",
+        "role": "按市场与类别筛选的可靠合作伙伴"
+      },
+      {
+        "name": "数据与洞察",
+        "role": "市场覆盖、通道与费用"
+      },
+      {
+        "name": "引荐对接",
+        "role": "通往您已筛选团队的暖启动路径"
+      },
+      {
+        "name": "分析",
+        "role": "在决策前比较可选方案"
+      },
+      {
+        "name": "趋势研判",
+        "role": "洞察市场走向信号"
+      }
+    ]
+  },
+  "position": {
+    "kicker": "盲目决策的代价",
+    "title": "进入一个市场，不应意味着\n盲目摸索。",
+    "lede": "优质数据会改变你的运营方式。它让你真正看清市场背后的基础设施、\n服务商如何比较，以及整个体系如何运转。Relay 助你领先一步，\n有了正确的数据，你就能更专注于客户，而不是四处寻找答案。"
+  },
+  "intelligence": {
+    "kicker": "盲目决策的代价",
+    "title": "进入一个市场，不应意味着盲目摸索。",
+    "lede": "优质数据会改变你的运营方式。它让你真正看清市场背后的基础设施、服务商如何比较，以及整个体系如何运转——让你专注于客户，而不是四处寻找答案。",
+    "products": [
+      {
+        "name": "Discover",
+        "description": "按市场与类别筛选的可靠服务商——按真正重要的标准过滤，然后在一处建立短名单。",
+        "points": [
+          "按市场与类别筛选",
+          "查看费用、通道与覆盖",
+          "在同一视图中建立短名单",
+          "按走廊展示实时市场存在"
+        ]
+      },
+      {
+        "name": "Research",
+        "description": "在承诺之前先理解。监管、通道与费用被整理成团队可信任的简报——在外联锁定之前完成评估。",
+        "points": [
+          "按市场查看监管状态",
+          "通道、费用与结算时效",
+          "服务商并排对比",
+          "关键差异化因素已标注"
+        ]
+      },
+      {
+        "name": "Act",
+        "description": "从研究走向关系。建立短名单、跟踪进度、分配负责人并获取引荐——全程无需离开 Relay。",
+        "points": [
+          "短名单 → 评估 → 沟通 → 引荐",
+          "负责人、优先级与实时动态",
+          "从看板发起引荐请求",
+          "让决策不再埋没在邮件里"
+        ]
+      },
+      {
+        "name": "Expansion-ready",
+        "description": "领先于市场变化。关于新通道、新服务商与新机会的信号——让你的团队永远不会措手不及。",
+        "points": [
+          "通道、服务商与监管的实时动态",
+          "市场状态一目了然",
+          "了解本周发生了什么变化"
+        ]
+      }
+    ]
+  },
+  "providers": {
+    "kicker": "服务商",
+    "title": "在投入一年时间之前，找到合适的基础设施合作伙伴。",
+    "lede": "按市场与类别搜索、比较并筛选可靠的金融科技服务商。专为正在进入新走廊、无法承受合作失误的团队打造。",
+    "items": [
+      {
+        "title": "按市场搜索",
+        "description": "按国家、类别、通道、费用与沙箱访问筛选 240+ 服务商——然后查看谁真正在你需要进入的地方运营。",
+        "visual": "search"
+      },
+      {
+        "title": "并排比较",
+        "description": "将费用、结算时效、覆盖范围与牌照并排放在一起。基于可衡量的数据评分，而非宣传材料。",
+        "visual": "compare"
+      },
+      {
+        "title": "建立短名单",
+        "description": "与团队共享短名单——负责人、优先级与备注集中一处，而不是散落在演示文稿与邮件线程中。",
+        "visual": "shortlist"
+      },
+      {
+        "title": "请求引荐",
+        "description": "当你准备好沟通时，无需离开 Relay 即可请求与服务商团队的暖启动引荐。",
+        "visual": "intros"
+      }
+    ]
+  },
+  "quote": {
+    "text": "我们差点签下一家无法在十八个月内解除的付款合作伙伴。Relay 一天之内就向我们展示了三个更好的选择。",
+    "cite": "— 支付负责人，金融科技成长型企业"
+  },
+  "floatCta": {
+    "title": "探索服务商",
+    "subtitle": "240+ 合作伙伴"
+  },
+  "waitlist": {
+    "title": "加入候补名单",
+    "lede": "告诉我们一些关于您的信息，开放访问时我们会与您联系。",
+    "fullName": "全名",
+    "fullNamePlaceholder": "Ada Lovelace",
+    "email": "电子邮箱",
+    "emailPlaceholder": "ada@company.com",
+    "role": "职位",
+    "rolePlaceholder": "选择您的职位",
+    "roles": {
+      "founder": "创始人",
+      "engineer": "工程师",
+      "productManager": "产品经理",
+      "other": "其他"
+    },
+    "company": "公司名称",
+    "companyPlaceholder": "公司名称",
+    "submit": "加入候补名单",
+    "close": "关闭",
+    "successTitle": "您已在名单上",
+    "successLede": "谢谢——当 Relay 为您准备就绪时，我们会与您联系。",
+    "done": "完成"
+  },
+  "footer": {
+    "closing": "正确的基础设施合作伙伴比以往任何时候都更重要",
+    "sitemapLabel": "页脚",
+    "support": "支持",
+    "supportEmail": "support@relay.gratebridge.com",
+    "product": "产品",
+    "providers": "服务商",
+    "howItWorks": "运作方式",
+    "reports": "报告",
+    "joinWaitlist": "加入候补名单",
+    "resources": "资源",
+    "researchPapers": "研究报告",
+    "methodology": "方法论",
+    "about": "关于",
+    "contactSales": "联系销售",
+    "account": "账户",
+    "signIn": "登录",
+    "createAccount": "创建账户",
+    "language": "语言",
+    "disclaimer": "Relay 是基础设施目录与引荐服务。所列费用、结算时效与覆盖范围为参考信息，汇编自服务商文档与建设者报告，可能在不另行通知的情况下变更。Relay 不是支付机构，亦不提供财务、法律或监管建议。",
+    "copyright": "© 2026 GrateBridge Labs — 保留所有权利",
+    "privacy": "隐私",
+    "terms": "条款"
+  },
+  "images": {
+    "logoAlt": "Relay 标识 — 金融科技基础设施目录"
+  },
+  "auth": {
+    "brand": "Relay",
+    "brandMark": "Relay.",
+    "logoAlt": "Relay 标识 — 金融科技基础设施目录",
+    "backToSite": "返回网站",
+    "copyright": "© 2026 GrateBridge Labs",
+    "languageLabel": "语言",
+    "or": "或",
+    "show": "显示",
+    "hide": "隐藏",
+    "terms": "条款",
+    "privacyPolicy": "隐私政策",
+    "signin": {
+      "metadata": {
+        "title": "登录 | Relay 金融科技服务商目录",
+        "description": "登录 Relay，比较金融科技服务商、查阅支付通道数据，并管理哥伦比亚、墨西哥、巴西、葡萄牙、海湾地区等地的服务商引荐。"
+      },
+      "asideLine": "服务商数据与市场情报，集于一处。",
+      "title": "登录",
+      "subtitleBefore": "刚接触 Relay？",
+      "createAccount": "创建账户",
+      "google": "使用 Google 继续",
+      "emailLabel": "工作邮箱",
+      "emailPlaceholder": "you@company.com",
+      "passwordLabel": "密码",
+      "forgotPassword": "忘记密码？",
+      "remember": "保持登录状态",
+      "submit": "登录",
+      "submitting": "正在登录…",
+      "legalBefore": "继续即表示您同意我们的",
+      "legalAnd": "和"
+    },
+    "signup": {
+      "metadata": {
+        "title": "创建账户 | Relay 金融科技目录",
+        "description": "创建免费 Relay 账户，比较经筛选的金融科技服务商、浏览支付通道数据，并在哥伦比亚、墨西哥、巴西、葡萄牙、海湾地区等地请求引荐。"
+      },
+      "asideLine": "从目录开始。筛选适合的合作伙伴。",
+      "title": "创建账户",
+      "subtitleBefore": "已有账户？",
+      "signIn": "登录",
+      "google": "使用 Google 继续",
+      "nameLabel": "全名",
+      "namePlaceholder": "Ada Lovelace",
+      "companyLabel": "公司",
+      "companyPlaceholder": "您的公司名称",
+      "emailLabel": "工作邮箱",
+      "emailPlaceholder": "you@company.com",
+      "passwordLabel": "密码",
+      "passwordPlaceholder": "至少 8 个字符",
+      "termsAgree": "我同意条款和隐私政策",
+      "submit": "创建账户",
+      "submitting": "正在创建账户…",
+      "footnote": "为全球评估金融科技基础设施的团队而建。"
+    },
+    "forgotPassword": {
+      "metadata": {
+        "title": "重置密码 | Relay",
+        "description": "重置您的 Relay 账户密码。Relay 是用于比较服务商并按市场查阅支付通道数据的金融科技基础设施目录。"
+      },
+      "asideLine": "我们会在几分钟内帮您重新进入 Relay。",
+      "title": "忘记密码",
+      "subtitle": "输入您的工作邮箱，我们将发送重置密码的链接。",
+      "emailLabel": "工作邮箱",
+      "emailPlaceholder": "you@company.com",
+      "submit": "发送重置链接",
+      "submitting": "正在发送链接…",
+      "rememberPassword": "记得密码？",
+      "signIn": "登录",
+      "successTitle": "请查收收件箱",
+      "successBefore": "我们已将密码重置链接发送至",
+      "successAfter": "该链接将在 30 分钟后过期。",
+      "yourEmail": "您的邮箱",
+      "resend": "重新发送邮件",
+      "openReset": "继续重置密码",
+      "backToSignIn": "返回"
+    },
+    "resetPassword": {
+      "metadata": {
+        "title": "设置新密码 | Relay",
+        "description": "为您的 Relay 账户选择新密码。"
+      },
+      "asideLine": "选择一个您此前未在此处使用过的强密码。",
+      "title": "设置新密码",
+      "subtitle": "为您的 Relay 账户输入新密码。",
+      "passwordLabel": "新密码",
+      "passwordPlaceholder": "至少 8 个字符",
+      "confirmLabel": "确认密码",
+      "confirmPlaceholder": "再次输入新密码",
+      "submit": "更新密码",
+      "submitting": "正在更新…",
+      "cancel": "取消并登录",
+      "errorShort": "密码必须至少包含 8 个字符。",
+      "errorMismatch": "两次输入的密码不一致。",
+      "successTitle": "密码已更新",
+      "successLede": "您的密码已重置。您可以使用新凭证登录。",
+      "backToSignIn": "登录"
+    }
+  },
+  "highlights": {
+    "blocks": [
+      {
+        "id": "discover",
+        "title": "Discover",
+        "lede": "按市场与类别筛选的可靠服务商——按真正重要的标准过滤，然后在一处建立短名单。",
+        "layout": "featured",
+        "cards": [
+          {
+            "title": "服务商目录",
+            "description": "按市场与类别搜索合作伙伴。按费用、覆盖、通道与沙箱访问筛选。",
+            "mock": "search",
+            "points": [
+              "按市场与类别筛选",
+              "查看费用、通道与覆盖",
+              "在同一视图中建立短名单"
+            ]
+          },
+          {
+            "title": "市场覆盖",
+            "description": "在发起外联之前，查看哪些服务商在各走廊运营。",
+            "mock": "people",
+            "points": [
+              "实时市场存在",
+              "类别级覆盖"
+            ]
+          },
+          {
+            "title": "共享短名单",
+            "description": "与团队共享服务商决策——而不是埋没在邮件中。",
+            "mock": "network",
+            "points": [
+              "团队可见性",
+              "决策历史"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "research",
+        "title": "Research",
+        "lede": "在承诺之前先理解。",
+        "layout": "double",
+        "cards": [
+          {
+            "title": "市场简报",
+            "description": "监管、通道与费用被整理成团队可信任的简报——在外联锁定之前完成评估。",
+            "mock": "brief",
+            "points": [
+              "按市场查看监管状态",
+              "通道、费用与结算时效",
+              "按类别划分的服务商"
+            ]
+          },
+          {
+            "title": "服务商对比",
+            "description": "精确查看一方相对另一方的表现——费用、结算、覆盖以及各自的差异化优势。",
+            "mock": "compare",
+            "points": [
+              "费用与结算并排对比",
+              "市场覆盖一目了然",
+              "关键差异化因素已标注"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "act",
+        "title": "Act",
+        "lede": "从研究走向关系。",
+        "layout": "act",
+        "cards": [
+          {
+            "title": "Act",
+            "description": "建立短名单、跟踪进度、分配负责人与优先级，并获得服务商引荐——全程无需离开 Relay。",
+            "mock": "workflow",
+            "points": [
+              "短名单 → 评估 → 沟通 → 引荐",
+              "负责人、优先级与实时动态",
+              "从看板发起引荐请求"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "ready",
+        "title": "Expansion-ready",
+        "lede": "领先于市场变化。",
+        "layout": "expansion",
+        "cards": [
+          {
+            "title": "Expansion-ready",
+            "description": "获取市场走向信号——新通道、新服务商、新机会。Relay 在市场变化时持续更新您的团队，让您永远不会措手不及。",
+            "mock": "signals",
+            "points": [
+              "通道、服务商与监管的实时动态",
+              "市场状态一目了然",
+              "了解本周发生了什么变化"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "dataReports": {
+    "kicker": "数据报告",
+    "title": "报告",
+    "papersTitle": "金融科技研究报告",
+    "lede": "基准、走廊成本与市场地图——基于合作伙伴记录与建设者评估构建，而非路演材料。",
+    "cta": "浏览全部报告 →",
+    "ctaClean": "查看全部报告",
+    "readReport": "阅读报告 →",
+    "moreProviders": "+ 另有 {count} 家",
+    "minRead": "分钟阅读",
+    "indexTitle": "Relay 数据报告",
+    "indexLede": "关于全球支付、数字钱包、即时通道、汇款以及美国、欧洲、非洲与新兴市场金融科技基础设施的深度分析。",
+    "reportsPublished": "已发布 {count} 份报告",
+    "reportsCount": "{count} 份报告",
+    "filterAll": "全部报告",
+    "sortLatest": "最新优先",
+    "sortMarket": "按市场",
+    "loadMore": "加载更多",
+    "showing": "显示 {shown} / {total}",
+    "getStarted": "开始使用",
+    "backToIndex": "全部报告",
+    "published": "发布日期",
+    "lastUpdated": "最近更新",
+    "whyWeBuilt": "我们为何打造此报告",
+    "keyMetrics": "关键指标",
+    "keyFindings": "关键发现",
+    "whyThisMatters": "为何重要：",
+    "marketContext": "市场背景",
+    "providerLandscape": "服务商格局",
+    "implications": "对您意味着什么",
+    "exploreProviders": "准备筛选合作伙伴？",
+    "exploreProvidersLede": "打开服务商目录，按本报告覆盖的市场进行筛选。",
+    "exploreProvidersCta": "探索该市场的服务商",
+    "reportCtaTitle": "将这张地图转化为您市场中的决策",
+    "reportCtaLede": "Relay 帮助团队将全球支付变化转化为合作伙伴短名单、真实费用与引荐对接——按市场划分。",
+    "reportCtaLabel": "联系销售",
+    "methodology": "数据来源与方法论",
+    "showMethodology": "显示方法论",
+    "related": "相关报告"
+  },
+  "pages": {
+    "about": {
+      "title": "关于 Relay",
+      "lede": "Relay 是面向全球市场金融科技基础设施的数据目录与洞察层。",
+      "sections": [
+        {
+          "title": "我们做什么",
+          "body": [
+            "进入新走廊的团队需要的不只是销售材料。Relay 按市场与类别绘制可靠服务商，呈现费用、通道、覆盖与可靠性信号，并帮助您筛选真正能落地交付的合作伙伴。",
+            "当您准备就绪时，Relay 可将您引荐给服务商团队——让外联从上下文开始，而非盲目猜测。"
+          ]
+        },
+        {
+          "title": "我们是谁",
+          "body": [
+            "Relay 由 GrateBridge Labs 打造。我们与正在全球扩张、评估支付、KYC、外汇与银行基础设施的建设者和运营者合作。"
+          ]
+        },
+        {
+          "title": "联系我们",
+          "body": [
+            "如需产品访问权限，请从网站加入候补名单。如需合作与销售沟通，请通过 Calendly 预约时间，或发送邮件至 support@relay.gratebridge.com。"
+          ]
+        }
+      ]
+    },
+    "methodology": {
+      "title": "方法论",
+      "lede": "我们如何汇编服务商数据、基准与市场报告。",
+      "sections": [
+        {
+          "title": "来源",
+          "body": [
+            "服务商条目与报告发现汇编自公开文档、产品材料、建设者报告以及与运营者的直接沟通。凡属参考性数据，我们都会予以说明。"
+          ]
+        },
+        {
+          "title": "我们发布什么",
+          "body": [
+            "目录字段聚焦类别、市场、通道、费用区间、覆盖与集成信号。研究报告则对走廊、通道或类别进行更深入分析——每份报告均附有方法论说明。"
+          ]
+        },
+        {
+          "title": "局限",
+          "body": [
+            "费用、结算时效与覆盖范围会发生变化。Relay 不是支付机构，亦不提供财务、法律或监管建议。在做出承诺之前，请务必与服务商核实关键条款。"
+          ]
+        }
+      ]
+    },
+    "privacy": {
+      "title": "隐私",
+      "lede": "GrateBridge Labs 如何处理您与 Relay 分享的信息。",
+      "sections": [
+        {
+          "title": "我们收集什么",
+          "body": [
+            "当您加入候补名单、创建账户或联系我们时，我们会收集您提供的信息——例如姓名、工作邮箱、职位与公司。我们还会收集运营与改进产品所需的基本使用数据。"
+          ]
+        },
+        {
+          "title": "我们如何使用",
+          "body": [
+            "我们使用这些信息来运营 Relay、回应请求、改进目录与报告体验，以及就访问权限或产品更新进行沟通。我们不会出售您的个人信息。"
+          ]
+        },
+        {
+          "title": "联系方式",
+          "body": [
+            "有关隐私的问题可发送至 support@relay.gratebridge.com。"
+          ]
+        }
+      ]
+    },
+    "terms": {
+      "title": "条款",
+      "lede": "Relay 网站及相关服务的使用条款。",
+      "sections": [
+        {
+          "title": "使用 Relay",
+          "body": [
+            "Relay 为信息目的提供目录信息、研究与引荐工作流。您在评估服务商或做出商业决策时如何使用这些信息，由您自行负责。"
+          ]
+        },
+        {
+          "title": "准确性",
+          "body": [
+            "我们努力保持数据更新，但列表与报告数据可能不完整，或在不另行通知的情况下变更。签约前请直接与服务商确认关键细节。"
+          ]
+        },
+        {
+          "title": "账户",
+          "body": [
+            "如果您创建账户，请妥善保管凭证并提供准确信息。我们可能会暂停滥用服务或违反本条款的访问权限。"
+          ]
+        },
+        {
+          "title": "联系方式",
+          "body": [
+            "有关本条款的问题，请发送邮件至 support@relay.gratebridge.com。"
+          ]
+        }
+      ]
+    }
+  }
+}
