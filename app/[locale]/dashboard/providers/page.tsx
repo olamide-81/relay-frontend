@@ -46,8 +46,9 @@ function DirectoryContent() {
   const { user } = useSession()
   const subscribed = isSubscribed(user)
   const initialQ = searchParams.get('q') ?? ''
+  const initialCat = searchParams.get('cat')
   const [query, setQuery] = useState(initialQ)
-  const [openFolder, setOpenFolder] = useState<string | null>(null)
+  const [openFolder, setOpenFolder] = useState<string | null>(initialCat)
   const [region, setRegion] = useState('all')
 
   const searched = useMemo(() => searchProviders(query), [query])

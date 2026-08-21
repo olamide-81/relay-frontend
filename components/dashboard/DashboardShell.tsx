@@ -302,7 +302,7 @@ function ActionIcon({ name }: { name: QuickAction['icon'] }) {
   }
 }
 
-export default function DashboardShell({ children: _children }: { children: React.ReactNode }) {
+export default function DashboardShell({ children }: { children: React.ReactNode }) {
   const router = useRouter()
   const pathname = usePathname()
   const { user, ready } = useSession()
@@ -625,6 +625,7 @@ export default function DashboardShell({ children: _children }: { children: Reac
         <div className="dash-page-head">
           <h1 className="dash-page-title">{pageTitle}</h1>
         </div>
+        <div className="dash-page-body">{children}</div>
       </div>
       </div>
     </div>
