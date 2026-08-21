@@ -3,30 +3,25 @@
 import { Link } from '@/i18n/navigation'
 
 export function PageHeader({
-  index,
-  label,
   title,
   desc,
   action,
+  index: _index,
+  label: _label,
 }: {
-  index: string
-  label: string
   title: React.ReactNode
   desc?: string
   action?: React.ReactNode
+  index?: string
+  label?: string
 }) {
   return (
-    <header className="pg-header">
-      <div>
-        <div className="dash-page-label pg-page-label">
-          <span className="dash-page-label-index">{index}</span>
-          <span className="dash-page-label-rule" />
-          <span className="dash-page-label-text">{label}</span>
-        </div>
-        <h1 className="pg-title">{title}</h1>
-        {desc && <p className="pg-desc">{desc}</p>}
+    <header className="dash-page-header">
+      <div className="dash-page-header-main">
+        <h1 className="dash-page-title">{title}</h1>
+        {desc && <p className="dash-page-desc">{desc}</p>}
       </div>
-      {action}
+      {action && <div className="dash-page-header-action">{action}</div>}
     </header>
   )
 }
@@ -41,9 +36,9 @@ export function EmptyState({
   actionHref: string
 }) {
   return (
-    <div className="pg-empty">
+    <div className="ui-card ui-card--empty">
       <p>{message}</p>
-      <Link href={actionHref} className="pg-empty-link mono">
+      <Link href={actionHref} className="ui-link">
         {actionLabel} →
       </Link>
     </div>
