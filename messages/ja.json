@@ -642,5 +642,149 @@
         }
       ]
     }
+  },
+  "overview": {
+    "greeting": "コリドー概要",
+    "lede": "紹介を依頼する前に手数料・ライセンス・SLAを比較 — Relayワークスペースのプレビュー。",
+    "ctaPrimary": "紹介を依頼",
+    "ctaSecondary": "新しいショートリスト",
+    "metricsLabel": "ワークスペース指標",
+    "metrics": [
+      {
+        "label": "オープンリクエスト",
+        "value": "7",
+        "hint": "3件が対応待ち",
+        "tone": "up"
+      },
+      {
+        "label": "ショートリスト",
+        "value": "12",
+        "hint": "3リスト横断",
+        "tone": "flat"
+      },
+      {
+        "label": "中央値ペイアウト手数料",
+        "value": "0.42%",
+        "hint": "+3bps 30日",
+        "tone": "alert"
+      },
+      {
+        "label": "今週の新規",
+        "value": "9",
+        "hint": "プロバイダー",
+        "tone": "flat"
+      }
+    ],
+    "directory": {
+      "title": "プロバイダーディレクトリ",
+      "lede": "紹介を依頼する前に手数料・ライセンス・SLAを比較。",
+      "all": "全210 →",
+      "feeRange": "手数料レンジ",
+      "medianSettle": "中央値決済",
+      "corridors": "コリドー"
+    },
+    "categories": [
+      {
+        "key": "payouts",
+        "title": "ペイアウト",
+        "count": "42社",
+        "description": "一括送金、マスペイ、クロスボーダー。",
+        "feeRange": "0.18–0.62%",
+        "settle": "4分",
+        "corridors": "38",
+        "avatars": [
+          "NE",
+          "KF",
+          "AV"
+        ],
+        "more": "39"
+      },
+      {
+        "key": "collections",
+        "title": "コレクション",
+        "count": "51社",
+        "description": "ローカルアクワイアリング、QR、A2A。",
+        "feeRange": "0.22–0.85%",
+        "settle": "T+0",
+        "corridors": "44",
+        "avatars": [
+          "PX",
+          "MO",
+          "GC"
+        ],
+        "more": "48"
+      },
+      {
+        "key": "fx",
+        "title": "FX",
+        "count": "36社",
+        "description": "財務FX、ヘッジ、マルチ通貨ウォレット。",
+        "feeRange": "8–35 bps",
+        "settle": "当日",
+        "corridors": "62",
+        "avatars": [
+          "WI",
+          "OF",
+          "TR"
+        ],
+        "more": "33"
+      },
+      {
+        "key": "others",
+        "title": "その他",
+        "count": "81社",
+        "description": "KYC、BaaS、コンプライアンスレール。",
+        "feeRange": "案件次第",
+        "settle": "API",
+        "corridors": "120+",
+        "avatars": [
+          "VS",
+          "SM",
+          "ID"
+        ],
+        "more": "78"
+      }
+    ],
+    "shortlist": {
+      "title": "ショートリスト · Q3ペイアウトRFP",
+      "meta": "手数料・決済・ライセンス適合で採点",
+      "badge": "6件中4件採点済",
+      "rows": [
+        {
+          "rank": "01",
+          "name": "Nordbridge Payments",
+          "meta": "SE · EMI · 31コリドー",
+          "fee": "0.18%",
+          "score": 92
+        },
+        {
+          "rank": "02",
+          "name": "Kestrel Pay",
+          "meta": "UK · EMI · 28コリドー",
+          "fee": "0.24%",
+          "score": 84
+        },
+        {
+          "rank": "03",
+          "name": "Avenir Global",
+          "meta": "SG · MPI · 41コリドー",
+          "fee": "0.31%",
+          "score": 76
+        },
+        {
+          "rank": "04",
+          "name": "Meridian Rails",
+          "meta": "NL · PI · 22コリドー",
+          "fee": "0.36%",
+          "score": 68
+        }
+      ]
+    },
+    "intel": {
+      "title": "インテリジェンス",
+      "link": "マーケットマップ",
+      "minRead": "分で読了",
+      "note": "EU即時ペイアウト義務 10月9日 · 6分"
+    }
   }
 }

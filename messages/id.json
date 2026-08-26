@@ -642,5 +642,149 @@
         }
       ]
     }
+  },
+  "overview": {
+    "greeting": "Ringkasan koridor Anda",
+    "lede": "Bandingkan biaya, lisensi, dan SLA sebelum meminta intro — pratinjau workspace Relay.",
+    "ctaPrimary": "Minta intro",
+    "ctaSecondary": "Shortlist baru",
+    "metricsLabel": "Metrik workspace",
+    "metrics": [
+      {
+        "label": "Permintaan terbuka",
+        "value": "7",
+        "hint": "3 menunggu Anda",
+        "tone": "up"
+      },
+      {
+        "label": "Di shortlist",
+        "value": "12",
+        "hint": "di 3 daftar",
+        "tone": "flat"
+      },
+      {
+        "label": "Median biaya payout",
+        "value": "0.42%",
+        "hint": "+3bps 30h",
+        "tone": "alert"
+      },
+      {
+        "label": "Baru minggu ini",
+        "value": "9",
+        "hint": "penyedia",
+        "tone": "flat"
+      }
+    ],
+    "directory": {
+      "title": "Direktori penyedia",
+      "lede": "Bandingkan biaya, lisensi, dan SLA sebelum meminta intro.",
+      "all": "Semua 210 →",
+      "feeRange": "Rentang biaya",
+      "medianSettle": "Settle median",
+      "corridors": "Koridor"
+    },
+    "categories": [
+      {
+        "key": "payouts",
+        "title": "Payouts",
+        "count": "42 penyedia",
+        "description": "Disbursement, mass pay, dan lintas negara.",
+        "feeRange": "0.18–0.62%",
+        "settle": "4 mnt",
+        "corridors": "38",
+        "avatars": [
+          "NE",
+          "KF",
+          "AV"
+        ],
+        "more": "39"
+      },
+      {
+        "key": "collections",
+        "title": "Collections",
+        "count": "51 penyedia",
+        "description": "Acquiring lokal, QR, dan account-to-account.",
+        "feeRange": "0.22–0.85%",
+        "settle": "T+0",
+        "corridors": "44",
+        "avatars": [
+          "PX",
+          "MO",
+          "GC"
+        ],
+        "more": "48"
+      },
+      {
+        "key": "fx",
+        "title": "FX",
+        "count": "36 penyedia",
+        "description": "FX treasury, hedging, dan wallet multi-mata uang.",
+        "feeRange": "8–35 bps",
+        "settle": "Hari sama",
+        "corridors": "62",
+        "avatars": [
+          "WI",
+          "OF",
+          "TR"
+        ],
+        "more": "33"
+      },
+      {
+        "key": "others",
+        "title": "Lainnya",
+        "count": "81 penyedia",
+        "description": "KYC, banking-as-a-service, dan rail kepatuhan.",
+        "feeRange": "Bervariasi",
+        "settle": "API",
+        "corridors": "120+",
+        "avatars": [
+          "VS",
+          "SM",
+          "ID"
+        ],
+        "more": "78"
+      }
+    ],
+    "shortlist": {
+      "title": "Shortlist · RFP payout Q3",
+      "meta": "Dinilai dari biaya, settle, dan kecocokan lisensi",
+      "badge": "4 dari 6 dinilai",
+      "rows": [
+        {
+          "rank": "01",
+          "name": "Nordbridge Payments",
+          "meta": "SE · Lisensi EMI · 31 koridor",
+          "fee": "0.18%",
+          "score": 92
+        },
+        {
+          "rank": "02",
+          "name": "Kestrel Pay",
+          "meta": "UK · EMI · 28 koridor",
+          "fee": "0.24%",
+          "score": 84
+        },
+        {
+          "rank": "03",
+          "name": "Avenir Global",
+          "meta": "SG · MPI · 41 koridor",
+          "fee": "0.31%",
+          "score": 76
+        },
+        {
+          "rank": "04",
+          "name": "Meridian Rails",
+          "meta": "NL · PI · 22 koridor",
+          "fee": "0.36%",
+          "score": 68
+        }
+      ]
+    },
+    "intel": {
+      "title": "Intelligence",
+      "link": "Peta pasar",
+      "minRead": "mnt baca",
+      "note": "Mandat payout instan UE 9 Okt · 6 mnt"
+    }
   }
 }

@@ -642,5 +642,149 @@
         }
       ]
     }
+  },
+  "overview": {
+    "greeting": "你的走廊概览",
+    "lede": "在发起介绍前比较费率、牌照与 SLA — Relay 工作区预览。",
+    "ctaPrimary": "请求介绍",
+    "ctaSecondary": "新建短名单",
+    "metricsLabel": "工作区指标",
+    "metrics": [
+      {
+        "label": "进行中请求",
+        "value": "7",
+        "hint": "3 项待你处理",
+        "tone": "up"
+      },
+      {
+        "label": "已入短名单",
+        "value": "12",
+        "hint": "覆盖 3 份名单",
+        "tone": "flat"
+      },
+      {
+        "label": "中位代付费率",
+        "value": "0.42%",
+        "hint": "+3bps / 30天",
+        "tone": "alert"
+      },
+      {
+        "label": "本周新增",
+        "value": "9",
+        "hint": "家服务商",
+        "tone": "flat"
+      }
+    ],
+    "directory": {
+      "title": "服务商目录",
+      "lede": "在发起介绍前比较费率、牌照与 SLA。",
+      "all": "全部 210 →",
+      "feeRange": "费率区间",
+      "medianSettle": "中位结算",
+      "corridors": "走廊数"
+    },
+    "categories": [
+      {
+        "key": "payouts",
+        "title": "代付",
+        "count": "42 家服务商",
+        "description": "批量打款、mass pay 与跨境支付。",
+        "feeRange": "0.18–0.62%",
+        "settle": "4 分钟",
+        "corridors": "38",
+        "avatars": [
+          "NE",
+          "KF",
+          "AV"
+        ],
+        "more": "39"
+      },
+      {
+        "key": "collections",
+        "title": "收款",
+        "count": "51 家服务商",
+        "description": "本地收单、QR 与账户到账户。",
+        "feeRange": "0.22–0.85%",
+        "settle": "T+0",
+        "corridors": "44",
+        "avatars": [
+          "PX",
+          "MO",
+          "GC"
+        ],
+        "more": "48"
+      },
+      {
+        "key": "fx",
+        "title": "外汇",
+        "count": "36 家服务商",
+        "description": "司库外汇、对冲与多币种钱包。",
+        "feeRange": "8–35 bps",
+        "settle": "当日",
+        "corridors": "62",
+        "avatars": [
+          "WI",
+          "OF",
+          "TR"
+        ],
+        "more": "33"
+      },
+      {
+        "key": "others",
+        "title": "其他",
+        "count": "81 家服务商",
+        "description": "KYC、BaaS 与合规通道。",
+        "feeRange": "视情况",
+        "settle": "API",
+        "corridors": "120+",
+        "avatars": [
+          "VS",
+          "SM",
+          "ID"
+        ],
+        "more": "78"
+      }
+    ],
+    "shortlist": {
+      "title": "短名单 · Q3 代付 RFP",
+      "meta": "按费率、结算与牌照匹配评分",
+      "badge": "6 项中已评 4 项",
+      "rows": [
+        {
+          "rank": "01",
+          "name": "Nordbridge Payments",
+          "meta": "SE · EMI 牌照 · 31 条走廊",
+          "fee": "0.18%",
+          "score": 92
+        },
+        {
+          "rank": "02",
+          "name": "Kestrel Pay",
+          "meta": "UK · EMI · 28 条走廊",
+          "fee": "0.24%",
+          "score": 84
+        },
+        {
+          "rank": "03",
+          "name": "Avenir Global",
+          "meta": "SG · MPI · 41 条走廊",
+          "fee": "0.31%",
+          "score": 76
+        },
+        {
+          "rank": "04",
+          "name": "Meridian Rails",
+          "meta": "NL · PI · 22 条走廊",
+          "fee": "0.36%",
+          "score": 68
+        }
+      ]
+    },
+    "intel": {
+      "title": "情报",
+      "link": "市场地图",
+      "minRead": "分钟阅读",
+      "note": "欧盟即时代付指令落地 10月9日 · 6 分钟"
+    }
   }
 }

@@ -76,12 +76,18 @@
     "privacy": {
       "title": "Política de privacidad | Relay",
       "description": "Cómo GrateBridge Labs recopila y usa la información cuando usas Relay, te unes a la lista de espera o contactas ventas.",
-      "keywords": ["privacidad Relay", "privacidad GrateBridge Labs"]
+      "keywords": [
+        "privacidad Relay",
+        "privacidad GrateBridge Labs"
+      ]
     },
     "terms": {
       "title": "Términos de uso | Relay",
       "description": "Términos de uso del sitio Relay, el directorio y los servicios de investigación operados por GrateBridge Labs.",
-      "keywords": ["términos Relay", "términos GrateBridge Labs"]
+      "keywords": [
+        "términos Relay",
+        "términos GrateBridge Labs"
+      ]
     }
   },
   "nav": {
@@ -637,6 +643,150 @@
           ]
         }
       ]
+    }
+  },
+  "overview": {
+    "greeting": "Tu overview de corredor",
+    "lede": "Compara fees, licencias y SLAs antes de pedir una intro — el workspace de Relay, en preview.",
+    "ctaPrimary": "Pedir intro",
+    "ctaSecondary": "Nueva shortlist",
+    "metricsLabel": "Métricas del workspace",
+    "metrics": [
+      {
+        "label": "Solicitudes abiertas",
+        "value": "7",
+        "hint": "3 te esperan",
+        "tone": "up"
+      },
+      {
+        "label": "En shortlist",
+        "value": "12",
+        "hint": "en 3 listas",
+        "tone": "flat"
+      },
+      {
+        "label": "Fee payout mediano",
+        "value": "0.42%",
+        "hint": "+3bps 30d",
+        "tone": "alert"
+      },
+      {
+        "label": "Nuevos esta semana",
+        "value": "9",
+        "hint": "proveedores",
+        "tone": "flat"
+      }
+    ],
+    "directory": {
+      "title": "Directorio de proveedores",
+      "lede": "Compara fees, licencias y SLAs antes de pedir una intro.",
+      "all": "Los 210 →",
+      "feeRange": "Rango de fees",
+      "medianSettle": "Settle mediano",
+      "corridors": "Corredores"
+    },
+    "categories": [
+      {
+        "key": "payouts",
+        "title": "Payouts",
+        "count": "42 proveedores",
+        "description": "Disbursements, mass pay y cross-border.",
+        "feeRange": "0.18–0.62%",
+        "settle": "4 min",
+        "corridors": "38",
+        "avatars": [
+          "NE",
+          "KF",
+          "AV"
+        ],
+        "more": "39"
+      },
+      {
+        "key": "collections",
+        "title": "Collections",
+        "count": "51 proveedores",
+        "description": "Adquirencia local, QR y cuenta a cuenta.",
+        "feeRange": "0.22–0.85%",
+        "settle": "T+0",
+        "corridors": "44",
+        "avatars": [
+          "PX",
+          "MO",
+          "GC"
+        ],
+        "more": "48"
+      },
+      {
+        "key": "fx",
+        "title": "FX",
+        "count": "36 proveedores",
+        "description": "FX de tesorería, cobertura y wallets multi-divisa.",
+        "feeRange": "8–35 bps",
+        "settle": "Mismo día",
+        "corridors": "62",
+        "avatars": [
+          "WI",
+          "OF",
+          "TR"
+        ],
+        "more": "33"
+      },
+      {
+        "key": "others",
+        "title": "Otros",
+        "count": "81 proveedores",
+        "description": "KYC, banking-as-a-service y rieles de compliance.",
+        "feeRange": "Varía",
+        "settle": "API",
+        "corridors": "120+",
+        "avatars": [
+          "VS",
+          "SM",
+          "ID"
+        ],
+        "more": "78"
+      }
+    ],
+    "shortlist": {
+      "title": "Shortlist · RFP payout T3",
+      "meta": "Puntuado por fee, settle y licencia",
+      "badge": "4 de 6 puntuados",
+      "rows": [
+        {
+          "rank": "01",
+          "name": "Nordbridge Payments",
+          "meta": "SE · Licencia EMI · 31 corredores",
+          "fee": "0.18%",
+          "score": 92
+        },
+        {
+          "rank": "02",
+          "name": "Kestrel Pay",
+          "meta": "UK · EMI · 28 corredores",
+          "fee": "0.24%",
+          "score": 84
+        },
+        {
+          "rank": "03",
+          "name": "Avenir Global",
+          "meta": "SG · MPI · 41 corredores",
+          "fee": "0.31%",
+          "score": 76
+        },
+        {
+          "rank": "04",
+          "name": "Meridian Rails",
+          "meta": "NL · PI · 22 corredores",
+          "fee": "0.36%",
+          "score": 68
+        }
+      ]
+    },
+    "intel": {
+      "title": "Intelligence",
+      "link": "Mapas de mercado",
+      "minRead": "min de lectura",
+      "note": "Mandato UE de payouts instantáneos el 9 oct · 6 min"
     }
   }
 }

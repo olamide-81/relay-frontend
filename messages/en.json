@@ -231,6 +231,134 @@
       }
     ]
   },
+  "overview": {
+    "greeting": "Your corridor overview",
+    "lede": "Compare fees, licences and SLAs before you request an intro — the Relay workspace, previewed.",
+    "ctaPrimary": "Request intro",
+    "ctaSecondary": "New shortlist",
+    "metricsLabel": "Workspace metrics",
+    "metrics": [
+      {
+        "label": "Open requests",
+        "value": "7",
+        "hint": "3 awaiting you",
+        "tone": "up"
+      },
+      {
+        "label": "Shortlisted",
+        "value": "12",
+        "hint": "across 3 lists",
+        "tone": "flat"
+      },
+      {
+        "label": "Median payout fee",
+        "value": "0.42%",
+        "hint": "+3bps 30d",
+        "tone": "alert"
+      },
+      {
+        "label": "New this week",
+        "value": "9",
+        "hint": "providers",
+        "tone": "flat"
+      }
+    ],
+    "directory": {
+      "title": "Provider directory",
+      "lede": "Compare fees, licences and SLAs before you request an intro.",
+      "all": "All 210 →",
+      "feeRange": "Fee range",
+      "medianSettle": "Median settle",
+      "corridors": "Corridors"
+    },
+    "categories": [
+      {
+        "key": "payouts",
+        "title": "Payouts",
+        "count": "42 providers",
+        "description": "Disbursements, mass pay and cross-border.",
+        "feeRange": "0.18–0.62%",
+        "settle": "4 min",
+        "corridors": "38",
+        "avatars": ["NE", "KF", "AV"],
+        "more": "39"
+      },
+      {
+        "key": "collections",
+        "title": "Collections",
+        "count": "51 providers",
+        "description": "Local acquiring, QR and account-to-account.",
+        "feeRange": "0.22–0.85%",
+        "settle": "T+0",
+        "corridors": "44",
+        "avatars": ["PX", "MO", "GC"],
+        "more": "48"
+      },
+      {
+        "key": "fx",
+        "title": "FX",
+        "count": "36 providers",
+        "description": "Treasury FX, hedging and multi-currency wallets.",
+        "feeRange": "8–35 bps",
+        "settle": "Same day",
+        "corridors": "62",
+        "avatars": ["WI", "OF", "TR"],
+        "more": "33"
+      },
+      {
+        "key": "others",
+        "title": "Others",
+        "count": "81 providers",
+        "description": "KYC, banking-as-a-service and compliance rails.",
+        "feeRange": "Varies",
+        "settle": "API",
+        "corridors": "120+",
+        "avatars": ["VS", "SM", "ID"],
+        "more": "78"
+      }
+    ],
+    "shortlist": {
+      "title": "Shortlist · Q3 payout RFP",
+      "meta": "Scored against fee, settle and licence fit",
+      "badge": "4 of 6 scored",
+      "rows": [
+        {
+          "rank": "01",
+          "name": "Nordbridge Payments",
+          "meta": "SE · EMI licence · 31 corridors",
+          "fee": "0.18%",
+          "score": 92
+        },
+        {
+          "rank": "02",
+          "name": "Kestrel Pay",
+          "meta": "UK · EMI · 28 corridors",
+          "fee": "0.24%",
+          "score": 84
+        },
+        {
+          "rank": "03",
+          "name": "Avenir Global",
+          "meta": "SG · MPI · 41 corridors",
+          "fee": "0.31%",
+          "score": 76
+        },
+        {
+          "rank": "04",
+          "name": "Meridian Rails",
+          "meta": "NL · PI · 22 corridors",
+          "fee": "0.36%",
+          "score": 68
+        }
+      ]
+    },
+    "intel": {
+      "title": "Intelligence",
+      "link": "Market maps",
+      "minRead": "min read",
+      "note": "EU instant-payout mandate lands Oct 9 · 6 min"
+    }
+  },
   "quote": {
     "text": "We almost signed a payout partner we couldn't unwind for eighteen months. Relay showed us three better options in a day.",
     "cite": "— Head of Payments, fintech scale-up"

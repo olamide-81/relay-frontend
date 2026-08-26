@@ -642,5 +642,149 @@
         }
       ]
     }
+  },
+  "overview": {
+    "greeting": "코리도 개요",
+    "lede": "소개를 요청하기 전에 수수, 라이선스, SLA를 비교하세요 — Relay 워크스페이스 미리보기.",
+    "ctaPrimary": "소개 요청",
+    "ctaSecondary": "새 숏리스트",
+    "metricsLabel": "워크스페이스 지표",
+    "metrics": [
+      {
+        "label": "진행 중 요청",
+        "value": "7",
+        "hint": "3건 대기 중",
+        "tone": "up"
+      },
+      {
+        "label": "숏리스트",
+        "value": "12",
+        "hint": "3개 리스트",
+        "tone": "flat"
+      },
+      {
+        "label": "중위 페이아웃 수수료",
+        "value": "0.42%",
+        "hint": "+3bps 30일",
+        "tone": "alert"
+      },
+      {
+        "label": "이번 주 신규",
+        "value": "9",
+        "hint": "제공업체",
+        "tone": "flat"
+      }
+    ],
+    "directory": {
+      "title": "제공업체 디렉터리",
+      "lede": "소개를 요청하기 전에 수수, 라이선스, SLA를 비교하세요.",
+      "all": "전체 210 →",
+      "feeRange": "수수료 범위",
+      "medianSettle": "중위 정산",
+      "corridors": "코리도"
+    },
+    "categories": [
+      {
+        "key": "payouts",
+        "title": "페이아웃",
+        "count": "42개 업체",
+        "description": "대량 지급, 매스페이, 크로스보더.",
+        "feeRange": "0.18–0.62%",
+        "settle": "4분",
+        "corridors": "38",
+        "avatars": [
+          "NE",
+          "KF",
+          "AV"
+        ],
+        "more": "39"
+      },
+      {
+        "key": "collections",
+        "title": "컬렉션",
+        "count": "51개 업체",
+        "description": "로컬 매입, QR, 계좌이체.",
+        "feeRange": "0.22–0.85%",
+        "settle": "T+0",
+        "corridors": "44",
+        "avatars": [
+          "PX",
+          "MO",
+          "GC"
+        ],
+        "more": "48"
+      },
+      {
+        "key": "fx",
+        "title": "FX",
+        "count": "36개 업체",
+        "description": "재무 FX, 헤지, 멀티커런시 월렛.",
+        "feeRange": "8–35 bps",
+        "settle": "당일",
+        "corridors": "62",
+        "avatars": [
+          "WI",
+          "OF",
+          "TR"
+        ],
+        "more": "33"
+      },
+      {
+        "key": "others",
+        "title": "기타",
+        "count": "81개 업체",
+        "description": "KYC, BaaS, 컴플라이언스 레일.",
+        "feeRange": "사례별",
+        "settle": "API",
+        "corridors": "120+",
+        "avatars": [
+          "VS",
+          "SM",
+          "ID"
+        ],
+        "more": "78"
+      }
+    ],
+    "shortlist": {
+      "title": "숏리스트 · Q3 페이아웃 RFP",
+      "meta": "수수료·정산·라이선스 적합도로 점수화",
+      "badge": "6건 중 4건 채점",
+      "rows": [
+        {
+          "rank": "01",
+          "name": "Nordbridge Payments",
+          "meta": "SE · EMI · 31 코리도",
+          "fee": "0.18%",
+          "score": 92
+        },
+        {
+          "rank": "02",
+          "name": "Kestrel Pay",
+          "meta": "UK · EMI · 28 코리도",
+          "fee": "0.24%",
+          "score": 84
+        },
+        {
+          "rank": "03",
+          "name": "Avenir Global",
+          "meta": "SG · MPI · 41 코리도",
+          "fee": "0.31%",
+          "score": 76
+        },
+        {
+          "rank": "04",
+          "name": "Meridian Rails",
+          "meta": "NL · PI · 22 코리도",
+          "fee": "0.36%",
+          "score": 68
+        }
+      ]
+    },
+    "intel": {
+      "title": "인텔리전스",
+      "link": "마켓 맵",
+      "minRead": "분 읽기",
+      "note": "EU 즉시 페이아웃 의무 10월 9일 · 6분"
+    }
   }
 }
