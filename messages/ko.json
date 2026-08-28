@@ -644,8 +644,9 @@
     }
   },
   "overview": {
-    "greeting": "코리도 개요",
-    "lede": "소개를 요청하기 전에 수수, 라이선스, SLA를 비교하세요 — Relay 워크스페이스 미리보기.",
+    "kicker": "워크스페이스",
+    "greeting": "코리도 결정이 이뤄지는 대시보드",
+    "lede": "소개를 요청하는 바로 그 워크스페이스에서 수수료, 라이선스, SLA를 비교하세요.",
     "ctaPrimary": "소개 요청",
     "ctaSecondary": "새 숏리스트",
     "metricsLabel": "워크스페이스 지표",

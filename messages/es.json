@@ -646,8 +646,9 @@
     }
   },
   "overview": {
-    "greeting": "Tu overview de corredor",
-    "lede": "Compara fees, licencias y SLAs antes de pedir una intro — el workspace de Relay, en preview.",
+    "kicker": "El workspace",
+    "greeting": "El dashboard donde se deciden tus corredores",
+    "lede": "Compara fees, licencias y SLAs en el mismo workspace desde el que pedirías una intro.",
     "ctaPrimary": "Pedir intro",
     "ctaSecondary": "Nueva shortlist",
     "metricsLabel": "Métricas del workspace",

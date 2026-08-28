@@ -232,8 +232,9 @@
     ]
   },
   "overview": {
-    "greeting": "Your corridor overview",
-    "lede": "Compare fees, licences and SLAs before you request an intro — the Relay workspace, previewed.",
+    "kicker": "The workspace",
+    "greeting": "The dashboard your corridor decisions run on",
+    "lede": "Compare fees, licences and SLAs in the same workspace you would use to request an intro.",
     "ctaPrimary": "Request intro",
     "ctaSecondary": "New shortlist",
     "metricsLabel": "Workspace metrics",

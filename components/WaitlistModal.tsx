@@ -11,6 +11,13 @@ import {
   type FormEvent,
   type ReactNode,
 } from 'react'
+import {
+  AnimatePresence,
+  motion,
+  useDragControls,
+  useReducedMotion,
+  type PanInfo,
+} from 'framer-motion'
 import { useTranslations } from 'next-intl'
 import './waitlist.css'
 
@@ -21,6 +28,8 @@ type WaitlistContextValue = {
 }
 
 const WaitlistContext = createContext<WaitlistContextValue | null>(null)
+
+const SHEET_SPRING = { type: 'spring' as const, stiffness: 300, damping: 30 }
 
 export function useWaitlist() {
   const ctx = useContext(WaitlistContext)
@@ -38,7 +47,9 @@ export function WaitlistProvider({ children }: { children: ReactNode }) {
   return (
     <WaitlistContext.Provider value={{ open, openWaitlist, closeWaitlist }}>
       {children}
-      <WaitlistModal />
+      <AnimatePresence>
+        {open ? <WaitlistModal key="waitlist" /> : null}
+      </AnimatePresence>
     </WaitlistContext.Provider>
   )
 }
@@ -47,20 +58,17 @@ const ROLES = ['founder', 'engineer', 'productManager', 'other'] as const
 
 function WaitlistModal() {
   const t = useTranslations('waitlist')
-  const { open, closeWaitlist } = useWaitlist()
+  const { closeWaitlist } = useWaitlist()
   const titleId = useId()
   const panelRef = useRef<HTMLDivElement>(null)
   const firstFieldRef = useRef<HTMLInputElement>(null)
   const [submitted, setSubmitted] = useState(false)
   const [role, setRole] = useState<(typeof ROLES)[number] | ''>('')
+  const reduceMotion = useReducedMotion()
+  const dragControls = useDragControls()
+  const [canDrag, setCanDrag] = useState(false)
 
   useEffect(() => {
-    if (!open) {
-      setSubmitted(false)
-      setRole('')
-      return
-    }
-
     const prev = document.body.style.overflow
     document.body.style.overflow = 'hidden'
     const tId = window.setTimeout(() => firstFieldRef.current?.focus(), 40)
@@ -75,31 +83,64 @@ function WaitlistModal() {
       window.clearTimeout(tId)
       window.removeEventListener('keydown', onKey)
     }
-  }, [open, closeWaitlist])
+  }, [closeWaitlist])
 
   function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
     setSubmitted(true)
   }
 
-  if (!open) return null
+  function handleDragEnd(_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) {
+    if (info.velocity.y > 500 || info.offset.y > 120) {
+      closeWaitlist()
+    }
+  }
 
   return (
-    <div className="wl" role="presentation">
+    <motion.div
+      className="wl"
+      role="presentation"
+      initial={false}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.28, ease: 'easeOut' }}
+    >
       <button
         type="button"
         className="wl-backdrop"
         aria-label={t('close')}
         onClick={closeWaitlist}
       />
-      <div
+      <motion.div
         ref={panelRef}
         className="wl-sheet"
         role="dialog"
         aria-modal="true"
         aria-labelledby={titleId}
+        initial={reduceMotion ? { opacity: 0 } : { y: '100%' }}
+        animate={reduceMotion ? { opacity: 1 } : { y: 0 }}
+        exit={reduceMotion ? { opacity: 0 } : { y: '100%' }}
+        transition={reduceMotion ? { duration: 0.15 } : SHEET_SPRING}
+        onAnimationComplete={() => {
+          if (!reduceMotion) setCanDrag(true)
+        }}
+        drag={canDrag ? 'y' : false}
+        dragControls={dragControls}
+        dragListener={false}
+        dragConstraints={{ top: 0, bottom: 0 }}
+        dragElastic={{ top: 0, bottom: 0.4 }}
+        dragMomentum={false}
+        dragTransition={{ bounceStiffness: 300, bounceDamping: 30 }}
+        onDragEnd={handleDragEnd}
       >
-        <div className="wl-handle" aria-hidden />
+        <div
+          className="wl-grab"
+          onPointerDown={(event) => {
+            if (!canDrag) return
+            dragControls.start(event)
+          }}
+        >
+          <div className="wl-handle" aria-hidden />
+        </div>
         <button type="button" className="wl-close" onClick={closeWaitlist} aria-label={t('close')}>
           <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden>
             <path
@@ -192,7 +233,7 @@ function WaitlistModal() {
             </>
           )}
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   )
 }

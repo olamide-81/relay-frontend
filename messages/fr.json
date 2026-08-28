@@ -646,8 +646,9 @@
     }
   },
   "overview": {
-    "greeting": "Votre aperçu de corridor",
-    "lede": "Comparez frais, licences et SLA avant de demander une intro — l’espace de travail Relay, en aperçu.",
+    "kicker": "L’espace de travail",
+    "greeting": "Le tableau de bord où se décident vos corridors",
+    "lede": "Comparez frais, licences et SLA dans le même espace de travail que pour demander une intro.",
     "ctaPrimary": "Demander une intro",
     "ctaSecondary": "Nouvelle shortlist",
     "metricsLabel": "Indicateurs workspace",

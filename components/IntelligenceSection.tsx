@@ -1,7 +1,15 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
+import {
+  AnimatePresence,
+  motion,
+  useMotionValueEvent,
+  useReducedMotion,
+  useScroll,
+  useTransform,
+  type MotionValue,
+} from 'framer-motion'
 import { useTranslations } from 'next-intl'
 import { EASE } from '@/components/heroes/ease'
 import Reveal from '@/components/Reveal'
@@ -11,6 +19,25 @@ type Product = {
   name: string
   description: string
   points: string[]
+}
+
+function IntelProgressFill({
+  progress,
+  index,
+  count,
+}: {
+  progress: MotionValue<number>
+  index: number
+  count: number
+}) {
+  const scaleX = useTransform(progress, (v) => {
+    const next = Math.min(count - 1, Math.max(0, Math.floor(v)))
+    if (index < next) return 1
+    if (index > next) return 0
+    return Math.min(1, Math.max(0.08, v - next))
+  })
+
+  return <motion.span className="intel-progress-fill" style={{ scaleX }} />
 }
 
 /**
@@ -23,42 +50,28 @@ export default function IntelligenceSection() {
   const reduceMotion = useReducedMotion()
   const [active, setActive] = useState(0)
   const [direction, setDirection] = useState(1)
-  const [localProgress, setLocalProgress] = useState(0)
   const prevActive = useRef(0)
+  const count = products.length
+
+  const { scrollYProgress } = useScroll({
+    target: trackRef,
+    offset: ['start start', 'end end'],
+  })
+  const progress = useTransform(scrollYProgress, [0, 1], [0, Math.max(count, 1)])
 
   useEffect(() => {
-    const onScroll = () => {
-      const el = trackRef.current
-      if (!el) return
-      const total = el.offsetHeight - window.innerHeight
-      if (total <= 0) {
-        setActive(0)
-        setLocalProgress(0)
-        return
-      }
+    const next = Math.min(count - 1, Math.max(0, Math.floor(progress.get())))
+    prevActive.current = next
+    setActive(next)
+  }, [count, progress])
 
-      const scrolled = Math.min(Math.max(-el.getBoundingClientRect().top, 0), total)
-      const raw = (scrolled / total) * products.length
-      const next = Math.min(products.length - 1, Math.floor(raw))
-      const within = raw - next
-
-      if (next !== prevActive.current) {
-        setDirection(next > prevActive.current ? 1 : -1)
-        prevActive.current = next
-      }
-
-      setActive(next)
-      setLocalProgress(within)
-    }
-
-    onScroll()
-    window.addEventListener('scroll', onScroll, { passive: true })
-    window.addEventListener('resize', onScroll)
-    return () => {
-      window.removeEventListener('scroll', onScroll)
-      window.removeEventListener('resize', onScroll)
-    }
-  }, [products.length])
+  useMotionValueEvent(progress, 'change', (v) => {
+    const next = Math.min(count - 1, Math.max(0, Math.floor(v)))
+    if (next === prevActive.current) return
+    setDirection(next > prevActive.current ? 1 : -1)
+    prevActive.current = next
+    setActive(next)
+  })
 
   const current = products[active] ?? products[0]
   const indexLabel = String(active + 1).padStart(2, '0')
@@ -110,15 +123,10 @@ export default function IntelligenceSection() {
       <div
         className="intel-track"
         ref={trackRef}
-        style={{ height: `${Math.max(products.length, 1) * 120}vh` }}
+        style={{ height: `${Math.max(count, 1) * 120}vh` }}
       >
         <div className="intel-sticky">
-          <div
-            className="intel-stage"
-            style={{
-              ['--local-progress' as string]: String(localProgress),
-            }}
-          >
+          <div className="intel-stage">
             <div className="intel-copy" aria-live="polite">
               <div className="intel-index" aria-hidden>
                 <AnimatePresence mode="wait" custom={direction}>
@@ -134,7 +142,7 @@ export default function IntelligenceSection() {
                     {indexLabel}
                   </motion.span>
                 </AnimatePresence>
-                <span className="intel-index-total">/ {String(products.length).padStart(2, '0')}</span>
+                <span className="intel-index-total">/ {String(count).padStart(2, '0')}</span>
               </div>
 
               <div className="intel-panel-slot">
@@ -158,24 +166,17 @@ export default function IntelligenceSection() {
               </div>
 
               <div className="intel-progress" aria-hidden>
-                {products.map((product, i) => {
-                  const fill =
-                    i < active ? 1 : i === active ? Math.min(1, Math.max(0.08, localProgress)) : 0
-                  return (
-                    <div
-                      key={product.name}
-                      className={`intel-progress-seg${i === active ? ' is-active' : ''}${i < active ? ' is-done' : ''}`}
-                    >
-                      <span className="intel-progress-label">{product.name}</span>
-                      <span className="intel-progress-track">
-                        <span
-                          className="intel-progress-fill"
-                          style={{ transform: `scaleX(${fill})` }}
-                        />
-                      </span>
-                    </div>
-                  )
-                })}
+                {products.map((product, i) => (
+                  <div
+                    key={product.name}
+                    className={`intel-progress-seg${i === active ? ' is-active' : ''}${i < active ? ' is-done' : ''}`}
+                  >
+                    <span className="intel-progress-label">{product.name}</span>
+                    <span className="intel-progress-track">
+                      <IntelProgressFill progress={progress} index={i} count={count} />
+                    </span>
+                  </div>
+                ))}
               </div>
             </div>
 

@@ -644,8 +644,9 @@
     }
   },
   "overview": {
-    "greeting": "Ringkasan koridor Anda",
-    "lede": "Bandingkan biaya, lisensi, dan SLA sebelum meminta intro — pratinjau workspace Relay.",
+    "kicker": "Workspace",
+    "greeting": "Dasbor tempat keputusan koridor dijalankan",
+    "lede": "Bandingkan biaya, lisensi, dan SLA di workspace yang sama tempat Anda meminta intro.",
     "ctaPrimary": "Minta intro",
     "ctaSecondary": "Shortlist baru",
     "metricsLabel": "Metrik workspace",

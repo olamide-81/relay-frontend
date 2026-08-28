@@ -644,8 +644,9 @@
     }
   },
   "overview": {
-    "greeting": "你的走廊概览",
-    "lede": "在发起介绍前比较费率、牌照与 SLA — Relay 工作区预览。",
+    "kicker": "工作台",
+    "greeting": "走廊决策所在的仪表盘",
+    "lede": "在发起介绍所用的同一工作区中比较费率、牌照与 SLA。",
     "ctaPrimary": "请求介绍",
     "ctaSecondary": "新建短名单",
     "metricsLabel": "工作区指标",

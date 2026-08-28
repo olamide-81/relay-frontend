@@ -24,9 +24,9 @@
 }
 
 .rh-title {
-  margin: 0 0 12px;
+  margin: 0 0 0.75rem;
   font-family: var(--font-display);
-  font-size: clamp(28px, 4vw, 40px);
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
   font-weight: 500;
   letter-spacing: -0.04em;
   line-height: 1.08;
@@ -37,7 +37,7 @@
   margin: 0;
   max-width: 36rem;
   font-family: var(--font-geist);
-  font-size: 15px;
+  font-size: 0.9375rem;
   line-height: 1.55;
   color: rgba(255, 255, 255, 0.5);
 }
@@ -52,21 +52,25 @@
   display: inline-flex;
   align-items: center;
   gap: 12px;
-  padding: 11px 12px 11px 20px;
+  padding: 0.6875rem 12px 0.6875rem 20px;
   border-radius: 12px;
   background: #fff;
   color: #0a0b0e;
   font-family: var(--font-geist);
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: 500;
   letter-spacing: -0.01em;
-  transition: transform 0.18s ease, background 0.18s ease;
+  transition: transform 100ms ease-out, background 120ms ease-out;
   flex-shrink: 0;
 }
 
 .rh-cta:hover {
   background: #f2f2f4;
   transform: translateY(-1px);
+}
+
+.rh-cta:active {
+  transform: scale(0.97);
 }
 
 .rh-cta-icon {
@@ -100,5 +104,13 @@
   .rh-paper-grid {
     grid-template-columns: 1fr;
     max-width: 400px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rh-cta {
+    animation: none !important;
+    transition: opacity 150ms ease !important;
+    transform: none !important;
   }
 }

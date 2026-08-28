@@ -14,7 +14,7 @@ const SHORTLIST_KEY = 'relay-shortlist'
 const COMPARE_KEY = 'relay-compare'
 const INTROS_KEY = 'relay-intros'
 
-export const MAX_COMPARE = 3
+export const MAX_COMPARE = 4
 
 export const WORKSPACE_EVENT = 'relay-workspace-change'
 
