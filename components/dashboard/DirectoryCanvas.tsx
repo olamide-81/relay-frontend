@@ -5,13 +5,15 @@ import { useSearchParams } from 'next/navigation'
 import { Link, useRouter } from '@/i18n/navigation'
 import { CheckBox } from '@/components/dashboard/ui/CheckBox'
 import { useWeighting } from '@/components/dashboard/WeightingContext'
+import { useCompareTray } from '@/components/dashboard/compare/CompareTrayContext'
+import { useOpenWeighting } from '@/components/dashboard/compare/WeightingPopover'
 import { computeScore, sortByScore } from '@/lib/relay/score'
 import { formatFeeFromBps } from '@/lib/relay/format'
 import { categoryMeta, providers } from '@/lib/mock/relay'
-import type { Category } from '@/lib/relay/types'
+import type { Category, CorridorRegion } from '@/lib/relay/types'
 
 type View = 'table' | 'cards'
-type FilterKey = 'category' | 'corridor' | 'licence' | 'fee'
+type FilterKey = 'category' | 'corridor'
 
 const CATEGORY_OPTIONS: { id: Category; label: string }[] = [
   { id: 'payouts', label: 'Payouts' },
@@ -20,35 +22,36 @@ const CATEGORY_OPTIONS: { id: Category; label: string }[] = [
   { id: 'other', label: 'Others' },
 ]
 
-const CORRIDOR_OPTIONS = ['EU→LATAM', 'Intra-EU', 'UK→NG', 'All']
-const LICENCE_OPTIONS = ['EMI or MTL', 'Any']
-const FEE_OPTIONS = ['0.40%', '0.50%', 'Any']
+const CORRIDOR_OPTIONS = [
+  { id: 'North America', label: 'North America' },
+  { id: 'Europe', label: 'EU' },
+  { id: 'UK', label: 'UK' },
+  { id: 'Asia Pacific', label: 'Asia' },
+  { id: 'Middle East', label: 'Middle East' },
+  { id: 'Africa', label: 'Africa' },
+  { id: 'Australia', label: 'Australia' },
+  { id: 'LATAM', label: 'Latam' },
+] as const
 
 export default function DirectoryCanvas() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const { weighting } = useWeighting()
+  const { has, toggle, selectMany } = useCompareTray()
+  const openWeighting = useOpenWeighting()
   const q = (searchParams.get('q') ?? '').trim().toLowerCase()
   const initialCat = (searchParams.get('category') as Category) || 'payouts'
 
   const [category, setCategory] = useState<Category>(
     CATEGORY_OPTIONS.some((c) => c.id === initialCat) ? initialCat : 'payouts'
   )
-  const [corridor, setCorridor] = useState('EU→LATAM')
-  const [licence, setLicence] = useState('EMI or MTL')
-  const [fee, setFee] = useState('0.40%')
-  const [active, setActive] = useState<Record<FilterKey, boolean>>({
-    category: true,
-    corridor: true,
-    licence: false,
-    fee: false,
-  })
-  const [openMenu, setOpenMenu] = useState<FilterKey | 'add' | null>(null)
+  const [corridor, setCorridor] = useState<CorridorRegion>('Europe')
+  const [openMenu, setOpenMenu] = useState<FilterKey | null>(null)
   const [view, setView] = useState<View>('table')
-  const [selected, setSelected] = useState<string[]>(['nordbridge', 'kestrel', 'avenir'])
-  const [limit, setLimit] = useState(8)
+  const [limit, setLimit] = useState(7)
 
   const meta = categoryMeta[category]
+  const corridorLabel = CORRIDOR_OPTIONS.find((c) => c.id === corridor)?.label ?? 'EU'
 
   const rows = useMemo(() => {
     let list =
@@ -59,13 +62,7 @@ export default function DirectoryCanvas() {
             if (category === 'fx') return ['kestrel', 'avenir', 'palma', 'helix'].includes(p.slug)
             return ['zenith', 'palma', 'helix', 'solano'].includes(p.slug)
           })
-    if (active.licence && licence === 'EMI or MTL') {
-      list = list.filter((p) => p.licences.includes('EMI') || p.licences.includes('MTL'))
-    }
-    if (active.fee && fee !== 'Any') {
-      const cap = fee === '0.40%' ? 40 : 50
-      list = list.filter((p) => p.feeFromBps <= cap)
-    }
+    list = list.filter((p) => p.regions.includes(corridor))
     if (q) {
       list = list.filter(
         (p) =>
@@ -75,21 +72,11 @@ export default function DirectoryCanvas() {
       )
     }
     return sortByScore(list, weighting)
-  }, [category, active, licence, fee, q, weighting])
+  }, [category, corridor, q, weighting])
 
   const shown = rows.slice(0, limit)
-
-  const toggleSelect = (slug: string, next: boolean) => {
-    setSelected((prev) => {
-      if (next) return prev.includes(slug) ? prev : [...prev, slug]
-      return prev.filter((s) => s !== slug)
-    })
-  }
-
-  const compareHref =
-    selected.length > 0
-      ? `/dashboard/compare?ids=${selected.join(',')}`
-      : '/dashboard/compare'
+  const shownSlugs = shown.map((p) => p.slug)
+  const allShownOn = shownSlugs.length > 0 && shownSlugs.every((s) => has(s))
 
   return (
     <div className="relay-page relay-page--directory">
@@ -97,24 +84,13 @@ export default function DirectoryCanvas() {
         <div>
           <h1 className="relay-hd-title">{meta.title}</h1>
           <div className="relay-hd-sub">
-            {meta.count} providers · {meta.corridors} corridors · median fee {meta.medianFee}
+            {rows.length} providers · filtered to {corridorLabel} · scored on your weighting
           </div>
         </div>
         <div className="relay-hd-actions">
-          <button type="button" className="relay-btn relay-btn--outline">
-            Save this view
+          <button type="button" className="relay-weight-btn" onClick={openWeighting}>
+            Weighting · fee {weighting.feePct} / settle {weighting.settlePct} / licence {weighting.licencePct}
           </button>
-          <Link
-            href={compareHref}
-            className="relay-btn relay-btn--white"
-            aria-disabled={selected.length === 0}
-            onClick={(e) => {
-              if (selected.length === 0) e.preventDefault()
-            }}
-            style={selected.length === 0 ? { opacity: 0.4, pointerEvents: 'none' } : undefined}
-          >
-            Compare {selected.length} selected
-          </Link>
         </div>
       </div>
 
@@ -122,9 +98,7 @@ export default function DirectoryCanvas() {
         <FilterChip
           label="CATEGORY"
           value={CATEGORY_OPTIONS.find((c) => c.id === category)?.label ?? 'Payouts'}
-          on={active.category}
           open={openMenu === 'category'}
-          onToggle={() => setActive((a) => ({ ...a, category: !a.category }))}
           onOpen={() => setOpenMenu(openMenu === 'category' ? null : 'category')}
         >
           {CATEGORY_OPTIONS.map((opt) => (
@@ -134,7 +108,6 @@ export default function DirectoryCanvas() {
               className={opt.id === category ? 'relay-filter-pop--on' : ''}
               onClick={() => {
                 setCategory(opt.id)
-                setActive((a) => ({ ...a, category: true }))
                 setOpenMenu(null)
                 router.replace(`/dashboard/providers?category=${opt.id}`)
               }}
@@ -145,102 +118,25 @@ export default function DirectoryCanvas() {
         </FilterChip>
         <FilterChip
           label="CORRIDOR"
-          value={corridor}
-          on={active.corridor}
+          value={corridorLabel}
           open={openMenu === 'corridor'}
-          onToggle={() => setActive((a) => ({ ...a, corridor: !a.corridor }))}
           onOpen={() => setOpenMenu(openMenu === 'corridor' ? null : 'corridor')}
         >
           {CORRIDOR_OPTIONS.map((opt) => (
             <button
-              key={opt}
+              key={opt.id}
               type="button"
-              className={opt === corridor ? 'relay-filter-pop--on' : ''}
+              className={opt.id === corridor ? 'relay-filter-pop--on' : ''}
               onClick={() => {
-                setCorridor(opt)
-                setActive((a) => ({ ...a, corridor: opt !== 'All' }))
+                setCorridor(opt.id)
                 setOpenMenu(null)
               }}
             >
-              {opt}
+              {opt.label}
             </button>
           ))}
         </FilterChip>
-        <FilterChip
-          label="LICENCE"
-          value={licence}
-          on={active.licence}
-          open={openMenu === 'licence'}
-          onToggle={() => setActive((a) => ({ ...a, licence: !a.licence }))}
-          onOpen={() => setOpenMenu(openMenu === 'licence' ? null : 'licence')}
-        >
-          {LICENCE_OPTIONS.map((opt) => (
-            <button
-              key={opt}
-              type="button"
-              className={opt === licence ? 'relay-filter-pop--on' : ''}
-              onClick={() => {
-                setLicence(opt)
-                setActive((a) => ({ ...a, licence: opt !== 'Any' }))
-                setOpenMenu(null)
-              }}
-            >
-              {opt}
-            </button>
-          ))}
-        </FilterChip>
-        <FilterChip
-          label="FEE ≤"
-          value={fee}
-          on={active.fee}
-          open={openMenu === 'fee'}
-          onToggle={() => setActive((a) => ({ ...a, fee: !a.fee }))}
-          onOpen={() => setOpenMenu(openMenu === 'fee' ? null : 'fee')}
-        >
-          {FEE_OPTIONS.map((opt) => (
-            <button
-              key={opt}
-              type="button"
-              className={opt === fee ? 'relay-filter-pop--on' : ''}
-              onClick={() => {
-                setFee(opt)
-                setActive((a) => ({ ...a, fee: opt !== 'Any' }))
-                setOpenMenu(null)
-              }}
-            >
-              {opt}
-            </button>
-          ))}
-        </FilterChip>
-        <div className="relay-filter-menu">
-          <button
-            type="button"
-            className="relay-filter relay-filter--add"
-            onClick={() => setOpenMenu(openMenu === 'add' ? null : 'add')}
-          >
-            + Add filter
-          </button>
-          {openMenu === 'add' && (
-            <div className="relay-filter-pop">
-              {(['licence', 'fee'] as FilterKey[]).map((key) => (
-                <button
-                  key={key}
-                  type="button"
-                  onClick={() => {
-                    setActive((a) => ({ ...a, [key]: true }))
-                    setOpenMenu(key)
-                  }}
-                >
-                  {key === 'licence' ? 'Licence' : 'Fee ceiling'}
-                </button>
-              ))}
-            </div>
-          )}
-        </div>
         <div className="relay-filter-right">
-          <span className="relay-weight-readout">
-            fee {weighting.feePct} · settle {weighting.settlePct} · licence {weighting.licencePct}
-          </span>
           <div className="relay-toggle">
             <button type="button" className={view === 'table' ? 'relay-toggle--on' : ''} onClick={() => setView('table')}>
               Table
@@ -256,7 +152,11 @@ export default function DirectoryCanvas() {
         {view === 'table' ? (
           <>
             <div className="relay-th relay-th--dir">
-              <span />
+              <CheckBox
+                checked={allShownOn}
+                label="Select all visible providers"
+                onChange={(next) => selectMany(shownSlugs, next)}
+              />
               <span>PROVIDER</span>
               <span>FEE</span>
               <span>SETTLE</span>
@@ -266,17 +166,20 @@ export default function DirectoryCanvas() {
             </div>
             <div className="relay-rows">
               {shown.map((p) => {
-                const on = selected.includes(p.slug)
+                const on = has(p.slug)
                 const score = computeScore(p, weighting)
                 const fitColor = p.corridorFitPct >= 85 ? 'oklch(.78 .17 130)' : 'rgba(255,255,255,.5)'
                 return (
-                  <div key={p.slug} className={`relay-row relay-row--dir${on ? ' relay-row--on' : ''}`}>
-                    <CheckBox checked={on} label={`Select ${p.name}`} onChange={(next) => toggleSelect(p.slug, next)} />
+                  <div key={p.slug} className={`relay-row relay-row--dir${on ? ' relay-row--tray' : ''}`}>
+                    <CheckBox checked={on} label={`Select ${p.name}`} onChange={() => toggle(p.slug)} />
                     <div>
                       <Link href={`/dashboard/providers/${p.slug}`} className="relay-prov-name">
                         <span>{p.name}</span>
-                        {p.flag === 'shortlisted' && <span className="relay-flag relay-flag--lime">SHORTLISTED</span>}
-                        {p.flag === 'new' && <span className="relay-flag relay-flag--grey">NEW</span>}
+                        {on ? (
+                          <span className="relay-flag relay-flag--lime">IN TRAY</span>
+                        ) : p.flag === 'new' ? (
+                          <span className="relay-flag relay-flag--grey">NEW</span>
+                        ) : null}
                       </Link>
                       <div className="relay-meta">{p.hq}</div>
                     </div>
@@ -310,14 +213,18 @@ export default function DirectoryCanvas() {
             {shown.map((p) => (
               <div key={p.slug} className="relay-dir-card">
                 <CheckBox
-                  checked={selected.includes(p.slug)}
+                  checked={has(p.slug)}
                   label={`Select ${p.name}`}
-                  onChange={(next) => toggleSelect(p.slug, next)}
+                  onChange={() => toggle(p.slug)}
                 />
                 <Link href={`/dashboard/providers/${p.slug}`} style={{ minWidth: 0, flex: 1, color: 'inherit' }}>
                   <div className="relay-prov-name">
                     <span>{p.name}</span>
-                    {p.flag === 'shortlisted' && <span className="relay-flag relay-flag--lime">SHORTLISTED</span>}
+                    {has(p.slug) ? (
+                      <span className="relay-flag relay-flag--lime">IN TRAY</span>
+                    ) : p.flag === 'new' ? (
+                      <span className="relay-flag relay-flag--grey">NEW</span>
+                    ) : null}
                   </div>
                   <div className="relay-meta">{p.hq}</div>
                 </Link>
@@ -335,28 +242,19 @@ export default function DirectoryCanvas() {
 function FilterChip({
   label,
   value,
-  on,
   open,
-  onToggle,
   onOpen,
   children,
 }: {
   label: string
   value: string
-  on: boolean
   open: boolean
-  onToggle: () => void
   onOpen: () => void
   children: React.ReactNode
 }) {
   return (
     <div className="relay-filter-menu">
-      <button
-        type="button"
-        className={`relay-filter${on ? ' relay-filter--on' : ''}`}
-        onClick={onOpen}
-        onDoubleClick={onToggle}
-      >
+      <button type="button" className="relay-filter relay-filter--on" onClick={onOpen}>
         <span className="relay-filter-label">{label}</span>
         <span className="relay-filter-value">{value}</span>
       </button>

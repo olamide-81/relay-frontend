@@ -257,6 +257,8 @@
     "company": "Nom de l'entreprise",
     "companyPlaceholder": "Nom de l'entreprise",
     "submit": "Rejoindre la liste",
+    "submitting": "Inscription…",
+    "error": "Impossible de rejoindre la liste. Réessayez.",
     "close": "Fermer",
     "successTitle": "Vous êtes sur la liste",
     "successLede": "Merci — nous vous écrirons quand Relay sera prêt pour vous.",

@@ -223,7 +223,7 @@ export default function OverviewCanvas() {
                   compounds fastest.
                 </div>
                 <div className="relay-intel-cta">
-                  <Link href="/dashboard/intelligence" className="relay-link">
+                  <Link href="/dashboard/intelligence/fintech-35-trillion-daily" className="relay-link">
                     Read the map →
                   </Link>
                   <span>2 more this week</span>

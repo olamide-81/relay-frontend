@@ -1,15 +1,16 @@
 'use client'
 
-import { useState } from 'react'
-import { useTranslations } from 'next-intl'
+import { useEffect, useState } from 'react'
+import { useLocale, useTranslations } from 'next-intl'
 import { Link, useRouter } from '@/i18n/navigation'
 import { AuthShell, AuthField, GoogleButton } from '@/components/AuthShell'
-import { login, loginWithGoogle } from '@/lib/api/auth'
+import { googleAuthErrorMessage, login, loginWithGoogle } from '@/lib/api/auth'
 import { ApiError } from '@/lib/api/simulate'
 
 export default function SignInPage() {
   const t = useTranslations('auth.signin')
   const tAuth = useTranslations('auth')
+  const locale = useLocale()
   const router = useRouter()
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -17,13 +18,18 @@ export default function SignInPage() {
   const [error, setError] = useState<string | null>(null)
   const busy = loading || googleLoading
 
+  useEffect(() => {
+    const code = new URLSearchParams(window.location.search).get('error')
+    if (code) setError(googleAuthErrorMessage[code] ?? 'Google sign-in failed. Try again.')
+  }, [])
+
   const goDashboard = () => router.push('/dashboard')
 
   const onGoogle = async () => {
     setError(null)
     setGoogleLoading(true)
     try {
-      await loginWithGoogle()
+      await loginWithGoogle(locale)
       goDashboard()
     } catch (e) {
       setError(e instanceof ApiError ? e.message : 'Could not sign in with Google')

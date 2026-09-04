@@ -191,6 +191,18 @@
   transform: scale(0.97);
 }
 
+.wl-submit:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.wl-error {
+  margin: 0;
+  font-size: 0.88rem;
+  line-height: 1.4;
+  color: #f3b4a8;
+}
+
 .wl-success .wl-submit {
   margin-top: 28px;
   width: 100%;

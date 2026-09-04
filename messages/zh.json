@@ -263,6 +263,8 @@
     "company": "公司名称",
     "companyPlaceholder": "公司名称",
     "submit": "加入候补名单",
+    "submitting": "加入中…",
+    "error": "无法加入候补名单，请再试一次。",
     "close": "关闭",
     "successTitle": "您已在名单上",
     "successLede": "谢谢——当 Relay 为您准备就绪时，我们会与您联系。",

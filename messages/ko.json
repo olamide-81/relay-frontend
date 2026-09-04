@@ -263,6 +263,8 @@
     "company": "회사명",
     "companyPlaceholder": "회사명",
     "submit": "대기자 명단 가입",
+    "submitting": "등록 중…",
+    "error": "대기자 명단에 가입하지 못했습니다. 다시 시도하세요.",
     "close": "닫기",
     "successTitle": "명단에 등록되었습니다",
     "successLede": "감사합니다 — Relay가 준비되면 연락드리겠습니다.",

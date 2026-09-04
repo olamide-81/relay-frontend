@@ -1,6 +1,6 @@
 'use client'
 
-import { createContext, useCallback, useContext, useMemo } from 'react'
+import { createContext, useContext, useMemo } from 'react'
 import { isSubscribed, type SessionUser } from '@/lib/session'
 import { ENTITLEMENTS, isProPlan, type PlanId } from '@/lib/entitlements'
 import { useSession } from '@/hooks/useSession'

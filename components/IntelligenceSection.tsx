@@ -12,7 +12,7 @@ import {
 } from 'framer-motion'
 import { useTranslations } from 'next-intl'
 import { EASE } from '@/components/heroes/ease'
-import Reveal from '@/components/Reveal'
+import LandingIntelPreview, { type IntelSceneId } from '@/components/LandingIntelPreview'
 import './intelligence.css'
 
 type Product = {
@@ -20,6 +20,8 @@ type Product = {
   description: string
   points: string[]
 }
+
+const SCENES: IntelSceneId[] = ['discover', 'research', 'act', 'signals']
 
 function IntelProgressFill({
   progress,
@@ -37,11 +39,11 @@ function IntelProgressFill({
     return Math.min(1, Math.max(0.08, v - next))
   })
 
-  return <motion.span className="intel-progress-fill" style={{ scaleX }} />
+  return <motion.span className="intel-tab-fill" style={{ scaleX }} />
 }
 
 /**
- * Bold text-first intelligence stage with creative pinned scroll motion.
+ * Cost-of-guessing chapter — pinned workspace scenes, not duplicated copy cards.
  */
 export default function IntelligenceSection() {
   const t = useTranslations('intelligence')
@@ -75,152 +77,98 @@ export default function IntelligenceSection() {
 
   const current = products[active] ?? products[0]
   const indexLabel = String(active + 1).padStart(2, '0')
+  const scene = SCENES[active] ?? SCENES[0]
+
+  function goTo(index: number) {
+    const el = trackRef.current
+    if (!el || count <= 0) return
+    const total = el.offsetHeight - window.innerHeight
+    const top = el.getBoundingClientRect().top + window.scrollY
+    const y = top + (total * (index + 0.18)) / count
+    window.scrollTo({ top: y, behavior: reduceMotion ? 'auto' : 'smooth' })
+  }
 
   const copyVariants = {
     enter: (dir: number) =>
-      reduceMotion
-        ? { opacity: 0 }
-        : { opacity: 0, y: dir > 0 ? 56 : -56, filter: 'blur(8px)' },
-    center: { opacity: 1, y: 0, filter: 'blur(0px)' },
+      reduceMotion ? { opacity: 0 } : { opacity: 0, y: dir > 0 ? 28 : -28 },
+    center: { opacity: 1, y: 0 },
     exit: (dir: number) =>
-      reduceMotion
-        ? { opacity: 0 }
-        : { opacity: 0, y: dir > 0 ? -40 : 40, filter: 'blur(6px)' },
-  }
-
-  const cardVariants = {
-    enter: (dir: number) =>
-      reduceMotion
-        ? { opacity: 0 }
-        : {
-            opacity: 0,
-            x: dir > 0 ? 72 : -72,
-            rotateY: dir > 0 ? -12 : 12,
-            scale: 0.94,
-          },
-    center: { opacity: 1, x: 0, rotateY: 0, scale: 1 },
-    exit: (dir: number) =>
-      reduceMotion
-        ? { opacity: 0 }
-        : {
-            opacity: 0,
-            x: dir > 0 ? -56 : 56,
-            rotateY: dir > 0 ? 10 : -10,
-            scale: 0.96,
-          },
+      reduceMotion ? { opacity: 0 } : { opacity: 0, y: dir > 0 ? -20 : 20 },
   }
 
   return (
     <section className="intel" id="directory" aria-label={t('title')}>
-      <Reveal>
-        <div className="intel-intro">
-          <p className="intel-kicker">{t('kicker')}</p>
-          <h2 className="intel-title">{t('title')}</h2>
-          <p className="intel-lede">{t('lede')}</p>
-        </div>
-      </Reveal>
-
       <div
         className="intel-track"
         ref={trackRef}
-        style={{ height: `${Math.max(count, 1) * 120}vh` }}
+        style={{ height: `${Math.max(count, 1) * 100}vh` }}
       >
         <div className="intel-sticky">
           <div className="intel-stage">
-            <div className="intel-copy" aria-live="polite">
-              <div className="intel-index" aria-hidden>
-                <AnimatePresence mode="wait" custom={direction}>
-                  <motion.span
-                    key={indexLabel}
-                    className="intel-index-num"
-                    custom={direction}
-                    initial={reduceMotion ? { opacity: 0 } : { opacity: 0, y: 18 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: -18 }}
-                    transition={{ duration: 0.45, ease: EASE }}
-                  >
-                    {indexLabel}
-                  </motion.span>
-                </AnimatePresence>
-                <span className="intel-index-total">/ {String(count).padStart(2, '0')}</span>
-              </div>
+            <header className="intel-head">
+              <p className="intel-kicker">{t('kicker')}</p>
+              <h2 className="intel-title">{t('title')}</h2>
+              <p className="intel-lede">{t('lede')}</p>
+            </header>
 
-              <div className="intel-panel-slot">
+            <nav className="intel-tabs" aria-label={t('kicker')}>
+              {products.map((product, i) => (
+                <button
+                  key={product.name}
+                  type="button"
+                  className={`intel-tab${i === active ? ' is-active' : ''}${i < active ? ' is-done' : ''}`}
+                  aria-current={i === active ? 'step' : undefined}
+                  onClick={() => goTo(i)}
+                >
+                  <span className="intel-tab-index">{String(i + 1).padStart(2, '0')}</span>
+                  <span className="intel-tab-name">{product.name}</span>
+                  <span className="intel-tab-track" aria-hidden>
+                    <IntelProgressFill progress={progress} index={i} count={count} />
+                  </span>
+                </button>
+              ))}
+            </nav>
+
+            <div className="intel-body">
+              <div className="intel-copy" aria-live="polite">
                 <AnimatePresence mode="wait" custom={direction}>
                   {current ? (
                     <motion.div
                       key={current.name}
-                      className="intel-panel is-active"
+                      className="intel-panel"
                       custom={direction}
                       variants={copyVariants}
                       initial="enter"
                       animate="center"
                       exit="exit"
-                      transition={{ duration: 0.55, ease: EASE }}
+                      transition={{ duration: 0.42, ease: EASE }}
                     >
+                      <p className="intel-chapter">
+                        <span>{indexLabel}</span>
+                        <span>/ {String(count).padStart(2, '0')}</span>
+                      </p>
                       <h3 className="intel-product">{current.name}</h3>
                       <p className="intel-desc">{current.description}</p>
+                      <ul className="intel-points">
+                        {current.points.map((point) => (
+                          <li key={point}>
+                            <span className="intel-point-mark" aria-hidden />
+                            {point}
+                          </li>
+                        ))}
+                      </ul>
                     </motion.div>
                   ) : null}
                 </AnimatePresence>
               </div>
 
-              <div className="intel-progress" aria-hidden>
-                {products.map((product, i) => (
-                  <div
-                    key={product.name}
-                    className={`intel-progress-seg${i === active ? ' is-active' : ''}${i < active ? ' is-done' : ''}`}
-                  >
-                    <span className="intel-progress-label">{product.name}</span>
-                    <span className="intel-progress-track">
-                      <IntelProgressFill progress={progress} index={i} count={count} />
-                    </span>
-                  </div>
-                ))}
+              <div className="intel-visual">
+                <LandingIntelPreview
+                  scene={scene}
+                  direction={direction}
+                  reduceMotion={Boolean(reduceMotion)}
+                />
               </div>
-            </div>
-
-            <div className="intel-card-wrap">
-              <AnimatePresence mode="wait" custom={direction}>
-                {current ? (
-                  <motion.article
-                    key={current.name}
-                    className="noise-card intel-card"
-                    custom={direction}
-                    variants={cardVariants}
-                    initial="enter"
-                    animate="center"
-                    exit="exit"
-                    transition={{ duration: 0.6, ease: EASE }}
-                    style={{
-                      transformOrigin: 'center left',
-                    }}
-                  >
-                    <div className="intel-card-top">
-                      <span className="intel-card-step">{indexLabel}</span>
-                      <h4 className="intel-card-title">{current.name}</h4>
-                    </div>
-                    <p className="intel-card-body">{current.description}</p>
-                    <ul className="intel-card-points">
-                      {current.points.map((point, i) => (
-                        <motion.li
-                          key={point}
-                          initial={reduceMotion ? false : { opacity: 0, x: 16 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{
-                            duration: 0.4,
-                            delay: 0.12 + i * 0.07,
-                            ease: EASE,
-                          }}
-                        >
-                          <span className="intel-point-mark" aria-hidden />
-                          {point}
-                        </motion.li>
-                      ))}
-                    </ul>
-                  </motion.article>
-                ) : null}
-              </AnimatePresence>
             </div>
           </div>
         </div>

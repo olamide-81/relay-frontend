@@ -43,7 +43,7 @@ export default function IntelligenceCanvas() {
             fastest.
           </h2>
           <div className="relay-featured-foot">
-            <Link href="/reports/fintech-35-trillion-daily" className="relay-featured-btn">
+            <Link href="/dashboard/intelligence/fintech-35-trillion-daily" className="relay-featured-btn">
               Read the map
             </Link>
             <span className="relay-featured-meta">Published 21 Aug · covers 14 markets</span>

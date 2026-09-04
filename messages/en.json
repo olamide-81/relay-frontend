@@ -386,6 +386,8 @@
     "company": "Name of company",
     "companyPlaceholder": "Company name",
     "submit": "Join waitlist",
+    "submitting": "Joining…",
+    "error": "Could not join the waitlist. Try again.",
     "close": "Close",
     "successTitle": "You’re on the list",
     "successLede": "Thanks — we’ll be in touch when Relay is ready for you.",

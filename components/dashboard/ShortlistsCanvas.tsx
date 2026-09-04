@@ -1,25 +1,74 @@
 'use client'
 
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Link } from '@/i18n/navigation'
 import { LiveDot } from '@/components/dashboard/ui/LiveDot'
 import { formatFeeFromBps, statusLabel } from '@/lib/relay/format'
 import { getProvider, shortlists as mockLists } from '@/lib/mock/relay'
+import { chaseShortlist, createShortlist, listShortlists, type ShortlistDoc } from '@/lib/api/workspace'
+import { useLiveApi } from '@/lib/api/config'
 import type { Shortlist } from '@/lib/relay/types'
 
+function formatCreated(iso: string) {
+  const d = new Date(iso)
+  if (Number.isNaN(d.getTime())) return iso
+  return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })
+}
+
+function toUi(doc: ShortlistDoc): Shortlist {
+  return {
+    id: doc.id,
+    name: doc.name,
+    corridor: doc.corridor,
+    monthlyVolumeUsd: doc.monthlyVolumeUsd,
+    closesAt: doc.closesAt,
+    createdAt: formatCreated(doc.createdAt),
+    progressPct: doc.progressPct,
+    meta: doc.meta,
+    stage: doc.stage,
+    entries: doc.entries.map((e) => ({
+      slug: e.providerId,
+      feeBps: e.feeBps,
+      settleLabel: e.settleLabel,
+      status: e.status,
+      statusAt: formatCreated(e.statusAt),
+      next: e.next,
+    })),
+  }
+}
+
 export default function ShortlistsCanvas() {
-  const [lists, setLists] = useState(mockLists)
-  const [activeId, setActiveId] = useState(mockLists[0].id)
+  const live = useLiveApi
+  const [lists, setLists] = useState<Shortlist[]>(live ? [] : mockLists)
+  const [activeId, setActiveId] = useState(live ? '' : mockLists[0].id)
   const [toast, setToast] = useState<string | null>(null)
   const active = lists.find((l) => l.id === activeId) ?? lists[0]
 
+  useEffect(() => {
+    if (!live) return
+    void listShortlists()
+      .then((result) => {
+        const mapped = result.shortlists.map(toUi)
+        setLists(mapped)
+        setActiveId(mapped[0]?.id ?? '')
+      })
+      .catch(() => {
+        setToast('Could not load shortlists from the API.')
+        window.setTimeout(() => setToast(null), 2400)
+      })
+  }, [live])
+
   const chaseCount = useMemo(() => {
+    if (!active) return 0
     const urgent = active.entries.filter((e) => e.next === 'chase_urgent').length
     if (urgent) return urgent
     return active.entries.filter((e) => e.next === 'chase').length
   }, [active])
 
   const chase = (slug?: string) => {
+    if (live && active) {
+      void chaseShortlist(active.id).catch(() => {})
+    }
     const name = slug ? getProvider(slug)?.name : `${chaseCount} provider`
     setToast(`Reminder sent to ${name}.`)
     window.setTimeout(() => setToast(null), 2400)
@@ -36,20 +85,37 @@ export default function ShortlistsCanvas() {
       <div className="relay-hd">
         <div>
           <h1 className="relay-hd-title">Shortlists</h1>
-          <div className="relay-hd-sub">3 active · 12 providers · 2 RFPs closing this month</div>
+          <div className="relay-hd-sub">
+            {lists.length
+              ? `${lists.length} shortlist${lists.length === 1 ? '' : 's'} · ${lists.reduce((n, l) => n + l.entries.length, 0)} providers`
+              : 'Create a shortlist to start an RFP'}
+          </div>
         </div>
         <div className="relay-hd-actions">
           <button
             type="button"
             className="relay-btn relay-btn--white"
             onClick={() => {
+              if (live) {
+                void createShortlist({ name: 'New shortlist', corridor: 'UK' })
+                  .then((created) => {
+                    const ui = toUi(created)
+                    setLists((prev) => [ui, ...prev])
+                    setActiveId(ui.id)
+                  })
+                  .catch(() => {
+                    setToast('Could not create shortlist.')
+                    window.setTimeout(() => setToast(null), 2400)
+                  })
+                return
+              }
               const id = `list-${Date.now()}`
               setLists((prev) => [
                 ...prev,
                 {
                   id,
                   name: 'New shortlist',
-                  corridor: '—',
+                  corridor: 'UK',
                   monthlyVolumeUsd: 0,
                   closesAt: null,
                   createdAt: '28 Aug',
@@ -70,7 +136,7 @@ export default function ShortlistsCanvas() {
       <div className="relay-sl-grid">
         <div className="relay-sl-list">
           {lists.map((list) => {
-            const on = list.id === active.id
+            const on = list.id === active?.id
             return (
               <button
                 type="button"
@@ -94,6 +160,7 @@ export default function ShortlistsCanvas() {
           </div>
         </div>
 
+        {active ? (
         <div className="relay-panel relay-panel--20">
           <div className="relay-rfp-head" style={{ padding: '22px 26px' }}>
             <div>
@@ -184,6 +251,13 @@ export default function ShortlistsCanvas() {
             </div>
           </div>
         </div>
+        ) : (
+          <div className="relay-panel relay-panel--20">
+            <div className="relay-rfp-head" style={{ padding: '22px 26px' }}>
+              <p className="relay-rfp-sub">No shortlist yet. New shortlist starts on the UK corridor — you can change that later.</p>
+            </div>
+          </div>
+        )}
       </div>
       {toast ? <div className="relay-toast">{toast}</div> : null}
     </div>

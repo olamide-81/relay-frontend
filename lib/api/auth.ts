@@ -1,4 +1,6 @@
 import { ApiError, delay } from './simulate'
+import { api } from './client'
+import { apiBaseUrl, useLiveApi } from './config'
 import {
   clearSession,
   getSession,
@@ -63,17 +65,58 @@ function userFrom(input: {
   }
 }
 
-function persist(user: SessionUser): Session {
+function persist(user: SessionUser, accessToken?: string): Session {
   const session: Session = {
-    accessToken: tokenFor(user.email),
+    accessToken: accessToken ?? tokenFor(user.email),
     user,
   }
   setSession(session)
   return session
 }
 
-/** POST /api/auth/login — simulated until relay-api is live. */
+type ApiAuthUser = {
+  id: string
+  email: string
+  fullName: string
+  firstName: string
+  lastName: string
+  company?: string
+  userRole?: UserRole
+  role?: 'user' | 'admin'
+  subscriptionStatus?: SessionUser['subscriptionStatus']
+  currentPeriodEnd?: string | Date | null
+  emailVerified?: boolean
+  authProvider?: 'email' | 'google'
+}
+
+function sessionFromApi(accessToken: string, user: ApiAuthUser): Session {
+  const mapped = userFrom({
+    email: user.email,
+    fullName: user.fullName,
+    company: user.company ?? 'Independent',
+    role: user.userRole ?? 'founder',
+    provider: user.authProvider === 'google' ? 'google' : 'email',
+    subscriptionStatus: user.subscriptionStatus,
+  })
+  mapped.id = String(user.id)
+  mapped.emailVerified = Boolean(user.emailVerified)
+  mapped.role = user.role ?? 'user'
+  mapped.currentPeriodEnd = user.currentPeriodEnd
+    ? new Date(user.currentPeriodEnd).toISOString()
+    : null
+  return persist(mapped, accessToken)
+}
+
+/** POST /api/auth/login */
 export async function login(input: LoginInput): Promise<Session> {
+  if (useLiveApi) {
+    const result = await api.post<{ accessToken: string; user: ApiAuthUser }>('/api/auth/login', {
+      email: input.email.trim().toLowerCase(),
+      password: input.password,
+    })
+    return sessionFromApi(result.accessToken, { ...result.user, id: String(result.user.id) })
+  }
+
   await delay()
   const email = input.email.trim().toLowerCase()
   if (!email || !input.password) {
@@ -107,8 +150,25 @@ export async function login(input: LoginInput): Promise<Session> {
   )
 }
 
-/** POST /api/auth/register — simulated. Auto-signs in so dashboard work can proceed. */
+/** POST /api/auth/register */
 export async function register(input: RegisterInput): Promise<Session> {
+  if (useLiveApi) {
+    const result = await api.post<{ accessToken?: string; user?: ApiAuthUser; message?: string }>(
+      '/api/auth/register',
+      {
+        email: input.email.trim().toLowerCase(),
+        password: input.password,
+        fullName: input.fullName,
+        company: input.company,
+        role: input.role ?? 'founder',
+      }
+    )
+    if (!result.accessToken || !result.user) {
+      throw new ApiError(201, result.message || 'Check your email to verify your account')
+    }
+    return sessionFromApi(result.accessToken, { ...result.user, id: String(result.user.id) })
+  }
+
   await delay()
   const email = input.email.trim().toLowerCase()
   if (!email.includes('@')) {
@@ -138,8 +198,18 @@ export async function register(input: RegisterInput): Promise<Session> {
   )
 }
 
-/** Simulated Google OAuth callback. */
-export async function loginWithGoogle(): Promise<Session> {
+/** Start Google OAuth. Live API redirects the browser to Google. */
+export async function loginWithGoogle(locale = 'en'): Promise<Session> {
+  if (useLiveApi) {
+    if (typeof window === 'undefined') {
+      throw new ApiError(500, 'Google sign-in is only available in the browser')
+    }
+    const next = '/dashboard'
+    const url = `${apiBaseUrl}/api/auth/google?locale=${encodeURIComponent(locale)}&next=${encodeURIComponent(next)}`
+    window.location.assign(url)
+    return new Promise<Session>(() => {})
+  }
+
   await delay(1100)
   return persist(
     userFrom({
@@ -152,8 +222,30 @@ export async function loginWithGoogle(): Promise<Session> {
   )
 }
 
+/** POST /api/auth/google/complete — finish the Google redirect. */
+export async function completeGoogleLogin(ticket: string): Promise<Session> {
+  const result = await api.post<{ accessToken: string; user: ApiAuthUser }>('/api/auth/google/complete', {
+    ticket,
+  })
+  return sessionFromApi(result.accessToken, { ...result.user, id: String(result.user.id) })
+}
+
+export const googleAuthErrorMessage: Record<string, string> = {
+  google_denied: 'Google sign-in was cancelled.',
+  google_failed: 'Google sign-in failed. Try again.',
+  google_not_configured: 'Google sign-in is not configured on the API.',
+  access_denied: 'Google sign-in was cancelled.',
+}
+
 /** GET /api/auth/me */
 export async function getMe(): Promise<SessionUser> {
+  if (useLiveApi) {
+    const user = await api.get<ApiAuthUser>('/api/auth/me')
+    const session = getSession()
+    if (!session) throw new ApiError(401, 'Not authenticated')
+    sessionFromApi(session.accessToken, { ...user, id: String(user.id) })
+    return getSession()!.user
+  }
   await delay(180)
   const session = getSession()
   if (!session) throw new ApiError(401, 'Not authenticated')
@@ -162,6 +254,15 @@ export async function getMe(): Promise<SessionUser> {
 
 /** POST /api/auth/logout */
 export async function logout() {
+  if (useLiveApi) {
+    try {
+      await api.post('/api/auth/logout')
+    } catch {
+      // still clear the client session
+    }
+    clearSession()
+    return
+  }
   await delay(220)
   clearSession()
 }

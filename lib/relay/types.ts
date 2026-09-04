@@ -12,6 +12,16 @@ export interface Weighting {
   licencePct: number
 }
 
+export type CorridorRegion =
+  | 'Africa'
+  | 'Europe'
+  | 'UK'
+  | 'LATAM'
+  | 'North America'
+  | 'Australia'
+  | 'Asia Pacific'
+  | 'Middle East'
+
 export interface Provider {
   slug: string
   name: string
@@ -21,6 +31,7 @@ export interface Provider {
   licences: LicenceKind[]
   licenceLabel: string
   licenceModel: string
+  regions: CorridorRegion[]
   feeFromBps: number
   medianSettleMinutes: number
   settleLabel: string

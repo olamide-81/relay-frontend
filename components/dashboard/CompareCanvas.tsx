@@ -5,8 +5,8 @@ import { useSearchParams } from 'next/navigation'
 import { Link } from '@/i18n/navigation'
 import { useWeighting } from '@/components/dashboard/WeightingContext'
 import { computeScore } from '@/lib/relay/score'
-import { formatFeeFromBps, formatDurationMinutes, formatVolumeUsd } from '@/lib/relay/format'
-import { compareDefaultSlugs, getProvider, hqShort } from '@/lib/mock/relay'
+import { formatFeeFromBps, formatDurationMinutes } from '@/lib/relay/format'
+import { compareDefaultSlugs, getProvider } from '@/lib/mock/relay'
 import type { Provider } from '@/lib/relay/types'
 
 type Kind = 'min' | 'max' | 'prefer'
@@ -51,18 +51,6 @@ const CRITERIA: Criterion[] = [
     value: (p) => p.successRatePct ?? 0,
     display: (p) => (p.successRatePct != null ? `${p.successRatePct}%` : '—'),
   },
-  {
-    label: 'Min. monthly volume',
-    kind: 'min',
-    value: (p) => p.minMonthlyVolumeUsd ?? 0,
-    display: (p) => (p.minMonthlyVolumeUsd != null ? formatVolumeUsd(p.minMonthlyVolumeUsd) : '—'),
-  },
-  {
-    label: 'Integration time',
-    kind: 'min',
-    value: (p) => p.integrationWeeks ?? 0,
-    display: (p) => (p.integrationWeeks != null ? `${p.integrationWeeks} weeks` : '—'),
-  },
 ]
 
 function bestFlags(cols: Provider[], criterion: Criterion): boolean[] {
@@ -84,7 +72,9 @@ export default function CompareCanvas() {
     return (found.length ? found : compareDefaultSlugs.map(getProvider).filter(Boolean) as Provider[]).slice(0, 4)
   }, [searchParams])
 
-  const pad = 4 - cols.length
+  const grid = {
+    gridTemplateColumns: `minmax(168px, 1.05fr) repeat(${Math.max(cols.length, 1)}, minmax(148px, 1fr))`,
+  }
 
   return (
     <div className="relay-page relay-page--compare">
@@ -103,55 +93,51 @@ export default function CompareCanvas() {
         </div>
       </div>
 
-      <div className="relay-matrix" style={{ gridTemplateColumns: `1.2fr repeat(${Math.max(cols.length, 4)},1fr)` }}>
-        <div className="relay-matrix-head">
+      <div className="relay-matrix">
+        <div className="relay-matrix-head" style={grid}>
           <div className="relay-matrix-crit">CRITERION</div>
           {cols.map((p, i) => (
             <div key={p.slug} className={`relay-matrix-col${i < 2 ? ' relay-matrix-col--hi' : ''}`}>
               <div className="relay-matrix-col-name">{p.name.replace(' Payments', '')}</div>
-              <div className="relay-matrix-col-hq">{hqShort[p.slug] ?? `${p.hq.split(',')[0]} · ${p.licenceLabel}`}</div>
               <div className="relay-matrix-col-score">
                 <strong>{computeScore(p, weighting)}</strong>
                 <span>SCORE</span>
               </div>
             </div>
           ))}
-          {Array.from({ length: pad }).map((_, i) => (
-            <div key={`pad-${i}`} className="relay-matrix-col" />
-          ))}
         </div>
         <div className="relay-matrix-body">
           {CRITERIA.map((row) => {
             const flags = bestFlags(cols, row)
             return (
-              <div className="relay-matrix-row" key={row.label}>
+              <div className="relay-matrix-row" key={row.label} style={grid}>
                 <div className="relay-matrix-label">{row.label}</div>
                 {cols.map((p, i) => (
                   <div key={p.slug} className={`relay-matrix-cell${flags[i] ? ' relay-matrix-cell--best' : ''}`}>
-                    <span>{row.display(p)}</span>
-                    {flags[i] ? <span className="relay-matrix-best">BEST</span> : null}
+                    {row.display(p)}
                   </div>
-                ))}
-                {Array.from({ length: pad }).map((_, i) => (
-                  <div key={`pad-${i}`} className="relay-matrix-cell" />
                 ))}
               </div>
             )
           })}
         </div>
-        <div className="relay-matrix-foot">
+        <div className="relay-matrix-foot" style={grid}>
           <div className="relay-matrix-foot-label">Next step</div>
           {cols.map((p, i) => (
             <div key={p.slug} className={`relay-matrix-cta ${i < 2 ? 'relay-matrix-cta--lime' : 'relay-matrix-cta--mute'}`}>
               {i < 2 ? (
-                <Link href={`/dashboard/intros/${p.slug}`}>Request intro</Link>
+                <Link
+                  href={`/dashboard/intros/${p.slug}`}
+                  className="relay-matrix-cta-btn relay-matrix-cta-btn--lime"
+                >
+                  Request intro
+                </Link>
               ) : (
-                <Link href="/dashboard/shortlists">Keep on list</Link>
+                <Link href="/dashboard/shortlists" className="relay-matrix-cta-btn relay-matrix-cta-btn--mute">
+                  Keep on list
+                </Link>
               )}
             </div>
-          ))}
-          {Array.from({ length: pad }).map((_, i) => (
-            <div key={`pad-${i}`} className="relay-matrix-cta" />
           ))}
         </div>
       </div>

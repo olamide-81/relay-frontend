@@ -5,6 +5,8 @@ import { Link, useRouter } from '@/i18n/navigation'
 import { logout } from '@/lib/api/auth'
 import { isSubscribed } from '@/lib/session'
 import { useSession } from '@/hooks/useSession'
+import RelayMark from '@/components/RelayMark'
+import NotificationBell from '@/components/dashboard/chrome/NotificationBell'
 import type { TopBarSection } from '@/lib/relay/types'
 
 const NAV: { name: TopBarSection; href: string; badge?: string; lime?: boolean }[] = [
@@ -56,8 +58,7 @@ export default function TopBar({ active }: { active: TopBarSection }) {
   return (
     <header className="relay-topbar">
       <Link href="/dashboard" className="relay-logo">
-        <span className="relay-logo-mark">R</span>
-        <span className="relay-logo-name">Relay</span>
+        <RelayMark priority />
       </Link>
 
       <nav className="relay-pills" aria-label="Primary">
@@ -88,34 +89,22 @@ export default function TopBar({ active }: { active: TopBarSection }) {
         </svg>
         <input
           ref={searchRef}
-          type="search"
+          type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search providers, corridors, licences"
           aria-label="Search providers, corridors, licences"
+          autoComplete="off"
+          autoCorrect="off"
+          autoCapitalize="off"
+          spellCheck={false}
+          enterKeyHint="search"
         />
         <kbd>⌘K</kbd>
       </form>
 
       <div className="relay-topbar-right">
-        <Link href="/dashboard/intros" className="relay-bell" aria-label="Notifications">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden>
-            <path
-              d="M18 8a6 6 0 1 0-12 0c0 6-2 7-2 7h16s-2-1-2-7"
-              stroke="rgba(255,255,255,.8)"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-            <path
-              d="M10.5 21a2 2 0 0 0 3 0"
-              stroke="rgba(255,255,255,.8)"
-              strokeWidth="2"
-              strokeLinecap="round"
-            />
-          </svg>
-          <span className="relay-bell-dot" />
-        </Link>
+        <NotificationBell />
 
         <div className="relay-account-wrap" ref={profileRef} style={{ position: 'relative' }}>
           <button
@@ -133,10 +122,10 @@ export default function TopBar({ active }: { active: TopBarSection }) {
               <div className="relay-menu-head">
                 <strong>{user?.fullName}</strong>
                 <span>{user?.email}</span>
-                <span>{subscribed ? 'Operator' : 'Free'}</span>
+                <span>{subscribed ? 'Pro' : 'Explorer'}</span>
               </div>
               <Link href="/dashboard/billing" className="relay-menu-item" onClick={() => setProfileOpen(false)}>
-                Billing
+                Subscription
               </Link>
               <button
                 type="button"

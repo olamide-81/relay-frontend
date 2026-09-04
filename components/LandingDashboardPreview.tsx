@@ -1,11 +1,11 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { Space_Grotesk, JetBrains_Mono } from 'next/font/google'
 import { LiveDot } from '@/components/dashboard/ui/LiveDot'
 import { Sparkline } from '@/components/dashboard/ui/Sparkline'
 import { CheckBox } from '@/components/dashboard/ui/CheckBox'
 import { useWaitlist } from '@/components/WaitlistModal'
+import RelayMark from '@/components/RelayMark'
 import { computeScore, DEFAULT_WEIGHTING } from '@/lib/relay/score'
 import { formatFeeFromBps, statusLabel } from '@/lib/relay/format'
 import {
@@ -17,20 +17,6 @@ import {
   shortlists,
 } from '@/lib/mock/relay'
 import '@/components/dashboard/relay.css'
-
-const spaceGrotesk = Space_Grotesk({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
-  variable: '--font-relay',
-  display: 'swap',
-})
-
-const jetbrainsMono = JetBrains_Mono({
-  subsets: ['latin'],
-  weight: ['400', '500'],
-  variable: '--font-relay-mono',
-  display: 'swap',
-})
 
 const DESIGN_WIDTH = 1600
 const PEEK_HEIGHT = 820
@@ -95,7 +81,7 @@ export default function LandingDashboardPreview() {
         style={{ height: (compact ? 960 : PEEK_HEIGHT) * scale }}
       >
         <div
-          className={`${spaceGrotesk.variable} ${jetbrainsMono.variable} ov-scale`}
+          className="ov-scale"
           style={{
             ['--ov-scale' as string]: String(scale),
             width: compact ? 1080 : DESIGN_WIDTH,
@@ -105,8 +91,7 @@ export default function LandingDashboardPreview() {
             <div className="relay-glow" />
             <header className="relay-topbar">
               <div className="relay-logo">
-                <span className="relay-logo-mark">R</span>
-                <span className="relay-logo-name">Relay</span>
+                <RelayMark />
               </div>
               <nav className="relay-pills" aria-label="Workspace sections">
                 {PILLS.map((item) => (

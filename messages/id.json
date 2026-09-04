@@ -263,6 +263,8 @@
     "company": "Nama perusahaan",
     "companyPlaceholder": "Nama perusahaan",
     "submit": "Gabung waitlist",
+    "submitting": "Mendaftar…",
+    "error": "Tidak bisa bergabung ke waitlist. Coba lagi.",
     "close": "Tutup",
     "successTitle": "Anda sudah di daftar",
     "successLede": "Terima kasih — kami akan menghubungi saat Relay siap untuk Anda.",

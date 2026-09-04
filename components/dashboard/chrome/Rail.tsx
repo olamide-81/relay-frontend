@@ -2,7 +2,7 @@
 
 import { Link } from '@/i18n/navigation'
 import { LiveDot } from '@/components/dashboard/ui/LiveDot'
-import { useWeighting } from '@/components/dashboard/WeightingContext'
+import { useOpenWeighting } from '@/components/dashboard/compare/WeightingPopover'
 import type { RailSection } from '@/lib/relay/types'
 
 const ITEMS: { name: RailSection; href: string; n: string }[] = [
@@ -14,7 +14,7 @@ const ITEMS: { name: RailSection; href: string; n: string }[] = [
 ]
 
 export default function Rail({ active }: { active: RailSection }) {
-  const { setOpen } = useWeighting()
+  const openWeighting = useOpenWeighting()
 
   return (
     <aside className="relay-rail" aria-label="Workspace">
@@ -34,7 +34,7 @@ export default function Rail({ active }: { active: RailSection }) {
           </Link>
         )
       })}
-      <button type="button" className="relay-weight-card" onClick={() => setOpen(true)}>
+      <button type="button" className="relay-weight-card" onClick={openWeighting}>
         <div className="relay-weight-copy">Weighting drives every score in Relay.</div>
         <div className="relay-weight-link">Edit weighting →</div>
       </button>

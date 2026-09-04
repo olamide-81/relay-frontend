@@ -4,7 +4,8 @@ import { useState } from 'react'
 import { CheckBox } from '@/components/dashboard/ui/CheckBox'
 import { LiveDot } from '@/components/dashboard/ui/LiveDot'
 import { getProvider, alsoRequesting, requestCorridors, requestFields, requestSlots } from '@/lib/mock/relay'
-import { submitIntroRequest } from '@/lib/workspace'
+import { createIntro } from '@/lib/api/workspace'
+import { ApiError } from '@/lib/api/simulate'
 
 const DEFAULT_CONTEXT =
   "We're consolidating three payout providers into one rail before Q4. Priority is settlement speed into BRL and MXN, then fee. Need EMI-direct, no sponsor."
@@ -17,24 +18,33 @@ export default function RequestCanvas({ slug = 'nordbridge' }: { slug?: string }
   const [slot, setSlot] = useState('Mon 31 Aug|11:30')
   const [also, setAlso] = useState(alsoRequesting.map((a) => a.slug))
   const [sent, setSent] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   const canSend = Boolean(slot)
 
   const send = () => {
-    if (!canSend) return
-    submitIntroRequest({
+    if (!canSend || sent) return
+    setError(null)
+    void createIntro({
       providerId: provider.slug,
       providerName: provider.name,
       categoryName: 'Payouts',
-      note: `${context}\nSlot: ${slot.replace('|', ' ')}`,
+      alsoProviderIds: also,
+      corridors: chips.filter((c) => c.selected).map((c) => c.name),
+      fields,
+      context,
+      slot: slot.replace('|', ' '),
     })
-    setSent(true)
+      .then(() => setSent(true))
+      .catch((e) => {
+        setError(e instanceof ApiError ? e.message : 'Could not send request. Is the API running?')
+      })
   }
 
   return (
     <div className="relay-page relay-page--request">
       <div>
-        <h1 className="relay-hd-title">Book an intro</h1>
+        <h1 className="relay-hd-title">Request intro</h1>
         <div className="relay-hd-sub">
           {provider.name} · usually replies within {provider.avgResponseHours ?? 4} hours
         </div>
@@ -81,10 +91,13 @@ export default function RequestCanvas({ slug = 'nordbridge' }: { slug?: string }
             <textarea className="relay-textarea" value={context} onChange={(e) => setContext(e.target.value)} />
           </div>
           <div className="relay-form-foot">
-            <button type="button" className="relay-btn relay-btn--lime" disabled={!canSend} onClick={send}>
+            <button type="button" className="relay-btn relay-btn--lime" disabled={!canSend || sent} onClick={send}>
               {sent ? 'Request sent' : 'Send request'}
             </button>
-            <p>Your company profile and volumes are shared. Contact details stay hidden until they accept.</p>
+            <p>
+              {error ??
+                'Your company profile and volumes are shared. Contact details stay hidden until they accept.'}
+            </p>
           </div>
         </div>
 

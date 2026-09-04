@@ -263,6 +263,8 @@
     "company": "会社名",
     "companyPlaceholder": "会社名",
     "submit": "ウェイトリストに登録",
+    "submitting": "登録中…",
+    "error": "ウェイトリストに登録できませんでした。もう一度お試しください。",
     "close": "閉じる",
     "successTitle": "リストに登録されました",
     "successLede": "ありがとうございます——Relayの準備ができ次第ご連絡します。",

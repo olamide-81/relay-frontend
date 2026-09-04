@@ -18,7 +18,9 @@ import {
   useReducedMotion,
   type PanInfo,
 } from 'framer-motion'
-import { useTranslations } from 'next-intl'
+import { useTranslations, useLocale } from 'next-intl'
+import { joinWaitlist, type WaitlistRole } from '@/lib/api/waitlist'
+import { ApiError } from '@/lib/api/simulate'
 import './waitlist.css'
 
 type WaitlistContextValue = {
@@ -58,11 +60,14 @@ const ROLES = ['founder', 'engineer', 'productManager', 'other'] as const
 
 function WaitlistModal() {
   const t = useTranslations('waitlist')
+  const locale = useLocale()
   const { closeWaitlist } = useWaitlist()
   const titleId = useId()
   const panelRef = useRef<HTMLDivElement>(null)
   const firstFieldRef = useRef<HTMLInputElement>(null)
   const [submitted, setSubmitted] = useState(false)
+  const [submitting, setSubmitting] = useState(false)
+  const [error, setError] = useState<string | null>(null)
   const [role, setRole] = useState<(typeof ROLES)[number] | ''>('')
   const reduceMotion = useReducedMotion()
   const dragControls = useDragControls()
@@ -85,9 +90,32 @@ function WaitlistModal() {
     }
   }, [closeWaitlist])
 
-  function onSubmit(e: FormEvent<HTMLFormElement>) {
+  async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
-    setSubmitted(true)
+    if (submitting) return
+    setError(null)
+    setSubmitting(true)
+    const form = new FormData(e.currentTarget)
+    const fullName = String(form.get('fullName') ?? '').trim()
+    const email = String(form.get('email') ?? '').trim()
+    const company = String(form.get('company') ?? '').trim()
+    const picked = (form.get('role') as WaitlistRole | null) || (role as WaitlistRole | '')
+    try {
+      if (!picked) throw new ApiError(400, t('error'))
+      await joinWaitlist({
+        fullName,
+        email,
+        role: picked,
+        company,
+        locale,
+        source: 'landing',
+      })
+      setSubmitted(true)
+    } catch (err) {
+      setError(err instanceof ApiError ? err.message : t('error'))
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   function handleDragEnd(_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) {
@@ -226,8 +254,9 @@ function WaitlistModal() {
                   />
                 </label>
 
-                <button type="submit" className="wl-submit">
-                  {t('submit')}
+                {error ? <p className="wl-error">{error}</p> : null}
+                <button type="submit" className="wl-submit" disabled={submitting}>
+                  {submitting ? t('submitting') : t('submit')}
                 </button>
               </form>
             </>

@@ -1,5 +1,6 @@
 'use client'
 
+import { Suspense } from 'react'
 import { use } from 'react'
 import { notFound } from 'next/navigation'
 import ProviderDossierCanvas from '@/components/dashboard/ProviderDossierCanvas'
@@ -15,5 +16,9 @@ export default function ProviderDossierPage({
     notFound()
   }
 
-  return <ProviderDossierCanvas id={id} />
+  return (
+    <Suspense>
+      <ProviderDossierCanvas id={id} />
+    </Suspense>
+  )
 }

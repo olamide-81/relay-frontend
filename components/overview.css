@@ -56,44 +56,9 @@
   flex-shrink: 0;
 }
 
-.ov-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 42px;
-  padding: 0 16px;
-  border-radius: 10px;
+.ov-actions .relay-btn {
   font-family: var(--font-geist);
-  font-size: 0.8125rem;
-  font-weight: 500;
   letter-spacing: -0.01em;
-  text-decoration: none;
-  cursor: pointer;
-  transition: transform 100ms ease-out, background 120ms ease-out, border-color 120ms ease-out;
-}
-
-.ov-btn--ghost {
-  color: #fff;
-  background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-}
-
-.ov-btn--ghost:hover {
-  border-color: rgba(255, 255, 255, 0.36);
-}
-
-.ov-btn--primary {
-  color: #0a0b0e;
-  background: #d4f06a;
-  border: 1px solid #d4f06a;
-}
-
-.ov-btn--primary:hover {
-  background: #e0f78a;
-}
-
-.ov-btn:active {
-  transform: scale(0.97);
 }
 
 /* ─── Product window ─── */
@@ -274,7 +239,7 @@
     width: 100%;
   }
 
-  .ov-btn {
+  .ov-actions .relay-btn {
     flex: 1;
   }
 
@@ -288,7 +253,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .ov-btn {
+  .ov-actions .relay-btn {
     animation: none !important;
     transition: opacity 150ms ease !important;
     transform: none !important;

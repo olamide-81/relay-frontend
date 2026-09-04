@@ -6,9 +6,15 @@ import { useSession } from '@/hooks/useSession'
 import TopBar from '@/components/dashboard/chrome/TopBar'
 import Rail from '@/components/dashboard/chrome/Rail'
 import { WeightingProvider } from '@/components/dashboard/WeightingContext'
-import { WeightingDialog } from '@/components/dashboard/WeightingDialog'
+import { PlanProvider } from '@/components/dashboard/PlanContext'
+import { GateProvider, useGate } from '@/components/dashboard/gate/GateContext'
+import { UpgradeDialog } from '@/components/dashboard/gate/UpgradeDialog'
+import { CompareTrayProvider, useCompareTray } from '@/components/dashboard/compare/CompareTrayContext'
+import { CompareTray } from '@/components/dashboard/compare/CompareTray'
+import { WeightingPopover } from '@/components/dashboard/compare/WeightingPopover'
 import type { RailSection, TopBarSection } from '@/lib/relay/types'
 import './relay.css'
+import './addendum.css'
 
 function getTopBar(path: string): TopBarSection {
   if (path.startsWith('/dashboard/providers')) return 'Directory'
@@ -27,12 +33,42 @@ function getRail(path: string): RailSection {
   return 'Overview'
 }
 
-export default function DashboardShell({ children }: { children: React.ReactNode }) {
-  const router = useRouter()
+function showCompareTray(path: string) {
+  if (path.startsWith('/dashboard/providers')) return true
+  if (path.startsWith('/dashboard/intelligence/')) return true
+  return false
+}
+
+function DashboardFrame({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
-  const { user, ready } = useSession()
+  const { gate } = useGate()
+  const { ids } = useCompareTray()
   const top = getTopBar(pathname)
   const rail = getRail(pathname)
+  const trayOn = showCompareTray(pathname) && ids.length > 0
+
+  return (
+    <div className={`relay${gate ? ' relay--paywall' : ''}`}>
+      <div className="relay-glow" />
+      <div className="relay-paywall-blur">
+        <TopBar active={top} />
+        <div className="relay-body">
+          <Rail active={rail} />
+          <div className="relay-main">
+            {children}
+            {trayOn ? <CompareTray /> : null}
+            <WeightingPopover />
+          </div>
+        </div>
+      </div>
+      <UpgradeDialog />
+    </div>
+  )
+}
+
+export default function DashboardShell({ children }: { children: React.ReactNode }) {
+  const router = useRouter()
+  const { user, ready } = useSession()
 
   useEffect(() => {
     if (ready && !user) router.replace('/signin')
@@ -55,16 +91,14 @@ export default function DashboardShell({ children }: { children: React.ReactNode
   }
 
   return (
-    <WeightingProvider>
-      <div className="relay">
-        <div className="relay-glow" />
-        <TopBar active={top} />
-        <div className="relay-body">
-          <Rail active={rail} />
-          <div className="relay-main">{children}</div>
-        </div>
-        <WeightingDialog />
-      </div>
-    </WeightingProvider>
+    <PlanProvider>
+      <GateProvider>
+        <WeightingProvider>
+          <CompareTrayProvider>
+            <DashboardFrame>{children}</DashboardFrame>
+          </CompareTrayProvider>
+        </WeightingProvider>
+      </GateProvider>
+    </PlanProvider>
   )
 }
