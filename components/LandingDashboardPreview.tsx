@@ -8,33 +8,17 @@ import { useWaitlist } from '@/components/WaitlistModal'
 import RelayMark from '@/components/RelayMark'
 import { computeScore, DEFAULT_WEIGHTING } from '@/lib/relay/score'
 import { formatFeeFromBps, statusLabel } from '@/lib/relay/format'
-import {
-  activityFeed,
-  categoryCards,
-  getProvider,
-  hqShort,
-  overviewKpis,
-  shortlists,
-} from '@/lib/mock/relay'
+import { useCatalog } from '@/components/dashboard/CatalogContext'
 import '@/components/dashboard/relay.css'
 
 const DESIGN_WIDTH = 1600
 const PEEK_HEIGHT = 820
-const RFP = shortlists[0]
-const DEFAULT_CHECKED = new Set(['nordbridge', 'kestrel', 'avenir'])
-const RAIL = [
-  { name: 'Overview', n: '', on: true },
-  { name: 'Directory', n: '210', on: false },
-  { name: 'Shortlists', n: '3', on: false },
-  { name: 'Requests', n: '7', on: false },
-  { name: 'Intelligence', n: '', on: false },
-] as const
 const PILLS = [
   { name: 'Overview', on: true },
   { name: 'Directory', on: false },
   { name: 'Compare', on: false },
-  { name: 'Shortlists', badge: '12', on: false },
-  { name: 'Requests', badge: '3', lime: true, on: false },
+  { name: 'Shortlists', badge: '0', on: false },
+  { name: 'Requests', badge: '0', lime: true, on: false },
 ] as const
 
 /**
@@ -43,10 +27,25 @@ const PILLS = [
  */
 export default function LandingDashboardPreview() {
   const { openWaitlist } = useWaitlist()
+  const { providers, categoryCards } = useCatalog()
   const frameRef = useRef<HTMLDivElement>(null)
   const [scale, setScale] = useState(0.72)
   const [compact, setCompact] = useState(false)
-  const [checked, setChecked] = useState<Set<string>>(DEFAULT_CHECKED)
+  const [checked, setChecked] = useState<Set<string>>(new Set())
+  const previewRows = providers.slice(0, 4)
+  const overviewKpis = [
+    { label: 'OPEN REQUESTS', v: '0', note: 'none yet', tone: 'muted' as const },
+    { label: 'SHORTLISTED', v: '0', note: 'across 0 lists', tone: 'muted' as const },
+    { label: 'MEDIAN PAYOUT FEE', v: '—', note: 'from catalog', tone: 'muted' as const },
+    { label: 'LISTED PROVIDERS', v: String(providers.length), note: 'from admin', tone: 'muted' as const },
+  ]
+  const rail = [
+    { name: 'Overview', n: '', on: true },
+    { name: 'Directory', n: String(providers.length), on: false },
+    { name: 'Shortlists', n: '0', on: false },
+    { name: 'Requests', n: '0', on: false },
+    { name: 'Intelligence', n: '', on: false },
+  ] as const
 
   useEffect(() => {
     const el = frameRef.current
@@ -141,7 +140,7 @@ export default function LandingDashboardPreview() {
             <div className="relay-body">
               <aside className="relay-rail" aria-label="Workspace">
                 <div className="relay-rail-label">WORKSPACE</div>
-                {RAIL.map((item) => (
+                {rail.map((item) => (
                   <span
                     key={item.name}
                     className={`relay-rail-item${item.on ? ' relay-rail-item--on' : ''}`}
@@ -263,17 +262,20 @@ export default function LandingDashboardPreview() {
                       <div className="relay-rfp-head">
                         <div>
                           <div className="relay-rfp-title">
-                            <span>Q3 payout RFP</span>
-                            <span className="relay-badge relay-badge--warn">CLOSES IN 6D</span>
+                            <span>Shortlists</span>
                           </div>
-                          <div className="relay-rfp-sub">4 shortlisted · 2 replied · 1 missing pricing</div>
+                          <div className="relay-rfp-sub">
+                            {previewRows.length
+                              ? `${previewRows.length} from the live catalog`
+                              : 'Empty until you add providers in admin'}
+                          </div>
                         </div>
                         <button
                           type="button"
                           className="relay-btn relay-btn--white relay-btn--sm"
                           onClick={openWaitlist}
                         >
-                          Compare 4
+                          Compare
                         </button>
                       </div>
                       <div className="relay-th relay-th--rfp">
@@ -284,17 +286,12 @@ export default function LandingDashboardPreview() {
                         <span style={{ textAlign: 'right' }}>SCORE</span>
                       </div>
                       <div className="relay-rows">
-                        {RFP.entries.map((entry) => {
-                          const p = getProvider(entry.slug)
-                          if (!p) return null
+                        {previewRows.length === 0 ? (
+                          <p className="relay-empty-hint">No providers listed yet.</p>
+                        ) : (
+                          previewRows.map((p) => {
                           const score = computeScore(p, DEFAULT_WEIGHTING)
                           const on = checked.has(p.slug)
-                          const stFg =
-                            entry.status === 'replied'
-                              ? 'oklch(.85 .15 130)'
-                              : entry.status === 'no_pricing'
-                                ? 'oklch(.86 .13 80)'
-                                : 'rgba(255,255,255,.5)'
                           return (
                             <div
                               key={p.slug}
@@ -315,14 +312,14 @@ export default function LandingDashboardPreview() {
                               <div>
                                 <div className="relay-name">{p.name}</div>
                                 <div className="relay-meta">
-                                  {hqShort[p.slug] ?? `${p.hq.split(',')[0]} · ${p.licenceLabel}`}
+                                  {`${p.hq} · ${p.licenceLabel}`}
                                 </div>
                               </div>
-                              <span className="relay-fee">{formatFeeFromBps(entry.feeBps)}</span>
+                              <span className="relay-fee">{formatFeeFromBps(p.feeFromBps || null)}</span>
                               <div className="relay-status">
-                                <span className="relay-status-dot" style={{ background: stFg }} />
-                                <span className="relay-status-label" style={{ color: stFg }}>
-                                  {statusLabel(entry.status, entry.statusAt)}
+                                <span className="relay-status-dot" style={{ background: 'rgba(255,255,255,.5)' }} />
+                                <span className="relay-status-label" style={{ color: 'rgba(255,255,255,.5)' }}>
+                                  {statusLabel('waiting', 'catalog')}
                                 </span>
                               </div>
                               <span
@@ -333,12 +330,13 @@ export default function LandingDashboardPreview() {
                               </span>
                             </div>
                           )
-                        })}
+                        })
+                        )}
                         <div className="relay-rfp-foot">
                           <LiveDot />
-                          <p>Kestrel came back 22bps under Avenir on EU→LATAM, 14 minutes ago.</p>
+                          <p>Catalog is live. Add providers in admin and they appear here.</p>
                           <button type="button" className="relay-link" onClick={openWaitlist}>
-                            See the delta →
+                            Join waitlist →
                           </button>
                         </div>
                       </div>
@@ -352,18 +350,10 @@ export default function LandingDashboardPreview() {
                             <LiveDot size="sm" />
                             LIVE
                           </span>
-                          <span className="relay-activity-date">Fri 28 Aug</span>
+                          <span className="relay-activity-date">Live</span>
                         </div>
                         <div className="relay-rows">
-                          {activityFeed.map((a) => (
-                            <div className="relay-feed-row" key={a.at}>
-                              <span className="relay-feed-time">{a.at}</span>
-                              <div>
-                                <div className="relay-feed-text">{a.text}</div>
-                                <div className="relay-feed-meta">{a.meta}</div>
-                              </div>
-                            </div>
-                          ))}
+                          <p className="relay-empty-hint">No activity yet.</p>
                           <button type="button" className="relay-feed-more" onClick={openWaitlist}>
                             All activity →
                           </button>

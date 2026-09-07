@@ -9,7 +9,7 @@ import { useCompareTray } from '@/components/dashboard/compare/CompareTrayContex
 import { useOpenWeighting } from '@/components/dashboard/compare/WeightingPopover'
 import { computeScore, sortByScore } from '@/lib/relay/score'
 import { formatFeeFromBps } from '@/lib/relay/format'
-import { categoryMeta, providers } from '@/lib/mock/relay'
+import { useCatalog } from '@/components/dashboard/CatalogContext'
 import type { Category, CorridorRegion } from '@/lib/relay/types'
 
 type View = 'table' | 'cards'
@@ -39,30 +39,26 @@ export default function DirectoryCanvas() {
   const { weighting } = useWeighting()
   const { has, toggle, selectMany } = useCompareTray()
   const openWeighting = useOpenWeighting()
+  const { providers, loading } = useCatalog()
   const q = (searchParams.get('q') ?? '').trim().toLowerCase()
   const initialCat = (searchParams.get('category') as Category) || 'payouts'
 
   const [category, setCategory] = useState<Category>(
     CATEGORY_OPTIONS.some((c) => c.id === initialCat) ? initialCat : 'payouts'
   )
-  const [corridor, setCorridor] = useState<CorridorRegion>('Europe')
+  const [corridor, setCorridor] = useState<CorridorRegion | 'all'>('all')
   const [openMenu, setOpenMenu] = useState<FilterKey | null>(null)
   const [view, setView] = useState<View>('table')
   const [limit, setLimit] = useState(7)
 
-  const meta = categoryMeta[category]
-  const corridorLabel = CORRIDOR_OPTIONS.find((c) => c.id === corridor)?.label ?? 'EU'
+  const corridorLabel =
+    corridor === 'all' ? 'All regions' : CORRIDOR_OPTIONS.find((c) => c.id === corridor)?.label ?? 'All'
 
   const rows = useMemo(() => {
-    let list =
-      category === 'payouts'
-        ? providers
-        : providers.filter((p) => {
-            if (category === 'collections') return ['meridian', 'solano', 'helix', 'nordbridge'].includes(p.slug)
-            if (category === 'fx') return ['kestrel', 'avenir', 'palma', 'helix'].includes(p.slug)
-            return ['zenith', 'palma', 'helix', 'solano'].includes(p.slug)
-          })
-    list = list.filter((p) => p.regions.includes(corridor))
+    let list = providers.filter((p) => p.category === category)
+    if (corridor !== 'all') {
+      list = list.filter((p) => p.regions.length === 0 || p.regions.includes(corridor))
+    }
     if (q) {
       list = list.filter(
         (p) =>
@@ -72,7 +68,7 @@ export default function DirectoryCanvas() {
       )
     }
     return sortByScore(list, weighting)
-  }, [category, corridor, q, weighting])
+  }, [providers, category, corridor, q, weighting])
 
   const shown = rows.slice(0, limit)
   const shownSlugs = shown.map((p) => p.slug)
@@ -82,9 +78,11 @@ export default function DirectoryCanvas() {
     <div className="relay-page relay-page--directory">
       <div className="relay-hd">
         <div>
-          <h1 className="relay-hd-title">{meta.title}</h1>
+          <h1 className="relay-hd-title">{CATEGORY_OPTIONS.find((c) => c.id === category)?.label ?? 'Directory'}</h1>
           <div className="relay-hd-sub">
-            {rows.length} providers · filtered to {corridorLabel} · scored on your weighting
+            {loading
+              ? 'Loading catalog…'
+              : `${rows.length} ${rows.length === 1 ? 'provider' : 'providers'} · filtered to ${corridorLabel} · scored on your weighting`}
           </div>
         </div>
         <div className="relay-hd-actions">
@@ -122,7 +120,7 @@ export default function DirectoryCanvas() {
           open={openMenu === 'corridor'}
           onOpen={() => setOpenMenu(openMenu === 'corridor' ? null : 'corridor')}
         >
-          {CORRIDOR_OPTIONS.map((opt) => (
+          {[{ id: 'all' as const, label: 'All regions' }, ...CORRIDOR_OPTIONS].map((opt) => (
             <button
               key={opt.id}
               type="button"
@@ -165,6 +163,13 @@ export default function DirectoryCanvas() {
               <span style={{ textAlign: 'right' }}>SCORE</span>
             </div>
             <div className="relay-rows">
+              {shown.length === 0 ? (
+                <p className="relay-empty-hint">
+                  {loading
+                    ? 'Loading providers…'
+                    : 'No providers in this filter yet. Add them in admin and they show up here.'}
+                </p>
+              ) : null}
               {shown.map((p) => {
                 const on = has(p.slug)
                 const score = computeScore(p, weighting)
@@ -198,9 +203,9 @@ export default function DirectoryCanvas() {
               })}
               <div className="relay-table-foot">
                 <span>
-                  {shown.length} of {meta.count} · sorted by score
+                  {shown.length} of {rows.length} · sorted by score
                 </span>
-                {limit < rows.length || rows.length < meta.count ? (
+                {limit < rows.length ? (
                   <button type="button" onClick={() => setLimit((n) => n + 8)}>
                     Load more ↓
                   </button>

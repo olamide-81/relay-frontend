@@ -2,7 +2,6 @@
 
 import { use } from 'react'
 import RequestCanvas from '@/components/dashboard/RequestCanvas'
-import { getProvider } from '@/lib/mock/relay'
 
 export default function IntroSlugPage({
   params,
@@ -10,6 +9,5 @@ export default function IntroSlugPage({
   params: Promise<{ slug: string }>
 }) {
   const { slug } = use(params)
-  const provider = getProvider(slug)
-  return <RequestCanvas slug={provider ? slug : 'nordbridge'} />
+  return <RequestCanvas slug={slug} />
 }

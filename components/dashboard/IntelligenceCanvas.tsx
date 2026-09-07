@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from 'react'
 import { Link } from '@/i18n/navigation'
-import { feeIndex, newsItems } from '@/lib/mock/relay'
+import { useCatalog } from '@/components/dashboard/CatalogContext'
 import type { NewsItem } from '@/lib/relay/types'
 
 type Filter = 'All' | 'Regulation' | 'Pricing'
@@ -10,6 +10,9 @@ type Filter = 'All' | 'Regulation' | 'Pricing'
 export default function IntelligenceCanvas() {
   const [filter, setFilter] = useState<Filter>('All')
   const [following, setFollowing] = useState(false)
+  const { providers } = useCatalog()
+  const newsItems: NewsItem[] = []
+  const feeIndex: number[] = []
 
   const rows = useMemo(() => {
     if (filter === 'Regulation') return newsItems.filter((n) => n.kind === 'REGULATION')
@@ -22,7 +25,11 @@ export default function IntelligenceCanvas() {
       <div className="relay-hd">
         <div>
           <h1 className="relay-hd-title">Intelligence</h1>
-          <div className="relay-hd-sub">Fee indices, regulation and market maps for 38 corridors</div>
+          <div className="relay-hd-sub">
+            {providers.length
+              ? `Fee indices and market notes for ${providers.length} listed providers`
+              : 'No market notes yet — add providers in admin'}
+          </div>
         </div>
         <div className="relay-hd-actions">
           <button
@@ -55,13 +62,17 @@ export default function IntelligenceCanvas() {
             <span>90 DAYS</span>
           </div>
           <div className="relay-index-bars" aria-hidden>
-            {feeIndex.map((h, i) => (
+            {feeIndex.length === 0 ? (
+              <p className="relay-empty-hint">No fee index until providers report pricing.</p>
+            ) : (
+              feeIndex.map((h, i) => (
               <div
                 key={i}
                 className={`relay-index-bar${i > 10 ? ' relay-index-bar--lime' : ''}`}
                 style={{ height: `${h}%` }}
               />
-            ))}
+            ))
+            )}
           </div>
           <div className="relay-index-foot">
             <div>
@@ -94,12 +105,14 @@ export default function IntelligenceCanvas() {
               </button>
             ))}
           </div>
-          <span className="relay-week-filter">Filtered to your 6 corridors</span>
+          <span className="relay-week-filter">From your catalog</span>
         </div>
         <div className="relay-rows">
-          {rows.map((n) => (
-            <NewsRow key={n.title} item={n} />
-          ))}
+          {rows.length === 0 ? (
+            <p className="relay-empty-hint">No intelligence items this week.</p>
+          ) : (
+            rows.map((n) => <NewsRow key={n.title} item={n} />)
+          )}
         </div>
       </div>
     </div>

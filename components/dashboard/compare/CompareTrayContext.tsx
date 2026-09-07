@@ -1,24 +1,22 @@
 'use client'
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
-import { getProvider } from '@/lib/mock/relay'
 import { usePlan } from '@/components/dashboard/PlanContext'
 import { useGate } from '@/components/dashboard/gate/GateContext'
 
 const TRAY_KEY = 'relay-compare-tray'
 const TRAY_EVENT = 'relay-tray-change'
 const HARD_CAP = 4
-const DEFAULT_TRAY = ['nordbridge', 'kestrel', 'avenir']
 
 function readTray(): string[] {
-  if (typeof window === 'undefined') return DEFAULT_TRAY
+  if (typeof window === 'undefined') return []
   try {
     const raw = sessionStorage.getItem(TRAY_KEY)
-    if (!raw) return DEFAULT_TRAY
+    if (!raw) return []
     const parsed = JSON.parse(raw) as string[]
-    return parsed.filter((slug) => Boolean(getProvider(slug))).slice(0, HARD_CAP)
+    return parsed.filter((slug) => typeof slug === 'string').slice(0, HARD_CAP)
   } catch {
-    return DEFAULT_TRAY
+    return []
   }
 }
 
@@ -49,15 +47,8 @@ export function CompareTrayProvider({ children }: { children: React.ReactNode })
   const [pendingSlug, setPendingSlug] = useState<string | null>(null)
 
   useEffect(() => {
-    const stored = typeof window !== 'undefined' ? sessionStorage.getItem(TRAY_KEY) : null
-    if (stored) {
-      setIds(readTray())
-      return
-    }
-    const initial = DEFAULT_TRAY.slice(0, Math.min(DEFAULT_TRAY.length, entitlements.compareSlots))
-    setIds(initial)
-    sessionStorage.setItem(TRAY_KEY, JSON.stringify(initial))
-  }, [entitlements.compareSlots])
+    setIds(readTray())
+  }, [])
 
   const persist = useCallback((next: string[]) => {
     const unique = Array.from(new Set(next)).slice(0, HARD_CAP)

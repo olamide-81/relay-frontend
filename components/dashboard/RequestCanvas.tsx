@@ -1,24 +1,65 @@
 'use client'
 
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
+import { Link } from '@/i18n/navigation'
 import { CheckBox } from '@/components/dashboard/ui/CheckBox'
 import { LiveDot } from '@/components/dashboard/ui/LiveDot'
-import { getProvider, alsoRequesting, requestCorridors, requestFields, requestSlots } from '@/lib/mock/relay'
+import { useCatalog } from '@/components/dashboard/CatalogContext'
 import { createIntro } from '@/lib/api/workspace'
 import { ApiError } from '@/lib/api/simulate'
+import type { SlotDay } from '@/lib/relay/types'
 
-const DEFAULT_CONTEXT =
-  "We're consolidating three payout providers into one rail before Q4. Priority is settlement speed into BRL and MXN, then fee. Need EMI-direct, no sponsor."
+const EMPTY_FIELDS = [
+  { label: 'MONTHLY VOLUME', value: '', hint: '' },
+  { label: 'GO-LIVE TARGET', value: '', hint: '' },
+  { label: 'PAYOUT TYPE', value: '', hint: '' },
+  { label: 'PRIORITY', value: '', hint: '' },
+]
 
-export default function RequestCanvas({ slug = 'nordbridge' }: { slug?: string }) {
-  const provider = getProvider(slug) ?? getProvider('nordbridge')!
-  const [fields, setFields] = useState(requestFields)
-  const [chips, setChips] = useState(requestCorridors)
-  const [context, setContext] = useState(DEFAULT_CONTEXT)
-  const [slot, setSlot] = useState('Mon 31 Aug|11:30')
-  const [also, setAlso] = useState(alsoRequesting.map((a) => a.slug))
+const CORRIDOR_OPTIONS = ['UK → Nigeria', 'EU → UK', 'US → Mexico', 'Intra-EU']
+
+function upcomingSlots(): SlotDay[] {
+  const days: SlotDay[] = []
+  const now = new Date()
+  for (let i = 1; i <= 3; i += 1) {
+    const d = new Date(now)
+    d.setDate(now.getDate() + i)
+    days.push({
+      day: d.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' }),
+      times: [
+        { label: '09:00', available: true },
+        { label: '11:30', available: true },
+        { label: '15:00', available: true },
+      ],
+    })
+  }
+  return days
+}
+
+export default function RequestCanvas({ slug }: { slug?: string }) {
+  const { getProvider, providers } = useCatalog()
+  const provider = slug ? getProvider(slug) : undefined
+  const others = providers.filter((p) => p.slug !== slug).slice(0, 4)
+  const slots = useMemo(() => upcomingSlots(), [])
+  const [fields, setFields] = useState(EMPTY_FIELDS)
+  const [chips, setChips] = useState(CORRIDOR_OPTIONS.map((name) => ({ name, selected: false })))
+  const [context, setContext] = useState('')
+  const [slot, setSlot] = useState('')
+  const [also, setAlso] = useState<string[]>([])
   const [sent, setSent] = useState(false)
   const [error, setError] = useState<string | null>(null)
+
+  if (!provider) {
+    return (
+      <div className="relay-page relay-page--request">
+        <h1 className="relay-hd-title">Request intro</h1>
+        <p className="relay-empty-hint">
+          Pick a provider from the <Link href="/dashboard/providers">directory</Link> first. Add catalog records in
+          admin if the list is empty.
+        </p>
+      </div>
+    )
+  }
 
   const canSend = Boolean(slot)
 
@@ -28,7 +69,7 @@ export default function RequestCanvas({ slug = 'nordbridge' }: { slug?: string }
     void createIntro({
       providerId: provider.slug,
       providerName: provider.name,
-      categoryName: 'Payouts',
+      categoryName: provider.category,
       alsoProviderIds: also,
       corridors: chips.filter((c) => c.selected).map((c) => c.name),
       fields,
@@ -46,7 +87,8 @@ export default function RequestCanvas({ slug = 'nordbridge' }: { slug?: string }
       <div>
         <h1 className="relay-hd-title">Request intro</h1>
         <div className="relay-hd-sub">
-          {provider.name} · usually replies within {provider.avgResponseHours ?? 4} hours
+          {provider.name}
+          {provider.avgResponseHours ? ` · usually replies within ${provider.avgResponseHours} hours` : ''}
         </div>
       </div>
 
@@ -64,7 +106,6 @@ export default function RequestCanvas({ slug = 'nordbridge' }: { slug?: string }
                       setFields((prev) => prev.map((row, j) => (j === i ? { ...row, value: e.target.value } : row)))
                     }
                   />
-                  {f.hint ? <span className="relay-field-hint">{f.hint}</span> : null}
                 </label>
               </div>
             ))}
@@ -105,10 +146,10 @@ export default function RequestCanvas({ slug = 'nordbridge' }: { slug?: string }
           <div className="relay-slots">
             <div className="relay-slots-head">
               <h2>Pick a slot</h2>
-              <span>Times in CET · Stockholm</span>
+              <span>Times in your local timezone</span>
             </div>
             <div className="relay-slots-days">
-              {requestSlots.map((day) => (
+              {slots.map((day) => (
                 <div key={day.day}>
                   <div className="relay-slot-day">{day.day}</div>
                   <div className="relay-slot-row">
@@ -133,28 +174,30 @@ export default function RequestCanvas({ slug = 'nordbridge' }: { slug?: string }
             </div>
             <div className="relay-slots-foot">
               <LiveDot />
-              <span>3 of your 7 open requests have slots booked</span>
+              <span>Pick a time to send the request</span>
             </div>
           </div>
 
-          <div className="relay-also">
-            <div className="relay-field-label">ALSO REQUESTING</div>
-            <div className="relay-also-list">
-              {alsoRequesting.map((a) => (
-                <div className="relay-also-row" key={a.slug}>
-                  <CheckBox
-                    checked={also.includes(a.slug)}
-                    label={`Also request ${a.name}`}
-                    onChange={(next) =>
-                      setAlso((prev) => (next ? [...prev, a.slug] : prev.filter((s) => s !== a.slug)))
-                    }
-                  />
-                  <span>{a.name}</span>
-                  <span>{a.meta}</span>
-                </div>
-              ))}
+          {others.length ? (
+            <div className="relay-also">
+              <div className="relay-field-label">ALSO REQUESTING</div>
+              <div className="relay-also-list">
+                {others.map((a) => (
+                  <div className="relay-also-row" key={a.slug}>
+                    <CheckBox
+                      checked={also.includes(a.slug)}
+                      label={`Also request ${a.name}`}
+                      onChange={(next) =>
+                        setAlso((prev) => (next ? [...prev, a.slug] : prev.filter((s) => s !== a.slug)))
+                      }
+                    />
+                    <span>{a.name}</span>
+                    <span>{a.licenceLabel}</span>
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
+          ) : null}
         </div>
       </div>
     </div>

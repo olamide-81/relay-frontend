@@ -6,6 +6,7 @@ import { getMessages, setRequestLocale } from 'next-intl/server'
 import { notFound } from 'next/navigation'
 import { routing } from '@/i18n/routing'
 import { WaitlistProvider } from '@/components/WaitlistModal'
+import { CatalogProvider } from '@/components/dashboard/CatalogContext'
 import JsonLd from '@/components/JsonLd'
 import { buildMetadata } from '@/lib/seo'
 import { organizationJsonLd, websiteJsonLd } from '@/lib/jsonld'
@@ -71,7 +72,9 @@ export default async function LocaleLayout({ children, params }: Props) {
       <body>
         <JsonLd data={[organizationJsonLd(), websiteJsonLd(locale)]} />
         <NextIntlClientProvider messages={messages}>
-          <WaitlistProvider>{children}</WaitlistProvider>
+          <WaitlistProvider>
+            <CatalogProvider>{children}</CatalogProvider>
+          </WaitlistProvider>
         </NextIntlClientProvider>
       </body>
     </html>

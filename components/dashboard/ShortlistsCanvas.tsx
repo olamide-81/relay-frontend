@@ -4,9 +4,8 @@ import { useEffect, useMemo, useState } from 'react'
 import { Link } from '@/i18n/navigation'
 import { LiveDot } from '@/components/dashboard/ui/LiveDot'
 import { formatFeeFromBps, statusLabel } from '@/lib/relay/format'
-import { getProvider, shortlists as mockLists } from '@/lib/mock/relay'
+import { useCatalog } from '@/components/dashboard/CatalogContext'
 import { chaseShortlist, createShortlist, listShortlists, type ShortlistDoc } from '@/lib/api/workspace'
-import { useLiveApi } from '@/lib/api/config'
 import type { Shortlist } from '@/lib/relay/types'
 
 function formatCreated(iso: string) {
@@ -38,14 +37,13 @@ function toUi(doc: ShortlistDoc): Shortlist {
 }
 
 export default function ShortlistsCanvas() {
-  const live = useLiveApi
-  const [lists, setLists] = useState<Shortlist[]>(live ? [] : mockLists)
-  const [activeId, setActiveId] = useState(live ? '' : mockLists[0].id)
+  const { getProvider } = useCatalog()
+  const [lists, setLists] = useState<Shortlist[]>([])
+  const [activeId, setActiveId] = useState('')
   const [toast, setToast] = useState<string | null>(null)
   const active = lists.find((l) => l.id === activeId) ?? lists[0]
 
   useEffect(() => {
-    if (!live) return
     void listShortlists()
       .then((result) => {
         const mapped = result.shortlists.map(toUi)
@@ -56,7 +54,7 @@ export default function ShortlistsCanvas() {
         setToast('Could not load shortlists from the API.')
         window.setTimeout(() => setToast(null), 2400)
       })
-  }, [live])
+  }, [])
 
   const chaseCount = useMemo(() => {
     if (!active) return 0
@@ -66,9 +64,7 @@ export default function ShortlistsCanvas() {
   }, [active])
 
   const chase = (slug?: string) => {
-    if (live && active) {
-      void chaseShortlist(active.id).catch(() => {})
-    }
+    void chaseShortlist(active.id).catch(() => {})
     const name = slug ? getProvider(slug)?.name : `${chaseCount} provider`
     setToast(`Reminder sent to ${name}.`)
     window.setTimeout(() => setToast(null), 2400)
@@ -96,36 +92,16 @@ export default function ShortlistsCanvas() {
             type="button"
             className="relay-btn relay-btn--white"
             onClick={() => {
-              if (live) {
-                void createShortlist({ name: 'New shortlist', corridor: 'UK' })
-                  .then((created) => {
-                    const ui = toUi(created)
-                    setLists((prev) => [ui, ...prev])
-                    setActiveId(ui.id)
-                  })
-                  .catch(() => {
-                    setToast('Could not create shortlist.')
-                    window.setTimeout(() => setToast(null), 2400)
-                  })
-                return
-              }
-              const id = `list-${Date.now()}`
-              setLists((prev) => [
-                ...prev,
-                {
-                  id,
-                  name: 'New shortlist',
-                  corridor: 'UK',
-                  monthlyVolumeUsd: 0,
-                  closesAt: null,
-                  createdAt: '28 Aug',
-                  entries: [],
-                  progressPct: 0,
-                  meta: '0 replied · draft',
-                  stage: 'draft',
-                },
-              ])
-              setActiveId(id)
+              void createShortlist({ name: 'New shortlist', corridor: 'UK' })
+                .then((created) => {
+                  const ui = toUi(created)
+                  setLists((prev) => [ui, ...prev])
+                  setActiveId(ui.id)
+                })
+                .catch(() => {
+                  setToast('Could not create shortlist.')
+                  window.setTimeout(() => setToast(null), 2400)
+                })
             }}
           >
             New shortlist

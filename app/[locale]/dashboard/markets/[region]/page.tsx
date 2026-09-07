@@ -6,7 +6,7 @@ import { notFound } from 'next/navigation'
 import { PageHeader } from '@/components/dashboard/PageHeader'
 import { Paywall } from '@/components/dashboard/Paywall'
 import { formatNewsDate, getMarketById } from '@/data/markets'
-import { providers } from '@/data/providers'
+import { useCatalog } from '@/components/dashboard/CatalogContext'
 import { useSession } from '@/hooks/useSession'
 
 export default function MarketDetailPage({
@@ -19,8 +19,9 @@ export default function MarketDetailPage({
   const market = getMarketById(region)
   if (!market) notFound()
 
-  const localProviders = providers.filter((p) =>
-    p.countries.some((c) => market.countryCodes.includes(c))
+  const { records } = useCatalog()
+  const localProviders = records.filter((p) =>
+    (p.countries ?? []).some((c) => market.countryCodes.includes(c))
   )
 
   return (
@@ -134,7 +135,8 @@ export default function MarketDetailPage({
                     {p.name}
                   </Link>
                   <div className="sl-meta mono">
-                    {p.categoryName} · {p.uptime.toFixed(2)}% uptime
+                    {(p.category ?? []).join(', ') || 'Provider'}
+                    {p.uptime != null ? ` · ${p.uptime.toFixed(2)}% uptime` : ''}
                   </div>
                 </div>
               </li>

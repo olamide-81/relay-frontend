@@ -10,12 +10,11 @@ import { GatedPanel } from '@/components/dashboard/gate/GatedPanel'
 import { LockIcon } from '@/components/dashboard/gate/ProBadge'
 import { computeScore } from '@/lib/relay/score'
 import { formatFeeFromBps } from '@/lib/relay/format'
-import { getProvider } from '@/lib/mock/relay'
+import { useCatalog } from '@/components/dashboard/CatalogContext'
 import {
   keyNumbers,
   lockedLines,
   reportChart,
-  reportProviderSlugs,
   reportStats,
   reportToc,
 } from '@/lib/mock/addendum'
@@ -25,10 +24,11 @@ export default function IntelligenceReportCanvas() {
   const { setAll } = useCompareTray()
   const { isPro, entitlements } = usePlan()
   const { openGate } = useGate()
+  const { providers } = useCatalog()
   const [saved, setSaved] = useState(false)
   const [active, setActive] = useState('headline')
-  const named = reportProviderSlugs.map((slug) => getProvider(slug)).filter(Boolean)
-  const compareIds = reportProviderSlugs.slice(0, 4)
+  const named = providers.slice(0, 4)
+  const compareIds = named.map((p) => p.slug)
 
   const onToc = (id: string, locked: boolean) => {
     if (locked && !isPro) {

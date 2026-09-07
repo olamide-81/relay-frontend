@@ -18,44 +18,7 @@ export type NotificationList = {
   notifications: NotificationItem[]
 }
 
-const MOCK: NotificationItem[] = [
-  {
-    id: 'n1',
-    kind: 'pricing',
-    title: 'Kestrel Pay returned pricing',
-    body: '0.24% on EU→LATAM — 22 bps under Avenir.',
-    href: '/dashboard/compare?ids=nordbridge,kestrel,avenir,solano',
-    read: false,
-    createdAt: new Date(Date.now() - 14 * 60 * 1000).toISOString(),
-  },
-  {
-    id: 'n2',
-    kind: 'shortlist',
-    title: 'Solano pricing is overdue',
-    body: 'Chase is due today on Q3 payout RFP.',
-    href: '/dashboard/shortlists',
-    read: false,
-    createdAt: new Date(Date.now() - 3 * 60 * 60 * 1000).toISOString(),
-  },
-  {
-    id: 'n3',
-    kind: 'intro',
-    title: 'Nordbridge usually replies in 4 hours',
-    body: 'Your intro request is pending.',
-    href: '/dashboard/intros/nordbridge',
-    read: false,
-    createdAt: new Date(Date.now() - 5 * 60 * 60 * 1000).toISOString(),
-  },
-  {
-    id: 'n4',
-    kind: 'market',
-    title: 'Median payout fee moved +3 bps',
-    body: '30-day index across 38 corridors.',
-    href: '/dashboard/intelligence',
-    read: true,
-    createdAt: new Date(Date.now() - 26 * 60 * 60 * 1000).toISOString(),
-  },
-]
+const MOCK: NotificationItem[] = []
 
 let localStore: NotificationItem[] | null = null
 

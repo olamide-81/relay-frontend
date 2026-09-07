@@ -8,16 +8,7 @@ import { Sparkline } from '@/components/dashboard/ui/Sparkline'
 import { EASE } from '@/components/heroes/ease'
 import { useWaitlist } from '@/components/WaitlistModal'
 import RelayMark from '@/components/RelayMark'
-import {
-  activityFeed,
-  categoryCards,
-  feeIndex,
-  getProvider,
-  hqShort,
-  newsItems,
-  providers,
-  shortlists,
-} from '@/lib/mock/relay'
+import { useCatalog } from '@/components/dashboard/CatalogContext'
 import { formatFeeFromBps, statusLabel } from '@/lib/relay/format'
 import { computeScore, DEFAULT_WEIGHTING } from '@/lib/relay/score'
 import type { Provider } from '@/lib/relay/types'
@@ -26,11 +17,6 @@ import '@/components/dashboard/relay.css'
 export type IntelSceneId = 'discover' | 'research' | 'act' | 'signals'
 
 const PILLS = ['Overview', 'Directory', 'Compare', 'Shortlists', 'Intelligence'] as const
-const RFP = shortlists[0]
-const DIR_ROWS = providers.slice(0, 4)
-const COMPARE_SLUGS = ['nordbridge', 'kestrel'] as const
-const CATS = categoryCards.slice(0, 2)
-const DEFAULT_CHECKED = new Set(['nordbridge', 'kestrel', 'avenir'])
 
 const CHROME: Record<
   IntelSceneId,
@@ -40,25 +26,25 @@ const CHROME: Record<
     url: 'app.relay · directory',
     pill: 'Directory',
     title: 'Payouts',
-    sub: '42 providers · filtered to EU · scored on your weighting',
+    sub: 'Live catalog · scored on your weighting',
   },
   research: {
     url: 'app.relay · compare',
     pill: 'Compare',
     title: 'Compare',
-    sub: 'Q3 payout RFP · EU→LATAM · USD 1M monthly volume',
+    sub: 'Add two providers from directory to compare',
   },
   act: {
     url: 'app.relay · shortlists',
     pill: 'Shortlists',
     title: 'Shortlists',
-    sub: '3 lists · Q3 payout is the live one',
+    sub: 'Create a shortlist from the directory',
   },
   signals: {
     url: 'app.relay · intelligence',
     pill: 'Intelligence',
     title: 'Intelligence',
-    sub: 'Fee indices, regulation and market maps for 38 corridors',
+    sub: 'Market notes once the catalog has providers',
   },
 }
 
@@ -244,7 +230,10 @@ function SceneActions({ scene }: { scene: IntelSceneId }) {
 
 function DiscoverScene() {
   const { openWaitlist } = useWaitlist()
-  const [checked, setChecked] = useState<Set<string>>(new Set(['nordbridge', 'kestrel']))
+  const { providers, categoryCards } = useCatalog()
+  const cats = categoryCards.slice(0, 2)
+  const dirRows = providers.slice(0, 4)
+  const [checked, setChecked] = useState<Set<string>>(new Set())
 
   function toggle(slug: string, next: boolean) {
     setChecked((prev) => {
@@ -258,7 +247,7 @@ function DiscoverScene() {
   return (
     <>
       <div className="relay-cats">
-        {CATS.map((c) => (
+        {cats.map((c) => (
           <button type="button" key={c.id} className="relay-cat" onClick={openWaitlist}>
             <div className="relay-cat-top">
               <div>
@@ -302,7 +291,10 @@ function DiscoverScene() {
           <span style={{ textAlign: 'right' }}>SCORE</span>
         </div>
         <div className="relay-rows">
-          {DIR_ROWS.map((p) => {
+          {dirRows.length === 0 ? (
+            <p className="relay-empty-hint">No providers in the catalog yet.</p>
+          ) : (
+            dirRows.map((p) => {
             const on = checked.has(p.slug)
             const score = computeScore(p, DEFAULT_WEIGHTING)
             return (
@@ -320,7 +312,8 @@ function DiscoverScene() {
                 <span className="relay-dir-score">{score}</span>
               </div>
             )
-          })}
+          })
+          )}
         </div>
       </div>
     </>
@@ -329,10 +322,14 @@ function DiscoverScene() {
 
 function ResearchScene() {
   const { openWaitlist } = useWaitlist()
-  const cols = COMPARE_SLUGS.map(getProvider).filter(Boolean) as Provider[]
+  const { providers } = useCatalog()
+  const cols = providers.slice(0, 2) as Provider[]
 
   return (
     <div className="relay-matrix intel-matrix">
+      {cols.length < 2 ? (
+        <p className="relay-empty-hint">Add two providers in admin to preview compare.</p>
+      ) : null}
       <div className="relay-matrix-head">
         <div className="relay-matrix-crit">CRITERION</div>
         {cols.map((p, i) => (
@@ -376,17 +373,20 @@ function ResearchScene() {
 
 function ActScene() {
   const { openWaitlist } = useWaitlist()
-  const [checked, setChecked] = useState<Set<string>>(DEFAULT_CHECKED)
+  const { providers } = useCatalog()
+  const [checked, setChecked] = useState<Set<string>>(new Set())
+  const rows = providers.slice(0, 4)
 
   return (
     <div className="relay-panel">
       <div className="relay-rfp-head">
         <div>
           <div className="relay-rfp-title">
-            <span>Q3 payout RFP</span>
-            <span className="relay-badge relay-badge--warn">CLOSES IN 6D</span>
+            <span>Shortlists</span>
           </div>
-          <div className="relay-rfp-sub">4 shortlisted · 2 replied · 1 missing pricing</div>
+          <div className="relay-rfp-sub">
+            {rows.length ? `${rows.length} from the catalog` : 'Empty until providers are added'}
+          </div>
         </div>
         <button type="button" className="relay-btn relay-btn--white relay-btn--sm" onClick={openWaitlist}>
           Request intros
@@ -400,17 +400,12 @@ function ActScene() {
         <span style={{ textAlign: 'right' }}>SCORE</span>
       </div>
       <div className="relay-rows">
-        {RFP.entries.map((entry) => {
-          const p = getProvider(entry.slug)
-          if (!p) return null
+        {rows.length === 0 ? (
+          <p className="relay-empty-hint">No shortlist rows yet.</p>
+        ) : (
+          rows.map((p) => {
           const score = computeScore(p, DEFAULT_WEIGHTING)
           const on = checked.has(p.slug)
-          const stFg =
-            entry.status === 'replied'
-              ? 'oklch(.85 .15 130)'
-              : entry.status === 'no_pricing'
-                ? 'oklch(.86 .13 80)'
-                : 'rgba(255,255,255,.5)'
           return (
             <div key={p.slug} className={`relay-row relay-row--rfp${on ? ' relay-row--on' : ''}`}>
               <CheckBox
@@ -427,13 +422,13 @@ function ActScene() {
               />
               <div>
                 <div className="relay-name">{p.name}</div>
-                <div className="relay-meta">{hqShort[p.slug] ?? `${p.hq.split(',')[0]} · ${p.licenceLabel}`}</div>
+                <div className="relay-meta">{`${p.hq} · ${p.licenceLabel}`}</div>
               </div>
-              <span className="relay-fee">{formatFeeFromBps(entry.feeBps)}</span>
+              <span className="relay-fee">{formatFeeFromBps(p.feeFromBps || null)}</span>
               <div className="relay-status">
-                <span className="relay-status-dot" style={{ background: stFg }} />
-                <span className="relay-status-label" style={{ color: stFg }}>
-                  {statusLabel(entry.status, entry.statusAt)}
+                <span className="relay-status-dot" style={{ background: 'rgba(255,255,255,.5)' }} />
+                <span className="relay-status-label" style={{ color: 'rgba(255,255,255,.5)' }}>
+                  {statusLabel('waiting', 'catalog')}
                 </span>
               </div>
               <span className="relay-score" style={{ color: score >= 80 ? '#fff' : 'rgba(255,255,255,.75)' }}>
@@ -441,10 +436,11 @@ function ActScene() {
               </span>
             </div>
           )
-        })}
+        })
+        )}
         <div className="relay-rfp-foot">
           <LiveDot />
-          <p>Kestrel came back 22bps under Avenir on EU→LATAM, 14 minutes ago.</p>
+          <p>Catalog is live. Add providers in admin and they appear here.</p>
           <button type="button" className="relay-link" onClick={openWaitlist}>
             See the delta →
           </button>
@@ -456,13 +452,12 @@ function ActScene() {
 
 function SignalsScene() {
   const { openWaitlist } = useWaitlist()
-  const featured = newsItems[0]
 
   return (
     <>
       <div className="relay-intel-top intel-signals-top">
         <div className="relay-featured">
-          <div className="relay-featured-kicker">MARKET MAP · 28 MIN READ</div>
+          <div className="relay-featured-kicker">MARKET MAP</div>
           <h2>
             The world moves $35 trillion a day. Fintech handles a tenth of it — and the payout layer compounds
             fastest.
@@ -471,33 +466,15 @@ function SignalsScene() {
             <button type="button" className="relay-featured-btn" onClick={openWaitlist}>
               Read the map
             </button>
-            <span className="relay-featured-meta">Published 21 Aug · covers 14 markets</span>
+            <span className="relay-featured-meta">Research note</span>
           </div>
         </div>
         <div className="relay-index">
           <div className="relay-index-head">
             Fee index · your corridors
-            <span>90 DAYS</span>
+            <span>EMPTY</span>
           </div>
-          <div className="relay-index-bars" aria-hidden>
-            {feeIndex.map((h, i) => (
-              <div
-                key={i}
-                className={`relay-index-bar${i > 10 ? ' relay-index-bar--lime' : ''}`}
-                style={{ height: `${h}%` }}
-              />
-            ))}
-          </div>
-          <div className="relay-index-foot">
-            <div>
-              <strong>+11 bps</strong>
-              <span>EU→LATAM</span>
-            </div>
-            <div>
-              <strong>−4 bps</strong>
-              <span>US→APAC</span>
-            </div>
-          </div>
+          <p className="relay-empty-hint">No fee history until providers are listed.</p>
         </div>
       </div>
 
@@ -509,42 +486,31 @@ function SignalsScene() {
               <LiveDot size="sm" />
               LIVE
             </span>
-            <span className="relay-activity-date">Fri 28 Aug</span>
           </div>
           <div className="relay-rows">
-            {activityFeed.slice(0, 3).map((a) => (
-              <div className="relay-feed-row" key={a.at}>
-                <span className="relay-feed-time">{a.at}</span>
-                <div>
-                  <div className="relay-feed-text">{a.text}</div>
-                  <div className="relay-feed-meta">{a.meta}</div>
-                </div>
-              </div>
-            ))}
+            <p className="relay-empty-hint">No activity yet.</p>
           </div>
         </div>
         <div className="relay-intel-mini">
           <div className="relay-intel-kicker">
-            <span>INTELLIGENCE · {featured.kind}</span>
-            <span>{featured.when}</span>
+            <span>INTELLIGENCE · MARKET MAPS</span>
           </div>
           <div className="relay-intel-body">
             <div className="relay-intel-stat">
-              <strong>10.4%</strong>
+              <strong>—</strong>
               <span>
-                fintech share
+                live catalog
                 <br />
-                of daily flow
+                from admin
               </span>
             </div>
             <div className="relay-intel-rule" />
             <div>
-              <div className="relay-intel-hook">{featured.title}</div>
+              <div className="relay-intel-hook">Add providers in admin to populate intelligence and compare.</div>
               <div className="relay-intel-cta">
                 <button type="button" className="relay-link" onClick={openWaitlist}>
-                  Read the map →
+                  Join waitlist →
                 </button>
-                <span>2 more this week</span>
               </div>
             </div>
           </div>

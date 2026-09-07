@@ -1,19 +1,27 @@
 'use client'
 
+import { useEffect } from 'react'
 import { Link } from '@/i18n/navigation'
 import { useCompareTray } from '@/components/dashboard/compare/CompareTrayContext'
 import { useWeighting } from '@/components/dashboard/WeightingContext'
 import { usePlan } from '@/components/dashboard/PlanContext'
 import { computeScore } from '@/lib/relay/score'
-import { getProvider } from '@/lib/mock/relay'
+import { useCatalog } from '@/components/dashboard/CatalogContext'
 
 export function CompareTray() {
-  const { ids, remove, clear, pendingSlug, setPendingSlug, replace } = useCompareTray()
+  const { ids, remove, clear, pendingSlug, setPendingSlug, replace, setAll } = useCompareTray()
   const { weighting } = useWeighting()
   const { entitlements } = usePlan()
+  const { getProvider, loading } = useCatalog()
   const cap = entitlements.compareSlots
   const slotsLeft = Math.max(0, cap - ids.length)
   const members = ids.map((slug) => getProvider(slug)).filter(Boolean)
+
+  useEffect(() => {
+    if (loading) return
+    const next = ids.filter((id) => Boolean(getProvider(id)))
+    if (next.length !== ids.length) setAll(next)
+  }, [loading, ids, getProvider, setAll])
 
   if (ids.length === 0 && !pendingSlug) return null
 

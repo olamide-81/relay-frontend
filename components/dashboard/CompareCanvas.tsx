@@ -6,7 +6,8 @@ import { Link } from '@/i18n/navigation'
 import { useWeighting } from '@/components/dashboard/WeightingContext'
 import { computeScore } from '@/lib/relay/score'
 import { formatFeeFromBps, formatDurationMinutes } from '@/lib/relay/format'
-import { compareDefaultSlugs, getProvider } from '@/lib/mock/relay'
+import { useCatalog } from '@/components/dashboard/CatalogContext'
+import { useCompareTray } from '@/components/dashboard/compare/CompareTrayContext'
 import type { Provider } from '@/lib/relay/types'
 
 type Kind = 'min' | 'max' | 'prefer'
@@ -65,12 +66,13 @@ function bestFlags(cols: Provider[], criterion: Criterion): boolean[] {
 export default function CompareCanvas() {
   const searchParams = useSearchParams()
   const { weighting } = useWeighting()
+  const { getProvider } = useCatalog()
+  const { ids } = useCompareTray()
   const cols = useMemo(() => {
     const raw = searchParams.get('ids')
-    const slugs = raw ? raw.split(',').filter(Boolean) : [...compareDefaultSlugs]
-    const found = slugs.map(getProvider).filter(Boolean) as Provider[]
-    return (found.length ? found : compareDefaultSlugs.map(getProvider).filter(Boolean) as Provider[]).slice(0, 4)
-  }, [searchParams])
+    const slugs = raw ? raw.split(',').filter(Boolean) : ids
+    return slugs.map(getProvider).filter(Boolean).slice(0, 4) as Provider[]
+  }, [searchParams, ids, getProvider])
 
   const grid = {
     gridTemplateColumns: `minmax(168px, 1.05fr) repeat(${Math.max(cols.length, 1)}, minmax(148px, 1fr))`,
@@ -81,7 +83,9 @@ export default function CompareCanvas() {
       <div className="relay-hd">
         <div>
           <h1 className="relay-hd-title">Compare</h1>
-          <div className="relay-hd-sub">Q3 payout RFP · EU→LATAM · USD 1M monthly volume</div>
+          <div className="relay-hd-sub">
+            {cols.length ? `${cols.length} in this set` : 'Add providers from the directory to compare'}
+          </div>
         </div>
         <div className="relay-hd-actions">
           <button type="button" className="relay-btn relay-btn--outline">
@@ -93,6 +97,9 @@ export default function CompareCanvas() {
         </div>
       </div>
 
+      {cols.length < 2 ? (
+        <p className="relay-empty-hint">Select at least two providers in Directory to compare fees, settlement and licences.</p>
+      ) : (
       <div className="relay-matrix">
         <div className="relay-matrix-head" style={grid}>
           <div className="relay-matrix-crit">CRITERION</div>
@@ -141,6 +148,7 @@ export default function CompareCanvas() {
           ))}
         </div>
       </div>
+      )}
     </div>
   )
 }
