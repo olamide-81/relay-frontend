@@ -43,6 +43,7 @@ function userFrom(input: {
   role?: UserRole
   provider: 'google' | 'email'
   subscriptionStatus?: SessionUser['subscriptionStatus']
+  avatarUrl?: string | null
 }): SessionUser {
   const { firstName, lastName } = splitName(input.fullName)
   const demoPro = input.email.toLowerCase() === 'pro@relay.dev'
@@ -62,6 +63,7 @@ function userFrom(input: {
     emailVerified: input.provider === 'google',
     provider: input.provider,
     initials: initialsFromName(input.fullName),
+    avatarUrl: input.avatarUrl || null,
   }
 }
 
@@ -87,6 +89,7 @@ type ApiAuthUser = {
   currentPeriodEnd?: string | Date | null
   emailVerified?: boolean
   authProvider?: 'email' | 'google'
+  avatarUrl?: string | null
 }
 
 function sessionFromApi(accessToken: string, user: ApiAuthUser): Session {
@@ -97,6 +100,7 @@ function sessionFromApi(accessToken: string, user: ApiAuthUser): Session {
     role: user.userRole ?? 'founder',
     provider: user.authProvider === 'google' ? 'google' : 'email',
     subscriptionStatus: user.subscriptionStatus,
+    avatarUrl: user.avatarUrl,
   })
   mapped.id = String(user.id)
   mapped.emailVerified = Boolean(user.emailVerified)
@@ -199,13 +203,16 @@ export async function register(input: RegisterInput): Promise<Session> {
 }
 
 /** Start Google OAuth. Live API redirects the browser to Google. */
-export async function loginWithGoogle(locale = 'en'): Promise<Session> {
+export async function loginWithGoogle(
+  locale = 'en',
+  intent: 'signin' | 'signup' = 'signin'
+): Promise<Session> {
   if (useLiveApi) {
     if (typeof window === 'undefined') {
       throw new ApiError(500, 'Google sign-in is only available in the browser')
     }
     const next = '/dashboard'
-    const url = `${apiBaseUrl}/api/auth/google?locale=${encodeURIComponent(locale)}&next=${encodeURIComponent(next)}`
+    const url = `${apiBaseUrl}/api/auth/google?locale=${encodeURIComponent(locale)}&next=${encodeURIComponent(next)}&intent=${intent}`
     window.location.assign(url)
     return new Promise<Session>(() => {})
   }
@@ -234,6 +241,7 @@ export const googleAuthErrorMessage: Record<string, string> = {
   google_denied: 'Google sign-in was cancelled.',
   google_failed: 'Google sign-in failed. Try again.',
   google_not_configured: 'Google sign-in is not configured on the API.',
+  google_no_account: 'No Relay account for this Google login yet.',
   access_denied: 'Google sign-in was cancelled.',
 }
 

@@ -7,26 +7,34 @@ import { isSubscribed } from '@/lib/session'
 import { useSession } from '@/hooks/useSession'
 import RelayMark from '@/components/RelayMark'
 import NotificationBell from '@/components/dashboard/chrome/NotificationBell'
+import { useWorkspaceCounts } from '@/components/dashboard/chrome/WorkspaceCounts'
 import type { TopBarSection } from '@/lib/relay/types'
 
-const NAV: { name: TopBarSection; href: string; badge?: string; lime?: boolean }[] = [
+const NAV: { name: TopBarSection; href: string; countKey?: 'shortlists' | 'intros'; lime?: boolean }[] = [
   { name: 'Overview', href: '/dashboard' },
   { name: 'Directory', href: '/dashboard/providers' },
   { name: 'Compare', href: '/dashboard/compare' },
-  { name: 'Shortlists', href: '/dashboard/shortlists', badge: '12' },
-  { name: 'Requests', href: '/dashboard/intros', badge: '3', lime: true },
+  { name: 'Shortlists', href: '/dashboard/shortlists', countKey: 'shortlists' },
+  { name: 'Requests', href: '/dashboard/intros', countKey: 'intros', lime: true },
 ]
 
 export default function TopBar({ active }: { active: TopBarSection }) {
   const router = useRouter()
   const { user } = useSession()
+  const counts = useWorkspaceCounts()
   const [query, setQuery] = useState('')
   const [profileOpen, setProfileOpen] = useState(false)
+  const [photoFailed, setPhotoFailed] = useState(false)
   const searchRef = useRef<HTMLInputElement>(null)
   const profileRef = useRef<HTMLDivElement>(null)
   const subscribed = isSubscribed(user)
-  const company = user?.company || 'Northwind Co.'
-  const initial = (user?.initials || 'D').slice(0, 1)
+  const displayName = user?.fullName?.trim() || user?.email || 'Account'
+  const initial = (user?.initials || displayName).slice(0, 1).toUpperCase()
+  const photo = user?.avatarUrl && !photoFailed ? user.avatarUrl : null
+
+  useEffect(() => {
+    setPhotoFailed(false)
+  }, [user?.avatarUrl])
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -55,6 +63,11 @@ export default function TopBar({ active }: { active: TopBarSection }) {
     router.push(q ? `/dashboard/providers?q=${encodeURIComponent(q)}` : '/dashboard/providers')
   }
 
+  const badgeFor = (key?: 'shortlists' | 'intros') => {
+    if (!key) return 0
+    return key === 'shortlists' ? counts.shortlists : counts.intros
+  }
+
   return (
     <header className="relay-topbar">
       <Link href="/dashboard" className="relay-logo">
@@ -64,6 +77,7 @@ export default function TopBar({ active }: { active: TopBarSection }) {
       <nav className="relay-pills" aria-label="Primary">
         {NAV.map((item) => {
           const on = item.name === active
+          const badge = badgeFor(item.countKey)
           return (
             <Link
               key={item.name}
@@ -72,9 +86,9 @@ export default function TopBar({ active }: { active: TopBarSection }) {
               aria-current={on ? 'page' : undefined}
             >
               {item.name}
-              {item.badge ? (
+              {badge > 0 ? (
                 <span className={`relay-pill-badge${item.lime ? ' relay-pill-badge--lime' : ''}`}>
-                  {item.badge}
+                  {badge}
                 </span>
               ) : null}
             </Link>
@@ -114,8 +128,14 @@ export default function TopBar({ active }: { active: TopBarSection }) {
             aria-expanded={profileOpen}
             onClick={() => setProfileOpen((o) => !o)}
           >
-            <span className="relay-avatar">{initial}</span>
-            <span className="relay-account-label">{company}</span>
+            <span className="relay-avatar">
+              {photo ? (
+                <img src={photo} alt="" referrerPolicy="no-referrer" onError={() => setPhotoFailed(true)} />
+              ) : (
+                initial
+              )}
+            </span>
+            <span className="relay-account-label">{displayName}</span>
           </button>
           {profileOpen && (
             <div className="relay-menu">

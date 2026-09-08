@@ -29,7 +29,7 @@ export default function SignUpPage() {
     setError(null)
     setGoogleLoading(true)
     try {
-      await loginWithGoogle(locale)
+      await loginWithGoogle(locale, 'signup')
       goDashboard()
     } catch (e) {
       setError(e instanceof ApiError ? e.message : 'Could not continue with Google')

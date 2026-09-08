@@ -1,11 +1,12 @@
 'use client'
 
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Link } from '@/i18n/navigation'
 import { CheckBox } from '@/components/dashboard/ui/CheckBox'
 import { LiveDot } from '@/components/dashboard/ui/LiveDot'
+import { EmptyState } from '@/components/dashboard/ui/EmptyState'
 import { useCatalog } from '@/components/dashboard/CatalogContext'
-import { createIntro } from '@/lib/api/workspace'
+import { createIntro, listIntros, type IntroDoc } from '@/lib/api/workspace'
 import { ApiError } from '@/lib/api/simulate'
 import type { SlotDay } from '@/lib/relay/types'
 
@@ -48,15 +49,100 @@ export default function RequestCanvas({ slug }: { slug?: string }) {
   const [also, setAlso] = useState<string[]>([])
   const [sent, setSent] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [inbox, setInbox] = useState<IntroDoc[] | null>(null)
 
-  if (!provider) {
+  useEffect(() => {
+    if (slug) return
+    void listIntros()
+      .then((result) => setInbox(result.intros ?? []))
+      .catch(() => setInbox([]))
+  }, [slug])
+
+  if (slug && !provider) {
     return (
       <div className="relay-page relay-page--request">
-        <h1 className="relay-hd-title">Request intro</h1>
-        <p className="relay-empty-hint">
-          Pick a provider from the <Link href="/dashboard/providers">directory</Link> first. Add catalog records in
-          admin if the list is empty.
-        </p>
+        <div className="relay-panel relay-panel--20">
+          <EmptyState
+            kind="directory"
+            title="Provider not in the catalog"
+            body="This intro target is missing. Open Directory and pick a listed provider to request an intro."
+            actionLabel="Open directory"
+            actionHref="/dashboard/providers"
+          />
+        </div>
+      </div>
+    )
+  }
+
+  if (!provider) {
+    const rows = inbox ?? []
+    return (
+      <div className="relay-page relay-page--request">
+        <div className="relay-hd">
+          <div>
+            <h1 className="relay-hd-title">Requests</h1>
+            <div className="relay-hd-sub">
+              {inbox === null
+                ? 'Loading your intro requests'
+                : rows.length
+                  ? `${rows.length} intro request${rows.length === 1 ? '' : 's'}`
+                  : 'Intros start from a provider in Directory'}
+            </div>
+          </div>
+          <div className="relay-hd-actions">
+            <Link href="/dashboard/providers" className="relay-btn relay-btn--white">
+              Request intro
+            </Link>
+          </div>
+        </div>
+        {inbox === null ? null : rows.length === 0 ? (
+          <div className="relay-panel relay-panel--20">
+            <EmptyState
+              kind="request"
+              title="No intro requests yet"
+              body="Pick a provider from Directory, choose a slot, and Relay will send a private intro. Contact details stay hidden until they accept."
+              actionLabel="Open directory"
+              actionHref="/dashboard/providers"
+            />
+          </div>
+        ) : (
+          <div className="relay-panel relay-panel--20">
+            <div className="relay-th relay-th--rfp2">
+              <span>PROVIDER</span>
+              <span>SLOT</span>
+              <span>STATUS</span>
+              <span>CORRIDORS</span>
+              <span style={{ textAlign: 'right' }}>SENT</span>
+            </div>
+            <div className="relay-rows">
+              {rows.map((row) => {
+                const p = getProvider(row.providerId)
+                const name = p?.name ?? row.providerName ?? row.providerId
+                return (
+                  <Link
+                    key={row.id}
+                    href={`/dashboard/intros/${row.providerId}`}
+                    className="relay-row relay-row--rfp2"
+                  >
+                    <div>
+                      <div className="relay-prov-name">{name}</div>
+                      <div className="relay-meta">{row.categoryName || p?.licenceLabel || 'Intro request'}</div>
+                    </div>
+                    <span className="relay-settle">{row.slot || '—'}</span>
+                    <div className="relay-status">
+                      <span className="relay-status-dot" style={{ background: 'oklch(.85 .15 130)' }} />
+                      <span className="relay-status-label">{row.status.replace(/_/g, ' ')}</span>
+                    </div>
+                    <span className="relay-meta">{row.corridors?.length ? row.corridors.join(', ') : '—'}</span>
+                    <span className="relay-score">
+                      {new Date(row.createdAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}
+                    </span>
+                  </Link>
+                )
+              })}
+            </div>
+          </div>
+        )}
       </div>
     )
   }

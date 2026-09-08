@@ -3,6 +3,7 @@
 import { useMemo, useState } from 'react'
 import { Link } from '@/i18n/navigation'
 import { useCatalog } from '@/components/dashboard/CatalogContext'
+import { EmptyState } from '@/components/dashboard/ui/EmptyState'
 import type { NewsItem } from '@/lib/relay/types'
 
 type Filter = 'All' | 'Regulation' | 'Pricing'
@@ -63,7 +64,12 @@ export default function IntelligenceCanvas() {
           </div>
           <div className="relay-index-bars" aria-hidden>
             {feeIndex.length === 0 ? (
-              <p className="relay-empty-hint">No fee index until providers report pricing.</p>
+              <EmptyState
+                kind="intel"
+                compact
+                title="Fee index is quiet"
+                body="Corridor fee history fills in as listed providers report pricing."
+              />
             ) : (
               feeIndex.map((h, i) => (
               <div
@@ -109,7 +115,12 @@ export default function IntelligenceCanvas() {
         </div>
         <div className="relay-rows">
           {rows.length === 0 ? (
-            <p className="relay-empty-hint">No intelligence items this week.</p>
+            <EmptyState
+              kind="intel"
+              compact
+              title="No notes this week"
+              body="Regulation and pricing items will appear here as the catalog moves. Follow corridors to get a tighter feed."
+            />
           ) : (
             rows.map((n) => <NewsRow key={n.title} item={n} />)
           )}

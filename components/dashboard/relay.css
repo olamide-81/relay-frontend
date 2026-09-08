@@ -67,6 +67,13 @@
     radial-gradient(700px 480px at 104% 44%, rgba(255, 255, 255, 0.045), transparent 70%);
 }
 
+.relay-paywall-blur {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
 .relay a {
   text-decoration: none;
 }
@@ -438,6 +445,15 @@ a.relay-pill.relay-pill--on {
   justify-content: center;
   font-weight: 500;
   font-size: 12.5px;
+  overflow: hidden;
+  flex: none;
+}
+
+.relay-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 .relay-account-label {
@@ -445,6 +461,9 @@ a.relay-pill.relay-pill--on {
   font-size: 12.5px;
   color: rgba(255, 255, 255, 0.82);
   white-space: nowrap;
+  max-width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .relay-menu {
@@ -508,6 +527,7 @@ a.relay-pill.relay-pill--on {
 .relay-rail {
   width: 260px;
   flex: none;
+  align-self: stretch;
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -1237,6 +1257,10 @@ button.relay-btn--lime {
   background: rgba(255, 255, 255, 0.04);
 }
 
+a.relay-row {
+  color: inherit;
+}
+
 .relay-row--on {
   background: rgba(255, 255, 255, 0.03);
 }
@@ -1669,6 +1693,60 @@ button.relay-btn--lime {
   margin: 18px 20px;
   color: var(--text-muted);
   font-size: 14px;
+}
+
+.relay-empty {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 48px 32px 56px;
+  min-height: 280px;
+}
+
+.relay-empty--compact {
+  min-height: 240px;
+  padding: 36px 28px 44px;
+}
+
+.relay-empty-art {
+  width: 112px;
+  height: 112px;
+  margin-bottom: 8px;
+}
+
+.relay-empty-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.relay-empty-title {
+  margin: 0;
+  font-weight: 500;
+  font-size: 16.5px;
+  letter-spacing: -0.02em;
+  color: #f5f5f3;
+}
+
+.relay-empty-body {
+  margin: 8px 0 0;
+  max-width: 320px;
+  font-weight: 500;
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.48);
+}
+
+.relay-empty-action {
+  margin-top: 18px;
+}
+
+.relay-sl-empty {
+  grid-column: 1 / -1;
+  min-height: 420px;
 }
 
 .relay-dir-cards {

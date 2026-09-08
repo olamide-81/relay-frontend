@@ -16,11 +16,15 @@ export default function SignInPage() {
   const [loading, setLoading] = useState(false)
   const [googleLoading, setGoogleLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [errorCode, setErrorCode] = useState<string | null>(null)
   const busy = loading || googleLoading
 
   useEffect(() => {
     const code = new URLSearchParams(window.location.search).get('error')
-    if (code) setError(googleAuthErrorMessage[code] ?? 'Google sign-in failed. Try again.')
+    if (code) {
+      setErrorCode(code)
+      setError(googleAuthErrorMessage[code] ?? 'Google sign-in failed. Try again.')
+    }
   }, [])
 
   const goDashboard = () => router.push('/dashboard')
@@ -29,7 +33,7 @@ export default function SignInPage() {
     setError(null)
     setGoogleLoading(true)
     try {
-      await loginWithGoogle(locale)
+      await loginWithGoogle(locale, 'signin')
       goDashboard()
     } catch (e) {
       setError(e instanceof ApiError ? e.message : 'Could not sign in with Google')
@@ -73,7 +77,17 @@ export default function SignInPage() {
 
       <div className="auth-divider">{tAuth('or')}</div>
 
-      {error && <p className="auth-error">{error}</p>}
+      {error && (
+        <p className="auth-error">
+          {error}
+          {errorCode === 'google_no_account' ? (
+            <>
+              {' '}
+              <Link href="/signup">Create an account</Link>.
+            </>
+          ) : null}
+        </p>
+      )}
 
       <form className="auth-form" onSubmit={onSubmit}>
         <AuthField

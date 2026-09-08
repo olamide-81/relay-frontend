@@ -1,4 +1,4 @@
-import { submitIntroRequest, type IntroRequest } from '../workspace'
+import { submitIntroRequest, type IntroRequest, WORKSPACE_EVENT } from '../workspace'
 import { api } from './client'
 import { useLiveApi } from './config'
 
@@ -63,20 +63,30 @@ export type CompareResult = {
   weights?: WorkspaceWeighting
 }
 
+function notifyWorkspace() {
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new Event(WORKSPACE_EVENT))
+  }
+}
+
 /** POST /api/intros — Request intro / Send request */
 export async function createIntro(input: CreateIntroInput): Promise<IntroDoc> {
   if (useLiveApi) {
-    return api.post<IntroDoc>('/api/intros', input)
+    const created = await api.post<IntroDoc>('/api/intros', input)
+    notifyWorkspace()
+    return created
   }
   const note = [input.context, input.slot ? `Slot: ${input.slot}` : '', input.note]
     .filter(Boolean)
     .join('\n')
-  return submitIntroRequest({
+  const row = submitIntroRequest({
     providerId: input.providerId,
     providerName: input.providerName ?? input.providerId,
     categoryName: input.categoryName ?? 'Payouts',
     note,
   })
+  notifyWorkspace()
+  return row
 }
 
 /** GET /api/intros */
@@ -94,9 +104,13 @@ export async function chaseIntro(id: string): Promise<{ ok: boolean }> {
 
 /** POST /api/shortlists — New shortlist */
 export async function createShortlist(input: CreateShortlistInput): Promise<ShortlistDoc> {
-  if (useLiveApi) return api.post('/api/shortlists', input)
+  if (useLiveApi) {
+    const created = await api.post<ShortlistDoc>('/api/shortlists', input)
+    notifyWorkspace()
+    return created
+  }
   const now = new Date().toISOString()
-  return {
+  const created: ShortlistDoc = {
     id: `list-${Date.now()}`,
     name: input.name,
     corridor: input.corridor ?? '—',
@@ -115,6 +129,8 @@ export async function createShortlist(input: CreateShortlistInput): Promise<Shor
       next: 'book_intro',
     })),
   }
+  notifyWorkspace()
+  return created
 }
 
 /** GET /api/shortlists */

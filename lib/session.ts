@@ -26,6 +26,7 @@ export type SessionUser = {
   emailVerified: boolean
   provider: 'google' | 'email'
   initials: string
+  avatarUrl?: string | null
 }
 
 export type Session = {

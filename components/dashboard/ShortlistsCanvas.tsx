@@ -7,6 +7,8 @@ import { formatFeeFromBps, statusLabel } from '@/lib/relay/format'
 import { useCatalog } from '@/components/dashboard/CatalogContext'
 import { chaseShortlist, createShortlist, listShortlists, type ShortlistDoc } from '@/lib/api/workspace'
 import type { Shortlist } from '@/lib/relay/types'
+import { EmptyState } from '@/components/dashboard/ui/EmptyState'
+import { useSession } from '@/hooks/useSession'
 
 function formatCreated(iso: string) {
   const d = new Date(iso)
@@ -38,6 +40,8 @@ function toUi(doc: ShortlistDoc): Shortlist {
 
 export default function ShortlistsCanvas() {
   const { getProvider } = useCatalog()
+  const { user } = useSession()
+  const workspaceLabel = user?.company && user.company !== 'Independent' ? user.company : user?.fullName || 'your workspace'
   const [lists, setLists] = useState<Shortlist[]>([])
   const [activeId, setActiveId] = useState('')
   const [toast, setToast] = useState<string | null>(null)
@@ -110,6 +114,18 @@ export default function ShortlistsCanvas() {
       </div>
 
       <div className="relay-sl-grid">
+        {lists.length === 0 ? (
+          <div className="relay-panel relay-panel--20 relay-sl-empty">
+            <EmptyState
+              kind="shortlist"
+              title="Build your first shortlist"
+              body="Pick providers from Directory, then chase quotes and book intros from one private list. Providers only see a request when you send one."
+              actionLabel="Open directory"
+              actionHref="/dashboard/providers"
+            />
+          </div>
+        ) : (
+          <>
         <div className="relay-sl-list">
           {lists.map((list) => {
             const on = list.id === active?.id
@@ -132,7 +148,7 @@ export default function ShortlistsCanvas() {
             )
           })}
           <div className="relay-sl-note">
-            Shortlists are private to Northwind Co. Providers only see a request when you send one.
+            Shortlists are private to {workspaceLabel}. Providers only see a request when you send one.
           </div>
         </div>
 
@@ -166,6 +182,17 @@ export default function ShortlistsCanvas() {
               </button>
             </div>
           </div>
+          {active.entries.length === 0 ? (
+            <EmptyState
+              kind="directory"
+              compact
+              title="No providers on this list"
+              body="Add providers from Directory to start collecting quotes on this corridor."
+              actionLabel="Open directory"
+              actionHref="/dashboard/providers"
+            />
+          ) : (
+          <>
           <div className="relay-th relay-th--rfp2">
             <span>PROVIDER</span>
             <span>FEE</span>
@@ -218,21 +245,27 @@ export default function ShortlistsCanvas() {
             <div className="relay-rfp-foot">
               <LiveDot />
               <p>
-                {active.id === 'q3-payout'
-                  ? 'Two quotes in. Median of replies: 0.21% — 21bps under category median.'
-                  : active.stage === 'draft'
-                    ? 'No quotes yet. Chase when you are ready to send a request.'
-                    : 'All three have replied. Compare and book intros to close.'}
+                {active.stage === 'draft'
+                  ? 'No quotes yet. Chase when you are ready to send a request.'
+                  : `${active.entries.length} provider${active.entries.length === 1 ? '' : 's'} on this list.`}
               </p>
             </div>
           </div>
+          </>
+          )}
         </div>
         ) : (
           <div className="relay-panel relay-panel--20">
-            <div className="relay-rfp-head" style={{ padding: '22px 26px' }}>
-              <p className="relay-rfp-sub">No shortlist yet. New shortlist starts on the UK corridor — you can change that later.</p>
-            </div>
+            <EmptyState
+              kind="shortlist"
+              title="This list is empty"
+              body="Add providers from Directory to start collecting quotes on this corridor."
+              actionLabel="Open directory"
+              actionHref="/dashboard/providers"
+            />
           </div>
+        )}
+          </>
         )}
       </div>
       {toast ? <div className="relay-toast">{toast}</div> : null}

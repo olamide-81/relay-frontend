@@ -3,8 +3,10 @@
 import { useEffect } from 'react'
 import { usePathname, useRouter } from '@/i18n/navigation'
 import { useSession } from '@/hooks/useSession'
+import { getMe } from '@/lib/api/auth'
 import TopBar from '@/components/dashboard/chrome/TopBar'
 import Rail from '@/components/dashboard/chrome/Rail'
+import { WorkspaceCountsProvider } from '@/components/dashboard/chrome/WorkspaceCounts'
 import { WeightingProvider } from '@/components/dashboard/WeightingContext'
 import { PlanProvider } from '@/components/dashboard/PlanContext'
 import { GateProvider, useGate } from '@/components/dashboard/gate/GateContext'
@@ -68,11 +70,18 @@ function DashboardFrame({ children }: { children: React.ReactNode }) {
 
 export default function DashboardShell({ children }: { children: React.ReactNode }) {
   const router = useRouter()
-  const { user, ready } = useSession()
+  const { user, ready, refresh } = useSession()
 
   useEffect(() => {
     if (ready && !user) router.replace('/signin')
   }, [ready, user, router])
+
+  useEffect(() => {
+    if (!ready || !user) return
+    void getMe()
+      .then(() => refresh())
+      .catch(() => {})
+  }, [ready, user?.id, refresh])
 
   useEffect(() => {
     const prev = document.body.style.background
@@ -95,7 +104,9 @@ export default function DashboardShell({ children }: { children: React.ReactNode
       <GateProvider>
         <WeightingProvider>
           <CompareTrayProvider>
-            <DashboardFrame>{children}</DashboardFrame>
+            <WorkspaceCountsProvider>
+              <DashboardFrame>{children}</DashboardFrame>
+            </WorkspaceCountsProvider>
           </CompareTrayProvider>
         </WeightingProvider>
       </GateProvider>

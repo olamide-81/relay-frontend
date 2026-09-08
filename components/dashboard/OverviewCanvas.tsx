@@ -11,10 +11,13 @@ import { computeScore } from '@/lib/relay/score'
 import { formatFeeFromBps, statusLabel } from '@/lib/relay/format'
 import { listShortlists, type ShortlistDoc } from '@/lib/api/workspace'
 import { listNotifications, type NotificationItem } from '@/lib/api/notifications'
+import { EmptyState } from '@/components/dashboard/ui/EmptyState'
+import { useWorkspaceCounts } from '@/components/dashboard/chrome/WorkspaceCounts'
 
 export default function OverviewCanvas() {
   const { weighting } = useWeighting()
   const { providers, categoryCards, loading } = useCatalog()
+  const { intros, shortlistEntries, shortlists } = useWorkspaceCounts()
   const [lists, setLists] = useState<ShortlistDoc[]>([])
   const [notes, setNotes] = useState<NotificationItem[]>([])
   const [checked, setChecked] = useState<Set<string>>(new Set())
@@ -49,8 +52,8 @@ export default function OverviewCanvas() {
     : '—'
 
   const kpis = [
-    { label: 'OPEN REQUESTS', v: String(notes.filter((n) => n.kind === 'intro' && !n.read).length), note: 'from your inbox', tone: 'muted' as const },
-    { label: 'SHORTLISTED', v: String(lists.reduce((n, list) => n + list.entries.length, 0)), note: `across ${lists.length} ${lists.length === 1 ? 'list' : 'lists'}`, tone: 'muted' as const },
+    { label: 'OPEN REQUESTS', v: String(intros), note: intros === 1 ? 'from your inbox' : 'from your inbox', tone: 'muted' as const },
+    { label: 'SHORTLISTED', v: String(shortlistEntries), note: `across ${shortlists} ${shortlists === 1 ? 'list' : 'lists'}`, tone: 'muted' as const },
     { label: 'MEDIAN PAYOUT FEE', v: medianFee, note: 'from catalog', tone: 'muted' as const },
     { label: 'LISTED PROVIDERS', v: String(providers.length), note: loading ? 'loading' : 'from admin', tone: 'muted' as const },
   ]
@@ -142,11 +145,11 @@ export default function OverviewCanvas() {
               <div className="relay-rfp-title">
                 <span>{activeList?.name ?? 'Shortlists'}</span>
               </div>
-              <div className="relay-rfp-sub">
-                {activeList
-                  ? `${activeList.entries.length} providers · ${activeList.meta}`
-                  : 'No shortlists yet. Create one from Directory.'}
-              </div>
+              {activeList ? (
+                <div className="relay-rfp-sub">
+                  {`${activeList.entries.length} providers · ${activeList.meta}`}
+                </div>
+              ) : null}
             </div>
             {listEntries.length >= 2 ? (
               <Link
@@ -155,14 +158,16 @@ export default function OverviewCanvas() {
               >
                 Compare {Math.min(4, listEntries.length)}
               </Link>
-            ) : (
-              <Link href="/dashboard/providers" className="relay-btn relay-btn--white relay-btn--sm">
-                Open directory
-              </Link>
-            )}
+            ) : null}
           </div>
           {listEntries.length === 0 ? (
-            <p className="relay-empty-hint">Nothing shortlisted yet.</p>
+            <EmptyState
+              kind="shortlist"
+              title="No shortlists yet"
+              body="Star providers from Directory to build a private RFP. Quotes stay in this workspace until you send a request."
+              actionLabel="Open directory"
+              actionHref="/dashboard/providers"
+            />
           ) : (
             <>
               <div className="relay-th relay-th--rfp">
@@ -229,7 +234,14 @@ export default function OverviewCanvas() {
             </div>
             <div className="relay-rows">
               {notes.length === 0 ? (
-                <p className="relay-empty-hint">No activity yet.</p>
+                <EmptyState
+                  kind="activity"
+                  compact
+                  title="Nothing in the feed yet"
+                  body="Pricing replies, intro updates and licence notes will land here as you work the catalog."
+                  actionLabel="Browse intelligence"
+                  actionHref="/dashboard/intelligence"
+                />
               ) : (
                 notes.slice(0, 6).map((a) => (
                   <div className="relay-feed-row" key={a.id}>
@@ -243,9 +255,11 @@ export default function OverviewCanvas() {
                   </div>
                 ))
               )}
+              {notes.length > 0 ? (
               <Link href="/dashboard/intelligence" className="relay-feed-more">
                 Intelligence →
               </Link>
+              ) : null}
             </div>
           </div>
         </div>
