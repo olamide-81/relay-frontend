@@ -28,8 +28,8 @@ export default function IntelligenceCanvas() {
           <h1 className="relay-hd-title">Intelligence</h1>
           <div className="relay-hd-sub">
             {providers.length
-              ? `Fee indices and market notes for ${providers.length} listed providers`
-              : 'No market notes yet — add providers in admin'}
+              ? `Fee indices and market notes for ${providers.length} providers`
+              : 'Market notes appear as the directory grows'}
           </div>
         </div>
         <div className="relay-hd-actions">

@@ -1,6 +1,4 @@
 import type { Metadata } from 'next'
-import { GeistSans } from 'geist/font/sans'
-import { GeistMono } from 'geist/font/mono'
 import { NextIntlClientProvider, hasLocale } from 'next-intl'
 import { getMessages, setRequestLocale } from 'next-intl/server'
 import { notFound } from 'next/navigation'
@@ -10,7 +8,6 @@ import { CatalogProvider } from '@/components/dashboard/CatalogContext'
 import JsonLd from '@/components/JsonLd'
 import { buildMetadata } from '@/lib/seo'
 import { organizationJsonLd, websiteJsonLd } from '@/lib/jsonld'
-import '../globals.css'
 
 type Props = {
   children: React.ReactNode
@@ -65,18 +62,13 @@ export default async function LocaleLayout({ children, params }: Props) {
   const messages = await getMessages()
 
   return (
-    <html
-      lang={locale}
-      className={`${GeistSans.variable} ${GeistMono.variable}`}
-    >
-      <body>
-        <JsonLd data={[organizationJsonLd(), websiteJsonLd(locale)]} />
-        <NextIntlClientProvider messages={messages}>
-          <WaitlistProvider>
-            <CatalogProvider>{children}</CatalogProvider>
-          </WaitlistProvider>
-        </NextIntlClientProvider>
-      </body>
-    </html>
+    <>
+      <JsonLd data={[organizationJsonLd(), websiteJsonLd(locale)]} />
+      <NextIntlClientProvider messages={messages}>
+        <WaitlistProvider>
+          <CatalogProvider>{children}</CatalogProvider>
+        </WaitlistProvider>
+      </NextIntlClientProvider>
+    </>
   )
 }

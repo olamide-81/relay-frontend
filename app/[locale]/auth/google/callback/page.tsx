@@ -11,6 +11,8 @@ function safeNext(raw: string | null) {
   return raw
 }
 
+const completing = new Map<string, Promise<void>>()
+
 export default function GoogleCallbackPage() {
   const router = useRouter()
   const [error, setError] = useState<string | null>(null)
@@ -23,15 +25,24 @@ export default function GoogleCallbackPage() {
       setError('Google sign-in did not return a session. Try again.')
       return
     }
+
     let cancelled = false
-    void completeGoogleLogin(ticket)
+    let pending = completing.get(ticket)
+    if (!pending) {
+      pending = completeGoogleLogin(ticket).then(() => undefined)
+      completing.set(ticket, pending)
+    }
+
+    pending
       .then(() => {
         if (!cancelled) router.replace(next)
       })
       .catch((err) => {
+        completing.delete(ticket)
         if (cancelled) return
         setError(err instanceof ApiError ? err.message : 'Google sign-in failed. Try again.')
       })
+
     return () => {
       cancelled = true
     }

@@ -3,30 +3,33 @@
 import { useSearchParams } from 'next/navigation'
 import { Link, useRouter } from '@/i18n/navigation'
 import { CheckBox } from '@/components/dashboard/ui/CheckBox'
+import { EmptyState } from '@/components/dashboard/ui/EmptyState'
 import { useWeighting } from '@/components/dashboard/WeightingContext'
+import { useOpenWeighting } from '@/components/dashboard/compare/WeightingPopover'
 import { useCompareTray } from '@/components/dashboard/compare/CompareTrayContext'
 import { usePlan } from '@/components/dashboard/PlanContext'
 import { useGate } from '@/components/dashboard/gate/GateContext'
 import { useCatalog } from '@/components/dashboard/CatalogContext'
 import { computeScore } from '@/lib/relay/score'
-import { formatFeeFromBps } from '@/lib/relay/format'
+import {
+  feeFromProvider,
+  formatFee,
+  formatFeeFromBps,
+  formatFeeKind,
+  formatMoney,
+  formatSettle,
+  formatVolumeUsd,
+} from '@/lib/relay/format'
 import { addToShortlist, getShortlist } from '@/lib/workspace'
 import { useWorkspace } from '@/hooks/useWorkspace'
 
-const TABS = ['Overview', 'Pricing', 'Coverage', 'Compliance', 'Company', 'Activity'] as const
-const TAB_IDS: Record<(typeof TABS)[number], string> = {
-  Overview: 'overview',
-  Pricing: 'pricing',
-  Coverage: 'coverage',
-  Compliance: 'compliance',
-  Company: 'company',
-  Activity: 'activity',
-}
+const TABS = ['Overview', 'Pricing', 'Coverage', 'Compliance', 'Company'] as const
 
 export default function ProviderDossierCanvas({ id }: { id: string }) {
   const router = useRouter()
   const searchParams = useSearchParams()
   const { weighting } = useWeighting()
+  const openWeighting = useOpenWeighting()
   const { shortlist, refresh } = useWorkspace()
   const { has, toggle } = useCompareTray()
   const { isPro } = usePlan()
@@ -46,10 +49,13 @@ export default function ProviderDossierCanvas({ id }: { id: string }) {
   if (!provider) {
     return (
       <div className="relay-page">
-        <p className="relay-empty-hint">This provider is not in the catalog. Add it in admin.</p>
-        <Link href="/dashboard/providers" className="relay-link">
-          Back to directory
-        </Link>
+        <EmptyState
+          kind="directory"
+          title="This provider isn’t in your directory"
+          body="It may have been unpublished. Open Directory to pick someone who is live."
+          actionLabel="Back to directory"
+          actionHref="/dashboard/providers"
+        />
       </div>
     )
   }
@@ -60,23 +66,20 @@ export default function ProviderDossierCanvas({ id }: { id: string }) {
   const tab = (searchParams.get('tab') ?? 'Overview') as (typeof TABS)[number]
   const activeTab = TABS.includes(tab) ? tab : 'Overview'
   const shortName = provider.name.replace(' Payments', '').replace(' Pay', '').replace(' Rails', '').replace(' Global', '')
-  const corridors = record?.supportedCorridors?.length ? record.supportedCorridors : []
-  const visibleCorridors = corridors
+  const corridors = record?.supportedCorridors ?? []
   const others = providers.filter((p) => p.slug !== provider.slug).slice(0, 4)
-  const facts = [
-    { k: 'Website', v: record?.website || '—' },
-    { k: 'HQ', v: provider.hq },
-    { k: 'Countries', v: (record?.countries ?? []).join(', ') || '—' },
-    { k: 'Sandbox', v: record?.sandboxAvailable ? 'Available' : 'Not listed' },
-    { k: 'Pricing', v: (record?.pricingModel ?? []).join(', ') || record?.startingPrice || '—' },
-    { k: 'Settlement', v: provider.settleLabel },
-  ]
   const licences = record?.licenses?.length ? record.licenses : provider.licences
   const compliance = record?.complianceStandards ?? []
+  const countries = record?.countries ?? []
+  const regions = record?.regions ?? provider.regions
+  const fee = feeFromProvider(provider)
+  const feeLabel = formatFee(fee, false)
+  const settle = formatSettle(provider.medianSettleMinutes, provider.settleLabel)
+  const tiers = provider.feeTiers ?? []
+  const feeRows = record?.feeTable ?? []
 
   const goTab = (name: (typeof TABS)[number]) => {
     router.replace(`/dashboard/providers/${provider.slug}?tab=${name}`)
-    document.getElementById(TAB_IDS[name])?.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
 
   const onShortlist = () => {
@@ -91,7 +94,12 @@ export default function ProviderDossierCanvas({ id }: { id: string }) {
 
   return (
     <div className="relay-page relay-page--dossier">
-      <div className="relay-crumb">Directory · {provider.category} · {provider.name}</div>
+      <div className="relay-crumb">
+        <Link href="/dashboard/providers">Directory</Link>
+        <span> / {provider.category}</span>
+        <span> / {provider.name}</span>
+      </div>
+
       <div className="relay-profile-head">
         <div>
           <div className="relay-profile-title">
@@ -100,6 +108,11 @@ export default function ProviderDossierCanvas({ id }: { id: string }) {
             {record?.relayVerified ? <span className="relay-badge relay-badge--grey">VERIFIED</span> : null}
           </div>
           <p className="relay-profile-desc">{record?.longDescription || provider.description || 'No description yet.'}</p>
+          <div className="relay-profile-pills">
+            <span>{formatFeeKind(provider.feeKind)}</span>
+            <span>{settle}</span>
+            <span>{provider.hq}</span>
+          </div>
         </div>
         <div className="relay-hd-actions">
           <button type="button" className="relay-btn relay-btn--outline" onClick={() => toggle(provider.slug)}>
@@ -129,14 +142,12 @@ export default function ProviderDossierCanvas({ id }: { id: string }) {
         ))}
       </div>
 
-      <div className="relay-kpi relay-kpi--6" id="overview">
+      <div className="relay-kpi relay-kpi--4">
         {[
-          { label: 'FOUNDED', v: record?.founded ? String(record.founded) : '—', sub: 'from catalog' },
-          { label: 'FUNDING', v: record?.fundingStage || '—', sub: 'stage' },
-          { label: 'FEE FROM', v: formatFeeFromBps(provider.feeFromBps || null), sub: 'bps in admin' },
-          { label: 'SETTLE', v: provider.settleLabel, sub: 'window' },
-          { label: 'CORRIDORS', v: String(provider.corridorCount || corridors.length || 0), sub: `${(record?.countries ?? []).length} countries` },
-          { label: 'RELAY SCORE', v: String(score), sub: 'your weighting' },
+          { label: 'FEE', v: formatFee(fee, true), sub: formatFeeKind(provider.feeKind) },
+          { label: 'SETTLEMENT', v: settle, sub: 'when funds typically land' },
+          { label: 'CORRIDORS', v: String(provider.corridorCount || corridors.length || 0), sub: `${countries.length} countries` },
+          { label: 'YOUR SCORE', v: String(score), sub: 'from your weighting' },
         ].map((s) => (
           <div className="relay-kpi-tile" key={s.label}>
             <div className="relay-kpi-label">{s.label}</div>
@@ -148,166 +159,238 @@ export default function ProviderDossierCanvas({ id }: { id: string }) {
 
       <div className="relay-dossier-grid">
         <div className="relay-dossier-col">
-          <section className="relay-dpanel" id="company-facts">
-            <h3>Company facts</h3>
-            <dl className="relay-facts">
-              {facts.map((f) => (
-                <div key={f.k}>
-                  <dt>{f.k}</dt>
-                  <dd>{f.v}</dd>
-                </div>
-              ))}
-            </dl>
-          </section>
-
-          <section className="relay-dpanel relay-dpanel--flush" id="pricing">
-            <div className="relay-dpanel-head">
-              <span>Pricing & corridors</span>
-              <span className="relay-dpanel-note">{record?.startingPrice || provider.settleLabel}</span>
-            </div>
-            {visibleCorridors.length === 0 && !(record?.feeTable?.length) ? (
-              <p className="relay-empty-hint">No corridor pricing on file yet.</p>
-            ) : (
-              <>
-                <div className="relay-th relay-th--dprice">
-                  <span>CORRIDOR / LINE</span>
-                  <span>FEE</span>
-                  <span>SETTLE</span>
-                </div>
-                {visibleCorridors.map((name) => (
-                  <div className="relay-row relay-row--dprice" key={name}>
-                    <span>{name}</span>
-                    <span className="relay-fee">{formatFeeFromBps(provider.feeFromBps || null)}</span>
-                    <span className="relay-settle">{provider.settleLabel}</span>
-                  </div>
-                ))}
-                {(record?.feeTable ?? []).map((row) => (
-                  <div className="relay-row relay-row--dprice" key={row.label}>
-                    <span>{row.label}</span>
-                    <span className="relay-fee">{row.amount}</span>
-                    <span className="relay-settle">{row.notes || '—'}</span>
-                  </div>
-                ))}
-              </>
-            )}
-          </section>
-
-          <div className="relay-half">
-            <section className="relay-dpanel" id="coverage">
-              <h3>Coverage</h3>
-              <p className="relay-dpanel-lede">
-                {(record?.regions ?? provider.regions).join(', ') || 'No regions listed'}
-              </p>
-              <div className="relay-cov">
-                {(record?.regions ?? provider.regions).length === 0 ? (
-                  <p className="relay-empty-hint">Add regions in admin.</p>
-                ) : (
-                  (record?.regions ?? provider.regions).map((region) => (
-                    <div key={region}>
-                      <div className="relay-cov-lab">
-                        <span>{region}</span>
-                        <span>{(record?.countries ?? []).length || '—'}</span>
-                      </div>
-                      <div className="relay-cov-track">
-                        <div className="relay-cov-bar relay-cov-bar--ok" style={{ width: '70%' }} />
-                      </div>
+          {activeTab === 'Overview' ? (
+            <>
+              <section className="relay-dpanel">
+                <h3>At a glance</h3>
+                <dl className="relay-facts">
+                  {[
+                    { k: 'Website', v: record?.website || '—' },
+                    { k: 'Headquarters', v: provider.hq },
+                    { k: 'Founded', v: record?.founded ? String(record.founded) : '—' },
+                    { k: 'Funding', v: record?.fundingStage || '—' },
+                    { k: 'Fee', v: feeLabel },
+                    { k: 'Settlement', v: settle },
+                  ].map((f) => (
+                    <div key={f.k}>
+                      <dt>{f.k}</dt>
+                      <dd>{f.v}</dd>
                     </div>
-                  ))
-                )}
+                  ))}
+                </dl>
+              </section>
+              <section className="relay-dpanel">
+                <h3>How they charge</h3>
+                <p className="relay-dpanel-lede">{feeLabel}. {settle}.</p>
+                <Link href={`/dashboard/providers/${provider.slug}?tab=Pricing`} className="relay-link" style={{ marginTop: 14, display: 'inline-block' }}>
+                  Full pricing →
+                </Link>
+              </section>
+            </>
+          ) : null}
+
+          {activeTab === 'Pricing' ? (
+            <section className="relay-dpanel relay-dpanel--flush">
+              <div className="relay-dpanel-head">
+                <span>Pricing</span>
+                <span className="relay-dpanel-note">{formatFeeKind(provider.feeKind)}</span>
               </div>
+              <div className="relay-fee-hero">
+                <strong>{feeLabel}</strong>
+                <span>{settle}</span>
+              </div>
+              {tiers.length ? (
+                <>
+                  <div className="relay-th relay-th--dprice">
+                    <span>TRANSFER VALUE</span>
+                    <span>FEE</span>
+                    <span></span>
+                  </div>
+                  {tiers.map((tier, i) => {
+                    const band =
+                      tier.upToUsd == null
+                        ? 'Above last tier'
+                        : i === 0
+                          ? `Up to ${formatVolumeUsd(tier.upToUsd)}`
+                          : `Up to ${formatVolumeUsd(tier.upToUsd)}`
+                    const amount =
+                      tier.feePercentBps != null
+                        ? formatFeeFromBps(tier.feePercentBps, { ofValue: true })
+                        : tier.feeFixedAmount != null
+                          ? `${formatMoney(tier.feeFixedAmount, provider.feeFixedCurrency)} per transfer`
+                          : '—'
+                    return (
+                      <div className="relay-row relay-row--dprice3" key={`${band}-${i}`}>
+                        <span>{band}</span>
+                        <span className="relay-fee">{amount}</span>
+                        <span className="relay-settle">By monthly volume</span>
+                      </div>
+                    )
+                  })}
+                </>
+              ) : null}
+              {feeRows.length || corridors.length ? (
+                <>
+                  <div className="relay-th relay-th--dprice">
+                    <span>LINE / CORRIDOR</span>
+                    <span>FEE</span>
+                    <span>SETTLE</span>
+                  </div>
+                  {feeRows.map((row) => (
+                    <div className="relay-row relay-row--dprice3" key={row.label}>
+                      <span>{row.label}</span>
+                      <span className="relay-fee">{row.amount}</span>
+                      <span className="relay-settle">{row.notes || settle}</span>
+                    </div>
+                  ))}
+                  {!feeRows.length
+                    ? corridors.map((name) => (
+                        <div className="relay-row relay-row--dprice3" key={name}>
+                          <span>{name}</span>
+                          <span className="relay-fee">{formatFee(fee, true)}</span>
+                          <span className="relay-settle">{settle}</span>
+                        </div>
+                      ))
+                    : null}
+                </>
+              ) : !tiers.length ? (
+                <EmptyState
+                  kind="intel"
+                  compact
+                  title="No published rate card"
+                  body="Request an intro to get a quote for your corridors and volume."
+                  actionLabel="Request intro"
+                  actionHref={`/dashboard/intros/${provider.slug}`}
+                />
+              ) : null}
             </section>
+          ) : null}
+
+          {activeTab === 'Coverage' ? (
             <section className="relay-dpanel">
-              <h3>Reliability</h3>
-              <div className="relay-reli">
-                <div>
-                  <strong>{record?.uptime != null ? `${record.uptime}%` : '—'}</strong>
-                  <span>Uptime</span>
+              <h3>Where they operate</h3>
+              <p className="relay-dpanel-lede">{regions.join(', ') || 'Regions not listed'}</p>
+              {countries.length === 0 ? (
+                <EmptyState
+                  kind="directory"
+                  compact
+                  title="No country coverage on file"
+                  body="Request an intro if you need a specific corridor confirmed."
+                />
+              ) : (
+                <div className="relay-chip-cloud">
+                  {countries.map((c) => (
+                    <span key={c} className="relay-chip">
+                      {c}
+                    </span>
+                  ))}
                 </div>
-                <div>
-                  <strong>{record?.successRatePct != null ? `${record.successRatePct}%` : '—'}</strong>
-                  <span>Success rate</span>
+              )}
+              {corridors.length ? (
+                <div className="relay-chip-cloud" style={{ marginTop: 12 }}>
+                  {corridors.map((c) => (
+                    <span key={c} className="relay-chip">
+                      {c}
+                    </span>
+                  ))}
                 </div>
-                <div>
-                  <strong>{record?.documentationQuality != null ? `${record.documentationQuality}/5` : '—'}</strong>
-                  <span>Docs</span>
-                </div>
-              </div>
+              ) : null}
             </section>
-          </div>
+          ) : null}
 
-          <section className="relay-dpanel relay-dpanel--flush" id="compliance">
-            <div className="relay-dpanel-head">
-              <span>Licences & compliance</span>
-              <span className="relay-dpanel-meta">{licences.length} listed</span>
-            </div>
-            {licences.length === 0 && compliance.length === 0 ? (
-              <p className="relay-empty-hint">No licences on file yet.</p>
-            ) : (
-              <>
-                <div className="relay-th relay-th--comp">
-                  <span>LICENCE / STANDARD</span>
-                  <span>SOURCE</span>
+          {activeTab === 'Compliance' ? (
+            <section className="relay-dpanel relay-dpanel--flush">
+              <div className="relay-dpanel-head">
+                <span>Licences & standards</span>
+                <span className="relay-dpanel-meta">{licences.length + compliance.length}</span>
+              </div>
+              {licences.length === 0 && compliance.length === 0 ? (
+                <EmptyState
+                  kind="intel"
+                  compact
+                  title="No licences on file"
+                  body="We’ll list EMI, PSP, MSB and similar coverage here as it is confirmed."
+                />
+              ) : (
+                <>
+                  <div className="relay-th relay-th--comp">
+                    <span>LICENCE / STANDARD</span>
+                    <span>TYPE</span>
+                  </div>
+                  {licences.map((name) => (
+                    <div className="relay-row relay-row--comp" key={String(name)}>
+                      <span>{name}</span>
+                      <span>Licence</span>
+                    </div>
+                  ))}
+                  {compliance.map((name) => (
+                    <div className="relay-row relay-row--comp" key={name}>
+                      <span>{name}</span>
+                      <span>Standard</span>
+                    </div>
+                  ))}
+                </>
+              )}
+            </section>
+          ) : null}
+
+          {activeTab === 'Company' ? (
+            <section className="relay-dpanel">
+              <h3>Integration</h3>
+              <dl className="relay-kv">
+                <div>
+                  <dt>Sandbox</dt>
+                  <dd>{record?.sandboxAvailable ? 'Yes' : 'No'}</dd>
                 </div>
-                {licences.map((name) => (
-                  <div className="relay-row relay-row--comp" key={String(name)}>
-                    <span>{name}</span>
-                    <span>Catalog</span>
-                  </div>
-                ))}
-                {compliance.map((name) => (
-                  <div className="relay-row relay-row--comp" key={name}>
-                    <span>{name}</span>
-                    <span>Compliance</span>
-                  </div>
-                ))}
-              </>
-            )}
-          </section>
-
-          <section className="relay-dpanel" id="company">
-            <h3>Integration</h3>
-            <dl className="relay-kv">
-              <div>
-                <dt>Sandbox</dt>
-                <dd>{record?.sandboxAvailable ? 'Yes' : 'No'}</dd>
-              </div>
-              <div>
-                <dt>API</dt>
-                <dd>{(record?.apiType ?? []).join(', ') || '—'}</dd>
-              </div>
-              <div>
-                <dt>SDKs</dt>
-                <dd>{(record?.sdks ?? []).join(', ') || '—'}</dd>
-              </div>
-              <div>
-                <dt>Onboarding</dt>
-                <dd>{(record?.onboardingRequirements ?? []).join(', ') || record?.minimumCommitment || '—'}</dd>
-              </div>
-            </dl>
-          </section>
+                <div>
+                  <dt>API</dt>
+                  <dd>{(record?.apiType ?? []).join(', ') || '—'}</dd>
+                </div>
+                <div>
+                  <dt>SDKs</dt>
+                  <dd>{(record?.sdks ?? []).join(', ') || '—'}</dd>
+                </div>
+                <div>
+                  <dt>Typical onboarding</dt>
+                  <dd>
+                    {provider.integrationWeeks
+                      ? `About ${provider.integrationWeeks} week${provider.integrationWeeks === 1 ? '' : 's'}`
+                      : '—'}
+                  </dd>
+                </div>
+                <div>
+                  <dt>Requirements</dt>
+                  <dd>{(record?.onboardingRequirements ?? []).join(', ') || record?.minimumCommitment || '—'}</dd>
+                </div>
+              </dl>
+            </section>
+          ) : null}
         </div>
 
         <aside className="relay-dossier-side">
           <div className="relay-score-card">
             <div className="relay-score-card-top">
               <span className="relay-score-card-num">{score}</span>
-              <span className="relay-score-card-lab">RELAY SCORE</span>
+              <span className="relay-score-card-lab">YOUR SCORE</span>
             </div>
             {[
-              { label: `Fee (${weighting.feePct}%)`, v: provider.scoreFee },
+              { label: `Fees (${weighting.feePct}%)`, v: provider.scoreFee },
               { label: `Settlement (${weighting.settlePct}%)`, v: provider.scoreSettle },
-              { label: `Licence coverage (${weighting.licencePct}%)`, v: provider.scoreLicence },
+              { label: `Licences (${weighting.licencePct}%)`, v: provider.scoreLicence },
             ].map((p) => (
               <div className="relay-score-part" key={p.label}>
                 <div className="relay-score-part-lab">
                   <span>{p.label}</span>
-                  <span>{p.v}%</span>
+                  <span>{p.v}</span>
                 </div>
                 <div className="relay-score-track">
                   <div style={{ width: `${p.v}%` }} />
                 </div>
               </div>
             ))}
+            <button type="button" className="relay-btn relay-btn--outline" onClick={openWeighting}>
+              Edit weighting
+            </button>
             <Link href={`/dashboard/intros/${provider.slug}`} className="relay-btn relay-btn--ink">
               Request intro
             </Link>
@@ -317,7 +400,7 @@ export default function ProviderDossierCanvas({ id }: { id: string }) {
             <h3>Compare with</h3>
             <div className="relay-cmp-list">
               {others.length === 0 ? (
-                <p className="relay-empty-hint">No other providers in the catalog yet.</p>
+                <EmptyState kind="directory" compact title="No others to compare" body="This is the only provider in view right now." />
               ) : (
                 others.map((p) => (
                   <div key={p.slug} className="relay-cmp-row">
@@ -325,7 +408,7 @@ export default function ProviderDossierCanvas({ id }: { id: string }) {
                     <button type="button" onClick={() => router.push(`/dashboard/providers/${p.slug}`)}>
                       <span>{p.name}</span>
                       <em>
-                        {formatFeeFromBps(p.feeFromBps || null)} · {computeScore(p, weighting)}
+                        {formatFee(feeFromProvider(p), true)} · {computeScore(p, weighting)}
                       </em>
                     </button>
                   </div>

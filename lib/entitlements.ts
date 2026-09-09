@@ -22,7 +22,7 @@ export const ENTITLEMENTS: Record<PlanId, Entitlements> = {
     corridorPricesPerProvider: 1,
     pricingHistoryMonths: 0,
     compareSlots: 2,
-    customWeighting: false,
+    customWeighting: true,
     shortlists: 1,
     shortlistsShared: false,
     introRequestsPerMonth: 2,

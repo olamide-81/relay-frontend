@@ -4,7 +4,7 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useState } 
 import { listCatalog } from '@/lib/catalog/api'
 import { toUiProvider, type CatalogRecord } from '@/lib/catalog/map'
 import type { Category, CategoryCardData, Provider } from '@/lib/relay/types'
-import { formatFeeFromBps } from '@/lib/relay/format'
+import { formatFee, feeFromProvider, formatSettle } from '@/lib/relay/format'
 
 type CatalogValue = {
   records: CatalogRecord[]
@@ -28,17 +28,20 @@ const CAT_COPY: Record<Category, { name: string; short: string }> = {
 function cardsFrom(providers: Provider[]): CategoryCardData[] {
   return (Object.keys(CAT_COPY) as Category[]).map((id, i) => {
     const list = providers.filter((p) => p.category === id)
-    const fees = list.map((p) => p.feeFromBps).filter((n) => n > 0)
-    const settles = list.map((p) => p.settleLabel).filter((s) => s && s !== '—')
-    const minFee = fees.length ? Math.min(...fees) : null
+    const cheapest = [...list].sort((a, b) => {
+      const av = a.feeFixedAmount ?? a.feeFromBps
+      const bv = b.feeFixedAmount ?? b.feeFromBps
+      return av - bv
+    })[0]
+    const fastest = [...list].sort((a, b) => a.medianSettleMinutes - b.medianSettleMinutes)[0]
     return {
       id,
       name: CAT_COPY[id].name,
       short: CAT_COPY[id].short,
       n: list.length,
-      feeFrom: minFee != null ? formatFeeFromBps(minFee) : '—',
-      settle: settles[0] ?? '—',
-      live: list.length ? `${list.length} listed` : 'None listed yet',
+      feeFrom: cheapest ? formatFee(feeFromProvider(cheapest), true) : '—',
+      settle: fastest ? formatSettle(fastest.medianSettleMinutes, fastest.settleLabel) : '—',
+      live: list.length ? `${list.length} in directory` : 'None yet',
       delta: '—',
       deltaTone: 'flat',
       sparkSeed: 7 + i * 20,

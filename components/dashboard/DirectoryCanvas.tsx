@@ -8,7 +8,7 @@ import { useWeighting } from '@/components/dashboard/WeightingContext'
 import { useCompareTray } from '@/components/dashboard/compare/CompareTrayContext'
 import { useOpenWeighting } from '@/components/dashboard/compare/WeightingPopover'
 import { computeScore, sortByScore } from '@/lib/relay/score'
-import { formatFeeFromBps } from '@/lib/relay/format'
+import { feeFromProvider, formatFee } from '@/lib/relay/format'
 import { useCatalog } from '@/components/dashboard/CatalogContext'
 import type { Category, CorridorRegion } from '@/lib/relay/types'
 
@@ -167,7 +167,7 @@ export default function DirectoryCanvas() {
                 <p className="relay-empty-hint">
                   {loading
                     ? 'Loading providers…'
-                    : 'No providers in this filter yet. Add them in admin and they show up here.'}
+                    : 'No providers match this filter yet.'}
                 </p>
               ) : null}
               {shown.map((p) => {
@@ -188,7 +188,7 @@ export default function DirectoryCanvas() {
                       </Link>
                       <div className="relay-meta">{p.hq}</div>
                     </div>
-                    <span className="relay-fee">{formatFeeFromBps(p.feeFromBps)}</span>
+                    <span className="relay-fee">{formatFee(feeFromProvider(p), true)}</span>
                     <span className="relay-settle">{p.settleLabel}</span>
                     <span className="relay-lic">{p.licenceLabel}</span>
                     <div className="relay-fit">
@@ -233,7 +233,7 @@ export default function DirectoryCanvas() {
                   </div>
                   <div className="relay-meta">{p.hq}</div>
                 </Link>
-                <span className="relay-fee">{formatFeeFromBps(p.feeFromBps)}</span>
+                <span className="relay-fee">{formatFee(feeFromProvider(p), true)}</span>
                 <span className="relay-dir-score">{computeScore(p, weighting)}</span>
               </div>
             ))}

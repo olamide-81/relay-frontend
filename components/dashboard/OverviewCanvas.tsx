@@ -8,7 +8,7 @@ import { CheckBox } from '@/components/dashboard/ui/CheckBox'
 import { useWeighting } from '@/components/dashboard/WeightingContext'
 import { useCatalog } from '@/components/dashboard/CatalogContext'
 import { computeScore } from '@/lib/relay/score'
-import { formatFeeFromBps, statusLabel } from '@/lib/relay/format'
+import { feeFromProvider, formatFee, statusLabel } from '@/lib/relay/format'
 import { listShortlists, type ShortlistDoc } from '@/lib/api/workspace'
 import { listNotifications, type NotificationItem } from '@/lib/api/notifications'
 import { EmptyState } from '@/components/dashboard/ui/EmptyState'
@@ -46,16 +46,19 @@ export default function OverviewCanvas() {
     }>
   }, [activeList, providers])
 
-  const fees = providers.map((p) => p.feeFromBps).filter((n) => n > 0)
-  const medianFee = fees.length
-    ? formatFeeFromBps([...fees].sort((a, b) => a - b)[Math.floor(fees.length / 2)])
-    : '—'
+  const priced = providers.filter((p) => p.feeFromBps > 0 || p.feeFixedAmount)
+  const medianProvider = priced.length
+    ? [...priced].sort((a, b) => (a.feeFromBps || a.feeFixedAmount || 0) - (b.feeFromBps || b.feeFixedAmount || 0))[
+        Math.floor(priced.length / 2)
+      ]
+    : null
+  const medianFee = medianProvider ? formatFee(feeFromProvider(medianProvider), true) : '—'
 
   const kpis = [
-    { label: 'OPEN REQUESTS', v: String(intros), note: intros === 1 ? 'from your inbox' : 'from your inbox', tone: 'muted' as const },
-    { label: 'SHORTLISTED', v: String(shortlistEntries), note: `across ${shortlists} ${shortlists === 1 ? 'list' : 'lists'}`, tone: 'muted' as const },
-    { label: 'MEDIAN PAYOUT FEE', v: medianFee, note: 'from catalog', tone: 'muted' as const },
-    { label: 'LISTED PROVIDERS', v: String(providers.length), note: loading ? 'loading' : 'from admin', tone: 'muted' as const },
+    { label: 'OPEN REQUESTS', v: String(intros), note: intros ? 'waiting on a reply' : 'none in flight', tone: 'muted' as const },
+    { label: 'SHORTLISTED', v: String(shortlistEntries), note: shortlists ? `across ${shortlists} ${shortlists === 1 ? 'list' : 'lists'}` : 'none yet', tone: 'muted' as const },
+    { label: 'TYPICAL FEE', v: medianFee, note: 'listed payouts', tone: 'muted' as const },
+    { label: 'IN DIRECTORY', v: String(providers.length), note: loading ? 'loading' : 'ready to compare', tone: 'muted' as const },
   ]
 
   return (
@@ -64,7 +67,11 @@ export default function OverviewCanvas() {
         <div>
           <h1 className="relay-hd-title">Overview</h1>
           <div className="relay-hd-sub">
-            {providers.length} {providers.length === 1 ? 'provider' : 'providers'} · managed from admin
+            {loading
+              ? 'Loading your directory…'
+              : providers.length
+                ? `${providers.length} providers · scored with your weighting`
+                : 'Your directory fills as providers go live'}
           </div>
         </div>
         <div className="relay-hd-actions">
@@ -94,7 +101,7 @@ export default function OverviewCanvas() {
           <div>
             <div className="relay-dir-title">Provider Directory</div>
             <div className="relay-dir-sub">
-              Fees, settlement and licence coverage by category — scored on your weighting.
+              Fees as a percent of value, a fixed amount, or tiers — plus how fast money lands.
             </div>
           </div>
           <Link href="/dashboard/providers" className="relay-btn relay-btn--chip">
@@ -111,9 +118,19 @@ export default function OverviewCanvas() {
                 </div>
                 <div className="relay-cat-n">
                   <strong>{c.n}</strong>
-                  <span>LISTED</span>
+                  <span>{c.n ? 'IN VIEW' : 'EMPTY'}</span>
                 </div>
               </div>
+              {c.n === 0 ? (
+                <div className="relay-cat-empty">
+                  <EmptyState
+                    kind="directory"
+                    compact
+                    title={`No ${c.name.toLowerCase()} yet`}
+                    body="Nothing in this lane right now. Check the others, or come back as the directory grows."
+                  />
+                </div>
+              ) : (
               <div className="relay-cat-metrics">
                 <div>
                   <div className="relay-cat-metric-label">FEE FROM</div>
@@ -128,6 +145,7 @@ export default function OverviewCanvas() {
                   <div className={`relay-spark-delta relay-spark-delta--${c.deltaTone}`}>{c.delta}</div>
                 </div>
               </div>
+              )}
               <div className="relay-cat-foot">
                 <LiveDot variant="green" />
                 <span className="relay-cat-live">{c.live}</span>
@@ -205,7 +223,7 @@ export default function OverviewCanvas() {
                         <div className="relay-name">{p.name}</div>
                         <div className="relay-meta">{`${p.hq} · ${p.licenceLabel}`}</div>
                       </div>
-                      <span className="relay-fee">{formatFeeFromBps(entry.feeBps)}</span>
+                      <span className="relay-fee">{formatFee(feeFromProvider(p), true)}</span>
                       <div className="relay-status">
                         <span className="relay-status-dot" style={{ background: stFg }} />
                         <span className="relay-status-label" style={{ color: stFg }}>

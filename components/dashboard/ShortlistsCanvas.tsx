@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link } from '@/i18n/navigation'
 import { LiveDot } from '@/components/dashboard/ui/LiveDot'
-import { formatFeeFromBps, statusLabel } from '@/lib/relay/format'
+import { feeFromProvider, formatFee, statusLabel } from '@/lib/relay/format'
 import { useCatalog } from '@/components/dashboard/CatalogContext'
 import { chaseShortlist, createShortlist, listShortlists, type ShortlistDoc } from '@/lib/api/workspace'
 import type { Shortlist } from '@/lib/relay/types'
@@ -222,8 +222,8 @@ export default function ShortlistsCanvas() {
                       {p.hq.split(',')[0]} · {p.licenceModel}
                     </div>
                   </div>
-                  <span className="relay-fee">{formatFeeFromBps(entry.feeBps)}</span>
-                  <span className="relay-settle">{entry.settleLabel}</span>
+                  <span className="relay-fee">{formatFee(feeFromProvider({ feeFromBps: entry.feeBps, feeKind: 'percent' }), true)}</span>
+                  <span className="relay-settle">{p.settleLabel}</span>
                   <div className="relay-status">
                     <span className="relay-status-dot" style={{ background: stFg }} />
                     <span className="relay-status-label" style={{ color: stFg }}>

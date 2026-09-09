@@ -116,9 +116,21 @@ button.relay-btn--ink-outline {
 
 .relay-wpop-lab {
   display: flex;
-  align-items: baseline;
+  align-items: flex-start;
   margin-bottom: 8px;
   font-size: 12.5px;
+}
+
+.relay-wpop-lab label {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.relay-wpop-lab label span {
+  font-size: 11px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.38);
 }
 
 .relay-wpop-lab output {
@@ -636,8 +648,86 @@ a.relay-btn--outline-ink {
 
 .relay-th--dprice,
 .relay-row--dprice {
-  grid-template-columns: 1.6fr 0.7fr 0.7fr 0.8fr 1fr;
+  grid-template-columns: 1.6fr 0.9fr 0.9fr;
   gap: 16px;
+}
+
+.relay-row--dprice3 {
+  grid-template-columns: 1.6fr 1fr 1fr;
+  gap: 16px;
+  padding: 13px 24px;
+  font-size: 13px;
+}
+
+.relay-fee-hero {
+  padding: 8px 24px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.relay-fee-hero strong {
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: -0.03em;
+}
+
+.relay-fee-hero span {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.48);
+}
+
+.relay-profile-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.relay-profile-pills span {
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.relay-chip-cloud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.relay-chip-cloud .relay-chip {
+  cursor: default;
+}
+
+.relay-cat-empty {
+  padding: 8px 0 4px;
+}
+
+.relay-cat-empty .relay-empty {
+  min-height: 160px;
+  padding: 12px 8px 8px;
+}
+
+.relay-cat-empty .relay-empty-art {
+  width: 72px;
+  height: 72px;
+}
+
+.relay-cat-empty .relay-empty-title {
+  font-size: 14px;
+}
+
+.relay-cat-empty .relay-empty-body {
+  font-size: 12px;
+}
+
+.relay-score-card .relay-btn {
+  width: 100%;
+  margin-top: 10px;
 }
 
 .relay-th--dprice {

@@ -501,7 +501,7 @@ function SignalsScene() {
               <span>
                 live catalog
                 <br />
-                from admin
+                in directory
               </span>
             </div>
             <div className="relay-intel-rule" />

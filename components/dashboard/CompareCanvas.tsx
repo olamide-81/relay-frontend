@@ -5,7 +5,7 @@ import { useSearchParams } from 'next/navigation'
 import { Link } from '@/i18n/navigation'
 import { useWeighting } from '@/components/dashboard/WeightingContext'
 import { computeScore } from '@/lib/relay/score'
-import { formatFeeFromBps, formatDurationMinutes } from '@/lib/relay/format'
+import { formatFee, feeFromProvider, formatSettle } from '@/lib/relay/format'
 import { useCatalog } from '@/components/dashboard/CatalogContext'
 import { useCompareTray } from '@/components/dashboard/compare/CompareTrayContext'
 import type { Provider } from '@/lib/relay/types'
@@ -22,16 +22,16 @@ type Criterion = {
 
 const CRITERIA: Criterion[] = [
   {
-    label: 'Fee (EU→LATAM)',
+    label: 'Fee',
     kind: 'min',
-    value: (p) => p.feeFromBps,
-    display: (p) => formatFeeFromBps(p.feeFromBps),
+    value: (p) => p.feeFixedAmount ?? p.feeFromBps,
+    display: (p) => formatFee(feeFromProvider(p), true),
   },
   {
-    label: 'Median settlement',
+    label: 'How fast it settles',
     kind: 'min',
     value: (p) => p.medianSettleMinutes,
-    display: (p) => p.settleLabel || formatDurationMinutes(p.medianSettleMinutes),
+    display: (p) => formatSettle(p.medianSettleMinutes, p.settleLabel),
   },
   {
     label: 'Corridors in scope',

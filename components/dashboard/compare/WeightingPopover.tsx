@@ -6,10 +6,10 @@ import { usePlan } from '@/components/dashboard/PlanContext'
 import { useGate } from '@/components/dashboard/gate/GateContext'
 import type { Weighting } from '@/lib/relay/types'
 
-const ROWS: { key: keyof Weighting; label: string }[] = [
-  { key: 'feePct', label: 'Fee' },
-  { key: 'settlePct', label: 'Settlement speed' },
-  { key: 'licencePct', label: 'Licence coverage' },
+const ROWS: { key: keyof Weighting; label: string; hint: string }[] = [
+  { key: 'feePct', label: 'Lower fees', hint: 'Percent of value, fixed, or tiered' },
+  { key: 'settlePct', label: 'Faster settlement', hint: 'How quickly money actually lands' },
+  { key: 'licencePct', label: 'Licence coverage', hint: 'Where they are allowed to operate' },
 ]
 
 export function useOpenWeighting() {
@@ -26,7 +26,7 @@ export function useOpenWeighting() {
 }
 
 export function WeightingPopover() {
-  const { weighting, setWeighting, open, setOpen } = useWeighting()
+  const { weighting, setWeighting, saving, open, setOpen } = useWeighting()
   const ref = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -71,7 +71,10 @@ export function WeightingPopover() {
       {ROWS.map((row) => (
         <div className="relay-wpop-row" key={row.key}>
           <div className="relay-wpop-lab">
-            <label htmlFor={`wpop-${row.key}`}>{row.label}</label>
+            <label htmlFor={`wpop-${row.key}`}>
+              {row.label}
+              <span>{row.hint}</span>
+            </label>
             <output>{weighting[row.key]}%</output>
           </div>
           <input
@@ -85,7 +88,7 @@ export function WeightingPopover() {
         </div>
       ))}
       <p className="relay-wpop-note">
-        Changing weights re-sorts the list and every score in Relay. Saved per shortlist.
+        {saving ? 'Saving to your account…' : 'Saved to your account. Every score in Directory, Compare and Shortlists uses this mix.'}
       </p>
     </div>
   )

@@ -37,7 +37,7 @@ export default function LandingDashboardPreview() {
     { label: 'OPEN REQUESTS', v: '0', note: 'none yet', tone: 'muted' as const },
     { label: 'SHORTLISTED', v: '0', note: 'across 0 lists', tone: 'muted' as const },
     { label: 'MEDIAN PAYOUT FEE', v: '—', note: 'from catalog', tone: 'muted' as const },
-    { label: 'LISTED PROVIDERS', v: String(providers.length), note: 'from admin', tone: 'muted' as const },
+    { label: 'IN DIRECTORY', v: String(providers.length), note: 'ready to compare', tone: 'muted' as const },
   ]
   const rail = [
     { name: 'Overview', n: '', on: true },

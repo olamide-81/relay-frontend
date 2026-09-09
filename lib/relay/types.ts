@@ -2,6 +2,14 @@ export type Category = 'payouts' | 'collections' | 'fx' | 'other'
 
 export type LicenceKind = 'EMI' | 'MTL' | 'MPI' | 'FCA_API' | 'MSB' | 'PSP' | 'SVF'
 
+export type FeeKind = 'percent' | 'fixed' | 'tiered' | 'mixed'
+
+export type FeeTier = {
+  upToUsd: number | null
+  feePercentBps?: number | null
+  feeFixedAmount?: number | null
+}
+
 export type TopBarSection = 'Overview' | 'Directory' | 'Compare' | 'Shortlists' | 'Requests'
 
 export type RailSection = 'Overview' | 'Directory' | 'Shortlists' | 'Requests' | 'Intelligence'
@@ -32,7 +40,12 @@ export interface Provider {
   licenceLabel: string
   licenceModel: string
   regions: CorridorRegion[]
+  feeKind?: FeeKind
   feeFromBps: number
+  feePercentBps?: number | null
+  feeFixedAmount?: number | null
+  feeFixedCurrency?: string
+  feeTiers?: FeeTier[]
   medianSettleMinutes: number
   settleLabel: string
   corridorCount: number

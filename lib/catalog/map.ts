@@ -1,4 +1,5 @@
-import type { Category, CorridorRegion, LicenceKind, Provider } from '@/lib/relay/types'
+import type { Category, CorridorRegion, FeeKind, FeeTier, LicenceKind, Provider } from '@/lib/relay/types'
+import { formatSettle } from '@/lib/relay/format'
 
 export type CatalogRecord = {
   id: string
@@ -38,6 +39,11 @@ export type CatalogRecord = {
   onboardingRequirements?: string[]
   minimumCommitment?: string
   feeFromBps?: number
+  feeKind?: FeeKind
+  feePercentBps?: number
+  feeFixedAmount?: number
+  feeFixedCurrency?: string
+  feeTiers?: FeeTier[]
   medianSettleMinutes?: number
   settleLabel?: string
   licenceLabel?: string
@@ -105,9 +111,14 @@ export function toUiProvider(record: CatalogRecord): Provider {
     licenceLabel,
     licenceModel: record.licenceModel || licenceLabel,
     regions: mapRegions(record.regions),
-    feeFromBps: record.feeFromBps ?? 0,
+    feeKind: (record.feeKind as FeeKind) || (record.feeTiers?.length ? 'tiered' : record.feeFixedAmount ? 'fixed' : 'percent'),
+    feeFromBps: record.feeFromBps ?? record.feePercentBps ?? 0,
+    feePercentBps: record.feePercentBps ?? record.feeFromBps ?? null,
+    feeFixedAmount: record.feeFixedAmount ?? null,
+    feeFixedCurrency: record.feeFixedCurrency || 'USD',
+    feeTiers: record.feeTiers ?? [],
     medianSettleMinutes: record.medianSettleMinutes ?? 0,
-    settleLabel: record.settleLabel || record.settlementWindow || '—',
+    settleLabel: formatSettle(record.medianSettleMinutes, record.settleLabel || record.settlementWindow),
     corridorCount,
     corridorFitPct: corridorCount ? Math.min(100, Math.round((corridorCount / Math.max(corridorCount, 6)) * 100)) : 0,
     corridorsInScope: corridors.length || corridorCount,
