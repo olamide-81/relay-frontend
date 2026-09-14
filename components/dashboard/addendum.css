@@ -1934,3 +1934,16 @@ a.relay-btn--outline-ink {
 .relay-row--inv {
   grid-template-columns: 1fr 1fr 0.9fr 0.7fr;
 }
+
+@media (max-width: 900px) {
+  .relay-tray {
+    margin-left: -16px;
+    margin-right: -16px;
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .relay-tray-hint {
+    display: none;
+  }
+}

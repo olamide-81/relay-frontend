@@ -50,7 +50,7 @@ function DashboardFrame({ children }: { children: React.ReactNode }) {
   const trayOn = showCompareTray(pathname) && ids.length > 0
 
   return (
-    <div className={`relay${gate ? ' relay--paywall' : ''}`}>
+    <div className={`relay relay--shell${gate ? ' relay--paywall' : ''}`}>
       <div className="relay-glow" />
       <div className="relay-paywall-blur">
         <TopBar active={top} />
@@ -84,16 +84,22 @@ export default function DashboardShell({ children }: { children: React.ReactNode
   }, [ready, user?.id, refresh])
 
   useEffect(() => {
-    const prev = document.body.style.background
+    const prevBg = document.body.style.background
+    const prevBodyOverflow = document.body.style.overflow
+    const prevHtmlOverflow = document.documentElement.style.overflow
     document.body.style.background = '#0A0A0B'
+    document.body.style.overflow = 'hidden'
+    document.documentElement.style.overflow = 'hidden'
     return () => {
-      document.body.style.background = prev
+      document.body.style.background = prevBg
+      document.body.style.overflow = prevBodyOverflow
+      document.documentElement.style.overflow = prevHtmlOverflow
     }
   }, [])
 
   if (!ready || !user) {
     return (
-      <div className="relay relay--boot">
+      <div className="relay relay--shell relay--boot">
         <p>Loading…</p>
       </div>
     )

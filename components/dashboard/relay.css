@@ -41,7 +41,8 @@
   position: relative;
   min-height: 100vh;
   min-height: 100dvh;
-  min-width: 1600px;
+  min-width: 0;
+  width: 100%;
   display: flex;
   flex-direction: column;
   color: var(--text);
@@ -50,6 +51,13 @@
   font-size: 14px;
   font-weight: 500;
   -webkit-font-smoothing: antialiased;
+}
+
+.relay--shell {
+  height: 100dvh;
+  max-height: 100dvh;
+  overflow: hidden;
+  overscroll-behavior: none;
 }
 
 .relay--boot {
@@ -101,6 +109,8 @@
   padding: 22px 34px;
   border-bottom: 1px solid var(--hairline);
   box-sizing: border-box;
+  min-width: 0;
+  width: 100%;
 }
 
 .relay-logo {
@@ -134,6 +144,15 @@
   border-radius: 999px;
   background: var(--fill-1);
   border: 1px solid rgba(255, 255, 255, 0.06);
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.relay-pills::-webkit-scrollbar {
+  display: none;
 }
 
 .relay-pill {
@@ -149,6 +168,7 @@
   font-size: 13.5px;
   border: none;
   cursor: pointer;
+  flex: none;
 }
 
 .relay-pill:hover {
@@ -195,8 +215,9 @@ a.relay-pill.relay-pill--on {
 }
 
 .relay-search {
-  flex: 1;
+  flex: 1 1 180px;
   max-width: 360px;
+  min-width: 0;
   display: flex;
   align-items: center;
   gap: 11px;
@@ -273,6 +294,7 @@ a.relay-pill.relay-pill--on {
   display: flex;
   align-items: center;
   gap: 10px;
+  flex: none;
 }
 
 .relay-bell {
@@ -522,6 +544,7 @@ a.relay-pill.relay-pill--on {
   min-height: 0;
   display: flex;
   position: relative;
+  overflow: hidden;
 }
 
 .relay-rail {
@@ -534,6 +557,8 @@ a.relay-pill.relay-pill--on {
   padding: 30px 24px 30px 34px;
   border-right: 1px solid rgba(255, 255, 255, 0.06);
   box-sizing: border-box;
+  min-height: 0;
+  overflow: hidden;
 }
 
 .relay-rail-label {
@@ -652,13 +677,15 @@ a.relay-pill.relay-pill--on {
   display: flex;
   flex-direction: column;
   overflow: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
   position: relative;
   z-index: 1;
 }
 
 .relay-page {
-  flex: 1;
-  min-height: 0;
+  flex: 1 0 auto;
+  min-height: auto;
   display: flex;
   flex-direction: column;
   gap: 22px;
@@ -679,6 +706,11 @@ a.relay-pill.relay-pill--on {
   display: flex;
   align-items: flex-end;
   gap: 18px;
+  min-width: 0;
+}
+
+.relay-hd > div:first-child {
+  min-width: 0;
 }
 
 .relay-hd-title {
@@ -701,6 +733,8 @@ a.relay-pill.relay-pill--on {
   display: flex;
   gap: 10px;
   flex: none;
+  flex-wrap: wrap;
+  justify-content: flex-end;
 }
 
 .relay-crumb {
@@ -921,11 +955,11 @@ button.relay-btn--lime {
 }
 
 .relay-kpi--4 {
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
 .relay-kpi--5 {
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(5, minmax(0, 1fr));
 }
 
 .relay-kpi-tile {
@@ -1037,7 +1071,7 @@ button.relay-btn--lime {
 
 .relay-cats {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 14px;
   margin-top: 22px;
 }
@@ -3046,6 +3080,86 @@ a.relay-featured-btn {
 
 .intro-success {
   color: var(--accent-text);
+}
+
+@media (max-width: 1200px) {
+  .relay-topbar {
+    gap: 14px;
+    padding: 16px 22px;
+    height: auto;
+    min-height: 72px;
+  }
+
+  .relay-search kbd {
+    display: none;
+  }
+
+  .relay-account-label {
+    display: none;
+  }
+
+  .relay-account {
+    padding: 5px;
+  }
+
+  .relay-main {
+    padding: 24px 22px;
+  }
+
+  .relay-rail {
+    width: 220px;
+    padding: 24px 16px 24px 22px;
+  }
+
+  .relay-kpi--4,
+  .relay-kpi--5,
+  .relay-cats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 900px) {
+  .relay-topbar {
+    flex-wrap: wrap;
+    row-gap: 10px;
+    padding: 14px 16px;
+  }
+
+  .relay-search {
+    order: 4;
+    flex: 1 1 100%;
+    max-width: none;
+  }
+
+  .relay-pills {
+    flex: 1 1 0;
+  }
+
+  .relay-main {
+    padding: 20px 16px 28px;
+  }
+
+  .relay-hd {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .relay-kpi--4,
+  .relay-kpi--5,
+  .relay-cats {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 720px) {
+  .relay-rail {
+    display: none;
+  }
+
+  .relay-pill {
+    padding: 8px 13px;
+    font-size: 13px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
