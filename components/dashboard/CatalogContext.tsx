@@ -4,7 +4,7 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useState } 
 import { listCatalog } from '@/lib/catalog/api'
 import { toUiProvider, type CatalogRecord } from '@/lib/catalog/map'
 import type { Category, CategoryCardData, Provider } from '@/lib/relay/types'
-import { formatFee, feeFromProvider, formatSettle } from '@/lib/relay/format'
+import { commercialsSummary, commercialPackages, formatSettle } from '@/lib/relay/format'
 
 type CatalogValue = {
   records: CatalogRecord[]
@@ -25,7 +25,7 @@ const CAT_COPY: Record<Category, { name: string; short: string }> = {
   other: { name: 'Others', short: 'Banking, cards, identity, compliance' },
 }
 
-function cardsFrom(providers: Provider[]): CategoryCardData[] {
+export function cardsFrom(providers: Provider[]): CategoryCardData[] {
   return (Object.keys(CAT_COPY) as Category[]).map((id, i) => {
     const list = providers.filter((p) => p.category === id)
     const cheapest = [...list].sort((a, b) => {
@@ -39,7 +39,7 @@ function cardsFrom(providers: Provider[]): CategoryCardData[] {
       name: CAT_COPY[id].name,
       short: CAT_COPY[id].short,
       n: list.length,
-      feeFrom: cheapest ? formatFee(feeFromProvider(cheapest), true) : '—',
+      feeFrom: cheapest ? commercialsSummary(commercialPackages(cheapest)).headline : '—',
       settle: fastest ? formatSettle(fastest.medianSettleMinutes, fastest.settleLabel) : '—',
       live: list.length ? `${list.length} in directory` : 'None yet',
       delta: '—',

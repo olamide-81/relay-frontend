@@ -1,4 +1,13 @@
-import type { Category, CorridorRegion, FeeKind, FeeTier, LicenceKind, Provider } from '@/lib/relay/types'
+import type {
+  Category,
+  CommercialPackage,
+  CorridorRegion,
+  FeeKind,
+  FeeTier,
+  LicenceKind,
+  Provider,
+  SharedBenefit,
+} from '@/lib/relay/types'
 import { formatSettle } from '@/lib/relay/format'
 
 export type CatalogRecord = {
@@ -58,6 +67,8 @@ export type CatalogRecord = {
   corridorCount?: number
   feeTable?: Array<{ label: string; amount: string; notes?: string }>
   rateCard?: Array<{ metric: string; value: string; notes?: string }>
+  commercials?: CommercialPackage[]
+  sharedBenefits?: SharedBenefit[]
 }
 
 const REGIONS = new Set<CorridorRegion>([
@@ -117,6 +128,9 @@ export function toUiProvider(record: CatalogRecord): Provider {
     feeFixedAmount: record.feeFixedAmount ?? null,
     feeFixedCurrency: record.feeFixedCurrency || 'USD',
     feeTiers: record.feeTiers ?? [],
+    feeTable: record.feeTable ?? [],
+    commercials: record.commercials ?? [],
+    sharedBenefits: record.sharedBenefits ?? [],
     medianSettleMinutes: record.medianSettleMinutes ?? 0,
     settleLabel: formatSettle(record.medianSettleMinutes, record.settleLabel || record.settlementWindow),
     corridorCount,

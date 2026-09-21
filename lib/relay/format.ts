@@ -1,4 +1,4 @@
-import type { RequestStatus } from './types'
+import type { CommercialPackage, RequestStatus } from './types'
 
 export type FeeKind = 'percent' | 'fixed' | 'tiered' | 'mixed'
 
@@ -107,6 +107,61 @@ export function formatFeeKind(kind?: FeeKind | null) {
   if (kind === 'tiered') return 'Tiered by value'
   if (kind === 'mixed') return 'Percent + fixed'
   return '% of transfer value'
+}
+
+export function commercialPackages(
+  p: Parameters<typeof feeFromProvider>[0] & {
+    commercials?: CommercialPackage[] | null
+    feeTable?: Array<{ label: string; amount: string; notes?: string }> | null
+    feeKind?: FeeKind | null
+  }
+): CommercialPackage[] {
+  if (p.commercials?.length) return p.commercials
+  const table = p.feeTable ?? []
+  if (table.length) {
+    return [
+      {
+        name: 'Published rates',
+        kicker: table[0].label,
+        headline: table[0].amount,
+        headlineNote: table[0].notes,
+        lines: table.map((row) => ({ label: row.label, value: row.amount, note: row.notes })),
+      },
+    ]
+  }
+  const headline = formatFee(feeFromProvider(p), true)
+  if (headline === '—') return []
+  return [
+    {
+      name: 'Published rate',
+      kicker: formatFeeKind(p.feeKind),
+      headline,
+      lines: [],
+    },
+  ]
+}
+
+export function commercialsSummary(packages: CommercialPackage[]) {
+  if (!packages.length) return { headline: '—', sub: '', more: 0 }
+  const first = packages[0]
+  const names = packages.map((pkg) => pkg.name).filter(Boolean)
+  if (packages.length > 1) {
+    return {
+      headline: first.headline,
+      sub: names.slice(0, 4).join(' · '),
+      more: Math.max(0, packages.length - 1),
+    }
+  }
+  const extraLines = Math.max(0, first.lines.length - 1)
+  const second = first.lines[1]
+  const secondLabel = second?.currency
+    ? `${second.currency} ${second.value}`
+    : second?.value
+  return {
+    headline: first.headline,
+    sub: secondLabel || first.headlineNote || first.kicker || '',
+    more: extraLines,
+  }
 }
 
 export function formatSettle(minutes?: number | null, raw?: string | null): string {

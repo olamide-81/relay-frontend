@@ -5,7 +5,7 @@ import { useSearchParams } from 'next/navigation'
 import { Link } from '@/i18n/navigation'
 import { useWeighting } from '@/components/dashboard/WeightingContext'
 import { computeScore } from '@/lib/relay/score'
-import { formatFee, feeFromProvider, formatSettle } from '@/lib/relay/format'
+import { commercialsSummary, commercialPackages, formatSettle } from '@/lib/relay/format'
 import { useCatalog } from '@/components/dashboard/CatalogContext'
 import { useCompareTray } from '@/components/dashboard/compare/CompareTrayContext'
 import type { Provider } from '@/lib/relay/types'
@@ -22,10 +22,10 @@ type Criterion = {
 
 const CRITERIA: Criterion[] = [
   {
-    label: 'Fee',
+    label: 'Commercials',
     kind: 'min',
     value: (p) => p.feeFixedAmount ?? p.feeFromBps,
-    display: (p) => formatFee(feeFromProvider(p), true),
+    display: (p) => commercialsSummary(commercialPackages(p)).headline,
   },
   {
     label: 'How fast it settles',
@@ -38,13 +38,6 @@ const CRITERIA: Criterion[] = [
     kind: 'max',
     value: (p) => p.corridorsInScope,
     display: (p) => `${p.corridorsInScope} of ${p.corridorsScopeTotal}`,
-  },
-  {
-    label: 'Licence model',
-    kind: 'prefer',
-    value: () => 0,
-    display: (p) => p.licenceModel,
-    prefer: (p) => p.licenceModel === 'EMI direct',
   },
   {
     label: 'Payout success rate',
@@ -98,7 +91,7 @@ export default function CompareCanvas() {
       </div>
 
       {cols.length < 2 ? (
-        <p className="relay-empty-hint">Select at least two providers in Directory to compare fees, settlement and licences.</p>
+        <p className="relay-empty-hint">Select at least two providers in Directory to compare commercials and settlement.</p>
       ) : (
       <div className="relay-matrix">
         <div className="relay-matrix-head" style={grid}>

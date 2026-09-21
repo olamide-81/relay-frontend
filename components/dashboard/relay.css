@@ -656,17 +656,41 @@ a.relay-pill.relay-pill--on {
 
 .relay-rail-live {
   margin-top: auto;
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  padding: 0 12px;
+  padding: 0 8px 4px;
 }
 
-.relay-rail-live span {
-  font-weight: 400;
-  font-size: 11px;
-  color: rgba(255, 255, 255, 0.35);
-  white-space: nowrap;
+.relay-rail-live-card {
+  width: 100%;
+  padding: 14px 14px 13px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  display: grid;
+  gap: 2px;
+}
+
+.relay-rail-live-top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.38);
+}
+
+.relay-rail-live-card strong {
+  font-weight: 500;
+  font-size: 28px;
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+  color: #f5f5f3;
+}
+
+.relay-rail-live-card em {
+  font-style: normal;
+  font-size: 11.5px;
+  color: rgba(255, 255, 255, 0.42);
 }
 
 .relay-main {
@@ -1631,7 +1655,7 @@ a.relay-row {
 }
 
 .relay-th--dir {
-  grid-template-columns: 18px 2.2fr 0.8fr 0.8fr 1.1fr 1.2fr 70px;
+  grid-template-columns: 18px 2.2fr 1.35fr 0.9fr 1.1fr 70px;
   gap: 20px;
   padding: 16px 28px;
   border-bottom: 1px solid var(--hairline);
@@ -1639,7 +1663,7 @@ a.relay-row {
 }
 
 .relay-row--dir {
-  grid-template-columns: 18px 2.2fr 0.8fr 0.8fr 1.1fr 1.2fr 70px;
+  grid-template-columns: 18px 2.2fr 1.35fr 0.9fr 1.1fr 70px;
   gap: 20px;
   padding: 18px 28px;
   min-height: 72px;

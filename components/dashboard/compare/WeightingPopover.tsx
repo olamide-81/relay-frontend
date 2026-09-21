@@ -7,9 +7,8 @@ import { useGate } from '@/components/dashboard/gate/GateContext'
 import type { Weighting } from '@/lib/relay/types'
 
 const ROWS: { key: keyof Weighting; label: string; hint: string }[] = [
-  { key: 'feePct', label: 'Lower fees', hint: 'Percent of value, fixed, or tiered' },
+  { key: 'feePct', label: 'Lower commercials', hint: 'The published packages, not a single headline fee' },
   { key: 'settlePct', label: 'Faster settlement', hint: 'How quickly money actually lands' },
-  { key: 'licencePct', label: 'Licence coverage', hint: 'Where they are allowed to operate' },
 ]
 
 export function useOpenWeighting() {

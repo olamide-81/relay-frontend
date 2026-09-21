@@ -39,7 +39,7 @@ export function GateProvider({ children }: { children: React.ReactNode }) {
   const openGate = useCallback(
     (id: GateId, vars?: GateVars) => {
       if (id !== 'seats.invite' && isPro) return false
-      if (id === 'seats.invite' && plan === 'team') return false
+      if (id === 'seats.invite' && plan === 'proMax') return false
       const shown = readShown()
       if (shown.includes(id)) return false
       writeShown([...shown, id])

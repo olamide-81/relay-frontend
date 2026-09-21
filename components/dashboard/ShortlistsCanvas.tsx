@@ -3,7 +3,8 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link } from '@/i18n/navigation'
 import { LiveDot } from '@/components/dashboard/ui/LiveDot'
-import { feeFromProvider, formatFee, statusLabel } from '@/lib/relay/format'
+import { commercialPackages, statusLabel } from '@/lib/relay/format'
+import { CommercialsCompact } from '@/components/dashboard/ui/Commercials'
 import { useCatalog } from '@/components/dashboard/CatalogContext'
 import { chaseShortlist, createShortlist, listShortlists, type ShortlistDoc } from '@/lib/api/workspace'
 import type { Shortlist } from '@/lib/relay/types'
@@ -195,7 +196,7 @@ export default function ShortlistsCanvas() {
           <>
           <div className="relay-th relay-th--rfp2">
             <span>PROVIDER</span>
-            <span>FEE</span>
+            <span>COMMERCIALS</span>
             <span>SETTLE</span>
             <span>STATUS</span>
             <span style={{ textAlign: 'right' }}>NEXT</span>
@@ -218,11 +219,9 @@ export default function ShortlistsCanvas() {
                 <div className="relay-row relay-row--rfp2" key={entry.slug}>
                   <div>
                     <div className="relay-prov-name">{p.name}</div>
-                    <div className="relay-meta">
-                      {p.hq.split(',')[0]} · {p.licenceModel}
-                    </div>
+                    <div className="relay-meta">{p.hq.split(',')[0]}</div>
                   </div>
-                  <span className="relay-fee">{formatFee(feeFromProvider({ feeFromBps: entry.feeBps, feeKind: 'percent' }), true)}</span>
+                  <CommercialsCompact packages={commercialPackages(p)} />
                   <span className="relay-settle">{p.settleLabel}</span>
                   <div className="relay-status">
                     <span className="relay-status-dot" style={{ background: stFg }} />

@@ -1,9 +1,9 @@
 import type { Provider, Weighting } from './types'
 
 export const DEFAULT_WEIGHTING: Weighting = {
-  feePct: 40,
-  settlePct: 30,
-  licencePct: 30,
+  feePct: 55,
+  settlePct: 45,
+  licencePct: 0,
 }
 
 export function computeScore(provider: Provider, weighting: Weighting): number {
@@ -24,6 +24,8 @@ export function sortByScore<T extends Provider>(providers: T[], weighting: Weigh
 export function clampWeighting(next: Weighting): Weighting {
   const feePct = Math.max(0, Math.min(100, Math.round(next.feePct)))
   const settlePct = Math.max(0, Math.min(100, Math.round(next.settlePct)))
-  const licencePct = Math.max(0, 100 - feePct - settlePct)
-  return { feePct, settlePct, licencePct }
+  const pair = feePct + settlePct
+  if (pair <= 0) return { ...DEFAULT_WEIGHTING }
+  const nextFee = Math.round((feePct / pair) * 100)
+  return { feePct: nextFee, settlePct: Math.max(0, 100 - nextFee), licencePct: 0 }
 }

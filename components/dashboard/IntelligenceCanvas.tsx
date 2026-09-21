@@ -1,25 +1,26 @@
 'use client'
 
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import { Link } from '@/i18n/navigation'
-import { useCatalog } from '@/components/dashboard/CatalogContext'
+import { CheckBox } from '@/components/dashboard/ui/CheckBox'
+import { CommercialsCompact } from '@/components/dashboard/ui/Commercials'
+import { CatalogCap } from '@/components/dashboard/ui/CatalogCap'
 import { EmptyState } from '@/components/dashboard/ui/EmptyState'
-import type { NewsItem } from '@/lib/relay/types'
-
-type Filter = 'All' | 'Regulation' | 'Pricing'
+import { useWeighting } from '@/components/dashboard/WeightingContext'
+import { useCompareTray } from '@/components/dashboard/compare/CompareTrayContext'
+import { useOpenWeighting } from '@/components/dashboard/compare/WeightingPopover'
+import { useVisibleProviders } from '@/hooks/useVisibleProviders'
+import { computeScore, sortByScore } from '@/lib/relay/score'
+import { commercialPackages } from '@/lib/relay/format'
 
 export default function IntelligenceCanvas() {
-  const [filter, setFilter] = useState<Filter>('All')
-  const [following, setFollowing] = useState(false)
-  const { providers } = useCatalog()
-  const newsItems: NewsItem[] = []
-  const feeIndex: number[] = []
+  const { weighting } = useWeighting()
+  const { has, toggle, ids, setAll } = useCompareTray()
+  const openWeighting = useOpenWeighting()
+  const { providers, catalogTotal, hiddenCount, capped, compareSlots, loading } = useVisibleProviders()
 
-  const rows = useMemo(() => {
-    if (filter === 'Regulation') return newsItems.filter((n) => n.kind === 'REGULATION')
-    if (filter === 'Pricing') return newsItems.filter((n) => n.kind === 'PRICING')
-    return newsItems
-  }, [filter])
+  const ranked = useMemo(() => sortByScore(providers, weighting), [providers, weighting])
+  const selectedHere = ids.filter((id) => ranked.some((p) => p.slug === id))
 
   return (
     <div className="relay-page relay-page--intelligence">
@@ -27,119 +28,100 @@ export default function IntelligenceCanvas() {
         <div>
           <h1 className="relay-hd-title">Intelligence</h1>
           <div className="relay-hd-sub">
-            {providers.length
-              ? `Fee indices and market notes for ${providers.length} providers`
-              : 'Market notes appear as the directory grows'}
+            {loading
+              ? 'Loading the live catalog…'
+              : catalogTotal
+                ? `Ranked from the live catalog · compare up to ${compareSlots}`
+                : 'Providers appear here as they go live'}
           </div>
         </div>
         <div className="relay-hd-actions">
-          <button
-            type="button"
-            className="relay-btn relay-btn--outline"
-            onClick={() => setFollowing((v) => !v)}
-          >
-            {following ? 'Following corridors' : 'Follow my corridors'}
+          <button type="button" className="relay-btn relay-btn--outline" onClick={openWeighting}>
+            Edit weighting
           </button>
-        </div>
-      </div>
-
-      <div className="relay-intel-top">
-        <div className="relay-featured">
-          <div className="relay-featured-kicker">MARKET MAP · 28 MIN READ</div>
-          <h2>
-            The world moves $35 trillion a day. Fintech handles a tenth of it — and the payout layer compounds
-            fastest.
-          </h2>
-          <div className="relay-featured-foot">
-            <Link href="/dashboard/intelligence/fintech-35-trillion-daily" className="relay-featured-btn">
-              Read the map
+          {selectedHere.length >= 2 ? (
+            <Link
+              href={`/dashboard/compare?ids=${selectedHere.join(',')}`}
+              className="relay-btn relay-btn--lime"
+              onClick={() => setAll(selectedHere)}
+            >
+              Compare {selectedHere.length}
             </Link>
-            <span className="relay-featured-meta">Published 21 Aug · covers 14 markets</span>
-          </div>
-        </div>
-        <div className="relay-index">
-          <div className="relay-index-head">
-            Fee index · your corridors
-            <span>90 DAYS</span>
-          </div>
-          <div className="relay-index-bars" aria-hidden>
-            {feeIndex.length === 0 ? (
-              <EmptyState
-                kind="intel"
-                compact
-                title="Fee index is quiet"
-                body="Corridor fee history fills in as listed providers report pricing."
-              />
-            ) : (
-              feeIndex.map((h, i) => (
-              <div
-                key={i}
-                className={`relay-index-bar${i > 10 ? ' relay-index-bar--lime' : ''}`}
-                style={{ height: `${h}%` }}
-              />
-            ))
-            )}
-          </div>
-          <div className="relay-index-foot">
-            <div>
-              <strong>+11 bps</strong>
-              <span>EU→LATAM</span>
-            </div>
-            <div>
-              <strong>−4 bps</strong>
-              <span>US→APAC</span>
-            </div>
-            <Link href="/dashboard/providers?category=payouts" className="relay-link" style={{ marginLeft: 'auto', alignSelf: 'flex-end' }}>
-              See affected providers →
-            </Link>
-          </div>
+          ) : null}
         </div>
       </div>
 
-      <div className="relay-panel relay-panel--20 relay-week">
-        <div className="relay-week-head">
-          <span>This week</span>
-          <div className="relay-toggle">
-            {(['All', 'Regulation', 'Pricing'] as Filter[]).map((f) => (
-              <button
-                key={f}
-                type="button"
-                className={filter === f ? 'relay-toggle--on' : ''}
-                onClick={() => setFilter(f)}
-              >
-                {f}
-              </button>
-            ))}
-          </div>
-          <span className="relay-week-filter">From your catalog</span>
-        </div>
-        <div className="relay-rows">
-          {rows.length === 0 ? (
-            <EmptyState
-              kind="intel"
-              compact
-              title="No notes this week"
-              body="Regulation and pricing items will appear here as the catalog moves. Follow corridors to get a tighter feed."
-            />
-          ) : (
-            rows.map((n) => <NewsRow key={n.title} item={n} />)
-          )}
-        </div>
-      </div>
-    </div>
-  )
-}
+      {capped ? <CatalogCap visible={ranked.length} total={catalogTotal} compareSlots={compareSlots} /> : null}
 
-function NewsRow({ item }: { item: NewsItem }) {
-  return (
-    <div className="relay-news-row">
-      <span className={`relay-news-kind relay-news-kind--${item.kind}`}>{item.kind}</span>
-      <div>
-        <div className="relay-news-title">{item.title}</div>
-        <div className="relay-news-meta">{item.meta}</div>
+      <div className="relay-panel relay-panel--dir">
+        <div className="relay-dir-head">
+          <div>
+            <div className="relay-dir-title">Provider list</div>
+            <div className="relay-dir-sub">
+              {capped
+                ? `Showing ${ranked.length} of ${catalogTotal} live · pick up to ${compareSlots} to compare`
+                : `${ranked.length} live · scored with your weighting`}
+            </div>
+          </div>
+        </div>
+
+        {ranked.length === 0 ? (
+          <EmptyState
+            kind="intel"
+            compact
+            title={loading ? 'Loading providers' : 'No providers live yet'}
+            body="Intelligence ranks the same catalog the directory uses. Nothing here is a placeholder."
+          />
+        ) : (
+          <>
+            <div className="relay-th relay-th--dir">
+              <span />
+              <span>PROVIDER</span>
+              <span>COMMERCIALS</span>
+              <span>SETTLE</span>
+              <span>COVERAGE</span>
+              <span style={{ textAlign: 'right' }}>SCORE</span>
+            </div>
+            <div className="relay-rows">
+              {ranked.map((p, i) => {
+                const on = has(p.slug)
+                const score = computeScore(p, weighting)
+                return (
+                  <div key={p.slug} className={`relay-row relay-row--dir${on ? ' relay-row--tray' : ''}`}>
+                    <CheckBox checked={on} label={`Select ${p.name}`} onChange={() => toggle(p.slug)} />
+                    <div>
+                      <Link href={`/dashboard/intelligence/${p.slug}`} className="relay-prov-name">
+                        <span>
+                          {i + 1}. {p.name}
+                        </span>
+                        {on ? <span className="relay-flag relay-flag--lime">IN TRAY</span> : null}
+                      </Link>
+                      <div className="relay-meta">
+                        {p.hq}
+                        {p.regions.length ? ` · ${p.regions.slice(0, 3).join(', ')}` : ''}
+                      </div>
+                    </div>
+                    <CommercialsCompact packages={commercialPackages(p)} />
+                    <span className="relay-settle">{p.settleLabel}</span>
+                    <span className="relay-settle">{p.regions[0] || '—'}</span>
+                    <span className="relay-dir-score">{score}</span>
+                  </div>
+                )
+              })}
+              <div className="relay-table-foot">
+                <span>
+                  {ranked.length} visible
+                  {hiddenCount ? ` · ${hiddenCount} more on Pro` : ' · live catalog'}
+                  {` · ${selectedHere.length} of ${compareSlots} in compare`}
+                </span>
+                <Link href="/dashboard/providers" className="relay-link">
+                  Open directory →
+                </Link>
+              </div>
+            </div>
+          </>
+        )}
       </div>
-      <span className="relay-news-affects">{item.affects}</span>
-      <span className="relay-news-when">{item.when}</span>
     </div>
   )
 }

@@ -8,8 +8,10 @@ import { useWeighting } from '@/components/dashboard/WeightingContext'
 import { useCompareTray } from '@/components/dashboard/compare/CompareTrayContext'
 import { useOpenWeighting } from '@/components/dashboard/compare/WeightingPopover'
 import { computeScore, sortByScore } from '@/lib/relay/score'
-import { feeFromProvider, formatFee } from '@/lib/relay/format'
-import { useCatalog } from '@/components/dashboard/CatalogContext'
+import { commercialPackages } from '@/lib/relay/format'
+import { CommercialsCompact } from '@/components/dashboard/ui/Commercials'
+import { CatalogCap } from '@/components/dashboard/ui/CatalogCap'
+import { useVisibleProviders } from '@/hooks/useVisibleProviders'
 import type { Category, CorridorRegion } from '@/lib/relay/types'
 
 type View = 'table' | 'cards'
@@ -39,7 +41,7 @@ export default function DirectoryCanvas() {
   const { weighting } = useWeighting()
   const { has, toggle, selectMany } = useCompareTray()
   const openWeighting = useOpenWeighting()
-  const { providers, loading } = useCatalog()
+  const { providers, catalogTotal, capped, compareSlots, loading } = useVisibleProviders()
   const q = (searchParams.get('q') ?? '').trim().toLowerCase()
   const initialCat = (searchParams.get('category') as Category) || 'payouts'
 
@@ -63,7 +65,6 @@ export default function DirectoryCanvas() {
       list = list.filter(
         (p) =>
           p.name.toLowerCase().includes(q) ||
-          p.licenceLabel.toLowerCase().includes(q) ||
           p.hq.toLowerCase().includes(q)
       )
     }
@@ -87,10 +88,12 @@ export default function DirectoryCanvas() {
         </div>
         <div className="relay-hd-actions">
           <button type="button" className="relay-weight-btn" onClick={openWeighting}>
-            Weighting · fee {weighting.feePct} / settle {weighting.settlePct} / licence {weighting.licencePct}
+            Weighting · fee {weighting.feePct} / settle {weighting.settlePct}
           </button>
         </div>
       </div>
+
+      {capped ? <CatalogCap visible={providers.length} total={catalogTotal} compareSlots={compareSlots} /> : null}
 
       <div className="relay-filters">
         <FilterChip
@@ -156,9 +159,8 @@ export default function DirectoryCanvas() {
                 onChange={(next) => selectMany(shownSlugs, next)}
               />
               <span>PROVIDER</span>
-              <span>FEE</span>
+              <span>COMMERCIALS</span>
               <span>SETTLE</span>
-              <span>LICENCES</span>
               <span>CORRIDOR FIT</span>
               <span style={{ textAlign: 'right' }}>SCORE</span>
             </div>
@@ -188,9 +190,8 @@ export default function DirectoryCanvas() {
                       </Link>
                       <div className="relay-meta">{p.hq}</div>
                     </div>
-                    <span className="relay-fee">{formatFee(feeFromProvider(p), true)}</span>
+                    <CommercialsCompact packages={commercialPackages(p)} />
                     <span className="relay-settle">{p.settleLabel}</span>
-                    <span className="relay-lic">{p.licenceLabel}</span>
                     <div className="relay-fit">
                       <div className="relay-fit-track">
                         <div className="relay-fit-bar" style={{ width: `${p.corridorFitPct}%`, background: fitColor }} />
@@ -233,7 +234,7 @@ export default function DirectoryCanvas() {
                   </div>
                   <div className="relay-meta">{p.hq}</div>
                 </Link>
-                <span className="relay-fee">{formatFee(feeFromProvider(p), true)}</span>
+                <CommercialsCompact packages={commercialPackages(p)} />
                 <span className="relay-dir-score">{computeScore(p, weighting)}</span>
               </div>
             ))}

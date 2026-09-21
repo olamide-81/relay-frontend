@@ -5,7 +5,7 @@ import { Link } from '@/i18n/navigation'
 import { CheckBox } from '@/components/dashboard/ui/CheckBox'
 import { LiveDot } from '@/components/dashboard/ui/LiveDot'
 import { EmptyState } from '@/components/dashboard/ui/EmptyState'
-import { useCatalog } from '@/components/dashboard/CatalogContext'
+import { useVisibleProviders } from '@/hooks/useVisibleProviders'
 import { createIntro, listIntros, type IntroDoc } from '@/lib/api/workspace'
 import { ApiError } from '@/lib/api/simulate'
 import type { SlotDay } from '@/lib/relay/types'
@@ -38,7 +38,7 @@ function upcomingSlots(): SlotDay[] {
 }
 
 export default function RequestCanvas({ slug }: { slug?: string }) {
-  const { getProvider, providers } = useCatalog()
+  const { getProvider, providers } = useVisibleProviders()
   const provider = slug ? getProvider(slug) : undefined
   const others = providers.filter((p) => p.slug !== slug).slice(0, 4)
   const slots = useMemo(() => upcomingSlots(), [])
@@ -126,7 +126,7 @@ export default function RequestCanvas({ slug }: { slug?: string }) {
                   >
                     <div>
                       <div className="relay-prov-name">{name}</div>
-                      <div className="relay-meta">{row.categoryName || p?.licenceLabel || 'Intro request'}</div>
+                      <div className="relay-meta">{row.categoryName || p?.hq || 'Intro request'}</div>
                     </div>
                     <span className="relay-settle">{row.slot || '—'}</span>
                     <div className="relay-status">
@@ -278,7 +278,7 @@ export default function RequestCanvas({ slug }: { slug?: string }) {
                       }
                     />
                     <span>{a.name}</span>
-                    <span>{a.licenceLabel}</span>
+                    <span>{a.hq.split(',')[0]}</span>
                   </div>
                 ))}
               </div>

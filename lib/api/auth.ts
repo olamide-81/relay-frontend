@@ -10,6 +10,7 @@ import {
   type SessionUser,
   type UserRole,
 } from '../session'
+import { writeStoredPlan } from '../plans'
 
 type LoginInput = {
   email: string
@@ -282,10 +283,11 @@ export async function forgotPassword(email: string) {
   return { message: 'If that account exists, we sent a reset link.' }
 }
 
-export async function activateSubscription(): Promise<SessionUser> {
+export async function activateSubscription(plan: 'pro' | 'proMax' = 'pro'): Promise<SessionUser> {
   await delay(900)
   const session = getSession()
   if (!session) throw new ApiError(401, 'Not authenticated')
+  writeStoredPlan(plan)
   const user: SessionUser = {
     ...session.user,
     subscriptionStatus: 'active',
@@ -299,6 +301,7 @@ export async function cancelSubscription(): Promise<SessionUser> {
   await delay(600)
   const session = getSession()
   if (!session) throw new ApiError(401, 'Not authenticated')
+  writeStoredPlan('free')
   const user: SessionUser = {
     ...session.user,
     subscriptionStatus: 'canceled',

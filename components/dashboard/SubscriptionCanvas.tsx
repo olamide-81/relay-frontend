@@ -1,140 +1,189 @@
 'use client'
 
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { Link } from '@/i18n/navigation'
 import { activateSubscription, cancelSubscription } from '@/lib/api/auth'
 import { ApiError } from '@/lib/api/simulate'
 import { isSubscribed } from '@/lib/session'
 import { useSession } from '@/hooks/useSession'
 import { usePlan } from '@/components/dashboard/PlanContext'
-import { useGate } from '@/components/dashboard/gate/GateContext'
-import { billingRows, invoices, seatRows, usageMeters } from '@/lib/mock/addendum'
+import { TickIcon } from '@/components/dashboard/gate/ProBadge'
+import { useWorkspaceCounts } from '@/components/dashboard/chrome/WorkspaceCounts'
+import { PLAN_PRICE, planCards, planLabel } from '@/lib/plans'
+import type { PlanId } from '@/lib/entitlements'
 
 export default function SubscriptionCanvas() {
   const { user, refresh } = useSession()
-  const { plan } = usePlan()
-  const { openGate } = useGate()
-  const [loading, setLoading] = useState(false)
+  const { plan, entitlements } = usePlan()
+  const counts = useWorkspaceCounts()
+  const [loading, setLoading] = useState<PlanId | null>(null)
   const [error, setError] = useState<string | null>(null)
-  const [annualNote, setAnnualNote] = useState(false)
+  const [annual, setAnnual] = useState(false)
   const subscribed = isSubscribed(user)
-  const company = user?.company || 'Northwind Co.'
+  const company = user?.company || 'Your workspace'
   const renews = user?.currentPeriodEnd
     ? new Date(user.currentPeriodEnd).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
-    : '28 Sep 2026'
+    : null
 
-  const onStart = async () => {
+  const run = async (next: 'pro' | 'proMax' | 'free') => {
     setError(null)
-    setLoading(true)
+    setLoading(next)
     try {
-      await activateSubscription()
+      if (next === 'free') await cancelSubscription()
+      else await activateSubscription(next)
       refresh()
     } catch (e) {
-      setError(e instanceof ApiError ? e.message : 'Could not start subscription')
+      setError(e instanceof ApiError ? e.message : 'Could not update plan')
     } finally {
-      setLoading(false)
+      setLoading(null)
     }
   }
 
-  const onCancel = async () => {
-    setError(null)
-    setLoading(true)
-    try {
-      await cancelSubscription()
-      refresh()
-    } catch (e) {
-      setError(e instanceof ApiError ? e.message : 'Could not cancel')
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  const planName = plan === 'team' ? 'Team' : subscribed ? 'Pro' : 'Explorer'
-  const price = plan === 'team' ? '$1,290' : subscribed ? '$499' : '$0'
+  const meters = useMemo(() => {
+    const catalogCap = entitlements.catalogVisible === 'all' ? counts.providers : entitlements.catalogVisible
+    const catalogPct = counts.providers ? Math.min(100, Math.round((Math.min(counts.providers, catalogCap) / Math.max(counts.providers, 1)) * 100)) : 0
+    const introCap = entitlements.introRequestsPerMonth === 'unlimited' ? null : entitlements.introRequestsPerMonth
+    const introPct = introCap ? Math.min(100, Math.round((counts.intros / introCap) * 100)) : 12
+    const listCap = entitlements.shortlists === 'unlimited' ? null : entitlements.shortlists
+    const listPct = listCap ? Math.min(100, Math.round((counts.shortlists / listCap) * 100)) : 18
+    return [
+      {
+        label: 'Providers visible',
+        v: entitlements.catalogVisible === 'all' ? `${counts.providers} / all` : `${Math.min(counts.providers, catalogCap)} / ${catalogCap}`,
+        pct: catalogPct || 8,
+        note: counts.providers ? `${counts.providers} live in the catalog` : 'Catalog empty',
+        tone: entitlements.catalogVisible === 'all' ? 'lime' : 'amber',
+      },
+      {
+        label: 'Compare slots',
+        v: `${entitlements.compareSlots} at a time`,
+        pct: entitlements.compareSlots === 2 ? 50 : 100,
+        note: plan === 'free' ? 'Two of the five you can see' : 'Up to four side by side',
+        tone: 'lime' as const,
+      },
+      {
+        label: 'Intro requests',
+        v: introCap ? `${counts.intros} / ${introCap}` : `${counts.intros} / ∞`,
+        pct: introPct,
+        note: introCap ? 'Resets with the billing month' : 'No monthly cap',
+        tone: introPct >= 100 ? 'amber' : 'lime',
+      },
+      {
+        label: 'Shortlists',
+        v: listCap ? `${counts.shortlists} / ${listCap}` : `${counts.shortlists} / ∞`,
+        pct: listPct,
+        note: entitlements.shortlistsShared ? 'Shared across seats' : 'This workspace',
+        tone: listPct >= 100 ? 'amber' : 'plain',
+      },
+    ]
+  }, [counts, entitlements, plan])
 
   return (
     <div className="relay-page relay-page--sub">
-      <div>
-        <h1 className="relay-hd-title">Subscription</h1>
-        <div className="relay-hd-sub">
-          {company} · workspace admin · billing in USD
-        </div>
-      </div>
-
-      <div className="relay-sub-top">
-        <div className="relay-sub-plan">
-          <div className="relay-dq-kicker" style={{ color: 'rgba(0,0,0,.45)' }}>CURRENT PLAN</div>
-          <div className="relay-sub-plan-row">
-            <div>
-              <div className="relay-sub-plan-name">{planName}</div>
-              <div className="relay-sub-plan-meta">
-                {subscribed ? `Monthly · renews ${renews}` : 'Free forever · upgrade when you need the numbers'}
-              </div>
-            </div>
-            <div className="relay-sub-plan-price">
-              <strong>{price}</strong>
-              <span>per month</span>
-            </div>
+      <div className="relay-hd">
+        <div>
+          <h1 className="relay-hd-title">Subscription</h1>
+          <div className="relay-hd-sub">
+            {company}
+            {user?.email ? ` · ${user.email}` : ''}
+            {' · billed in USD'}
           </div>
-          <div className="relay-sub-plan-actions">
-            {subscribed ? (
-              <>
-                <button type="button" className="relay-btn relay-btn--ink" onClick={() => setAnnualNote(true)}>
-                  {annualNote ? 'We’ll switch you at renewal' : 'Switch to annual · save $998'}
-                </button>
-                <Link href="/dashboard/plans" className="relay-btn relay-btn--ink-outline">
-                  Upgrade to Team
-                </Link>
-                <button type="button" className="relay-text-btn" onClick={onCancel} disabled={loading}>
-                  {loading ? 'Updating…' : 'Cancel plan'}
-                </button>
-              </>
-            ) : (
-              <>
-                <button type="button" className="relay-btn relay-btn--ink" onClick={onStart} disabled={loading}>
-                  {loading ? 'Starting Pro…' : 'Start Pro — $499/mo'}
-                </button>
-                <Link href="/dashboard/plans" className="relay-btn relay-btn--ink-outline">
-                  Compare plans
-                </Link>
-              </>
-            )}
-          </div>
-          {error ? <p className="relay-paywall-error">{error}</p> : null}
         </div>
-
-        <div className="relay-dpanel">
-          <h3>Payment method</h3>
-          <div className="relay-card-row">
-            <span className="relay-card-mark" />
-            <div>
-              <div className="relay-mono">•••• 4417</div>
-              <div className="relay-meta" style={{ marginTop: 6 }}>
-                Visa · expires 04/29
-              </div>
-            </div>
-            <button type="button" className="relay-text-btn">
-              Update
+        <div className="relay-hd-actions">
+          <div className="relay-bill-toggle">
+            <button type="button" className={!annual ? 'relay-bill-toggle--on' : ''} onClick={() => setAnnual(false)}>
+              Monthly
+            </button>
+            <button type="button" className={annual ? 'relay-bill-toggle--on' : ''} onClick={() => setAnnual(true)}>
+              Annual
+              <span>−2 MO</span>
             </button>
           </div>
-          <dl className="relay-kv">
-            {billingRows.map((r) => (
-              <div key={r.k}>
-                <dt>{r.k}</dt>
-                <dd>{r.v}</dd>
-              </div>
-            ))}
-          </dl>
         </div>
       </div>
+
+      <div className="relay-sub-plan">
+        <div className="relay-dq-kicker" style={{ color: 'rgba(0,0,0,.45)' }}>
+          CURRENT PLAN
+        </div>
+        <div className="relay-sub-plan-row">
+          <div>
+            <div className="relay-sub-plan-name">{planLabel(plan)}</div>
+            <div className="relay-sub-plan-meta">
+              {subscribed && renews
+                ? `Renews ${renews}`
+                : 'Five providers, two in compare, until you need the rest'}
+            </div>
+          </div>
+          <div className="relay-sub-plan-price">
+            <strong>{annual ? PLAN_PRICE[plan].annual : PLAN_PRICE[plan].month}</strong>
+            <span>{PLAN_PRICE[plan].per}</span>
+          </div>
+        </div>
+      </div>
+
+      <div className="relay-plan-grid relay-plan-grid--sub">
+        {planCards.map((p) => {
+          const current = p.id === plan
+          const price = annual && p.id !== 'free' ? p.annual : p.price
+          const tick = p.variant === 'light' ? '#0a0a0b' : p.id === 'proMax' ? 'oklch(.85 .15 130)' : 'rgba(255,255,255,.45)'
+          return (
+            <article key={p.id} className={`relay-plan-card${p.variant === 'light' ? ' relay-plan-card--light' : ''}${current ? ' relay-plan-card--current' : ''}`}>
+              <div className="relay-plan-card-hd">
+                <span>{p.name}</span>
+                {current ? <em>CURRENT</em> : p.badge ? <em>{p.badge}</em> : null}
+              </div>
+              <div className="relay-plan-price">
+                <strong>{price}</strong>
+                <span>{p.per}</span>
+              </div>
+              <p className="relay-plan-desc">{p.desc}</p>
+              {p.id === 'free' ? (
+                current ? (
+                  <span className="relay-plan-cta relay-plan-cta--ghost">Current plan</span>
+                ) : (
+                  <button
+                    type="button"
+                    className="relay-plan-cta relay-plan-cta--ghost"
+                    onClick={() => void run('free')}
+                    disabled={loading !== null}
+                  >
+                    {loading === 'free' ? 'Updating…' : 'Switch to Free'}
+                  </button>
+                )
+              ) : (
+                <button
+                  type="button"
+                  className={`relay-plan-cta ${p.id === 'pro' ? 'relay-plan-cta--ink' : 'relay-plan-cta--fill'}`}
+                  onClick={() => void run(p.id)}
+                  disabled={loading !== null || current}
+                >
+                  {current ? 'Current plan' : loading === p.id ? 'Starting…' : `Start ${p.name}`}
+                </button>
+              )}
+              <ul>
+                {p.features.map((f) => (
+                  <li key={f}>
+                    <TickIcon stroke={tick} />
+                    <span>{f}</span>
+                  </li>
+                ))}
+              </ul>
+            </article>
+          )
+        })}
+      </div>
+      {error ? <p className="relay-paywall-error">{error}</p> : null}
 
       <div className="relay-dpanel">
         <div className="relay-dpanel-head">
-          <span>This billing period</span>
-          <span className="relay-dpanel-meta">28 AUG — 28 SEP</span>
+          <span>This workspace</span>
+          <Link href="/dashboard/intelligence" className="relay-link">
+            Open Intelligence →
+          </Link>
         </div>
         <div className="relay-meters">
-          {usageMeters.map((m) => (
+          {meters.map((m) => (
             <div key={m.label}>
               <div className="relay-meter-lab">
                 <span>{m.label}</span>
@@ -149,46 +198,40 @@ export default function SubscriptionCanvas() {
         </div>
       </div>
 
-      <div className="relay-sub-bot">
-        <div className="relay-dpanel">
-          <div className="relay-dpanel-head">
-            <span>Seats</span>
-            <button type="button" className="relay-link" onClick={() => openGate('seats.invite')}>
-              Invite →
-            </button>
-          </div>
-          <div className="relay-seats">
-            {seatRows.map((s) => (
-              <div key={s.email} className="relay-seat">
-                <div>
-                  <strong>{s.name}</strong>
-                  <span>{s.email}</span>
-                </div>
-                <em className={`relay-seat-role relay-seat-role--${s.tone}`}>{s.role}</em>
-              </div>
-            ))}
-          </div>
+      <div className="relay-dpanel">
+        <div className="relay-dpanel-head">
+          <span>Seats</span>
+          <span className="relay-dpanel-meta">
+            {entitlements.seatsIncluded} included
+          </span>
         </div>
-        <div className="relay-dpanel relay-dpanel--flush">
-          <div className="relay-dpanel-head">
-            <span>Invoices</span>
-          </div>
-          <div className="relay-th relay-th--inv">
-            <span>INVOICE</span>
-            <span>DATE</span>
-            <span>AMOUNT</span>
-            <span style={{ textAlign: 'right' }}>STATUS</span>
-          </div>
-          {invoices.map((inv) => (
-            <div className="relay-row relay-row--inv" key={inv.id}>
-              <span>{inv.id}</span>
-              <span>{inv.date}</span>
-              <span>{inv.amount}</span>
-              <span className="relay-delta--good" style={{ textAlign: 'right' }}>
-                Paid
-              </span>
+        <div className="relay-seats">
+          <div className="relay-seat">
+            <div>
+              <strong>{user?.fullName || 'You'}</strong>
+              <span>{user?.email}</span>
             </div>
-          ))}
+            <em className="relay-seat-role relay-seat-role--plain">ADMIN</em>
+          </div>
+          {plan !== 'proMax' ? (
+            <div className="relay-seat">
+              <div>
+                <strong>More seats</strong>
+                <span>Pro Max includes five, then $190/month each</span>
+              </div>
+              <button type="button" className="relay-link" onClick={() => void run('proMax')}>
+                Start Pro Max →
+              </button>
+            </div>
+          ) : (
+            <div className="relay-seat">
+              <div>
+                <strong>Four seats open</strong>
+                <span>Invite from your workspace admin</span>
+              </div>
+              <em className="relay-seat-role relay-seat-role--lime">INCLUDED</em>
+            </div>
+          )}
         </div>
       </div>
     </div>

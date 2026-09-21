@@ -157,7 +157,7 @@ export async function compareProviders(providerIds: string[], weights?: Workspac
 export async function getWorkspacePrefs(): Promise<WorkspacePrefs> {
   if (useLiveApi) return api.get('/api/workspace')
   return {
-    weighting: { feePct: 40, settlePct: 30, licencePct: 30 },
+    weighting: { feePct: 55, settlePct: 45, licencePct: 0 },
     followedCorridors: [],
   }
 }
@@ -166,7 +166,7 @@ export async function getWorkspacePrefs(): Promise<WorkspacePrefs> {
 export async function updateWorkspacePrefs(patch: Partial<WorkspacePrefs>): Promise<WorkspacePrefs> {
   if (useLiveApi) return api.patch('/api/workspace', patch)
   return {
-    weighting: patch.weighting ?? { feePct: 40, settlePct: 30, licencePct: 30 },
+    weighting: patch.weighting ?? { feePct: 55, settlePct: 45, licencePct: 0 },
     followedCorridors: patch.followedCorridors ?? [],
   }
 }

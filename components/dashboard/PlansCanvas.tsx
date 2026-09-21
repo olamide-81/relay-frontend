@@ -6,12 +6,13 @@ import { ApiError } from '@/lib/api/simulate'
 import { useSession } from '@/hooks/useSession'
 import { usePlan } from '@/components/dashboard/PlanContext'
 import { TickIcon } from '@/components/dashboard/gate/ProBadge'
-import { planCards, planMatrix } from '@/lib/mock/addendum'
+import { planCards as cards, planMatrix as matrix } from '@/lib/plans'
+import type { PlanId } from '@/lib/entitlements'
 
-function matrixColor(col: 'free' | 'pro' | 'team', value: string) {
+function matrixColor(col: PlanId, value: string) {
   if (value === '—') return 'rgba(255,255,255,.25)'
   if (col === 'pro') return 'oklch(.85 .15 130)'
-  if (col === 'team') return '#f5f5f3'
+  if (col === 'proMax') return '#f5f5f3'
   return 'rgba(255,255,255,.6)'
 }
 
@@ -19,28 +20,31 @@ export default function PlansCanvas() {
   const { refresh } = useSession()
   const { plan } = usePlan()
   const [annual, setAnnual] = useState(false)
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState<PlanId | null>(null)
   const [error, setError] = useState<string | null>(null)
 
-  const onStartPro = async () => {
-    if (plan === 'pro' || plan === 'team') return
+  const onStart = async (next: 'pro' | 'proMax') => {
+    if (plan === next) return
     setError(null)
-    setLoading(true)
+    setLoading(next)
     try {
-      await activateSubscription()
+      await activateSubscription(next)
       refresh()
     } catch (e) {
-      setError(e instanceof ApiError ? e.message : 'Could not start Pro')
+      setError(e instanceof ApiError ? e.message : 'Could not start plan')
     } finally {
-      setLoading(false)
+      setLoading(null)
     }
   }
 
   return (
     <div className="relay-page relay-page--plans">
       <div className="relay-plans-hero">
-        <h1>Relay is free to browse. Pro is for deciding.</h1>
-        <p>210 providers, 38 corridors and weekly market maps. Upgrade when you need the numbers behind a decision, not the headline.</p>
+        <h1>Free to try. Pro when you need the full catalog.</h1>
+        <p>
+          Free shows five live providers and lets you compare two. Pro opens every listed provider.
+          Pro Max is for teams that share the same shortlist.
+        </p>
         <div className="relay-bill-toggle">
           <button type="button" className={!annual ? 'relay-bill-toggle--on' : ''} onClick={() => setAnnual(false)}>
             Monthly
@@ -53,13 +57,10 @@ export default function PlansCanvas() {
       </div>
 
       <div className="relay-plan-grid">
-        {planCards.map((p) => {
-          const current =
-            (p.id === 'free' && plan === 'free') ||
-            (p.id === 'pro' && plan === 'pro') ||
-            (p.id === 'team' && plan === 'team')
+        {cards.map((p) => {
+          const current = p.id === plan
           const price = annual && p.id !== 'free' ? p.annual : p.price
-          const tick = p.variant === 'light' ? '#0a0a0b' : p.id === 'team' ? 'oklch(.85 .15 130)' : 'rgba(255,255,255,.4)'
+          const tick = p.variant === 'light' ? '#0a0a0b' : p.id === 'proMax' ? 'oklch(.85 .15 130)' : 'rgba(255,255,255,.4)'
           return (
             <article key={p.id} className={`relay-plan-card${p.variant === 'light' ? ' relay-plan-card--light' : ''}`}>
               <div className="relay-plan-card-hd">
@@ -72,20 +73,16 @@ export default function PlansCanvas() {
               </div>
               <p className="relay-plan-desc">{p.desc}</p>
               {p.id === 'free' ? (
-                <span className="relay-plan-cta relay-plan-cta--ghost">{current ? 'Current plan' : 'Explorer'}</span>
-              ) : p.id === 'pro' ? (
+                <span className="relay-plan-cta relay-plan-cta--ghost">{current ? 'Current plan' : 'Free'}</span>
+              ) : (
                 <button
                   type="button"
-                  className="relay-plan-cta relay-plan-cta--ink"
-                  onClick={onStartPro}
-                  disabled={loading || current}
+                  className={`relay-plan-cta ${p.id === 'pro' ? 'relay-plan-cta--ink' : 'relay-plan-cta--fill'}`}
+                  onClick={() => void onStart(p.id)}
+                  disabled={loading !== null || current}
                 >
-                  {current ? 'Current plan' : loading ? 'Starting Pro…' : 'Start Pro'}
+                  {current ? 'Current plan' : loading === p.id ? 'Starting…' : `Start ${p.name}`}
                 </button>
-              ) : (
-                <a className="relay-plan-cta relay-plan-cta--fill" href="mailto:sales@relay.dev">
-                  Talk to sales
-                </a>
               )}
               <ul>
                 {p.features.map((f) => (
@@ -107,19 +104,18 @@ export default function PlansCanvas() {
           <span>WHAT YOU GET</span>
           <span>FREE</span>
           <span>PRO</span>
-          <span>TEAM</span>
+          <span>PRO MAX</span>
         </div>
-        {planMatrix.map((m) => (
+        {matrix.map((m) => (
           <div className="relay-row relay-row--matrix" key={m.feature}>
             <span>{m.feature}</span>
             <span style={{ color: matrixColor('free', m.free) }}>{m.free}</span>
             <span style={{ color: matrixColor('pro', m.pro) }}>{m.pro}</span>
-            <span style={{ color: matrixColor('team', m.team) }}>{m.team}</span>
+            <span style={{ color: matrixColor('proMax', m.proMax) }}>{m.proMax}</span>
           </div>
         ))}
         <div className="relay-matrix-foot">
-          <span>Prices in USD, billed to Northwind Co. Cancel any time — data you exported stays yours.</span>
-          <a href="mailto:sales@relay.dev">Talk to us about Team →</a>
+          <span>Prices in USD. Cancel any time. Data you exported stays yours.</span>
         </div>
       </div>
     </div>

@@ -1,6 +1,7 @@
-export type PlanId = 'free' | 'pro' | 'team'
+export type PlanId = 'free' | 'pro' | 'proMax'
 
 export interface Entitlements {
+  catalogVisible: 5 | 'all'
   corridorPricesPerProvider: number | 'all'
   pricingHistoryMonths: 0 | 24
   compareSlots: 2 | 4
@@ -19,6 +20,7 @@ export interface Entitlements {
 
 export const ENTITLEMENTS: Record<PlanId, Entitlements> = {
   free: {
+    catalogVisible: 5,
     corridorPricesPerProvider: 1,
     pricingHistoryMonths: 0,
     compareSlots: 2,
@@ -35,6 +37,7 @@ export const ENTITLEMENTS: Record<PlanId, Entitlements> = {
     sso: false,
   },
   pro: {
+    catalogVisible: 'all',
     corridorPricesPerProvider: 'all',
     pricingHistoryMonths: 24,
     compareSlots: 4,
@@ -50,7 +53,8 @@ export const ENTITLEMENTS: Record<PlanId, Entitlements> = {
     rfpApprovals: false,
     sso: false,
   },
-  team: {
+  proMax: {
+    catalogVisible: 'all',
     corridorPricesPerProvider: 'all',
     pricingHistoryMonths: 24,
     compareSlots: 4,
@@ -69,5 +73,5 @@ export const ENTITLEMENTS: Record<PlanId, Entitlements> = {
 }
 
 export function isProPlan(plan: PlanId) {
-  return plan === 'pro' || plan === 'team'
+  return plan === 'pro' || plan === 'proMax'
 }

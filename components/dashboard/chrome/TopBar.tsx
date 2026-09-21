@@ -8,6 +8,8 @@ import { useSession } from '@/hooks/useSession'
 import RelayMark from '@/components/RelayMark'
 import NotificationBell from '@/components/dashboard/chrome/NotificationBell'
 import { useWorkspaceCounts } from '@/components/dashboard/chrome/WorkspaceCounts'
+import { useOptionalPlan } from '@/components/dashboard/PlanContext'
+import { planLabel } from '@/lib/plans'
 import type { TopBarSection } from '@/lib/relay/types'
 
 const NAV: { name: TopBarSection; href: string; countKey?: 'shortlists' | 'intros'; lime?: boolean }[] = [
@@ -22,6 +24,7 @@ export default function TopBar({ active }: { active: TopBarSection }) {
   const router = useRouter()
   const { user } = useSession()
   const counts = useWorkspaceCounts()
+  const plan = useOptionalPlan()
   const [query, setQuery] = useState('')
   const [profileOpen, setProfileOpen] = useState(false)
   const [photoFailed, setPhotoFailed] = useState(false)
@@ -142,7 +145,7 @@ export default function TopBar({ active }: { active: TopBarSection }) {
               <div className="relay-menu-head">
                 <strong>{user?.fullName}</strong>
                 <span>{user?.email}</span>
-                <span>{subscribed ? 'Pro' : 'Explorer'}</span>
+                <span>{plan ? planLabel(plan.plan) : subscribed ? 'Pro' : 'Free'}</span>
               </div>
               <Link href="/dashboard/billing" className="relay-menu-item" onClick={() => setProfileOpen(false)}>
                 Subscription

@@ -6,17 +6,19 @@ import { LiveDot } from '@/components/dashboard/ui/LiveDot'
 import { Sparkline } from '@/components/dashboard/ui/Sparkline'
 import { CheckBox } from '@/components/dashboard/ui/CheckBox'
 import { useWeighting } from '@/components/dashboard/WeightingContext'
-import { useCatalog } from '@/components/dashboard/CatalogContext'
 import { computeScore } from '@/lib/relay/score'
-import { feeFromProvider, formatFee, statusLabel } from '@/lib/relay/format'
+import { commercialPackages, commercialsSummary, statusLabel } from '@/lib/relay/format'
+import { CommercialsCompact } from '@/components/dashboard/ui/Commercials'
 import { listShortlists, type ShortlistDoc } from '@/lib/api/workspace'
 import { listNotifications, type NotificationItem } from '@/lib/api/notifications'
 import { EmptyState } from '@/components/dashboard/ui/EmptyState'
+import { CatalogCap } from '@/components/dashboard/ui/CatalogCap'
 import { useWorkspaceCounts } from '@/components/dashboard/chrome/WorkspaceCounts'
+import { useVisibleProviders } from '@/hooks/useVisibleProviders'
 
 export default function OverviewCanvas() {
   const { weighting } = useWeighting()
-  const { providers, categoryCards, loading } = useCatalog()
+  const { providers, categoryCards, loading, catalogTotal, capped, compareSlots } = useVisibleProviders()
   const { intros, shortlistEntries, shortlists } = useWorkspaceCounts()
   const [lists, setLists] = useState<ShortlistDoc[]>([])
   const [notes, setNotes] = useState<NotificationItem[]>([])
@@ -52,13 +54,15 @@ export default function OverviewCanvas() {
         Math.floor(priced.length / 2)
       ]
     : null
-  const medianFee = medianProvider ? formatFee(feeFromProvider(medianProvider), true) : '—'
+  const medianFee = medianProvider
+    ? commercialsSummary(commercialPackages(medianProvider)).headline
+    : '—'
 
   const kpis = [
     { label: 'OPEN REQUESTS', v: String(intros), note: intros ? 'waiting on a reply' : 'none in flight', tone: 'muted' as const },
     { label: 'SHORTLISTED', v: String(shortlistEntries), note: shortlists ? `across ${shortlists} ${shortlists === 1 ? 'list' : 'lists'}` : 'none yet', tone: 'muted' as const },
-    { label: 'TYPICAL FEE', v: medianFee, note: 'listed payouts', tone: 'muted' as const },
-    { label: 'IN DIRECTORY', v: String(providers.length), note: loading ? 'loading' : 'ready to compare', tone: 'muted' as const },
+    { label: 'FROM', v: medianFee, note: 'listed commercials', tone: 'muted' as const },
+    { label: 'IN DIRECTORY', v: String(providers.length), note: capped ? `${providers.length} of ${catalogTotal} on Free` : loading ? 'loading' : 'ready to compare', tone: 'muted' as const },
   ]
 
   return (
@@ -84,6 +88,8 @@ export default function OverviewCanvas() {
         </div>
       </div>
 
+      {capped ? <CatalogCap visible={providers.length} total={catalogTotal} compareSlots={compareSlots} /> : null}
+
       <div className="relay-kpi relay-kpi--4">
         {kpis.map((k) => (
           <div className="relay-kpi-tile" key={k.label}>
@@ -101,7 +107,7 @@ export default function OverviewCanvas() {
           <div>
             <div className="relay-dir-title">Provider Directory</div>
             <div className="relay-dir-sub">
-              Fees as a percent of value, a fixed amount, or tiers — plus how fast money lands.
+              Published commercials — often more than one line — plus how fast money lands.
             </div>
           </div>
           <Link href="/dashboard/providers" className="relay-btn relay-btn--chip">
@@ -123,17 +129,20 @@ export default function OverviewCanvas() {
               </div>
               {c.n === 0 ? (
                 <div className="relay-cat-empty">
-                  <EmptyState
-                    kind="directory"
-                    compact
-                    title={`No ${c.name.toLowerCase()} yet`}
-                    body="Nothing in this lane right now. Check the others, or come back as the directory grows."
-                  />
+                  <p className="relay-cat-empty-kicker">EMPTY LANE</p>
+                  <p className="relay-cat-empty-title">
+                    {c.id === 'fx' ? 'No FX listings yet' : `No ${c.name.toLowerCase()} yet`}
+                  </p>
+                  <p className="relay-cat-empty-body">
+                    {c.id === 'fx'
+                      ? 'Rates, hedging, and multi-currency rails show here once a live provider is tagged for FX.'
+                      : 'This lane fills as more providers go live in the directory.'}
+                  </p>
                 </div>
               ) : (
               <div className="relay-cat-metrics">
                 <div>
-                  <div className="relay-cat-metric-label">FEE FROM</div>
+                  <div className="relay-cat-metric-label">FROM</div>
                   <div className="relay-cat-metric-value">{c.feeFrom}</div>
                 </div>
                 <div>
@@ -191,7 +200,7 @@ export default function OverviewCanvas() {
               <div className="relay-th relay-th--rfp">
                 <span />
                 <span>PROVIDER</span>
-                <span>FEE</span>
+                <span>COMMERCIALS</span>
                 <span>STATUS</span>
                 <span style={{ textAlign: 'right' }}>SCORE</span>
               </div>
@@ -221,9 +230,9 @@ export default function OverviewCanvas() {
                       />
                       <div>
                         <div className="relay-name">{p.name}</div>
-                        <div className="relay-meta">{`${p.hq} · ${p.licenceLabel}`}</div>
+                        <div className="relay-meta">{p.hq}</div>
                       </div>
-                      <span className="relay-fee">{formatFee(feeFromProvider(p), true)}</span>
+                      <CommercialsCompact packages={commercialPackages(p)} />
                       <div className="relay-status">
                         <span className="relay-status-dot" style={{ background: stFg }} />
                         <span className="relay-status-label" style={{ color: stFg }}>

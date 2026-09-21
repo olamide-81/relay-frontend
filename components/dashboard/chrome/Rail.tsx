@@ -4,6 +4,8 @@ import { Link } from '@/i18n/navigation'
 import { LiveDot } from '@/components/dashboard/ui/LiveDot'
 import { useOpenWeighting } from '@/components/dashboard/compare/WeightingPopover'
 import { useWorkspaceCounts } from '@/components/dashboard/chrome/WorkspaceCounts'
+import { useOptionalPlan } from '@/components/dashboard/PlanContext'
+import { planLabel } from '@/lib/plans'
 import type { RailSection } from '@/lib/relay/types'
 
 const ITEMS: { name: RailSection; href: string; countKey?: 'providers' | 'shortlists' | 'intros' }[] = [
@@ -17,10 +19,15 @@ const ITEMS: { name: RailSection; href: string; countKey?: 'providers' | 'shortl
 export default function Rail({ active }: { active: RailSection }) {
   const openWeighting = useOpenWeighting()
   const counts = useWorkspaceCounts()
+  const plan = useOptionalPlan()
+  const visible =
+    plan?.entitlements.catalogVisible === 'all'
+      ? counts.providers
+      : Math.min(counts.providers, plan?.entitlements.catalogVisible ?? counts.providers)
 
   const valueFor = (key?: 'providers' | 'shortlists' | 'intros') => {
     if (!key) return 0
-    if (key === 'providers') return counts.providers
+    if (key === 'providers') return visible
     if (key === 'shortlists') return counts.shortlists
     return counts.intros
   }
@@ -49,8 +56,19 @@ export default function Rail({ active }: { active: RailSection }) {
         <div className="relay-weight-link">Edit weighting →</div>
       </button>
       <div className="relay-rail-live">
-        <LiveDot variant="green" />
-        <span>{counts.providers ? `${counts.providers} providers live` : 'Catalog live'}</span>
+        <div className="relay-rail-live-card">
+          <div className="relay-rail-live-top">
+            <LiveDot variant="green" />
+            <span>Catalog live</span>
+          </div>
+          <strong>{counts.providers || '—'}</strong>
+          <em>
+            {counts.providers === 1 ? 'provider' : 'providers'}
+            {plan && plan.entitlements.catalogVisible !== 'all' && counts.providers > visible
+              ? ` · ${visible} on ${planLabel(plan.plan)}`
+              : ' in directory'}
+          </em>
+        </div>
       </div>
     </aside>
   )

@@ -3,11 +3,15 @@
 import { createContext, useContext, useMemo } from 'react'
 import { isSubscribed, type SessionUser } from '@/lib/session'
 import { ENTITLEMENTS, isProPlan, type PlanId } from '@/lib/entitlements'
+import { readStoredPlan } from '@/lib/plans'
 import { useSession } from '@/hooks/useSession'
 
-function planFromUser(user: SessionUser | null): PlanId {
+export function planFromUser(user: SessionUser | null): PlanId {
   if (!user || !isSubscribed(user)) return 'free'
-  if (user.email.toLowerCase() === 'team@relay.dev') return 'team'
+  const stored = readStoredPlan()
+  if (stored === 'pro' || stored === 'proMax') return stored
+  const email = user.email.toLowerCase()
+  if (email === 'promax@relay.dev' || email === 'team@relay.dev') return 'proMax'
   return 'pro'
 }
 

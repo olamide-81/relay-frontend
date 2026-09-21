@@ -12,18 +12,17 @@ import { useGate } from '@/components/dashboard/gate/GateContext'
 import { useCatalog } from '@/components/dashboard/CatalogContext'
 import { computeScore } from '@/lib/relay/score'
 import {
+  commercialPackages,
+  commercialsSummary,
   feeFromProvider,
   formatFee,
-  formatFeeFromBps,
-  formatFeeKind,
-  formatMoney,
   formatSettle,
-  formatVolumeUsd,
 } from '@/lib/relay/format'
+import { CommercialPackages } from '@/components/dashboard/ui/Commercials'
 import { addToShortlist, getShortlist } from '@/lib/workspace'
 import { useWorkspace } from '@/hooks/useWorkspace'
 
-const TABS = ['Overview', 'Pricing', 'Coverage', 'Compliance', 'Company'] as const
+const TABS = ['Overview', 'Commercials', 'Coverage', 'Compliance', 'Company'] as const
 
 export default function ProviderDossierCanvas({ id }: { id: string }) {
   const router = useRouter()
@@ -63,7 +62,8 @@ export default function ProviderDossierCanvas({ id }: { id: string }) {
   const score = computeScore(provider, weighting)
   const shortlisted = shortlist.includes(provider.slug)
   const inTray = has(provider.slug)
-  const tab = (searchParams.get('tab') ?? 'Overview') as (typeof TABS)[number]
+  const rawTab = searchParams.get('tab')
+  const tab = (rawTab === 'Pricing' ? 'Commercials' : rawTab ?? 'Overview') as (typeof TABS)[number]
   const activeTab = TABS.includes(tab) ? tab : 'Overview'
   const shortName = provider.name.replace(' Payments', '').replace(' Pay', '').replace(' Rails', '').replace(' Global', '')
   const corridors = record?.supportedCorridors ?? []
@@ -73,10 +73,9 @@ export default function ProviderDossierCanvas({ id }: { id: string }) {
   const countries = record?.countries ?? []
   const regions = record?.regions ?? provider.regions
   const fee = feeFromProvider(provider)
-  const feeLabel = formatFee(fee, false)
+  const packages = commercialPackages(provider)
   const settle = formatSettle(provider.medianSettleMinutes, provider.settleLabel)
-  const tiers = provider.feeTiers ?? []
-  const feeRows = record?.feeTable ?? []
+  const hasLicences = licences.length > 0
 
   const goTab = (name: (typeof TABS)[number]) => {
     router.replace(`/dashboard/providers/${provider.slug}?tab=${name}`)
@@ -109,7 +108,7 @@ export default function ProviderDossierCanvas({ id }: { id: string }) {
           </div>
           <p className="relay-profile-desc">{record?.longDescription || provider.description || 'No description yet.'}</p>
           <div className="relay-profile-pills">
-            <span>{formatFeeKind(provider.feeKind)}</span>
+            {packages.length > 1 ? <span>{packages.length} commercial packages</span> : null}
             <span>{settle}</span>
             <span>{provider.hq}</span>
           </div>
@@ -144,7 +143,7 @@ export default function ProviderDossierCanvas({ id }: { id: string }) {
 
       <div className="relay-kpi relay-kpi--4">
         {[
-          { label: 'FEE', v: formatFee(fee, true), sub: formatFeeKind(provider.feeKind) },
+          { label: 'FROM', v: packages[0]?.headline || formatFee(fee, true), sub: packages.length > 1 ? `${packages.length} packages` : packages[0]?.kicker || 'published commercials' },
           { label: 'SETTLEMENT', v: settle, sub: 'when funds typically land' },
           { label: 'CORRIDORS', v: String(provider.corridorCount || corridors.length || 0), sub: `${countries.length} countries` },
           { label: 'YOUR SCORE', v: String(score), sub: 'from your weighting' },
@@ -169,7 +168,7 @@ export default function ProviderDossierCanvas({ id }: { id: string }) {
                     { k: 'Headquarters', v: provider.hq },
                     { k: 'Founded', v: record?.founded ? String(record.founded) : '—' },
                     { k: 'Funding', v: record?.fundingStage || '—' },
-                    { k: 'Fee', v: feeLabel },
+                    { k: 'Commercials', v: packages[0]?.headline || '—' },
                     { k: 'Settlement', v: settle },
                   ].map((f) => (
                     <div key={f.k}>
@@ -181,88 +180,40 @@ export default function ProviderDossierCanvas({ id }: { id: string }) {
               </section>
               <section className="relay-dpanel">
                 <h3>How they charge</h3>
-                <p className="relay-dpanel-lede">{feeLabel}. {settle}.</p>
-                <Link href={`/dashboard/providers/${provider.slug}?tab=Pricing`} className="relay-link" style={{ marginTop: 14, display: 'inline-block' }}>
-                  Full pricing →
+                <p className="relay-dpanel-lede">
+                  {packages.length
+                    ? `${packages.length} commercial package${packages.length === 1 ? '' : 's'} on file. ${settle}.`
+                    : `No published commercials yet. ${settle}.`}
+                </p>
+                <Link href={`/dashboard/providers/${provider.slug}?tab=Commercials`} className="relay-link" style={{ marginTop: 14, display: 'inline-block' }}>
+                  Full commercials →
                 </Link>
               </section>
             </>
           ) : null}
 
-          {activeTab === 'Pricing' ? (
-            <section className="relay-dpanel relay-dpanel--flush">
-              <div className="relay-dpanel-head">
-                <span>Pricing</span>
-                <span className="relay-dpanel-note">{formatFeeKind(provider.feeKind)}</span>
-              </div>
-              <div className="relay-fee-hero">
-                <strong>{feeLabel}</strong>
-                <span>{settle}</span>
-              </div>
-              {tiers.length ? (
-                <>
-                  <div className="relay-th relay-th--dprice">
-                    <span>TRANSFER VALUE</span>
-                    <span>FEE</span>
-                    <span></span>
-                  </div>
-                  {tiers.map((tier, i) => {
-                    const band =
-                      tier.upToUsd == null
-                        ? 'Above last tier'
-                        : i === 0
-                          ? `Up to ${formatVolumeUsd(tier.upToUsd)}`
-                          : `Up to ${formatVolumeUsd(tier.upToUsd)}`
-                    const amount =
-                      tier.feePercentBps != null
-                        ? formatFeeFromBps(tier.feePercentBps, { ofValue: true })
-                        : tier.feeFixedAmount != null
-                          ? `${formatMoney(tier.feeFixedAmount, provider.feeFixedCurrency)} per transfer`
-                          : '—'
-                    return (
-                      <div className="relay-row relay-row--dprice3" key={`${band}-${i}`}>
-                        <span>{band}</span>
-                        <span className="relay-fee">{amount}</span>
-                        <span className="relay-settle">By monthly volume</span>
-                      </div>
-                    )
-                  })}
-                </>
-              ) : null}
-              {feeRows.length || corridors.length ? (
-                <>
-                  <div className="relay-th relay-th--dprice">
-                    <span>LINE / CORRIDOR</span>
-                    <span>FEE</span>
-                    <span>SETTLE</span>
-                  </div>
-                  {feeRows.map((row) => (
-                    <div className="relay-row relay-row--dprice3" key={row.label}>
-                      <span>{row.label}</span>
-                      <span className="relay-fee">{row.amount}</span>
-                      <span className="relay-settle">{row.notes || settle}</span>
-                    </div>
-                  ))}
-                  {!feeRows.length
-                    ? corridors.map((name) => (
-                        <div className="relay-row relay-row--dprice3" key={name}>
-                          <span>{name}</span>
-                          <span className="relay-fee">{formatFee(fee, true)}</span>
-                          <span className="relay-settle">{settle}</span>
-                        </div>
-                      ))
-                    : null}
-                </>
-              ) : !tiers.length ? (
+          {activeTab === 'Commercials' ? (
+            <section className="relay-dpanel">
+              <h3>Commercials</h3>
+              <p className="relay-dpanel-lede">
+                {packages.length
+                  ? 'Product schedules as published — currency, channel, fee, and limits — not a single blended rate.'
+                  : 'No published commercials yet.'}
+              </p>
+              {packages.length ? (
+                <div style={{ marginTop: 16 }}>
+                  <CommercialPackages packages={packages} benefits={provider.sharedBenefits} />
+                </div>
+              ) : (
                 <EmptyState
                   kind="intel"
                   compact
-                  title="No published rate card"
+                  title="No published commercials"
                   body="Request an intro to get a quote for your corridors and volume."
                   actionLabel="Request intro"
                   actionHref={`/dashboard/intros/${provider.slug}`}
                 />
-              ) : null}
+              )}
             </section>
           ) : null}
 
@@ -301,28 +252,32 @@ export default function ProviderDossierCanvas({ id }: { id: string }) {
           {activeTab === 'Compliance' ? (
             <section className="relay-dpanel relay-dpanel--flush">
               <div className="relay-dpanel-head">
-                <span>Licences & standards</span>
-                <span className="relay-dpanel-meta">{licences.length + compliance.length}</span>
+                <span>{hasLicences ? 'Licences & standards' : 'Standards'}</span>
+                <span className="relay-dpanel-meta">{licences.length + compliance.length || undefined}</span>
               </div>
               {licences.length === 0 && compliance.length === 0 ? (
                 <EmptyState
                   kind="intel"
                   compact
-                  title="No licences on file"
-                  body="We’ll list EMI, PSP, MSB and similar coverage here as it is confirmed."
+                  title="Nothing on file"
+                  body="Confirmed licences and standards show up here when we have them — many providers operate through partners instead."
                 />
               ) : (
                 <>
-                  <div className="relay-th relay-th--comp">
-                    <span>LICENCE / STANDARD</span>
-                    <span>TYPE</span>
-                  </div>
-                  {licences.map((name) => (
-                    <div className="relay-row relay-row--comp" key={String(name)}>
-                      <span>{name}</span>
-                      <span>Licence</span>
-                    </div>
-                  ))}
+                  {hasLicences ? (
+                    <>
+                      <div className="relay-th relay-th--comp">
+                        <span>ITEM</span>
+                        <span>TYPE</span>
+                      </div>
+                      {licences.map((name) => (
+                        <div className="relay-row relay-row--comp" key={String(name)}>
+                          <span>{name}</span>
+                          <span>Licence</span>
+                        </div>
+                      ))}
+                    </>
+                  ) : null}
                   {compliance.map((name) => (
                     <div className="relay-row relay-row--comp" key={name}>
                       <span>{name}</span>
@@ -374,9 +329,8 @@ export default function ProviderDossierCanvas({ id }: { id: string }) {
               <span className="relay-score-card-lab">YOUR SCORE</span>
             </div>
             {[
-              { label: `Fees (${weighting.feePct}%)`, v: provider.scoreFee },
+              { label: `Commercials (${weighting.feePct}%)`, v: provider.scoreFee },
               { label: `Settlement (${weighting.settlePct}%)`, v: provider.scoreSettle },
-              { label: `Licences (${weighting.licencePct}%)`, v: provider.scoreLicence },
             ].map((p) => (
               <div className="relay-score-part" key={p.label}>
                 <div className="relay-score-part-lab">
@@ -407,9 +361,7 @@ export default function ProviderDossierCanvas({ id }: { id: string }) {
                     <CheckBox checked={has(p.slug)} label={`Add ${p.name} to compare`} onChange={() => toggle(p.slug)} />
                     <button type="button" onClick={() => router.push(`/dashboard/providers/${p.slug}`)}>
                       <span>{p.name}</span>
-                      <em>
-                        {formatFee(feeFromProvider(p), true)} · {computeScore(p, weighting)}
-                      </em>
+                      <em>{commercialsSummary(commercialPackages(p)).headline}</em>
                     </button>
                   </div>
                 ))

@@ -10,6 +10,36 @@ export type FeeTier = {
   feeFixedAmount?: number | null
 }
 
+export type CommercialLine = {
+  label: string
+  value: string
+  note?: string
+  currency?: string
+  channel?: string
+}
+
+export type CommercialLimit = {
+  label: string
+  min?: string
+  max?: string
+}
+
+export type CommercialPackage = {
+  name: string
+  kicker?: string
+  headline: string
+  headlineNote?: string
+  lines: CommercialLine[]
+  limits?: CommercialLimit[]
+  callout?: { title: string; body: string }
+}
+
+export type SharedBenefit = {
+  title: string
+  body: string
+  chips?: string[]
+}
+
 export type TopBarSection = 'Overview' | 'Directory' | 'Compare' | 'Shortlists' | 'Requests'
 
 export type RailSection = 'Overview' | 'Directory' | 'Shortlists' | 'Requests' | 'Intelligence'
@@ -46,6 +76,9 @@ export interface Provider {
   feeFixedAmount?: number | null
   feeFixedCurrency?: string
   feeTiers?: FeeTier[]
+  feeTable?: Array<{ label: string; amount: string; notes?: string }>
+  commercials?: CommercialPackage[]
+  sharedBenefits?: SharedBenefit[]
   medianSettleMinutes: number
   settleLabel: string
   corridorCount: number

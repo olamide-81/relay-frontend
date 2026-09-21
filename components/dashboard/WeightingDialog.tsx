@@ -4,9 +4,8 @@ import { useWeighting } from '@/components/dashboard/WeightingContext'
 import type { Weighting } from '@/lib/relay/types'
 
 const ROWS: { key: keyof Weighting; label: string }[] = [
-  { key: 'feePct', label: 'FEE' },
+  { key: 'feePct', label: 'COMMERCIALS' },
   { key: 'settlePct', label: 'SETTLE' },
-  { key: 'licencePct', label: 'LICENCE' },
 ]
 
 export function WeightingDialog() {
@@ -37,7 +36,7 @@ export function WeightingDialog() {
         onClick={(e) => e.stopPropagation()}
       >
         <h2 id="weighting-title">Edit weighting</h2>
-        <p>Score is fee, settlement and licence coverage — reweighted live across the directory.</p>
+        <p>Score is commercials and settlement — reweighted live across the directory.</p>
         {ROWS.map((row) => (
           <div className="relay-weight-row" key={row.key}>
             <label htmlFor={`w-${row.key}`}>{row.label}</label>
