@@ -213,7 +213,8 @@ export async function loginWithGoogle(
       throw new ApiError(500, 'Google sign-in is only available in the browser')
     }
     const next = '/dashboard'
-    const url = `${apiBaseUrl}/api/auth/google?locale=${encodeURIComponent(locale)}&next=${encodeURIComponent(next)}&intent=${intent}`
+    const origin = window.location.origin
+    const url = `${apiBaseUrl}/api/auth/google?locale=${encodeURIComponent(locale)}&next=${encodeURIComponent(next)}&intent=${intent}&origin=${encodeURIComponent(origin)}`
     window.location.assign(url)
     return new Promise<Session>(() => {})
   }

@@ -761,6 +761,26 @@ a.relay-pill.relay-pill--on {
   justify-content: flex-end;
 }
 
+.relay-mail-wrap {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+}
+
+.relay-mail-done {
+  margin: 0;
+  max-width: 280px;
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--accent-text, oklch(0.85 0.15 130));
+}
+
+.relay-mail-err {
+  font-size: 12px;
+  color: #f3b4a8;
+}
+
 .relay-crumb {
   font-weight: 500;
   font-size: 12px;

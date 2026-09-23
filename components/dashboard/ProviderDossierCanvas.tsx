@@ -19,6 +19,7 @@ import {
   formatSettle,
 } from '@/lib/relay/format'
 import { CommercialPackages } from '@/components/dashboard/ui/Commercials'
+import { PartnershipMailButton } from '@/components/dashboard/PartnershipMailButton'
 import { addToShortlist, getShortlist } from '@/lib/workspace'
 import { useWorkspace } from '@/hooks/useWorkspace'
 
@@ -123,6 +124,7 @@ export default function ProviderDossierCanvas({ id }: { id: string }) {
           <Link href={`/dashboard/intros/${provider.slug}`} className="relay-btn relay-btn--lime">
             Request intro
           </Link>
+          <PartnershipMailButton providerId={provider.slug} providerName={provider.name} />
         </div>
       </div>
 
@@ -348,6 +350,11 @@ export default function ProviderDossierCanvas({ id }: { id: string }) {
             <Link href={`/dashboard/intros/${provider.slug}`} className="relay-btn relay-btn--ink">
               Request intro
             </Link>
+            <PartnershipMailButton
+              providerId={provider.slug}
+              providerName={provider.name}
+              className="relay-btn relay-btn--outline"
+            />
           </div>
 
           <div className="relay-dpanel">

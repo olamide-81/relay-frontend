@@ -170,3 +170,17 @@ export async function updateWorkspacePrefs(patch: Partial<WorkspacePrefs>): Prom
     followedCorridors: patch.followedCorridors ?? [],
   }
 }
+
+export type PartnershipMailResult = {
+  emailed: boolean
+  via: 'provider' | 'relay'
+  providerName: string
+}
+
+/** POST /api/partnership-requests/direct — email the company, or Relay if no inbox yet */
+export async function emailPartnership(providerId: string, note?: string): Promise<PartnershipMailResult> {
+  if (useLiveApi) {
+    return api.post('/api/partnership-requests/direct', { providerId, note })
+  }
+  return { emailed: true, via: 'relay', providerName: providerId }
+}

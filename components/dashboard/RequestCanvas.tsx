@@ -7,6 +7,7 @@ import { LiveDot } from '@/components/dashboard/ui/LiveDot'
 import { EmptyState } from '@/components/dashboard/ui/EmptyState'
 import { useVisibleProviders } from '@/hooks/useVisibleProviders'
 import { createIntro, listIntros, type IntroDoc } from '@/lib/api/workspace'
+import { PartnershipMailButton } from '@/components/dashboard/PartnershipMailButton'
 import { ApiError } from '@/lib/api/simulate'
 import type { SlotDay } from '@/lib/relay/types'
 
@@ -175,6 +176,9 @@ export default function RequestCanvas({ slug }: { slug?: string }) {
         <div className="relay-hd-sub">
           {provider.name}
           {provider.avgResponseHours ? ` · usually replies within ${provider.avgResponseHours} hours` : ''}
+        </div>
+        <div className="relay-hd-actions" style={{ marginLeft: 0, marginTop: 14, justifyContent: 'flex-start' }}>
+          <PartnershipMailButton providerId={provider.slug} providerName={provider.name} />
         </div>
       </div>
 

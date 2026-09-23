@@ -40,6 +40,7 @@ export type CatalogRecord = {
   relayVerified?: boolean
   relayScore?: number
   isActive?: boolean
+  canEmailPartnership?: boolean
   tier?: 'free' | 'paid'
   logoUrl?: string
   settlementWindow?: string
