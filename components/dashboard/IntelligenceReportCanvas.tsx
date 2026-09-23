@@ -1,137 +1,139 @@
 'use client'
 
 import { useMemo } from 'react'
+import { useLocale } from 'next-intl'
 import { Link } from '@/i18n/navigation'
-import { useWeighting } from '@/components/dashboard/WeightingContext'
-import { useCompareTray } from '@/components/dashboard/compare/CompareTrayContext'
-import { useCatalog } from '@/components/dashboard/CatalogContext'
-import { useVisibleProviders } from '@/hooks/useVisibleProviders'
-import { CatalogCap } from '@/components/dashboard/ui/CatalogCap'
-import { CommercialPackages } from '@/components/dashboard/ui/Commercials'
 import { EmptyState } from '@/components/dashboard/ui/EmptyState'
-import { computeScore } from '@/lib/relay/score'
-import { commercialPackages, commercialsSummary, formatSettle } from '@/lib/relay/format'
+import { useCatalog } from '@/components/dashboard/CatalogContext'
+import { formatIntelDate, getIntelArticles, getIntelBrief } from '@/data/intel'
 
 export default function IntelligenceReportCanvas({ slug }: { slug: string }) {
-  const { weighting } = useWeighting()
-  const { getProvider, getRecord } = useCatalog()
-  const { has, toggle } = useCompareTray()
-  const { providers, catalogTotal, capped, compareSlots } = useVisibleProviders()
-  const provider = getProvider(slug)
-  const record = getRecord(slug)
-
-  const peers = useMemo(
-    () => providers.filter((p) => p.slug !== slug).slice(0, 4),
-    [providers, slug]
+  const locale = useLocale()
+  const { getProvider } = useCatalog()
+  const report = getIntelBrief(slug, locale)
+  const others = useMemo(
+    () => getIntelArticles(locale).filter((item) => item.id !== slug).slice(0, 6),
+    [locale, slug]
   )
+  const provider = getProvider(slug)
 
-  if (!provider) {
+  if (!report) {
     return (
       <div className="relay-page">
         <EmptyState
           kind="intel"
-          title="Not in the live catalog"
-          body="This link is not a listed provider. Intelligence only ranks providers that are live."
-          actionLabel="Back to Intelligence"
-          actionHref="/dashboard/intelligence"
+          title="Article not in Intelligence"
+          body={
+            provider
+              ? `${provider.name} is a live provider. Provider dossiers live in Directory.`
+              : 'This link is not a Relay research article.'
+          }
+          actionLabel={provider ? `Open ${provider.name}` : 'Back to Intelligence'}
+          actionHref={provider ? `/dashboard/providers/${provider.slug}` : '/dashboard/intelligence'}
         />
       </div>
     )
   }
 
-  const packages = commercialPackages(provider)
-  const summary = commercialsSummary(packages)
-  const score = computeScore(provider, weighting)
-  const on = has(provider.slug)
-  const currencies = record?.supportedCurrencies ?? []
-  const corridors = record?.supportedCorridors ?? []
+  const stats = [report.heroStat, ...report.metrics].filter(
+    (metric, index, all) => all.findIndex((item) => item.label === metric.label) === index
+  ).slice(0, 3)
 
   return (
     <div className="relay-page relay-page--report">
       <div className="relay-report-util">
-        <Link href="/dashboard/intelligence">Intelligence · Provider list</Link>
-        <Link href={`/dashboard/providers/${provider.slug}`}>Open dossier</Link>
+        <Link href="/dashboard/intelligence">Intelligence · Articles</Link>
+        <Link href={`/reports/${report.slug}`}>Open full report</Link>
       </div>
 
-      {capped ? <CatalogCap visible={providers.length} total={catalogTotal} compareSlots={compareSlots} /> : null}
-
-      <div className="relay-report-grid">
+      <div className="relay-report-grid relay-report-grid--brief">
         <article className="relay-article">
-          <div className="relay-article-kicker">LIVE CATALOG · {provider.regions.join(' · ') || 'Coverage unset'}</div>
-          <h1 id="report-headline">{provider.name}</h1>
-          <div className="relay-byline">
-            <strong>{provider.hq}</strong>
-            <span>{summary.headline}</span>
-            <span>{provider.settleLabel}</span>
-            <em>SCORE {score}</em>
+          <div className="relay-article-kicker">
+            {(report.kicker || report.category).toUpperCase()} · {report.market.toUpperCase()}
           </div>
-          <p>{provider.description || record?.longDescription || `${provider.name} is listed in the live catalog.`}</p>
+          <h1 id="report-headline">{report.title}</h1>
+          <div className="relay-byline">
+            <strong>Relay Research</strong>
+            <span>{formatIntelDate(report.publishedAt, locale)}</span>
+            <span>{report.readMinutes} min read</span>
+            <em>{report.heroStat.value}</em>
+          </div>
 
-          <h2>Commercials</h2>
-          {packages.length ? (
-            <CommercialPackages packages={packages} benefits={provider.sharedBenefits} />
-          ) : (
-            <p>No published commercials on file yet.</p>
-          )}
+          <div className="relay-article-stats">
+            {stats.map((metric) => (
+              <div key={`${metric.label}-${metric.value}`}>
+                <strong>{metric.value}</strong>
+                <span>{metric.label}</span>
+              </div>
+            ))}
+          </div>
 
-          <h2>Coverage</h2>
+          <p>{report.overview}</p>
+
+          {report.keyTakeaways?.length ? (
+            <>
+              <h2>Data points</h2>
+              <ul>
+                {report.keyTakeaways.map((line) => (
+                  <li key={line}>{line}</li>
+                ))}
+              </ul>
+            </>
+          ) : null}
+
+          {report.findings.slice(0, 4).map((finding) => (
+            <section key={finding.title}>
+              <h2>{finding.title}</h2>
+              {finding.stat ? (
+                <blockquote>
+                  {finding.stat.value}
+                  <span style={{ display: 'block', marginTop: 8, fontSize: 13, opacity: 0.62 }}>
+                    {finding.stat.label}
+                  </span>
+                </blockquote>
+              ) : null}
+              <p>{finding.body}</p>
+            </section>
+          ))}
+
           <p>
-            {provider.regions.length
-              ? `Regions: ${provider.regions.join(', ')}.`
-              : 'Regions are not listed yet.'}{' '}
-            {currencies.length ? `Currencies: ${currencies.join(', ')}.` : ''}
+            <Link href={`/reports/${report.slug}`} className="relay-link" style={{ color: '#0a0a0b' }}>
+              Continue in the full report →
+            </Link>
           </p>
-          {corridors.length ? (
-            <ul className="relay-intel-corridors">
-              {corridors.map((row) => (
-                <li key={row}>{row}</li>
-              ))}
-            </ul>
-          ) : (
-            <p>No corridor list on file — request an intro if you need a specific pair confirmed.</p>
-          )}
         </article>
 
         <aside className="relay-report-side">
           <div className="relay-dpanel relay-dpanel--flush">
             <div className="relay-dpanel-head">
-              <span>This provider</span>
-              <span className="relay-dpanel-meta">{score}</span>
+              <span>This brief</span>
+              <span className="relay-dpanel-meta">{report.heroStat.value}</span>
             </div>
             <div className="relay-keys">
-              <div>
-                <strong>{summary.headline}</strong>
-                <span>Published commercials</span>
-              </div>
-              <div>
-                <strong>{formatSettle(provider.medianSettleMinutes, provider.settleLabel)}</strong>
-                <span>Settlement</span>
-              </div>
-              <div>
-                <strong>{provider.corridorCount || corridors.length || '—'}</strong>
-                <span>Corridors on file</span>
-              </div>
+              {report.metrics.slice(0, 3).map((metric) => (
+                <div key={metric.label}>
+                  <strong>{metric.value}</strong>
+                  <span>{metric.label}</span>
+                </div>
+              ))}
             </div>
-            <button
-              type="button"
-              className={`relay-btn ${on ? 'relay-btn--outline' : 'relay-btn--lime'} relay-named-cta`}
-              onClick={() => toggle(provider.slug)}
-            >
-              {on ? 'Remove from compare' : 'Add to compare'}
-            </button>
+            <Link href={`/reports/${report.slug}`} className="relay-btn relay-btn--lime relay-named-cta">
+              Read full report
+            </Link>
           </div>
 
-          {peers.length ? (
+          {others.length ? (
             <div className="relay-dpanel relay-dpanel--flush">
               <div className="relay-dpanel-head">
-                <span>Also in this list</span>
-                <span className="relay-dpanel-meta">{peers.length}</span>
+                <span>More intelligence</span>
+                <span className="relay-dpanel-meta">{others.length}</span>
               </div>
-              {peers.map((p) => (
-                <Link href={`/dashboard/intelligence/${p.slug}`} className="relay-named" key={p.slug}>
-                  <span>{p.name}</span>
-                  <em>{commercialsSummary(commercialPackages(p)).headline}</em>
-                  <strong>{computeScore(p, weighting)}</strong>
+              {others.map((item) => (
+                <Link href={item.href} className="relay-named relay-named--stack" key={item.id}>
+                  <span>{item.title}</span>
+                  <em>
+                    {item.kind} · {formatIntelDate(item.date, locale)}
+                  </em>
                 </Link>
               ))}
             </div>

@@ -1,125 +1,138 @@
 'use client'
 
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
+import { useLocale } from 'next-intl'
 import { Link } from '@/i18n/navigation'
-import { CheckBox } from '@/components/dashboard/ui/CheckBox'
-import { CommercialsCompact } from '@/components/dashboard/ui/Commercials'
-import { CatalogCap } from '@/components/dashboard/ui/CatalogCap'
-import { EmptyState } from '@/components/dashboard/ui/EmptyState'
-import { useWeighting } from '@/components/dashboard/WeightingContext'
-import { useCompareTray } from '@/components/dashboard/compare/CompareTrayContext'
-import { useOpenWeighting } from '@/components/dashboard/compare/WeightingPopover'
-import { useVisibleProviders } from '@/hooks/useVisibleProviders'
-import { computeScore, sortByScore } from '@/lib/relay/score'
-import { commercialPackages } from '@/lib/relay/format'
+import {
+  barHeights,
+  formatIntelDate,
+  getFeaturedArticle,
+  getIntelArticles,
+  getIntelPoints,
+  type IntelKind,
+} from '@/data/intel'
+
+const FILTERS: Array<{ id: 'all' | IntelKind; label: string }> = [
+  { id: 'all', label: 'All' },
+  { id: 'RESEARCH', label: 'Research' },
+  { id: 'MARKET', label: 'Market' },
+  { id: 'REGULATION', label: 'Regulation' },
+  { id: 'LICENSING', label: 'Licensing' },
+]
 
 export default function IntelligenceCanvas() {
-  const { weighting } = useWeighting()
-  const { has, toggle, ids, setAll } = useCompareTray()
-  const openWeighting = useOpenWeighting()
-  const { providers, catalogTotal, hiddenCount, capped, compareSlots, loading } = useVisibleProviders()
+  const locale = useLocale()
+  const [filter, setFilter] = useState<(typeof FILTERS)[number]['id']>('all')
 
-  const ranked = useMemo(() => sortByScore(providers, weighting), [providers, weighting])
-  const selectedHere = ids.filter((id) => ranked.some((p) => p.slug === id))
+  const featured = useMemo(() => getFeaturedArticle(locale), [locale])
+  const points = useMemo(() => getIntelPoints(locale), [locale])
+  const articles = useMemo(() => getIntelArticles(locale), [locale])
+  const heights = useMemo(() => barHeights(points), [points])
+  const list = useMemo(
+    () => articles.filter((item) => (filter === 'all' ? true : item.kind === filter)),
+    [articles, filter]
+  )
+  const lead = points[0]
+  const second = points[1]
 
   return (
     <div className="relay-page relay-page--intelligence">
       <div className="relay-hd">
         <div>
           <h1 className="relay-hd-title">Intelligence</h1>
-          <div className="relay-hd-sub">
-            {loading
-              ? 'Loading the live catalog…'
-              : catalogTotal
-                ? `Ranked from the live catalog · compare up to ${compareSlots}`
-                : 'Providers appear here as they go live'}
-          </div>
-        </div>
-        <div className="relay-hd-actions">
-          <button type="button" className="relay-btn relay-btn--outline" onClick={openWeighting}>
-            Edit weighting
-          </button>
-          {selectedHere.length >= 2 ? (
-            <Link
-              href={`/dashboard/compare?ids=${selectedHere.join(',')}`}
-              className="relay-btn relay-btn--lime"
-              onClick={() => setAll(selectedHere)}
-            >
-              Compare {selectedHere.length}
-            </Link>
-          ) : null}
+          <div className="relay-hd-sub">Latest fintech articles and the data points behind them</div>
         </div>
       </div>
 
-      {capped ? <CatalogCap visible={ranked.length} total={catalogTotal} compareSlots={compareSlots} /> : null}
+      <div className="relay-intel-top">
+        {featured ? (
+          <Link href={featured.href} className="relay-featured">
+            <div className="relay-featured-kicker">{featured.kicker || 'RELAY RESEARCH'}</div>
+            <h2>{featured.summary}</h2>
+            <div className="relay-featured-foot">
+              <span className="relay-featured-btn">Read article</span>
+              <span className="relay-featured-meta">
+                {featured.market}
+                {featured.readMinutes ? ` · ${featured.readMinutes} min` : ''}
+                {` · ${formatIntelDate(featured.date, locale)}`}
+              </span>
+            </div>
+          </Link>
+        ) : null}
 
-      <div className="relay-panel relay-panel--dir">
-        <div className="relay-dir-head">
-          <div>
-            <div className="relay-dir-title">Provider list</div>
-            <div className="relay-dir-sub">
-              {capped
-                ? `Showing ${ranked.length} of ${catalogTotal} live · pick up to ${compareSlots} to compare`
-                : `${ranked.length} live · scored with your weighting`}
+        <div className="relay-index">
+          <div className="relay-index-head">
+            Fintech data points
+            <span>LIVE</span>
+          </div>
+          <div className="relay-index-bars" aria-hidden>
+            {heights.map((h, i) => (
+              <i
+                key={`${h}-${i}`}
+                className={`relay-index-bar${i >= heights.length - 3 ? ' relay-index-bar--lime' : ''}`}
+                style={{ height: `${h}%` }}
+              />
+            ))}
+          </div>
+          <div className="relay-index-foot">
+            <div>
+              <strong>{lead?.value ?? '—'}</strong>
+              <span>{lead?.label ?? 'Waiting on research'}</span>
+            </div>
+            <div>
+              <strong>{second?.value ?? '—'}</strong>
+              <span>{second?.label ?? ''}</span>
             </div>
           </div>
         </div>
+      </div>
 
-        {ranked.length === 0 ? (
-          <EmptyState
-            kind="intel"
-            compact
-            title={loading ? 'Loading providers' : 'No providers live yet'}
-            body="Intelligence ranks the same catalog the directory uses. Nothing here is a placeholder."
-          />
+      {points.length ? (
+        <div className="relay-points" aria-label="Fintech data points">
+          {points.slice(0, 8).map((point) => (
+            <div className="relay-point" key={point.id}>
+              <strong>{point.value}</strong>
+              <span>{point.label}</span>
+              {point.delta ? <em>{point.delta}</em> : null}
+            </div>
+          ))}
+        </div>
+      ) : null}
+
+      <div className="relay-panel relay-week">
+        <div className="relay-week-head">
+          Latest articles
+          <div className="relay-week-filter">
+            {FILTERS.map((item) => (
+              <button
+                key={item.id}
+                type="button"
+                className={filter === item.id ? 'is-on' : ''}
+                onClick={() => setFilter(item.id)}
+              >
+                {item.label}
+              </button>
+            ))}
+          </div>
+        </div>
+        {list.length === 0 ? (
+          <div className="relay-empty-hint" style={{ padding: '28px' }}>
+            No articles in this filter.
+          </div>
         ) : (
-          <>
-            <div className="relay-th relay-th--dir">
-              <span />
-              <span>PROVIDER</span>
-              <span>COMMERCIALS</span>
-              <span>SETTLE</span>
-              <span>COVERAGE</span>
-              <span style={{ textAlign: 'right' }}>SCORE</span>
-            </div>
-            <div className="relay-rows">
-              {ranked.map((p, i) => {
-                const on = has(p.slug)
-                const score = computeScore(p, weighting)
-                return (
-                  <div key={p.slug} className={`relay-row relay-row--dir${on ? ' relay-row--tray' : ''}`}>
-                    <CheckBox checked={on} label={`Select ${p.name}`} onChange={() => toggle(p.slug)} />
-                    <div>
-                      <Link href={`/dashboard/intelligence/${p.slug}`} className="relay-prov-name">
-                        <span>
-                          {i + 1}. {p.name}
-                        </span>
-                        {on ? <span className="relay-flag relay-flag--lime">IN TRAY</span> : null}
-                      </Link>
-                      <div className="relay-meta">
-                        {p.hq}
-                        {p.regions.length ? ` · ${p.regions.slice(0, 3).join(', ')}` : ''}
-                      </div>
-                    </div>
-                    <CommercialsCompact packages={commercialPackages(p)} />
-                    <span className="relay-settle">{p.settleLabel}</span>
-                    <span className="relay-settle">{p.regions[0] || '—'}</span>
-                    <span className="relay-dir-score">{score}</span>
-                  </div>
-                )
-              })}
-              <div className="relay-table-foot">
-                <span>
-                  {ranked.length} visible
-                  {hiddenCount ? ` · ${hiddenCount} more on Pro` : ' · live catalog'}
-                  {` · ${selectedHere.length} of ${compareSlots} in compare`}
-                </span>
-                <Link href="/dashboard/providers" className="relay-link">
-                  Open directory →
-                </Link>
+          list.map((item) => (
+            <Link key={item.id} href={item.href} className="relay-news-row">
+              <span className={`relay-news-kind relay-news-kind--${item.kind}`}>{item.kind}</span>
+              <div>
+                <div className="relay-news-title">{item.title}</div>
+                <div className="relay-news-meta">
+                  {item.source} · {item.summary}
+                </div>
               </div>
-            </div>
-          </>
+              <span className="relay-news-affects">{item.market}</span>
+              <span className="relay-news-when">{formatIntelDate(item.date, locale)}</span>
+            </Link>
+          ))
         )}
       </div>
     </div>

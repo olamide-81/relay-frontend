@@ -44,7 +44,7 @@ const CHROME: Record<
     url: 'app.relay · intelligence',
     pill: 'Intelligence',
     title: 'Intelligence',
-    sub: 'Market notes once the catalog has providers',
+    sub: 'Latest fintech articles and data points',
   },
 }
 

@@ -37,7 +37,6 @@ function getRail(path: string): RailSection {
 
 function showCompareTray(path: string) {
   if (path.startsWith('/dashboard/providers')) return true
-  if (path.startsWith('/dashboard/intelligence')) return true
   return false
 }
 

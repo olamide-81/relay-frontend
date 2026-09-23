@@ -62,7 +62,7 @@ export function gateCopy(id: GateId, vars?: { name?: string; count?: number }): 
     },
     'catalog.limit': {
       headline: `Free shows 5 of ${count} live providers.`,
-      body: 'Intelligence and Directory stay at five until you upgrade. Compare is two of those five.',
+      body: 'Directory stays at five until you upgrade. Compare is two of those five.',
       bullets: ['Every live provider', 'Compare up to four', 'Unlimited shortlists and intros'],
       cta: 'Start Pro',
       counter: `Free · 5 of ${count} providers`,

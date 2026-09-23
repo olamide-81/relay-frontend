@@ -22,7 +22,7 @@ export const planCards = [
     badge: '',
     desc: 'Enough to see if Relay is real. Five providers, two in compare.',
     features: [
-      '5 providers in Intelligence and Directory',
+      '5 providers in Directory',
       'Compare 2 of those 5',
       '1 shortlist',
       '2 intro requests per month',
