@@ -1,4 +1,4 @@
-const liveApiUrl = 'https://relay-api-iota.vercel.app'
+const liveApiUrl = 'https://relayapi.gratebridge.com'
 
 export const apiBaseUrl =
   process.env.NEXT_PUBLIC_API_URL?.replace(/\/$/, '') ??
