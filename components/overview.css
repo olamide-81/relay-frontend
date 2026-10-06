@@ -195,6 +195,19 @@
   overflow: hidden;
 }
 
+/* Preview is a picture of the workspace, not a nested scroller.
+   .relay-main's overflow:auto + overscroll-behavior:contain ate the
+   page wheel when the cursor was over this frame. */
+.ov-frame,
+.ov-clip {
+  overscroll-behavior: none;
+}
+
+.ov-app .relay-main {
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
 .ov-app button.relay-cat {
   width: 100%;
   font: inherit;
