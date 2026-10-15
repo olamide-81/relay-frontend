@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;background:#0f1011;color:#f7f8f8;font-family:"Geist",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#8a8f98;text-decoration:none;transition:color .12s}
+a:hover{color:#f7f8f8}
+</style>
+</helmet>
+<div style="position:relative;min-height:100vh;overflow-x:clip;font-family:Geist,system-ui,sans-serif;color:#f7f8f8;background:#0f1011">
+  <div style="position:absolute;left:0;right:0;top:0;height:900px;pointer-events:none;background:radial-gradient(90% 60% at 50% 0%,#26282c 0%,#18191c 38%,#0f1011 80%)"></div>
+  <dc-import name="Relay Site Nav" active="pricing" hint-size="100%,64px" style="position:sticky;top:0;z-index:50"></dc-import>
+
+  <section data-screen-label="Pricing hero" style="position:relative;max-width:1200px;margin:0 auto;padding:120px 24px 0">
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap">
+      <div>
+        <div style="font-family:'Geist Mono',monospace;font-size:12px;color:#62666d;margin-bottom:20px">Pricing</div>
+        <h1 style="margin:0;max-width:760px;font-weight:500;font-size:clamp(40px,6vw,72px);line-height:1.02;letter-spacing:-0.05em;text-wrap:balance">Start free. <span style="color:#8a8f98">Scale with your stack.</span></h1>
+      </div>
+      <div style="display:flex;align-items:center;gap:2px;padding:3px;border-radius:999px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.1)">
+        <sc-for list="{{ cycles }}" as="c" hint-placeholder-count="2"><span onClick="{{ c.pick }}" style="height:32px;padding:0 14px;display:inline-flex;align-items:center;gap:8px;border-radius:999px;font-size:13.5px;font-weight:500;cursor:pointer;transition:background-color .2s,color .2s;background:{{ c.bg }};color:{{ c.fg }}">{{ c.label }}<sc-if value="{{ c.save }}"><span style="font-size:11.5px;color:#6fe3b4">−20%</span></sc-if></span></sc-for>
+      </div>
+    </div>
+    <div style="margin-top:56px;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px">
+      <sc-for list="{{ plans }}" as="p" hint-placeholder-count="3">
+        <div style="position:relative;display:flex;flex-direction:column;gap:24px;padding:28px;border-radius:18px;overflow:hidden;background:{{ p.bg }};box-shadow:{{ p.ring }};transition:transform .25s cubic-bezier(.2,.8,.2,1),box-shadow .2s" style-hover="transform:translateY(-3px)">
+          <sc-if value="{{ p.isPro }}"><div style="position:absolute;right:-30px;bottom:-30px;width:220px;height:180px;pointer-events:none;opacity:.9"><sc-for list="{{ orbit }}" as="o" hint-placeholder-count="6"><span style="position:absolute;left:{{ o.x }};top:{{ o.y }};transform:rotate({{ o.r }})"><dc-import name="Relay App Icon" kind="{{ o.kind }}" size="{{ o.s }}" hint-size="28px,28px"></dc-import></span></sc-for></div></sc-if>
+          <div style="position:relative;display:flex;align-items:center;justify-content:space-between"><span style="font-size:15px;font-weight:500">{{ p.name }}</span><sc-if value="{{ p.isPro }}"><span style="font-size:11.5px;font-weight:500;padding:2px 9px;border-radius:999px;color:#0f1011;background:#f7f8f8">Most popular</span></sc-if></div>
+          <div style="position:relative"><div style="display:flex;align-items:baseline;gap:8px"><span style="font-size:44px;font-weight:500;letter-spacing:-0.04em;font-variant-numeric:tabular-nums">{{ p.price }}</span><span style="font-size:13px;color:#8a8f98">{{ p.per }}</span></div><div style="font-size:14px;color:#8a8f98;margin-top:8px;line-height:1.5">{{ p.desc }}</div></div>
+          <a href="{{ p.href }}" style="position:relative;height:40px;display:flex;align-items:center;justify-content:center;border-radius:10px;font-size:14px;font-weight:500;transition:background-color .15s,transform .2s,box-shadow .2s;color:{{ p.btnFg }};background:{{ p.btnBg }};box-shadow:{{ p.btnRing }}" style-hover="transform:translateY(-1px);filter:brightness(1.08)">{{ p.cta }}</a>
+          <div style="position:relative;display:flex;flex-direction:column;gap:11px;padding-top:20px;border-top:1px solid rgba(255,255,255,.07)">
+            <sc-for list="{{ p.features }}" as="f" hint-placeholder-count="5"><div style="display:flex;gap:10px;font-size:13.5px;color:#d4d6da"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8a8f98" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:2px"><path d="M20 6 9 17l-5-5"></path></svg>{{ f }}</div></sc-for>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <section data-screen-label="Compare plans" style="position:relative;max-width:1200px;margin:0 auto;padding:140px 24px 0">
+    <h2 style="margin:0;font-weight:500;font-size:clamp(30px,3.8vw,46px);line-height:1.05;letter-spacing:-0.04em">Compare plans</h2>
+    <div style="margin-top:32px;border-radius:14px;box-shadow:0 0 0 1px rgba(255,255,255,.06);overflow-x:auto">
+      <div style="min-width:640px">
+        <div style="display:grid;grid-template-columns:minmax(0,2fr) repeat(3,minmax(0,1fr));padding:16px 20px;border-bottom:1px solid rgba(255,255,255,.07);font-size:13px;font-weight:500;color:#d4d6da;position:sticky;top:64px;background:#0f1011"><span></span><span>Free</span><span>Pro</span><span>Enterprise</span></div>
+        <sc-for list="{{ table }}" as="g" hint-placeholder-count="3">
+          <div style="padding:18px 20px 8px;font-size:12px;font-weight:500;color:#62666d">{{ g.group }}</div>
+          <sc-for list="{{ g.rows }}" as="r" hint-placeholder-count="4">
+            <div style="display:grid;grid-template-columns:minmax(0,2fr) repeat(3,minmax(0,1fr));align-items:center;padding:13px 20px;border-bottom:1px solid rgba(255,255,255,.04);font-size:13.5px;transition:background-color .15s" style-hover="background:rgba(255,255,255,.02)">
+              <span style="color:#b4b8bf">{{ r.k }}</span>
+              <sc-for list="{{ r.v }}" as="c" hint-placeholder-count="3"><span style="color:{{ c.fg }}">{{ c.t }}</span></sc-for>
+            </div>
+          </sc-for>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <section data-screen-label="FAQ" style="position:relative;max-width:1200px;margin:0 auto;padding:140px 24px 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:40px 64px">
+    <h2 style="margin:0;font-weight:500;font-size:clamp(30px,3.8vw,46px);line-height:1.05;letter-spacing:-0.04em">Questions</h2>
+    <div style="display:flex;flex-direction:column;border-top:1px solid rgba(255,255,255,.07)">
+      <sc-for list="{{ faq }}" as="q" hint-placeholder-count="5">
+        <div style="border-bottom:1px solid rgba(255,255,255,.07)">
+          <div onClick="{{ q.toggle }}" style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:20px 0;cursor:pointer;font-size:15.5px;font-weight:500;transition:color .15s" style-hover="color:#ffffff">{{ q.q }}<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8a8f98" stroke-width="2.2" stroke-linecap="round" style="flex:none;transition:transform .3s cubic-bezier(.2,.8,.2,1);transform:{{ q.rot }}"><path d="M12 5v14M5 12h14"></path></svg></div>
+          <div style="display:grid;transition:grid-template-rows .35s cubic-bezier(.2,.8,.2,1),opacity .25s;grid-template-rows:{{ q.rows }};opacity:{{ q.op }}"><div style="min-height:0;overflow:hidden"><p style="margin:0 0 20px;font-size:14.5px;line-height:1.6;color:#8a8f98;max-width:560px">{{ q.a }}</p></div></div>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <dc-import name="Relay Site Footer" hint-size="100%,560px"></dc-import>
+  <dc-import name="Relay Site Cookies" hint-size="0px,0px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const Y = '✓', N = '—';
+const TABLE = [
+  ['Directory', [['Provider profiles', ['Preview', 'All 1,600', 'All 1,600']], ['Search and filters', [Y, Y, Y]], ['Regions', ['3', 'All 8', 'All 8']], ['Bookmarks', ['10', 'Unlimited', 'Unlimited']]]],
+  ['Workflow', [['Compares per month', ['5', 'Unlimited', 'Unlimited']], ['Saved comparisons', [N, Y, Y]], ['Shortlists', ['1', 'Unlimited', 'Unlimited']], ['Intro requests', ['3 / month', 'Unlimited', 'Unlimited']], ['Multi-Provider RFPs', [N, N, Y]]]],
+  ['Intelligence', [['Signals', ['Weekly digest', 'Real time', 'Real time']], ['Reports and benchmarks', [N, Y, Y]], ['Licence watch', [N, '25 watches', 'Unlimited']]]],
+  ['Workspace', [['Seats', ['Up to 5', 'Unlimited', 'Unlimited']], ['API access', [N, 'Standard', 'Volume']], ['SSO and audit log', [N, N, Y]], ['Dedicated analyst', [N, N, Y]]]]
+];
+const FAQ = [
+  ['Is the free plan really free?', 'Yes. Search the directory, run five compares a month and send three intro requests with no card required.'],
+  ['How do you make money from Providers?', 'We don’t. Providers can’t pay for placement or ranking. Relay is funded by subscriptions from teams like yours.'],
+  ['How current is the data?', 'Every Provider profile is verified weekly against public filings, regulator registers and direct confirmation.'],
+  ['Can I switch plans later?', 'Anytime. Upgrades apply immediately and downgrades take effect at the end of your billing period.'],
+  ['Do you offer discounts for early-stage startups?', 'Yes. Teams that raised less than $5M can apply for 50% off Pro for the first year.']
+];
+class Component extends DCLogic {
+  state = { yearly: true, open: 0 };
+  renderVals() {
+    const S = this.state, yr = S.yearly;
+    const plan = (name, price, per, desc, cta, features, pro, href) => ({ name, price, per, desc, cta, features, href, isPro: pro,
+      bg: pro ? 'radial-gradient(120% 90% at 100% 100%,rgba(255,255,255,.06),rgba(255,255,255,0) 60%),#17181b' : '#121315',
+      ring: pro ? '0 0 0 1px rgba(255,255,255,.16),0 30px 60px -30px rgba(0,0,0,.8)' : '0 0 0 1px rgba(255,255,255,.06)',
+      btnFg: pro ? '#0f1011' : '#f7f8f8', btnBg: pro ? '#f7f8f8' : 'rgba(255,255,255,.04)', btnRing: pro ? 'none' : 'inset 0 0 0 1px rgba(255,255,255,.12)' });
+    return {
+      cycles: [['Yearly', true], ['Monthly', false]].map(([label, v]) => ({ label, save: v, pick: () => this.setState({ yearly: v }), bg: yr === v ? 'rgba(255,255,255,.1)' : 'transparent', fg: yr === v ? '#f7f8f8' : '#8a8f98' })),
+      plans: [
+        plan('Free', '€0', 'forever', 'For founders exploring their first partners.', 'Start for free', ['Directory preview', '5 compares a month', '3 intro requests a month', 'Weekly market digest'], false, '#'),
+        plan('Pro', yr ? '€39' : '€49', 'per seat / month', 'For teams actively choosing and switching Providers.', 'Upgrade to Pro', ['All 1,600 Providers', 'Unlimited compares and intros', 'Reports, benchmarks and signals', 'Licence watch', 'Unlimited seats'], true, '#'),
+        plan('Enterprise', 'Custom', 'billed annually', 'For procurement and compliance at scale.', 'Talk to sales', ['Everything in Pro', 'Multi-Provider RFPs', 'SSO, SCIM and audit log', 'API at volume', 'Dedicated analyst'], false, 'Relay%20Contact.dc.html')
+      ],
+      orbit: [['collections', '20px', '90px', 30, '-8deg'], ['payouts', '78px', '54px', 26, '6deg'], ['fx', '132px', '92px', 30, '-4deg'], ['cards', '176px', '40px', 24, '10deg'], ['kyc', '58px', '132px', 26, '4deg'], ['bank', '122px', '138px', 28, '-6deg']].map(([kind, x, y, s, r]) => ({ kind, x, y, s, r })),
+      table: TABLE.map(([group, rows]) => ({ group, rows: rows.map(([k, v]) => ({ k, v: v.map(t => ({ t, fg: t === N ? '#3a3c40' : t === Y ? '#6fe3b4' : '#d4d6da' })) })) })),
+      faq: FAQ.map(([q, a], i) => { const o = S.open === i; return { q, a, toggle: () => this.setState({ open: o ? -1 : i }), rows: o ? '1fr' : '0fr', op: o ? 1 : 0, rot: o ? 'rotate(45deg)' : 'none' }; })
+    };
+  }
+}
+</script>
+</body>
+</html>

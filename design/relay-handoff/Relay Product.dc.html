@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;background:#0f1011;color:#f7f8f8;font-family:"Geist",system-ui,sans-serif;-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
+a{color:#8a8f98;text-decoration:none;transition:color .12s}
+a:hover{color:#f7f8f8}
+</style>
+</helmet>
+<div style="position:relative;min-height:100vh;overflow-x:clip;font-family:Geist,system-ui,sans-serif;color:#f7f8f8;background:#0f1011">
+  <div style="position:absolute;left:0;right:0;top:0;height:900px;pointer-events:none;background:radial-gradient(90% 60% at 50% 0%,#26282c 0%,#18191c 38%,#0f1011 80%)"></div>
+  <dc-import name="Relay Site Nav" active="product" hint-size="100%,64px" style="position:sticky;top:0;z-index:50"></dc-import>
+
+  <section data-screen-label="Product hero" style="position:relative;max-width:1200px;margin:0 auto;padding:120px 24px 0">
+    <div style="font-family:'Geist Mono',monospace;font-size:12px;color:#62666d;margin-bottom:20px">Product</div>
+    <h1 style="margin:0;max-width:900px;font-weight:500;font-size:clamp(40px,6vw,72px);line-height:1.02;letter-spacing:-0.05em;text-wrap:balance">One workspace for choosing <span style="color:#8a8f98">financial partners.</span></h1>
+    <p style="margin:28px 0 0;max-width:560px;font-size:18px;line-height:1.55;color:#8a8f98">Search the market, compare real commercials, rank options with your team and open conversations, without leaving Relay.</p>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:40px">
+      <sc-for list="{{ jump }}" as="j" hint-placeholder-count="5"><a href="{{ j.href }}" style="height:34px;padding:0 14px;display:inline-flex;align-items:center;gap:8px;border-radius:999px;font-size:13.5px;font-weight:500;color:#d4d6da;box-shadow:inset 0 0 0 1px rgba(255,255,255,.1);transition:background-color .15s,color .15s,transform .2s" style-hover="background:rgba(255,255,255,.05);color:#f7f8f8;transform:translateY(-1px)"><dc-import name="Relay App Icon" kind="{{ j.kind }}" size="18" hint-size="18px,18px"></dc-import>{{ j.label }}</a></sc-for>
+    </div>
+  </section>
+
+  <sc-for list="{{ features }}" as="f" hint-placeholder-count="5">
+    <section id="{{ f.id }}" data-rv="{{ f.id }}" style="position:relative;max-width:1200px;margin:0 auto;padding:140px 24px 0;scroll-margin-top:40px">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:24px 64px;align-items:end;transition:opacity .9s,transform .9s cubic-bezier(.2,.8,.2,1);opacity:{{ f.op }};transform:{{ f.tf }}">
+        <div>
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:18px"><dc-import name="Relay App Icon" kind="{{ f.kind }}" size="28" hint-size="28px,28px"></dc-import><span style="font-size:13.5px;font-weight:500;color:#d4d6da">{{ f.label }}</span></div>
+          <h2 style="margin:0;font-weight:500;font-size:clamp(30px,3.8vw,46px);line-height:1.05;letter-spacing:-0.04em;text-wrap:balance">{{ f.title }} <span style="color:#8a8f98">{{ f.sub }}</span></h2>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:0;border-top:1px solid rgba(255,255,255,.07)">
+          <sc-for list="{{ f.points }}" as="p" hint-placeholder-count="3"><div style="display:flex;gap:12px;padding:14px 0;border-bottom:1px solid rgba(255,255,255,.07);font-size:14.5px;line-height:1.5;color:#b4b8bf"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#8a8f98" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:3px"><path d="M20 6 9 17l-5-5"></path></svg>{{ p }}</div></sc-for>
+        </div>
+      </div>
+      <div style="margin-top:48px;transition:opacity 1s .15s,transform 1s .15s cubic-bezier(.2,.8,.2,1);opacity:{{ f.op }};transform:{{ f.shotTf }}">
+        <dc-import name="Relay Site Shot" src="{{ f.src }}" frame-w="1200" frame-h="{{ f.fh }}" hint-size="100%,520px"></dc-import>
+      </div>
+    </section>
+  </sc-for>
+
+  <dc-import name="Relay Site Footer" hint-size="100%,560px"></dc-import>
+  <dc-import name="Relay Site Cookies" hint-size="0px,0px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const F = [
+  ['directory', 'all', 'Directory', 'Every Provider, one search.', 'Filtered by what matters.', 'Relay%20Directory.dc.html', 680, ['1,600 Providers across six categories and 140 countries', 'Filter by rail, licence, region, pricing and settlement', 'Full profiles with coverage, licences and security posture']],
+  ['compare', 'fx', 'Compare', 'Side by side, on real numbers.', 'Best values marked.', 'Relay%20Compare.dc.html', 720, ['Up to four Providers on pricing, settlement and coverage', 'Only-differences view to cut through the noise', 'Save comparisons and pin them to Favorites']],
+  ['shortlists', 'collections', 'Shortlists', 'Decide together.', 'Rank with your team.', 'Relay%20Shortlists.dc.html', 640, ['Group Providers by project and category', 'Scores weighted by your workspace priorities', 'Notes and updates your whole team can see']],
+  ['requests', 'payouts', 'Requests', 'One request, many Providers.', 'Replies in your inbox.', 'Relay%20Requests.dc.html', 680, ['Send intros, pricing and sandbox requests to up to five Providers', 'Track every conversation from sent to signed', 'Replies, sandbox keys and calls in one inbox']],
+  ['intelligence', 'kyc', 'Intelligence', 'Know what changed.', 'Before your partners tell you.', 'Relay%20Intelligence.dc.html', 760, ['Signals on pricing, launches and coverage', 'Reports and FX benchmarks by region', 'Licence watch across 40+ regulators']]
+];
+class Component extends DCLogic {
+  state = { seen: {} };
+  componentDidMount() {
+    this._io = new IntersectionObserver(es => { const add = {}; es.forEach(e => { if (e.isIntersecting) { add[e.target.dataset.rv] = true; this._io.unobserve(e.target); } }); if (Object.keys(add).length) this.setState(s => ({ seen: { ...s.seen, ...add } })); }, { threshold: 0.1 });
+    this._t = setTimeout(() => document.querySelectorAll('[data-rv]').forEach(n => this._io.observe(n)), 100);
+  }
+  componentWillUnmount() { this._io?.disconnect(); clearTimeout(this._t); }
+  renderVals() {
+    const S = this.state;
+    return {
+      jump: F.map(([id, kind, label]) => ({ kind, label, href: '#' + id })),
+      features: F.map(([id, kind, label, title, sub, src, fh, points]) => { const on = !!S.seen[id]; return { id, kind, label, title, sub, src, fh, points, op: on ? 1 : 0, tf: on ? 'translateY(0)' : 'translateY(28px)', shotTf: on ? 'translateY(0) scale(1)' : 'translateY(40px) scale(.97)' }; })
+    };
+  }
+}
+</script>
+</body>
+</html>

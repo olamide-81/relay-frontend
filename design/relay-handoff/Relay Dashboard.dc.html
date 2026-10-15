@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="relay-data.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;height:100%;background:#151618;color:#f7f8f8;font-family:"Geist",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#8a8f98;text-decoration:none}
+a:hover{color:#f7f8f8}
+</style>
+</helmet>
+<div style="height:100vh;display:flex;background:#151618;overflow:hidden">
+  <dc-import name="Relay Sidebar" active="{{ activeKey }}" favorites="{{ favs }}" on-remove-fav="{{ removeFav }}" on-restore-favs="{{ restoreFavs }}" on-navigate="{{ onNavigate }}" hint-size="256px,100%" style="height:100%;flex:none"></dc-import>
+  <main style="flex:1;min-width:0;margin:8px 8px 8px 0;background:#161719;border:1px solid rgba(255,255,255,.055);box-shadow:inset 0 1px 0 rgba(255,255,255,.03),0 8px 24px rgba(0,0,0,.18);border-radius:12px;display:flex;flex-direction:column">
+    <dc-import name="Relay Topbar" title="{{ title }}" page="{{ page }}" starred="{{ starred }}" on-star="{{ onStar }}" on-navigate="{{ onNavigate }}" hint-size="100%,60px" style="flex:none;border-radius:12px 12px 0 0"></dc-import>
+    <div style="flex:1;min-height:0;overflow-y:auto;scrollbar-width:thin;scrollbar-color:#2a2b2e transparent">
+      <sc-if value="{{ is.overview }}" hint-placeholder-val="{{ true }}">
+        <dc-import name="Relay Overview" hint-size="100%,900px"></dc-import>
+      </sc-if>
+      <sc-if value="{{ is.inbox }}">
+        <dc-import name="Relay Inbox" hint-size="100%,100%" style="height:100%"></dc-import>
+      </sc-if>
+      <sc-if value="{{ is.compare }}">
+        <dc-import name="Relay Compare" ids="{{ params.ids }}" saved-id="{{ params.savedId }}" saved="{{ compares }}" on-save-compare="{{ saveCompare }}" on-delete-compare="{{ deleteCompare }}" on-add-to-shortlist="{{ addToShortlist }}" hint-size="100%,700px"></dc-import>
+      </sc-if>
+      <sc-if value="{{ is.directory }}">
+        <dc-import name="Relay Directory" on-open-provider="{{ openProvider }}" on-navigate="{{ onNavigate }}" on-compare="{{ onCompare }}" on-add-to-shortlist="{{ addToShortlist }}" on-upgrade="{{ openUpgrade }}" hint-size="100%,900px"></dc-import>
+      </sc-if>
+      <sc-if value="{{ is.providers }}">
+        <dc-import name="Relay Providers" on-navigate="{{ onNavigate }}" on-open-provider="{{ openProvider }}" hint-size="100%,700px" style="min-height:100%"></dc-import>
+      </sc-if>
+      <sc-if value="{{ is.shortlists }}">
+        <dc-import name="Relay Shortlists" lists="{{ lists }}" initial="{{ params.initial }}" focus="{{ focusList }}" on-create="{{ createList }}" on-edit="{{ editList }}" on-note="{{ noteList }}" on-remove-item="{{ removeItem }}" on-add-items="{{ addItems }}" on-compare="{{ onCompare }}" on-navigate="{{ onNavigate }}" hint-size="100%,100%" style="height:100%"></dc-import>
+      </sc-if>
+      <sc-if value="{{ is.provider }}">
+        <dc-import name="Relay Provider" pid="{{ params.id }}" from="{{ params.from }}" on-navigate="{{ onNavigate }}" on-compare="{{ onCompare }}" on-add-to-shortlist="{{ addToShortlist }}" on-upgrade="{{ openUpgrade }}" plan="{{ plan }}" hint-size="100%,1200px"></dc-import>
+      </sc-if>
+      <sc-if value="{{ is.requests }}">
+        <dc-import name="Relay Requests" provider="{{ params.provider }}" on-toast="{{ onToast }}" hint-size="100%,700px"></dc-import>
+      </sc-if>
+      <sc-if value="{{ is.intelligence }}">
+        <dc-import name="Relay Intelligence" tab="{{ params.tab }}" report="{{ params.report }}" hint-size="100%,700px"></dc-import>
+      </sc-if>
+      <sc-if value="{{ is.profile }}">
+        <dc-import name="Relay Profile" on-toast="{{ onToast }}" hint-size="100%,800px"></dc-import>
+      </sc-if>
+      <sc-if value="{{ is.settings }}">
+        <dc-import name="Relay Settings" on-toast="{{ onToast }}" section="{{ params.section }}" invite="{{ params.invite }}" plan="{{ plan }}" on-upgrade="{{ openUpgrade }}" hint-size="100%,100%" style="height:100%"></dc-import>
+      </sc-if>
+    </div>
+  </main>
+  <dc-import name="Relay Modals" modal="{{ modal }}" lists="{{ lists }}" on-close="{{ closeModal }}" on-add-to-lists="{{ addToLists }}" on-save-list="{{ saveList }}" on-delete-list="{{ deleteList }}" on-upgrade-confirm="{{ confirmUpgrade }}" hint-size="0px,0px"></dc-import>
+  <dc-import name="Relay Confirm" open="{{ cf.open }}" tone="{{ cf.tone }}" title="{{ cf.title }}" body="{{ cf.body }}" confirm-label="{{ cf.ok }}" item="{{ cf.item }}" item-kind="{{ cf.kind }}" item-meta="{{ cf.meta }}" on-confirm="{{ cfYes }}" on-cancel="{{ cfNo }}" hint-size="0px,0px"></dc-import>
+  <dc-import name="Relay Toast" toasts="{{ toasts }}" on-dismiss="{{ dropToast }}" hint-size="0px,0px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const TITLES = { provider: 'Provider',  overview: 'Overview', inbox: 'Inbox', compare: 'Compare', directory: 'Directory', providers: 'Providers', shortlists: 'Shortlists', requests: 'Requests', intelligence: 'Intelligence', profile: 'Profile', settings: 'Settings' };
+const DEFAULT_FAVS = [
+  { id: 'f1', label: 'EUR → USD payouts', kind: 'corridor', page: 'compare', params: { ids: ['ledgerline', 'swiftrail', 'iberia'], savedId: 'c1' } },
+  { id: 'f2', label: 'KYC shortlist', kind: 'shortlist', page: 'shortlists', params: { initial: 's1' } },
+  { id: 'f3', label: 'FX benchmarks', kind: 'benchmark', page: 'intelligence', params: { tab: 'benchmarks' } },
+  { id: 'f4', label: 'Licence watch', kind: 'watch', page: 'intelligence', params: { tab: 'licences' } }
+];
+const LISTS = [
+  { id: 's1', name: 'KYC shortlist', kind: 'kyc', updated: 'today', note: 'Need EU and UK coverage with video ident by Q1.', ids: ['kestrel', 'veritas', 'orbis', 'proofline'] },
+  { id: 's2', name: 'EU payout partners', kind: 'payouts', updated: 'Mon', note: '', ids: ['ledgerline', 'swiftrail', 'iberia'] },
+  { id: 's3', name: 'Sponsor banks', kind: 'bank', updated: 'Oct 10', note: 'Safeguarding plus virtual IBANs.', ids: ['albion', 'nordhavn', 'helix'] },
+  { id: 's4', name: 'FX for APAC launch', kind: 'fx', updated: 'Oct 9', note: 'AUD, JPY and SGD priority.', ids: ['pacifica', 'meridian', 'cobalt'] }
+];
+const COMPARES = [
+  { id: 'c1', name: 'EUR → USD payouts', kind: 'payouts', ids: ['ledgerline', 'swiftrail', 'iberia'] },
+  { id: 'c2', name: 'Sponsor banks in Europe', kind: 'bank', ids: ['albion', 'nordhavn', 'lucerna'] }
+];
+const KIND = { compare: 'corridor', shortlists: 'shortlist', intelligence: 'benchmark' };
+const same = (a, b) => JSON.stringify(a ?? {}) === JSON.stringify(b ?? {});
+class Component extends DCLogic {
+  state = { page: 'overview', params: {}, activeKey: 'overview', favs: DEFAULT_FAVS, lists: LISTS, compares: COMPARES, modal: null, toasts: [], tn: 0, confirm: null, plan: /[?&]plan=pro/i.test(window.location.search) ? 'Pro' : 'Free', focusList: null, n: 10 };
+  flash(title, type = 'success', desc, extra) {
+    const id = 't' + Date.now() + Math.random();
+    this.setState(s => ({ toasts: [...s.toasts, { id, type, title, desc, ...extra }].slice(-3) }));
+    if (type !== 'error') setTimeout(() => this.drop(id), 4200);
+  }
+  drop(id) { this.setState(s => ({ toasts: s.toasts.map(t => t.id === id ? { ...t, leaving: true } : t) })); setTimeout(() => this.setState(s => ({ toasts: s.toasts.filter(t => t.id !== id) })), 260); }
+  ask(c) { this.setState({ confirm: c }); }
+  go(page, params = {}, key) { this.setState({ page, params, activeKey: key ?? page }); }
+  renderVals() {
+    const S = this.state;
+    const fav = S.favs.find(f => f.page === S.page && same(f.params, S.params));
+    const cmpName = S.page === 'compare' && S.params.savedId && S.compares.find(c => c.id === S.params.savedId)?.name;
+    const prov = S.page === 'provider' ? window.RELAY?.byId[S.params.id] : null;
+    const title = fav?.label || cmpName || prov?.name || TITLES[S.page] || 'Overview';
+    const upd = (id, fn) => this.setState(s => ({ lists: s.lists.map(l => l.id === id ? { ...fn(l), updated: 'today' } : l) }));
+    return {
+      is: { [S.page]: true }, page: S.page, params: S.params, title, activeKey: fav?.id ?? (S.page === 'provider' ? (S.params.from ?? 'directory') : S.activeKey), starred: !!fav,
+      favs: S.favs, lists: S.lists, compares: S.compares, modal: S.modal, plan: S.plan, focusList: S.focusList,
+      onNavigate: (k, params) => { const f = S.favs.find(x => x.id === k); if (f) return this.go(f.page, f.params, f.id); this.go(k, params ?? {}); },
+      onCompare: ids => this.go('compare', { ids }),
+      openProvider: (id, from) => this.go('provider', { id, from: from ?? S.page }, from ?? S.page),
+      onToast: (title, type, desc) => this.flash(title, type, desc),
+      dropToast: id => this.drop(id),
+      cf: S.confirm ? { open: true, tone: 'danger', ok: 'Delete', item: '', kind: 'all', meta: '', ...S.confirm } : { open: false, title: '', body: '', ok: '', item: '', kind: 'all', meta: '', tone: 'danger' },
+      cfYes: () => { const c = S.confirm; this.setState({ confirm: null }); c?.run?.(); },
+      cfNo: () => this.setState({ confirm: null }),
+      onStar: on => {
+        if (!on) { this.setState(s => ({ favs: s.favs.filter(f => !(f.page === s.page && same(f.params, s.params))) })); return this.flash('Removed from favorites', 'info'); }
+        this.setState(s => ({ n: s.n + 1, favs: [...s.favs, { id: 'f' + s.n, label: title, kind: KIND[s.page] ?? 'page', page: s.page, params: s.params }] }));
+        this.flash('Added to favorites', 'success', title + ' is pinned in the sidebar.');
+      },
+      removeFav: id => this.setState(s => ({ favs: s.favs.filter(f => f.id !== id) })),
+      restoreFavs: () => this.setState({ favs: DEFAULT_FAVS }),
+      addToShortlist: ids => this.setState({ modal: { type: 'addTo', ids } }),
+      openUpgrade: () => this.setState({ modal: { type: 'upgrade' } }),
+      closeModal: () => this.setState({ modal: null }),
+      confirmUpgrade: () => { this.setState({ modal: null, plan: 'Pro' }); this.flash('Welcome to Relay Pro', 'success', 'The full directory is now unlocked.'); },
+      addToLists: (listIds, ids) => { this.setState(s => ({ modal: null, lists: s.lists.map(l => listIds.includes(l.id) ? { ...l, ids: [...new Set([...l.ids, ...ids])], updated: 'today' } : l) })); this.flash(listIds.length === 1 ? 'Added to ' + S.lists.find(l => l.id === listIds[0])?.name : `Added to ${listIds.length} shortlists`); },
+      createList: () => this.setState({ modal: { type: 'edit' } }),
+      editList: id => this.setState({ modal: { type: 'edit', id } }),
+      saveList: l => {
+        if (l.id) { upd(l.id, x => ({ ...x, name: l.name, kind: l.kind, note: l.note })); this.setState({ modal: null }); return this.flash('Shortlist updated'); }
+        const id = 's' + S.n;
+        this.setState(s => ({ n: s.n + 1, modal: null, focusList: id, lists: [{ id, name: l.name, kind: l.kind, note: l.note, ids: l.ids, updated: 'today' }, ...s.lists] }));
+        this.flash('Shortlist created');
+      },
+      deleteList: id => { const l = S.lists.find(x => x.id === id); this.ask({ title: 'Delete shortlist?', body: 'This removes the shortlist and its notes for everyone in your workspace. This can’t be undone.', ok: 'Delete shortlist', item: l?.name, kind: l?.kind, meta: (l?.ids.length ?? 0) + ' Providers · Updated ' + l?.updated, run: () => { this.setState(s => ({ modal: null, lists: s.lists.filter(x => x.id !== id), favs: s.favs.filter(f => f.params?.initial !== id) })); this.flash('Shortlist deleted', 'success', (l?.name ?? 'Shortlist') + ' was removed.'); } }); },
+      noteList: (id, note) => upd(id, l => ({ ...l, note })),
+      removeItem: (id, pid) => upd(id, l => ({ ...l, ids: l.ids.filter(x => x !== pid) })),
+      addItems: (id, ids) => { upd(id, l => ({ ...l, ids: [...new Set([...l.ids, ...ids])] })); this.flash(`${ids.length} Provider${ids.length === 1 ? '' : 's'} added`); },
+      saveCompare: c => { this.setState(s => ({ compares: s.compares.some(x => x.id === c.id) ? s.compares.map(x => x.id === c.id ? c : x) : [c, ...s.compares], params: { ids: c.ids, savedId: c.id } })); this.flash('Comparison saved'); },
+      deleteCompare: id => { const c = S.compares.find(x => x.id === id); this.ask({ title: 'Delete saved comparison?', body: 'It will be removed from Compare and from Favorites.', ok: 'Delete', item: c?.name, kind: c?.kind, meta: (c?.ids.length ?? 0) + ' Providers', run: () => { this.setState(s => ({ compares: s.compares.filter(x => x.id !== id), favs: s.favs.filter(f => f.params?.savedId !== id) })); this.flash('Comparison deleted', 'success'); } }); },
+      toasts: S.toasts
+    };
+  }
+}
+</script>
+</body>
+</html>

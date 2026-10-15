@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;background:#0f1011;color:#f7f8f8;font-family:"Geist",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#8a8f98;text-decoration:none;transition:color .12s}
+a:hover{color:#f7f8f8}
+</style>
+</helmet>
+<div style="position:relative;min-height:100vh;overflow-x:clip;font-family:Geist,system-ui,sans-serif;color:#f7f8f8;background:#0f1011">
+  <div style="position:absolute;left:0;right:0;top:0;height:900px;pointer-events:none;background:radial-gradient(90% 60% at 50% 0%,#26282c 0%,#18191c 38%,#0f1011 80%)"></div>
+  <dc-import name="Relay Site Nav" hint-size="100%,64px" style="position:sticky;top:0;z-index:50"></dc-import>
+
+  <section data-screen-label="Developers" style="position:relative;max-width:1200px;margin:0 auto;padding:120px 24px 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:48px 64px;align-items:center">
+    <div>
+      <div style="font-family:'Geist Mono',monospace;font-size:12px;color:#62666d;margin-bottom:20px">Developers</div>
+      <h1 style="margin:0;font-weight:500;font-size:clamp(40px,5.4vw,64px);line-height:1.02;letter-spacing:-0.05em;text-wrap:balance">The Provider graph, <span style="color:#8a8f98">as an API.</span></h1>
+      <p style="margin:24px 0 0;max-width:460px;font-size:17px;line-height:1.55;color:#8a8f98">Query 1,600 Providers, their licences, coverage and pricing from your own tools. Subscribe to webhooks when anything changes.</p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:32px">
+        <a href="#" style="height:42px;padding:0 20px;display:inline-flex;align-items:center;border-radius:10px;font-size:14.5px;font-weight:500;color:#0f1011;background:#f7f8f8;transition:background-color .15s,transform .2s,box-shadow .2s" style-hover="background:#ffffff;color:#0f1011;transform:translateY(-1px);box-shadow:0 10px 30px -8px rgba(255,255,255,.35)">Read the docs</a>
+        <a href="#" style="height:42px;padding:0 18px;display:inline-flex;align-items:center;border-radius:10px;font-size:14.5px;font-weight:500;color:#d4d6da;box-shadow:inset 0 0 0 1px rgba(255,255,255,.12);transition:background-color .15s,color .15s" style-hover="background:rgba(255,255,255,.05);color:#f7f8f8">Get an API key</a>
+      </div>
+    </div>
+    <div style="border-radius:16px;overflow:hidden;background:#0b0c0d;box-shadow:0 0 0 1px rgba(255,255,255,.09),0 40px 80px -30px rgba(0,0,0,.85)">
+      <div style="display:flex;align-items:center;gap:4px;padding:8px 10px;border-bottom:1px solid rgba(255,255,255,.07)">
+        <sc-for list="{{ langs }}" as="l" hint-placeholder-count="3"><span onClick="{{ l.pick }}" style="height:28px;padding:0 10px;display:inline-flex;align-items:center;border-radius:7px;font-size:12.5px;font-weight:500;cursor:pointer;transition:background-color .15s,color .15s;background:{{ l.bg }};color:{{ l.fg }}">{{ l.label }}</span></sc-for>
+        <span style="flex:1"></span>
+        <span onClick="{{ copy }}" style="height:28px;padding:0 10px;display:inline-flex;align-items:center;border-radius:7px;font-size:12.5px;color:#8a8f98;cursor:pointer" style-hover="color:#f7f8f8;background:rgba(255,255,255,.05)">{{ copyLabel }}</span>
+      </div>
+      <pre style="margin:0;padding:20px;font-family:'Geist Mono',monospace;font-size:13px;line-height:1.7;color:#d4d6da;overflow-x:auto;white-space:pre">{{ code }}</pre>
+      <div style="border-top:1px solid rgba(255,255,255,.07);padding:14px 20px;font-family:'Geist Mono',monospace;font-size:12.5px;line-height:1.7;color:#8a8f98;white-space:pre;overflow-x:auto">{{ response }}</div>
+    </div>
+  </section>
+
+  <section data-screen-label="Endpoints" style="position:relative;max-width:1200px;margin:0 auto;padding:120px 24px 0">
+    <h2 style="margin:0;font-weight:500;font-size:clamp(30px,3.8vw,46px);line-height:1.05;letter-spacing:-0.04em">Endpoints</h2>
+    <div style="margin-top:28px;border-radius:14px;box-shadow:0 0 0 1px rgba(255,255,255,.06)">
+      <sc-for list="{{ endpoints }}" as="e" hint-placeholder-count="6">
+        <div style="display:grid;grid-template-columns:64px minmax(0,1.2fr) minmax(0,1.4fr);align-items:center;gap:20px;padding:16px 20px;border-bottom:1px solid rgba(255,255,255,.05);transition:background-color .15s" style-hover="background:rgba(255,255,255,.02)">
+          <span style="font-family:'Geist Mono',monospace;font-size:11.5px;font-weight:500;padding:2px 0;border-radius:5px;text-align:center;color:{{ e.fg }};background:{{ e.bg }}">{{ e.m }}</span>
+          <span style="font-family:'Geist Mono',monospace;font-size:13px;color:#f7f8f8">{{ e.p }}</span>
+          <span style="font-size:13.5px;color:#8a8f98">{{ e.d }}</span>
+        </div>
+      </sc-for>
+    </div>
+    <div style="margin-top:40px;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px">
+      <sc-for list="{{ tools }}" as="t" hint-placeholder-count="4"><a href="#" style="padding:20px;border-radius:14px;background:#121315;box-shadow:0 0 0 1px rgba(255,255,255,.06);color:#f7f8f8;transition:box-shadow .2s,transform .25s cubic-bezier(.2,.8,.2,1)" style-hover="box-shadow:0 0 0 1px rgba(255,255,255,.14);transform:translateY(-2px);color:#f7f8f8"><div style="font-size:15px;font-weight:500">{{ t.t }}</div><div style="font-size:13.5px;color:#8a8f98;margin-top:6px;line-height:1.5">{{ t.d }}</div></a></sc-for>
+    </div>
+  </section>
+
+  <dc-import name="Relay Site Footer" cta="{{ false }}" hint-size="100%,400px"></dc-import>
+  <dc-import name="Relay Site Cookies" hint-size="0px,0px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const CODE = {
+  curl: 'curl https://api.relay.gratebridge.com/v1/providers \\\n  -H "Authorization: Bearer rl_live_••••" \\\n  -d category=bank \\\n  -d region=europe \\\n  -d feature=virtual_iban',
+  node: "import Relay from '@gratebridge/relay';\n\nconst relay = new Relay(process.env.RELAY_KEY);\n\nconst banks = await relay.providers.list({\n  category: 'bank',\n  region: 'europe',\n  feature: 'virtual_iban',\n});",
+  python: "import relay\n\nclient = relay.Client(api_key=os.environ['RELAY_KEY'])\n\nbanks = client.providers.list(\n    category='bank',\n    region='europe',\n    feature='virtual_iban',\n)"
+};
+const RESP = '200 OK · 38 results\n{ "id": "prv_albion", "name": "Albion Trust Bank",\n  "licences": ["PRA"], "countries": 14, "score": 91 }';
+const M = { GET: ['#8fb8ff', 'rgba(143,184,255,.1)'], POST: ['#6fe3b4', 'rgba(111,227,180,.1)'] };
+class Component extends DCLogic {
+  state = { lang: 'curl', copied: false };
+  renderVals() {
+    const S = this.state;
+    return {
+      langs: [['curl', 'cURL'], ['node', 'Node'], ['python', 'Python']].map(([k, label]) => ({ label, pick: () => this.setState({ lang: k }), bg: S.lang === k ? 'rgba(255,255,255,.08)' : 'transparent', fg: S.lang === k ? '#f7f8f8' : '#8a8f98' })),
+      code: CODE[S.lang], response: RESP,
+      copyLabel: S.copied ? 'Copied' : 'Copy',
+      copy: () => { try { navigator.clipboard.writeText(CODE[S.lang]); } catch (e) {} this.setState({ copied: true }); clearTimeout(this._c); this._c = setTimeout(() => this.setState({ copied: false }), 1400); },
+      endpoints: [['GET', '/v1/providers', 'Search and filter Providers'], ['GET', '/v1/providers/{id}', 'Full Provider profile'], ['GET', '/v1/licences', 'Licences by regulator and status'], ['GET', '/v1/benchmarks/fx', 'Corridor spreads and trends'], ['POST', '/v1/requests', 'Send intro or pricing requests'], ['POST', '/v1/webhooks', 'Subscribe to Provider changes']].map(([m, p, d]) => ({ m, p, d, fg: M[m][0], bg: M[m][1] })),
+      tools: [['SDKs', 'Node, Python and Go, typed end to end.'], ['Webhooks', 'Pricing, licence and coverage events.'], ['Sandbox', 'Test data with no rate limits.'], ['Rate limits', '600 requests a minute on Pro.']].map(([t, d]) => ({ t, d }))
+    };
+  }
+}
+</script>
+</body>
+</html>

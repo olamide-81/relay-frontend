@@ -10,7 +10,8 @@
     "tokens:extract": "node scripts/harmonic-extract/extract.mjs",
     "tokens:deep": "node scripts/harmonic-extract/deep-metrics.mjs",
     "tokens:theme": "node scripts/harmonic-extract/generate-theme.mjs",
-    "tokens:verify": "node scripts/harmonic-extract/verify-diff.mjs"
+    "tokens:verify": "node scripts/harmonic-extract/verify-diff.mjs",
+    "design:port": "node scripts/dc-port/convert.mjs"
   },
   "dependencies": {
     "clsx": "^2.1.1",
@@ -29,10 +30,12 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.2.3",
+    "parse5": "^7.2.1",
     "pixelmatch": "^7.2.0",
     "playwright": "^1.62.1",
     "pngjs": "^7.0.0",
     "postcss": "^8.5.25",
+    "prettier": "^3.3.3",
     "tailwindcss": "^4.3.3",
     "typescript": "^5"
   }

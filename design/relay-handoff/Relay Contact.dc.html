@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;background:#0f1011;color:#f7f8f8;font-family:"Geist",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#8a8f98;text-decoration:none;transition:color .12s}
+a:hover{color:#f7f8f8}
+input::placeholder,textarea::placeholder{color:#62666d}
+select option{background:#1c1d20;color:#f7f8f8}
+</style>
+</helmet>
+<div style="position:relative;min-height:100vh;overflow-x:clip;font-family:Geist,system-ui,sans-serif;color:#f7f8f8;background:#0f1011">
+  <div style="position:absolute;left:0;right:0;top:0;height:900px;pointer-events:none;background:radial-gradient(90% 60% at 50% 0%,#26282c 0%,#18191c 38%,#0f1011 80%)"></div>
+  <dc-import name="Relay Site Nav" active="contact" hint-size="100%,64px" style="position:sticky;top:0;z-index:50"></dc-import>
+
+  <section data-screen-label="Contact" style="position:relative;max-width:1200px;margin:0 auto;padding:120px 24px 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,400px),1fr));gap:56px 80px">
+    <div style="display:flex;flex-direction:column;gap:40px">
+      <div>
+        <div style="font-family:'Geist Mono',monospace;font-size:12px;color:#62666d;margin-bottom:20px">Contact</div>
+        <h1 style="margin:0;font-weight:500;font-size:clamp(40px,5.4vw,64px);line-height:1.02;letter-spacing:-0.05em;text-wrap:balance">Talk to the team <span style="color:#8a8f98">behind Relay.</span></h1>
+        <p style="margin:24px 0 0;max-width:440px;font-size:17px;line-height:1.55;color:#8a8f98">Tell us what you're building and the markets you need. We'll reply within one business day.</p>
+      </div>
+      <div style="display:flex;flex-direction:column;border-top:1px solid rgba(255,255,255,.07)">
+        <sc-for list="{{ channels }}" as="c" hint-placeholder-count="4">
+          <a href="#" style="display:flex;align-items:center;gap:14px;padding:18px 0;border-bottom:1px solid rgba(255,255,255,.07);color:#f7f8f8;transition:padding .25s cubic-bezier(.2,.8,.2,1)" style-hover="padding-left:6px;color:#f7f8f8">
+            <span style="width:34px;height:34px;border-radius:10px;display:grid;place-items:center;flex:none;background:rgba(255,255,255,.04);box-shadow:inset 0 0 0 1px rgba(255,255,255,.08);color:#d4d6da"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><sc-for list="{{ c.icon }}" as="d" hint-placeholder-count="2"><path d="{{ d }}"></path></sc-for></svg></span>
+            <div style="flex:1;min-width:0"><div style="font-size:14.5px;font-weight:500">{{ c.title }}</div><div style="font-size:13px;color:#8a8f98;margin-top:2px">{{ c.desc }}</div></div>
+            <span style="font-size:13px;color:#d4d6da">{{ c.link }}</span>
+          </a>
+        </sc-for>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px">
+        <sc-for list="{{ offices }}" as="o" hint-placeholder-count="3"><div><div style="font-size:14px;font-weight:500">{{ o.city }}</div><div style="font-size:12.5px;color:#62666d;margin-top:4px;line-height:1.5">{{ o.addr }}</div></div></sc-for>
+      </div>
+    </div>
+
+    <div style="position:relative;border-radius:20px;background:#121315;box-shadow:0 0 0 1px rgba(255,255,255,.07),0 40px 80px -40px rgba(0,0,0,.8);overflow:hidden">
+      <div style="padding:28px;display:flex;flex-direction:column;gap:16px;transition:opacity .35s,transform .45s cubic-bezier(.2,.8,.2,1);opacity:{{ formOp }};transform:{{ formTf }};pointer-events:{{ formPe }}">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <sc-for list="{{ top }}" as="f" hint-placeholder-count="2"><label style="display:flex;flex-direction:column;gap:6px"><span style="font-size:12.5px;color:#8a8f98">{{ f.label }}</span><input value="{{ f.value }}" onChange="{{ f.onChange }}" placeholder="{{ f.ph }}" style="height:40px;padding:0 12px;border:none;outline:none;border-radius:9px;background:rgba(255,255,255,.03);box-shadow:{{ f.ring }};color:#f7f8f8;font:14px Geist,system-ui,sans-serif;transition:box-shadow .15s" style-focus="box-shadow:inset 0 0 0 1px rgba(255,255,255,.3)"></label></sc-for>
+        </div>
+        <sc-for list="{{ rest }}" as="f" hint-placeholder-count="2"><label style="display:flex;flex-direction:column;gap:6px"><span style="font-size:12.5px;color:#8a8f98">{{ f.label }}</span><input value="{{ f.value }}" onChange="{{ f.onChange }}" placeholder="{{ f.ph }}" style="height:40px;padding:0 12px;border:none;outline:none;border-radius:9px;background:rgba(255,255,255,.03);box-shadow:{{ f.ring }};color:#f7f8f8;font:14px Geist,system-ui,sans-serif;transition:box-shadow .15s" style-focus="box-shadow:inset 0 0 0 1px rgba(255,255,255,.3)"></label></sc-for>
+        <label style="display:flex;flex-direction:column;gap:6px"><span style="font-size:12.5px;color:#8a8f98">Team size</span>
+          <select value="{{ size }}" onChange="{{ onSize }}" style="height:40px;padding:0 12px;border:none;outline:none;border-radius:9px;background:rgba(255,255,255,.03);box-shadow:inset 0 0 0 1px rgba(255,255,255,.09);color:#f7f8f8;font:14px Geist,system-ui,sans-serif;cursor:pointer"><sc-for list="{{ sizes }}" as="s" hint-placeholder-count="5"><option value="{{ s }}">{{ s }}</option></sc-for></select>
+        </label>
+        <div style="display:flex;flex-direction:column;gap:8px"><span style="font-size:12.5px;color:#8a8f98">What do you need?</span>
+          <div style="display:flex;gap:6px;flex-wrap:wrap"><sc-for list="{{ needs }}" as="n" hint-placeholder-count="6"><span onClick="{{ n.toggle }}" style="height:32px;padding:0 10px 0 5px;display:inline-flex;align-items:center;gap:7px;border-radius:9px;font-size:13px;font-weight:500;cursor:pointer;transition:background-color .15s,box-shadow .15s,color .15s;background:{{ n.bg }};color:{{ n.fg }};box-shadow:{{ n.ring }}"><dc-import name="Relay App Icon" kind="{{ n.kind }}" size="20" hint-size="20px,20px"></dc-import>{{ n.label }}</span></sc-for></div>
+        </div>
+        <label style="display:flex;flex-direction:column;gap:6px"><span style="font-size:12.5px;color:#8a8f98">Message</span><textarea value="{{ msg }}" onChange="{{ onMsg }}" rows="4" placeholder="Markets, volumes, timelines" style="resize:none;padding:10px 12px;border:none;outline:none;border-radius:9px;background:rgba(255,255,255,.03);box-shadow:inset 0 0 0 1px rgba(255,255,255,.09);color:#f7f8f8;font:14px/1.55 Geist,system-ui,sans-serif" style-focus="box-shadow:inset 0 0 0 1px rgba(255,255,255,.3)"></textarea></label>
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:4px">
+          <span style="font-size:12.5px;color:{{ hintFg }}">{{ hint }}</span>
+          <span onClick="{{ submit }}" style="height:42px;padding:0 20px;display:inline-flex;align-items:center;gap:8px;border-radius:10px;font-size:14.5px;font-weight:500;cursor:pointer;transition:background-color .15s,transform .2s,box-shadow .2s;color:{{ btn.fg }};background:{{ btn.bg }}" style-hover="transform:translateY(-1px)">{{ btnLabel }}</span>
+        </div>
+      </div>
+      <div style="position:absolute;inset:0;padding:40px;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:14px;transition:opacity .45s .15s,transform .55s .15s cubic-bezier(.2,.9,.25,1.15);opacity:{{ doneOp }};transform:{{ doneTf }};pointer-events:{{ donePe }}">
+        <span style="width:48px;height:48px;border-radius:14px;display:grid;place-items:center;color:#0f1011;background:linear-gradient(180deg,#9af0cc,#6fe3b4 55%,#4fcf9b);box-shadow:inset 0 1px 0 rgba(255,255,255,.45),0 8px 24px -6px rgba(111,227,180,.5)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span>
+        <div style="font-size:24px;font-weight:500;letter-spacing:-0.025em">Thanks, {{ firstName }}.</div>
+        <div style="font-size:15px;line-height:1.55;color:#8a8f98;max-width:360px">We've got your message and will reply to {{ email }} within one business day.</div>
+        <span onClick="{{ reset }}" style="margin-top:8px;font-size:13.5px;font-weight:500;color:#d4d6da;cursor:pointer" style-hover="color:#f7f8f8">Send another message</span>
+      </div>
+    </div>
+  </section>
+
+  <dc-import name="Relay Site Footer" cta="{{ false }}" hint-size="100%,400px"></dc-import>
+  <dc-import name="Relay Site Cookies" hint-size="0px,0px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const CH = [
+  ['Sales', 'Plans, Enterprise and procurement', 'sales@relay.gratebridge.com', ['M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2', 'M9 7m-4 0a4 4 0 1 0 8 0a4 4 0 1 0-8 0', 'M22 21v-2a4 4 0 0 0-3-3.87', 'M16 3.13a4 4 0 0 1 0 7.75']],
+  ['Support', 'Help with your workspace', 'help@relay.gratebridge.com', ['M12 22c5.5 0 10-4.5 10-10S17.5 2 12 2 2 6.5 2 12s4.5 10 10 10z', 'M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3', 'M12 17h.01']],
+  ['For Providers', 'Claim or update your profile', 'providers@relay.gratebridge.com', ['M3 21h18', 'M5 21V7l7-4 7 4v14', 'M9 21v-6h6v6']],
+  ['Press', 'Media and research enquiries', 'press@relay.gratebridge.com', ['M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2', 'M18 14h-8', 'M15 18h-5', 'M10 6h8v4h-8V6Z']]
+];
+const OFF = [['Gratebridge Labs', '1021 E Lincolnway Suite #7415, Cheyenne, Wyoming 82001, United States'], ['Web', 'relay.gratebridge.com'], ['Hours', 'Monday to Friday, 9:00–18:00 MT']];
+const NEEDS = [['collections', 'Collections'], ['payouts', 'Payouts'], ['fx', 'FX'], ['cards', 'Cards'], ['kyc', 'KYC'], ['bank', 'Banks']];
+const SIZES = ['1–10', '11–50', '51–200', '201–1,000', '1,000+'];
+class Component extends DCLogic {
+  state = { f: { name: '', email: '', company: '', role: '' }, size: '11–50', needs: ['bank'], msg: '', tried: false, sending: false, done: false };
+  renderVals() {
+    const S = this.state, set = k => e => this.setState({ f: { ...S.f, [k]: e.target.value } });
+    const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(S.f.email), ok = S.f.name.trim() && emailOk && S.f.company.trim();
+    const field = (k, label, ph) => ({ label, ph, value: S.f[k], onChange: set(k), ring: S.tried && ((k === 'email' && !emailOk) || ((k === 'name' || k === 'company') && !S.f[k].trim())) ? 'inset 0 0 0 1px rgba(255,123,123,.6)' : 'inset 0 0 0 1px rgba(255,255,255,.09)' });
+    return {
+      channels: CH.map(([title, desc, link, icon]) => ({ title, desc, link, icon })),
+      offices: OFF.map(([city, addr]) => ({ city, addr })),
+      top: [field('name', 'Full name', 'Sarah Mitchell'), field('email', 'Work email', 'sarah@company.com')],
+      rest: [field('company', 'Company', 'Company name'), field('role', 'Role', 'Head of Payments')],
+      size: S.size, sizes: SIZES, onSize: e => this.setState({ size: e.target.value }),
+      needs: NEEDS.map(([kind, label]) => { const on = S.needs.includes(kind); return { kind, label, toggle: () => this.setState(s => ({ needs: on ? s.needs.filter(x => x !== kind) : [...s.needs, kind] })), bg: on ? 'rgba(255,255,255,.07)' : 'transparent', fg: on ? '#f7f8f8' : '#8a8f98', ring: on ? 'inset 0 0 0 1px rgba(255,255,255,.18)' : 'inset 0 0 0 1px rgba(255,255,255,.07)' }; }),
+      msg: S.msg, onMsg: e => this.setState({ msg: e.target.value }),
+      hint: S.tried && !ok ? 'Add your name, a valid work email and company.' : 'We never share your details with Providers.', hintFg: S.tried && !ok ? '#ff7b7b' : '#62666d',
+      btnLabel: S.sending ? 'Sending…' : 'Send message', btn: { fg: '#0f1011', bg: S.sending ? '#d4d6da' : '#f7f8f8' },
+      submit: () => { if (S.sending) return; if (!ok) return this.setState({ tried: true }); this.setState({ sending: true }); setTimeout(() => this.setState({ sending: false, done: true }), 900); },
+      formOp: S.done ? 0 : 1, formTf: S.done ? 'translateY(-12px)' : 'none', formPe: S.done ? 'none' : 'auto',
+      doneOp: S.done ? 1 : 0, doneTf: S.done ? 'translateY(0) scale(1)' : 'translateY(16px) scale(.98)', donePe: S.done ? 'auto' : 'none',
+      firstName: S.f.name.trim().split(' ')[0] || 'there', email: S.f.email,
+      reset: () => this.setState({ done: false, tried: false, msg: '', f: { name: '', email: '', company: '', role: '' } })
+    };
+  }
+}
+</script>
+</body>
+</html>

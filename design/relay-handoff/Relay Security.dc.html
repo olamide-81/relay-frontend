@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;background:#0f1011;color:#f7f8f8;font-family:"Geist",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#8a8f98;text-decoration:none;transition:color .12s}
+a:hover{color:#f7f8f8}
+</style>
+</helmet>
+<div style="position:relative;min-height:100vh;overflow-x:clip;font-family:Geist,system-ui,sans-serif;color:#f7f8f8;background:#0f1011">
+  <div style="position:absolute;left:0;right:0;top:0;height:900px;pointer-events:none;background:radial-gradient(90% 60% at 50% 0%,#26282c 0%,#18191c 38%,#0f1011 80%)"></div>
+  <dc-import name="Relay Site Nav" hint-size="100%,64px" style="position:sticky;top:0;z-index:50"></dc-import>
+
+  <section data-screen-label="Security hero" style="position:relative;max-width:1200px;margin:0 auto;padding:120px 24px 0">
+    <div style="font-family:'Geist Mono',monospace;font-size:12px;color:#62666d;margin-bottom:20px">Security</div>
+    <h1 style="margin:0;max-width:900px;font-weight:500;font-size:clamp(40px,6vw,72px);line-height:1.02;letter-spacing:-0.05em;text-wrap:balance">Built for teams <span style="color:#8a8f98">that answer to regulators.</span></h1>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:40px">
+      <sc-for list="{{ certs }}" as="c" hint-placeholder-count="4"><span style="height:40px;padding:0 16px 0 10px;display:inline-flex;align-items:center;gap:10px;border-radius:12px;font-size:14px;font-weight:500;background:rgba(255,255,255,.03);box-shadow:inset 0 0 0 1px rgba(255,255,255,.09)"><span style="width:22px;height:22px;border-radius:6px;display:grid;place-items:center;background:rgba(111,227,180,.12);color:#6fe3b4"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span>{{ c }}</span></sc-for>
+    </div>
+  </section>
+
+  <section data-screen-label="Controls" style="position:relative;max-width:1200px;margin:0 auto;padding:120px 24px 0">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1px;border-radius:16px;overflow:hidden;background:rgba(255,255,255,.06);box-shadow:0 0 0 1px rgba(255,255,255,.06)">
+      <sc-for list="{{ controls }}" as="c" hint-placeholder-count="6"><div style="padding:28px;background:#121315;display:flex;flex-direction:column;gap:10px;transition:background-color .2s" style-hover="background:#16171a"><div style="font-size:16px;font-weight:500">{{ c.t }}</div><div style="font-size:14px;line-height:1.55;color:#8a8f98">{{ c.d }}</div></div></sc-for>
+    </div>
+  </section>
+
+  <section id="status" data-screen-label="Status" style="position:relative;max-width:1200px;margin:0 auto;padding:120px 24px 0;scroll-margin-top:80px">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap">
+      <h2 style="margin:0;font-weight:500;font-size:clamp(30px,3.8vw,46px);line-height:1.05;letter-spacing:-0.04em">System status</h2>
+      <span style="display:inline-flex;align-items:center;gap:8px;font-size:14px;color:#d4d6da"><span style="width:8px;height:8px;border-radius:50%;background:#6fe3b4;box-shadow:0 0 0 4px rgba(111,227,180,.15)"></span>All systems normal</span>
+    </div>
+    <div style="margin-top:28px;border-radius:14px;box-shadow:0 0 0 1px rgba(255,255,255,.06)">
+      <sc-for list="{{ systems }}" as="s" hint-placeholder-count="4">
+        <div style="display:grid;grid-template-columns:minmax(140px,200px) minmax(0,1fr) 72px;align-items:center;gap:20px;padding:18px 20px;border-bottom:1px solid rgba(255,255,255,.05)">
+          <span style="font-size:14px;font-weight:500">{{ s.name }}</span>
+          <div style="display:flex;gap:2px;height:24px"><sc-for list="{{ s.days }}" as="d" hint-placeholder-count="60"><span style="flex:1;border-radius:2px;background:{{ d.c }}"></span></sc-for></div>
+          <span style="font-size:12.5px;color:#8a8f98;text-align:right;font-variant-numeric:tabular-nums">{{ s.up }}</span>
+        </div>
+      </sc-for>
+      <div style="padding:12px 20px;font-size:12px;color:#62666d;display:flex;justify-content:space-between"><span>90 days ago</span><span>Today</span></div>
+    </div>
+    <p style="margin:40px 0 0;font-size:14.5px;color:#8a8f98">Found a vulnerability? Email <a href="#" style="color:#d4d6da">security@relay.gratebridge.com</a>. We respond within 24 hours.</p>
+  </section>
+
+  <dc-import name="Relay Site Footer" cta="{{ false }}" hint-size="100%,400px"></dc-import>
+  <dc-import name="Relay Site Cookies" hint-size="0px,0px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const SYS = [['Web app', '99.99%', [41]], ['Directory API', '99.98%', [17, 63]], ['Search', '99.97%', [28]], ['Notifications', '100%', []]];
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      certs: ['SOC 2 Type II', 'ISO 27001', 'GDPR', 'UK Cyber Essentials Plus'],
+      controls: [['Encryption everywhere', 'AES-256 at rest and TLS 1.3 in transit, with keys managed in a dedicated KMS.'], ['SSO and SCIM', 'SAML SSO with Okta, Entra ID and Google, plus automated provisioning.'], ['Audit log', 'Every view, export and request recorded and exportable for your auditors.'], ['Data residency', 'EU and US hosting regions. Your data stays where you choose.'], ['Least privilege', 'Role-based access for admins, members and viewers across your workspace.'], ['Independent testing', 'Annual third-party penetration tests and a public bug bounty.']].map(([t, d]) => ({ t, d })),
+      systems: SYS.map(([name, up, bad]) => ({ name, up, days: Array.from({ length: 60 }, (_, i) => ({ c: bad.includes(i) ? '#f2c14e' : 'rgba(111,227,180,.55)' })) }))
+    };
+  }
+}
+</script>
+</body>
+</html>

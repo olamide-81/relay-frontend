@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="relay-data.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;background:#0f1011;color:#f7f8f8;font-family:"Geist",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#8a8f98;text-decoration:none;transition:color .12s}
+a:hover{color:#f7f8f8}
+</style>
+</helmet>
+<div style="position:relative;min-height:100vh;overflow-x:clip;font-family:Geist,system-ui,sans-serif;color:#f7f8f8;background:#0f1011">
+  <div style="position:absolute;left:0;right:0;top:0;height:900px;pointer-events:none;background:radial-gradient(900px 560px at 78% 20%,rgba({{ c.rgb }},.13),rgba({{ c.rgb }},0) 70%),radial-gradient(90% 60% at 50% 0%,#24262a 0%,#16171a 40%,#0f1011 80%)"></div>
+  <dc-import name="Relay Site Nav" hint-size="100%,64px" style="position:sticky;top:0;z-index:50"></dc-import>
+
+  <section data-screen-label="Category hero" style="position:relative;max-width:1200px;margin:0 auto;padding:100px 24px 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:48px 72px;align-items:center">
+    <div style="display:flex;flex-direction:column;gap:24px">
+      <span style="display:block;width:fit-content;transition:transform 1s cubic-bezier(.2,.9,.25,1.2),opacity .6s;transform:{{ ld.icon }};opacity:{{ ld.op }}"><dc-import name="Relay App Icon" kind="{{ c.kind }}" size="96" hint-size="96px,96px"></dc-import></span>
+      <h1 style="margin:0;font-weight:500;font-size:clamp(44px,6vw,76px);line-height:1;letter-spacing:-0.05em;transition:opacity .8s .1s,transform .8s .1s cubic-bezier(.2,.8,.2,1);opacity:{{ ld.op }};transform:{{ ld.tf }}">{{ c.label }}. <span style="color:#8a8f98">{{ c.tag }}</span></h1>
+      <p style="margin:0;max-width:480px;font-size:18px;line-height:1.55;color:#8a8f98">{{ c.desc }}</p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <a href="Relay%20Directory%20Page.dc.html" style="height:42px;padding:0 20px;display:inline-flex;align-items:center;border-radius:10px;font-size:14.5px;font-weight:500;color:#0f1011;background:#f7f8f8;transition:background-color .15s,transform .2s,box-shadow .2s" style-hover="background:#ffffff;color:#0f1011;transform:translateY(-1px);box-shadow:0 10px 30px -8px rgba(255,255,255,.35)">Browse {{ c.count }} Providers</a>
+        <a href="Relay%20Contact.dc.html" style="height:42px;padding:0 14px;display:inline-flex;align-items:center;gap:8px;border-radius:10px;font-size:14.5px;font-weight:500;color:#d4d6da;transition:color .15s,gap .2s" style-hover="color:#f7f8f8;gap:12px">Get a recommendation<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;border-radius:18px;overflow:hidden;background:rgba(255,255,255,.06);box-shadow:0 0 0 1px rgba(255,255,255,.07)">
+      <sc-for list="{{ c.stats }}" as="s" hint-placeholder-count="4"><div style="padding:28px;background:rgba(18,19,21,.92)"><div style="font-size:12.5px;color:#62666d">{{ s.k }}</div><div style="font-size:34px;font-weight:500;letter-spacing:-0.035em;margin-top:8px">{{ s.v }}</div></div></sc-for>
+    </div>
+  </section>
+
+  <section data-screen-label="Top Providers" style="position:relative;max-width:1200px;margin:0 auto;padding:120px 24px 0">
+    <h2 style="margin:0;font-weight:500;font-size:clamp(28px,3.4vw,40px);line-height:1.05;letter-spacing:-0.035em">Top {{ c.label }} Providers</h2>
+    <div style="margin-top:28px;border-radius:14px;box-shadow:0 0 0 1px rgba(255,255,255,.06);overflow-x:auto">
+      <div style="min-width:680px">
+        <div style="display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1.2fr) 100px minmax(0,1.2fr) 100px;padding:12px 20px;border-bottom:1px solid rgba(255,255,255,.07);font-size:12px;color:#62666d"><span>Provider</span><span>Headquarters</span><span>Countries</span><span>Pricing from</span><span style="text-align:right">Relay score</span></div>
+        <sc-for list="{{ providers }}" as="p" hint-placeholder-count="6">
+          <div style="display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1.2fr) 100px minmax(0,1.2fr) 100px;align-items:center;padding:14px 20px;border-bottom:1px solid rgba(255,255,255,.04);font-size:13.5px;transition:background-color .15s" style-hover="background:rgba(255,255,255,.02)">
+            <span style="display:flex;align-items:center;gap:12px;min-width:0"><dc-import name="Relay App Icon" kind="{{ p.kind }}" size="30" hint-size="30px,30px"></dc-import><span style="min-width:0"><span style="display:block;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ p.name }}</span><span style="display:block;font-size:12px;color:#62666d;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ p.railsText }}</span></span></span>
+            <span style="color:#b4b8bf">{{ p.hq }}</span><span style="color:#b4b8bf">{{ p.countries }}</span><span style="color:#b4b8bf">{{ p.price }}</span>
+            <span style="display:flex;justify-content:flex-end;align-items:center;gap:8px"><span style="width:44px;height:4px;border-radius:999px;background:rgba(255,255,255,.07);overflow:hidden"><span style="display:block;height:100%;background:{{ c.accent }};width:{{ p.sw }}"></span></span><span style="width:22px;text-align:right">{{ p.score }}</span></span>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <section data-screen-label="What to look for" style="position:relative;max-width:1200px;margin:0 auto;padding:120px 24px 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:40px 72px">
+    <h2 style="margin:0;font-weight:500;font-size:clamp(28px,3.4vw,40px);line-height:1.05;letter-spacing:-0.035em">What to look for <span style="color:#8a8f98">in a {{ c.single }} partner.</span></h2>
+    <div style="display:flex;flex-direction:column;border-top:1px solid rgba(255,255,255,.07)">
+      <sc-for list="{{ c.look }}" as="l" hint-placeholder-count="4"><div style="display:grid;grid-template-columns:40px 1fr;gap:12px;padding:20px 0;border-bottom:1px solid rgba(255,255,255,.07)"><span style="font-family:'Geist Mono',monospace;font-size:12px;color:#62666d;padding-top:3px">{{ l.n }}</span><div><div style="font-size:15.5px;font-weight:500">{{ l.t }}</div><div style="font-size:14px;line-height:1.55;color:#8a8f98;margin-top:6px">{{ l.d }}</div></div></div></sc-for>
+    </div>
+  </section>
+
+  <section data-screen-label="Other categories" style="position:relative;max-width:1200px;margin:0 auto;padding:120px 24px 0">
+    <div style="font-size:13.5px;color:#8a8f98;margin-bottom:20px">Other categories</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px">
+      <sc-for list="{{ others }}" as="o" hint-placeholder-count="5"><a href="{{ o.href }}" style="display:flex;align-items:center;gap:12px;padding:16px;border-radius:14px;background:#121315;box-shadow:0 0 0 1px rgba(255,255,255,.06);color:#f7f8f8;transition:box-shadow .2s,transform .25s cubic-bezier(.2,.8,.2,1)" style-hover="box-shadow:0 0 0 1px rgba(255,255,255,.14);transform:translateY(-2px);color:#f7f8f8"><dc-import name="Relay App Icon" kind="{{ o.kind }}" size="34" hint-size="34px,34px"></dc-import><span style="font-size:14.5px;font-weight:500">{{ o.label }}</span></a></sc-for>
+    </div>
+  </section>
+
+  <dc-import name="Relay Site Footer" hint-size="100%,560px"></dc-import>
+  <dc-import name="Relay Site Cookies" hint-size="0px,0px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;kind&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;collections&quot;,&quot;payouts&quot;,&quot;fx&quot;,&quot;cards&quot;,&quot;kyc&quot;,&quot;bank&quot;],&quot;default&quot;:&quot;collections&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+const EMPTY = { CAT: {}, providers: [], fmt: String };
+const C = {
+  collections: ['Money in.', 'REL-01 · MINT', '111,227,180', 'collections', 'Acceptance, invoicing and receivables. Partners that get you paid in any currency, on any rail.', [['Providers', '214'], ['Countries', '128'], ['Local methods', '86'], ['From', '0.2%']], [['Local payment methods', 'Coverage of the methods your customers actually use, not just cards.'], ['Reconciliation', 'Real-time webhooks and automated matching to your ledger.'], ['Settlement speed', 'How fast funds land, and in which currency.'], ['Dispute handling', 'Chargeback tooling and representment support.']]],
+  payouts: ['Money out.', 'REL-02 · LIME', '214,238,78', 'payouts', 'Pay suppliers, sellers and contractors in local currency, wherever they bank.', [['Providers', '268'], ['Corridors', '1,240'], ['Instant rails', '34'], ['From', '0.3%']], [['Corridor coverage', 'Local rails in the countries you pay into.'], ['Status tracking', 'End-to-end visibility from initiation to credit.'], ['FX on payout', 'Transparent conversion at the point of sending.'], ['Verification of payee', 'Name checks to stop misdirected payments.']]],
+  fx: ['Every currency.', 'REL-03 · SKY', '143,184,255', 'FX', 'Convert and hold currencies with transparent spreads, forwards and rate locks.', [['Providers', '183'], ['Currencies', '142'], ['Best spread', '0.09%'], ['Forwards', '12 mo']], [['Spread transparency', 'Quoted against mid-market, not a hidden margin.'], ['Hedging tools', 'Forwards, options and rate locks for treasury.'], ['Local settlement', 'Accounts in the currencies you hold.'], ['API access', 'FIX or REST for automated treasury flows.']]],
+  cards: ['Spend anywhere.', 'REL-04 · LILAC', '185,163,255', 'card issuing', 'Issue virtual and physical cards with spend controls and real-time authorisation.', [['Providers', '247'], ['Networks', '4'], ['Go-live', '2 wks'], ['From', '€0.20']], [['BIN sponsorship', 'Who holds the licence and how fast you can launch.'], ['Authorisation control', 'Real-time decisioning on every transaction.'], ['Wallet support', 'Apple Pay and Google Pay tokenisation.'], ['Programme economics', 'Interchange share and per-card fees.']]],
+  kyc: ['Know who you serve.', 'REL-05 · PEACH', '255,171,122', 'KYC', 'Verify people and businesses with documents, biometrics and ongoing sanctions screening.', [['Providers', '372'], ['Countries', '190'], ['Median check', '3.8s'], ['From', '$0.30']], [['Document coverage', 'ID types supported in each market you serve.'], ['Liveness', 'Protection against deepfakes and replay attacks.'], ['KYB', 'Business verification with UBO discovery.'], ['Ongoing monitoring', 'Sanctions and PEP screening after onboarding.']]],
+  bank: ['The regulated core.', 'REL-06 · ROSE', '255,143,177', 'banking', 'Sponsor, partner and safeguarding banks for regulated fintech programmes.', [['Banks', '316'], ['Regions', '8'], ['Account opening', '10 days'], ['From', '€80/mo']], [['Fintech appetite', 'Whether the bank actively sponsors programmes like yours.'], ['Virtual IBANs', 'Local account numbers at scale.'], ['Safeguarding', 'Segregated client money accounts.'], ['Correspondent network', 'Reach for cross-border flows.']]]
+};
+class Component extends DCLogic {
+  state = { ready: false };
+  componentDidMount() { if (!window.RELAY) this._i = setInterval(() => { if (window.RELAY) { clearInterval(this._i); this.forceUpdate(); } }, 40); this._t = setTimeout(() => this.setState({ ready: true }), 60); }
+  componentWillUnmount() { clearInterval(this._i); clearTimeout(this._t); }
+  renderVals() {
+    const R = window.RELAY ?? EMPTY, m = /[?&]kind=(\w+)/.exec(location.search), k = this.props.kind ?? (m && C[m[1]] ? m[1] : 'collections');
+    const [tag, code, rgb, single, desc, stats, look] = C[k], label = R.CAT[k]?.label ?? k, r = this.state.ready;
+    return {
+      c: { kind: k, label, tag, code, rgb, single, desc, accent: R.CAT[k]?.accent ?? '#fff', count: R.CAT[k]?.count ?? '', stats: stats.map(([k2, v]) => ({ k: k2, v })), look: look.map(([t, d], i) => ({ n: String(i + 1).padStart(2, '0'), t, d })) },
+      ld: { op: r ? 1 : 0, tf: r ? 'none' : 'translateY(18px)', icon: r ? 'scale(1) rotate(0)' : 'scale(.6) rotate(-14deg)' },
+      providers: R.providers.filter(p => p.kind === k).sort((a, b) => b.score - a.score).slice(0, 8).map(p => ({ ...p, sw: p.score + '%' })),
+      others: Object.keys(C).filter(x => x !== k).map(x => ({ kind: x, label: R.CAT[x]?.label ?? x, href: 'Relay%20Category.dc.html?kind=' + x }))
+    };
+  }
+}
+</script>
+</body>
+</html>

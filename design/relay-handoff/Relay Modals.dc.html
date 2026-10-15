@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<script src="relay-data.js"></script>
+</helmet>
+<div style="font-family:Geist,system-ui,sans-serif;color:#f7f8f8">
+<div onClick="{{ close }}" style="position:fixed;inset:0;z-index:60;background:rgba(0,0,0,.5);transition:opacity .18s;opacity:{{ bd.op }};pointer-events:{{ bd.pe }}"></div>
+
+<div style="position:fixed;left:50%;top:50%;z-index:61;width:460px;max-width:calc(100% - 32px);border-radius:14px;background:rgba(28,29,32,.97);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);box-shadow:0 0 0 1px rgba(255,255,255,.08),0 24px 64px rgba(0,0,0,.55);transition:opacity .18s,transform .22s cubic-bezier(.2,.8,.2,1);opacity:{{ m.addTo.op }};transform:{{ m.addTo.tf }};pointer-events:{{ m.addTo.pe }}">
+  <div style="padding:18px 20px 4px;font-size:15px;font-weight:500">{{ addTitle }}</div>
+  <div style="padding:0 20px 12px;font-size:12.5px;color:#8a8f98;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ addNames }}</div>
+  <div style="max-height:300px;overflow-y:auto;padding:4px 8px;border-top:1px solid rgba(255,255,255,.06)">
+    <sc-for list="{{ addLists }}" as="l" hint-placeholder-count="3">
+      <div onClick="{{ l.toggle }}" style="display:flex;align-items:center;gap:12px;padding:9px 12px;border-radius:8px;cursor:pointer" style-hover="background:rgba(255,255,255,.04)">
+        <span style="width:16px;height:16px;border-radius:4px;display:grid;place-items:center;flex:none;background:{{ l.boxBg }};box-shadow:{{ l.boxRing }}"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#0f1011" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" style="opacity:{{ l.checkOp }}"><path d="M20 6 9 17l-5-5"></path></svg></span>
+        <dc-import name="Relay App Icon" kind="{{ l.kind }}" size="26" hint-size="26px,26px"></dc-import>
+        <div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ l.name }}</div><div style="font-size:12px;color:#62666d;margin-top:1px">{{ l.meta }}</div></div>
+      </div>
+    </sc-for>
+    <div onClick="{{ toNew }}" style="display:flex;align-items:center;gap:12px;padding:9px 12px;border-radius:8px;cursor:pointer;color:#d4d6da" style-hover="background:rgba(255,255,255,.04);color:#f7f8f8">
+      <span style="width:16px;flex:none"></span>
+      <span style="width:26px;height:26px;border-radius:7px;display:grid;place-items:center;border:1px dashed rgba(255,255,255,.2);flex:none"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg></span>
+      <span style="font-size:13px;font-weight:500">New shortlist</span>
+    </div>
+  </div>
+  <div style="display:flex;justify-content:flex-end;gap:8px;padding:14px 20px;border-top:1px solid rgba(255,255,255,.06)">
+    <span onClick="{{ close }}" style="height:32px;padding:0 12px;display:inline-flex;align-items:center;border-radius:8px;font-size:13px;font-weight:500;color:#d4d6da;cursor:pointer" style-hover="background:rgba(255,255,255,.05)">Cancel</span>
+    <span onClick="{{ confirmAdd }}" style="height:32px;padding:0 14px;display:inline-flex;align-items:center;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;color:{{ addBtn.fg }};background:{{ addBtn.bg }}">Add</span>
+  </div>
+</div>
+
+<div style="position:fixed;left:50%;top:50%;z-index:61;width:480px;max-width:calc(100% - 32px);border-radius:14px;background:rgba(28,29,32,.97);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);box-shadow:0 0 0 1px rgba(255,255,255,.08),0 24px 64px rgba(0,0,0,.55);transition:opacity .18s,transform .22s cubic-bezier(.2,.8,.2,1);opacity:{{ m.edit.op }};transform:{{ m.edit.tf }};pointer-events:{{ m.edit.pe }}">
+  <div style="padding:18px 20px 0;font-size:15px;font-weight:500">{{ editTitle }}</div>
+  <div style="padding:16px 20px;display:flex;flex-direction:column;gap:16px">
+    <div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:12px;color:#8a8f98">Name</span>
+      <input value="{{ f.name }}" onChange="{{ onName }}" placeholder="E.g. EU payout partners" style="height:34px;padding:0 10px;border:none;outline:none;border-radius:8px;background:rgba(255,255,255,.03);box-shadow:inset 0 0 0 1px rgba(255,255,255,.08);color:#f7f8f8;font:13px Geist,system-ui,sans-serif" style-focus="box-shadow:inset 0 0 0 1px rgba(111,227,180,.45)">
+    </div>
+    <div style="display:flex;flex-direction:column;gap:8px"><span style="font-size:12px;color:#8a8f98">Category</span>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:6px">
+        <sc-for list="{{ editCats }}" as="c" hint-placeholder-count="7"><span onClick="{{ c.pick }}" style="height:36px;padding:0 10px 0 6px;display:flex;align-items:center;gap:8px;border-radius:9px;font-size:12.5px;font-weight:500;cursor:pointer;white-space:nowrap;transition:background-color .12s,box-shadow .12s;background:{{ c.bg }};color:{{ c.fg }};box-shadow:{{ c.ring }}"><dc-import name="Relay App Icon" kind="{{ c.kind }}" size="22" hint-size="22px,22px"></dc-import>{{ c.label }}</span></sc-for>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:12px;color:#8a8f98">Note · Optional</span>
+      <textarea value="{{ f.note }}" onChange="{{ onNoteF }}" rows="2" placeholder="What is this shortlist for?" style="resize:none;padding:10px 12px;border:none;outline:none;border-radius:8px;background:rgba(255,255,255,.03);box-shadow:inset 0 0 0 1px rgba(255,255,255,.08);color:#f7f8f8;font:13px/1.5 Geist,system-ui,sans-serif" style-focus="box-shadow:inset 0 0 0 1px rgba(111,227,180,.45)"></textarea>
+    </div>
+    <sc-if value="{{ hasPreset }}"><div style="font-size:12.5px;color:#62666d">{{ presetLabel }}</div></sc-if>
+  </div>
+  <div style="display:flex;align-items:center;gap:8px;padding:14px 20px;border-top:1px solid rgba(255,255,255,.06)">
+    <sc-if value="{{ isExisting }}"><span onClick="{{ del }}" style="height:32px;padding:0 10px;display:inline-flex;align-items:center;border-radius:8px;font-size:13px;font-weight:500;color:#ff8a7a;cursor:pointer" style-hover="background:rgba(255,138,122,.08)">Delete</span></sc-if>
+    <span style="flex:1"></span>
+    <span onClick="{{ close }}" style="height:32px;padding:0 12px;display:inline-flex;align-items:center;border-radius:8px;font-size:13px;font-weight:500;color:#d4d6da;cursor:pointer" style-hover="background:rgba(255,255,255,.05)">Cancel</span>
+    <span onClick="{{ saveList }}" style="height:32px;padding:0 14px;display:inline-flex;align-items:center;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;color:{{ saveBtn.fg }};background:{{ saveBtn.bg }}">{{ saveLabel }}</span>
+  </div>
+</div>
+
+<div style="position:fixed;left:50%;top:50%;z-index:61;width:520px;max-width:calc(100% - 32px);overflow:hidden;border-radius:16px;background:radial-gradient(120% 90% at 100% 100%,rgba(111,227,180,.10),rgba(28,29,32,0) 60%),rgba(28,29,32,.98);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);box-shadow:0 0 0 1px rgba(255,255,255,.09),0 24px 64px rgba(0,0,0,.55);transition:opacity .18s,transform .22s cubic-bezier(.2,.8,.2,1);opacity:{{ m.upgrade.op }};transform:{{ m.upgrade.tf }};pointer-events:{{ m.upgrade.pe }}">
+  <div style="position:absolute;right:-30px;bottom:-30px;width:250px;height:190px;pointer-events:none">
+    <sc-for list="{{ orbit }}" as="o" hint-placeholder-count="6"><span style="position:absolute;opacity:.9;left:{{ o.x }};top:{{ o.y }};transform:rotate({{ o.r }})"><dc-import name="Relay App Icon" kind="{{ o.kind }}" size="{{ o.s }}" hint-size="28px,28px"></dc-import></span></sc-for>
+  </div>
+  <div style="position:relative;padding:24px 24px 22px;display:flex;flex-direction:column;gap:16px">
+    <dc-import name="Relay App Icon" kind="pro" size="44" hint-size="44px,44px"></dc-import>
+    <div>
+      <div style="font-size:20px;font-weight:500;letter-spacing:-0.02em">Unlock all {{ total }} Providers</div>
+      <div style="font-size:13.5px;line-height:1.55;color:#b4b8bf;margin-top:6px;max-width:330px">The free plan previews {{ preview }} Providers. Relay Pro opens the full directory across every region and category.</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:8px;max-width:300px">
+      <sc-for list="{{ perks }}" as="p" hint-placeholder-count="4"><div style="display:flex;gap:9px;font-size:13px;color:#d4d6da"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6fe3b4" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:2px"><path d="M20 6 9 17l-5-5"></path></svg>{{ p }}</div></sc-for>
+    </div>
+    <div style="display:flex;align-items:baseline;gap:6px;margin-top:4px"><span style="font-size:26px;font-weight:500;letter-spacing:-0.03em">€39</span><span style="font-size:12.5px;color:#8a8f98">Per seat / month, billed yearly</span></div>
+    <div style="display:flex;gap:8px">
+      <span onClick="{{ upgradeNow }}" style="height:36px;padding:0 16px;display:inline-flex;align-items:center;border-radius:9px;font-size:13.5px;font-weight:500;color:#0f1011;background:#f7f8f8;cursor:pointer" style-hover="background:#e3e5e8">Upgrade to Pro</span>
+      <span onClick="{{ close }}" style="height:36px;padding:0 14px;display:inline-flex;align-items:center;border-radius:9px;font-size:13.5px;font-weight:500;color:#d4d6da;cursor:pointer" style-hover="background:rgba(255,255,255,.05)">Maybe later</span>
+    </div>
+  </div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const EMPTY = { CAT: {}, providers: [], byId: {}, TOTAL: 0, fmt: String };
+const OFF = { op: 0, pe: 'none', tf: 'translate(-50%,-48%) scale(.98)' }, ON = { op: 1, pe: 'auto', tf: 'translate(-50%,-50%) scale(1)' };
+class Component extends DCLogic {
+  state = { picks: [], f: { name: '', kind: 'all', note: '' }, mode: null };
+  componentDidMount() { if (!window.RELAY) this._i = setInterval(() => { if (window.RELAY) { clearInterval(this._i); this.forceUpdate(); } }, 40); this.sync(); }
+  componentWillUnmount() { clearInterval(this._i); }
+  componentDidUpdate(prev) { if (prev.modal !== this.props.modal) this.sync(); }
+  sync() {
+    const m = this.props.modal; if (!m) return this.setState({ mode: null });
+    if (m.type === 'edit') { const l = (this.props.lists ?? []).find(x => x.id === m.id); this.setState({ mode: 'edit', f: l ? { name: l.name, kind: l.kind, note: l.note } : { name: '', kind: m.kind ?? 'all', note: '' }, preset: m.ids ?? [] }); }
+    else this.setState({ mode: m.type, picks: [], preset: m.ids ?? [] });
+  }
+  renderVals() {
+    const R = window.RELAY ?? EMPTY, S = this.state, m = this.props.modal, lists = this.props.lists ?? [];
+    const ids = m?.ids ?? [], mode = S.mode;
+    const existing = mode === 'edit' && m?.id && lists.find(l => l.id === m.id);
+    const nameOk = S.f.name.trim().length > 0;
+    const setF = p => this.setState(s => ({ f: { ...s.f, ...p } }));
+    const close = () => this.props.onClose?.();
+    const names = ids.map(i => R.byId[i]?.name).filter(Boolean);
+    const cat = (k, label) => ({ kind: k, label, pick: () => setF({ kind: k }), bg: S.f.kind === k ? 'rgba(255,255,255,.07)' : 'transparent', fg: S.f.kind === k ? '#f7f8f8' : '#b4b8bf', ring: S.f.kind === k ? 'inset 0 0 0 1px rgba(255,255,255,.18)' : 'inset 0 0 0 1px rgba(255,255,255,.06)' });
+    const kinds = ['collections', 'payouts', 'fx', 'cards', 'kyc', 'bank'];
+    return {
+      bd: { op: mode ? 1 : 0, pe: mode ? 'auto' : 'none' },
+      m: { addTo: mode === 'addTo' ? ON : OFF, edit: mode === 'edit' ? ON : OFF, upgrade: mode === 'upgrade' ? ON : OFF },
+      close,
+      addTitle: `Add ${ids.length} Provider${ids.length === 1 ? '' : 's'} to shortlist`,
+      addNames: names.join(', '),
+      addLists: lists.map(l => { const on = S.picks.includes(l.id); return { ...l, meta: `${l.ids.length} Providers`, toggle: () => this.setState(s => ({ picks: on ? s.picks.filter(x => x !== l.id) : [...s.picks, l.id] })), boxBg: on ? '#6fe3b4' : 'transparent', boxRing: on ? 'none' : 'inset 0 0 0 1.5px rgba(255,255,255,.2)', checkOp: on ? 1 : 0 }; }),
+      toNew: () => this.setState({ mode: 'edit', f: { name: '', kind: R.byId[ids[0]] && ids.every(i => R.byId[i]?.kind === R.byId[ids[0]].kind) ? R.byId[ids[0]].kind : 'all', note: '' }, preset: ids }),
+      addBtn: { fg: S.picks.length ? '#0f1011' : '#62666d', bg: S.picks.length ? '#f7f8f8' : 'rgba(255,255,255,.05)' },
+      confirmAdd: () => { if (!S.picks.length) return; this.props.onAddToLists?.(S.picks, ids); },
+      editTitle: existing ? 'Edit shortlist' : 'New shortlist',
+      f: S.f, onName: e => setF({ name: e.target.value }), onNoteF: e => setF({ note: e.target.value }),
+      editCats: [cat('all', 'All'), ...kinds.map(k => cat(k, R.CAT[k]?.label ?? k))],
+      hasPreset: !existing && (S.preset ?? []).length > 0,
+      presetLabel: `Includes ${(S.preset ?? []).map(i => R.byId[i]?.name).filter(Boolean).join(', ')}`,
+      isExisting: !!existing,
+      saveLabel: existing ? 'Save changes' : 'Create shortlist',
+      saveBtn: { fg: nameOk ? '#0f1011' : '#62666d', bg: nameOk ? '#f7f8f8' : 'rgba(255,255,255,.05)' },
+      saveList: () => { if (!nameOk) return; this.props.onSaveList?.({ id: existing ? existing.id : null, name: S.f.name.trim(), kind: S.f.kind, note: S.f.note, ids: existing ? existing.ids : (S.preset ?? []) }); },
+      del: () => existing && this.props.onDeleteList?.(existing.id),
+      total: R.fmt(R.TOTAL), preview: R.providers.length,
+      perks: ['Every region, including private bank partners', 'Unlimited compares and saved comparisons', 'Market news, reports and licence watch', 'Unlimited intro requests'],
+      orbit: [['collections', '30px', '96px', 34, '-8deg'], ['payouts', '92px', '58px', 30, '6deg'], ['fx', '150px', '96px', 34, '-4deg'], ['cards', '196px', '40px', 28, '10deg'], ['kyc', '64px', '140px', 30, '4deg'], ['bank', '132px', '146px', 32, '-6deg']].map(([kind, x, y, s, r]) => ({ kind, x, y, s, r })),
+      upgradeNow: () => this.props.onUpgradeConfirm?.()
+    };
+  }
+}
+</script>
+</body>
+</html>

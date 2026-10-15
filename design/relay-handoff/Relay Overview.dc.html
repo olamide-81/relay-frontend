@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;background:#161719;color:#f7f8f8;font-family:"Geist",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#8a8f98;text-decoration:none}
+a:hover{color:#f7f8f8}
+</style>
+</helmet>
+<div style="max-width:1200px;margin:0 auto;padding:36px 40px 56px;display:flex;flex-direction:column;gap:28px;font-family:Geist,system-ui,sans-serif;color:#f7f8f8">
+
+  <div style="display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap">
+    <div style="flex:1 1 320px;min-width:0">
+      <h1 style="margin:0;font-weight:500;font-size:22px;letter-spacing:-0.02em;line-height:1.2">{{ greeting }}, Sarah</h1>
+      <div style="margin-top:6px;font-size:13.5px;color:#8a8f98">1,600 Providers across 140 countries · Scored with your weighting</div>
+    </div>
+    <div style="display:flex;gap:8px;flex:none">
+    <span style="display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 12px;border-radius:8px;font-size:13px;font-weight:500;color:#d4d6da;cursor:pointer;box-shadow:inset 0 0 0 1px rgba(255,255,255,.09);transition:background-color .12s" style-hover="background:rgba(255,255,255,.04);color:#f7f8f8"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg>New shortlist</span>
+    <span style="display:inline-flex;align-items:center;height:32px;padding:0 14px;border-radius:8px;font-size:13px;font-weight:500;color:#0f1011;background:#f7f8f8;cursor:pointer;transition:background-color .12s" style-hover="background:#e3e5e8">Request intro</span>
+    </div>
+  </div>
+
+  <div style="display:grid;transition:grid-template-rows .24s cubic-bezier(.2,.8,.2,1),opacity .18s,margin .24s;grid-template-rows:{{ bannerRows }};opacity:{{ bannerOp }};margin-bottom:{{ bannerMb }}">
+    <div style="min-height:0;overflow:hidden">
+      <div style="position:relative;overflow:hidden;border-radius:14px;background:radial-gradient(480px 260px at 0% 0%,rgba(111,227,180,.10),transparent 70%),radial-gradient(420px 320px at 82% 50%,rgba(185,163,255,.13),transparent 70%),radial-gradient(300px 220px at 100% 100%,rgba(255,171,122,.08),transparent 70%),rgba(255,255,255,.015);box-shadow:inset 0 0 0 1px rgba(255,255,255,.07)">
+        <span onClick="{{ dismiss }}" title="Dismiss" style="position:absolute;z-index:2;top:10px;right:10px;width:26px;height:26px;display:grid;place-items:center;border-radius:999px;color:#8a8f98;cursor:pointer;background:rgba(21,22,24,.6);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);box-shadow:inset 0 0 0 1px rgba(255,255,255,.08);transition:background-color .12s,color .12s" style-hover="background:rgba(40,41,45,.9);color:#f7f8f8"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></span>
+        <div style="display:flex;flex-wrap:wrap;align-items:stretch;gap:0 24px;padding:24px 0 0 26px">
+          <div style="flex:1 1 360px;min-width:0;display:flex;flex-direction:column;gap:16px;padding-bottom:24px">
+            <dc-import name="Relay App Icon" kind="pro" size="44" hint-size="44px,44px"></dc-import>
+            <div style="min-width:0;display:flex;flex-direction:column;gap:14px">
+              <div style="display:flex;align-items:center;gap:8px"><span style="font-size:12px;font-weight:500;color:#d4d6da;padding:2px 8px;border-radius:999px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.12)">Relay Pro</span><span style="font-size:12px;color:#8a8f98">You're on Free</span></div>
+              <div style="font-size:20px;font-weight:500;letter-spacing:-0.025em;line-height:1.25;text-wrap:balance;max-width:460px">Unlock the full directory. <span style="color:#8a8f98">1,595 more Providers across 140 countries.</span></div>
+              <div>
+                <div style="display:flex;height:6px;max-width:420px;border-radius:999px;overflow:hidden;background:rgba(255,255,255,.06)"><span style="width:2%;min-width:6px;background:#f7f8f8;border-radius:999px"></span></div>
+                <div style="display:flex;justify-content:space-between;max-width:420px;margin-top:8px;font-size:12px;color:#8a8f98"><span><span style="color:#f7f8f8;font-weight:500">5</span> of 1,600 visible on Free</span><span>Unlimited compares on Pro</span></div>
+              </div>
+              <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+                <span style="height:32px;padding:0 14px;display:inline-flex;align-items:center;border-radius:8px;font-size:13px;font-weight:500;color:#0f1011;background:#f7f8f8;cursor:pointer;transition:background-color .12s" style-hover="background:#e3e5e8">Upgrade to Pro</span>
+                <span style="height:32px;padding:0 12px;display:inline-flex;align-items:center;border-radius:8px;font-size:13px;font-weight:500;color:#d4d6da;cursor:pointer;box-shadow:inset 0 0 0 1px rgba(255,255,255,.1)" style-hover="background:rgba(255,255,255,.05);color:#f7f8f8">Compare plans</span>
+                <span style="font-size:12.5px;color:#62666d">From $49 / month</span>
+              </div>
+            </div>
+          </div>
+          <div style="flex:0 1 340px;min-width:280px;min-height:210px;position:relative;margin-left:auto">
+            <div style="position:absolute;left:calc(58% - 190px);bottom:-190px;width:380px;height:380px;border-radius:50%;background:radial-gradient(closest-side,rgba(255,255,255,.05),rgba(255,255,255,.02) 55%,transparent 100%)"></div>
+            <sc-for list="{{ rings }}" as="g" hint-placeholder-count="3">
+              <div style="position:absolute;border-radius:50%;box-shadow:inset 0 0 0 1px rgba(255,255,255,{{ g.a }});left:{{ g.left }};bottom:{{ g.bottom }};width:{{ g.d }};height:{{ g.d }}"></div>
+            </sc-for>
+            <sc-for list="{{ radar }}" as="o" hint-placeholder-count="14">
+              <div style="position:absolute;left:{{ o.left }};bottom:{{ o.bottom }};opacity:{{ o.op }};transform:rotate({{ o.rot }}deg);filter:grayscale(1) brightness(.85) contrast(.95)">
+                <dc-import name="Relay App Icon" kind="{{ o.key }}" size="{{ o.size }}" hint-size="32px,32px"></dc-import>
+              </div>
+            </sc-for>
+            <div style="position:absolute;z-index:1;left:calc(58% - 110px);bottom:-70px;width:220px;height:150px;border-radius:50%;background:radial-gradient(closest-side,#18191b 55%,rgba(24,25,27,.85) 75%,rgba(24,25,27,0) 100%)"></div>
+            <div style="position:absolute;z-index:2;left:58%;bottom:18px;transform:translateX(-50%);text-align:center;white-space:nowrap">
+              <div style="font-size:28px;font-weight:600;letter-spacing:-0.035em;line-height:1;font-variant-numeric:tabular-nums;color:#f7f8f8">1,000+</div>
+              <div style="font-size:12.5px;font-weight:500;color:#b4b8bf;margin-top:6px">Providers worldwide</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:rgba(255,255,255,.06);border-radius:12px;overflow:hidden;box-shadow:0 0 0 1px rgba(255,255,255,.06);margin-top:-8px">
+    <sc-for list="{{ stats }}" as="s" hint-placeholder-count="4">
+      <div style="padding:16px 18px 18px;background:#18191b">
+        <div style="font-size:12px;color:#8a8f98">{{ s.label }}</div>
+        <div style="margin-top:10px;display:flex;align-items:baseline;gap:8px"><span style="font-size:24px;font-weight:500;letter-spacing:-0.025em;font-variant-numeric:tabular-nums">{{ s.value }}</span><span style="font-size:12px;color:#62666d">{{ s.note }}</span></div>
+      </div>
+    </sc-for>
+  </div>
+
+  <section style="display:flex;flex-direction:column;gap:10px">
+    <div style="display:flex;align-items:center;gap:8px;padding:0 2px">
+      <span style="font-size:13.5px;font-weight:500">Categories</span>
+      <span style="font-size:12px;color:#62666d;font-variant-numeric:tabular-nums">5</span>
+      <span style="margin-left:auto;font-size:12.5px;color:#8a8f98;cursor:pointer;display:inline-flex;align-items:center;gap:4px" style-hover="color:#f7f8f8">View directory<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"></path></svg></span>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(184px,1fr));gap:10px">
+      <sc-for list="{{ cats }}" as="c" hint-placeholder-count="5">
+        <div style="position:relative;overflow:hidden;display:flex;flex-direction:column;gap:14px;padding:16px;border-radius:14px;cursor:pointer;background:{{ c.glow }};box-shadow:inset 0 0 0 1px rgba(255,255,255,.06);transition:box-shadow .15s,transform .15s" style-hover="box-shadow:inset 0 0 0 1px rgba(255,255,255,.12);transform:translateY(-1px)">
+          <div style="display:flex;align-items:flex-start;justify-content:space-between">
+            <dc-import name="Relay App Icon" kind="{{ c.key }}" size="40" hint-size="40px,40px"></dc-import>
+            <div style="text-align:right"><div style="font-size:22px;font-weight:500;letter-spacing:-0.02em;line-height:1;font-variant-numeric:tabular-nums;color:{{ c.countColor }}">{{ c.count }}</div><div style="font-size:11.5px;color:#62666d;margin-top:4px">{{ c.countNote }}</div></div>
+          </div>
+          <div>
+            <div style="font-size:14px;font-weight:500">{{ c.name }}</div>
+            <div style="font-size:12.5px;line-height:1.4;color:#62666d;margin-top:3px;min-height:35px">{{ c.desc }}</div>
+          </div>
+          <sc-if value="{{ c.has }}" hint-placeholder-val="{{ true }}">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;padding-top:12px;border-top:1px solid rgba(255,255,255,.05)">
+              <div><div style="font-size:11.5px;color:#62666d">From</div><div style="font-size:13.5px;font-weight:500;margin-top:2px;font-variant-numeric:tabular-nums">{{ c.from }}</div></div>
+              <div><div style="font-size:11.5px;color:#62666d">Settles</div><div style="display:flex;align-items:center;gap:6px;font-size:13.5px;font-weight:500;margin-top:2px"><span style="width:6px;height:6px;border-radius:50%;background:{{ c.accent }}"></span>{{ c.settle }}</div></div>
+            </div>
+          </sc-if>
+          <sc-if value="{{ c.empty }}">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding-top:12px;border-top:1px solid rgba(255,255,255,.05)">
+              <span style="font-size:12.5px;color:#62666d">Pro only</span>
+              <span style="font-size:12.5px;font-weight:500;color:{{ c.accent }}">Unlock →</span>
+            </div>
+          </sc-if>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px">
+    <section style="display:flex;flex-direction:column;gap:10px">
+      <div style="display:flex;align-items:center;gap:8px;padding:0 2px;height:20px"><span style="font-size:13.5px;font-weight:500">Shortlists</span><span style="font-size:12px;color:#62666d">0</span></div>
+      <div style="flex:1;min-height:260px;border-radius:12px;box-shadow:0 0 0 1px rgba(255,255,255,.06);background:rgba(255,255,255,.012);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:32px;text-align:center">
+        <span style="width:36px;height:36px;border-radius:10px;display:grid;place-items:center;color:#8a8f98;background:rgba(255,255,255,.04);box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"></path></svg></span>
+        <div style="font-size:13.5px;font-weight:500;margin-top:6px">No shortlists yet</div>
+        <div style="font-size:12.5px;color:#8a8f98;max-width:250px;line-height:1.5">Group the providers you're evaluating and compare them side by side.</div>
+        <span style="display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 10px;margin-top:8px;border-radius:7px;font-size:12.5px;font-weight:500;color:#d4d6da;cursor:pointer;box-shadow:inset 0 0 0 1px rgba(255,255,255,.09)" style-hover="background:rgba(255,255,255,.04);color:#f7f8f8"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg>New shortlist</span>
+      </div>
+    </section>
+
+    <section style="display:flex;flex-direction:column;gap:10px">
+      <div style="display:flex;align-items:center;gap:8px;padding:0 2px;height:20px"><span style="font-size:13.5px;font-weight:500">Activity</span><span style="display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:500;color:#6fe3b4;padding:1px 7px;border-radius:999px;background:rgba(111,227,180,.08)"><span style="width:5px;height:5px;border-radius:50%;background:#6fe3b4"></span>Live</span></div>
+      <div style="flex:1;min-height:260px;border-radius:12px;box-shadow:0 0 0 1px rgba(255,255,255,.06);background:rgba(255,255,255,.012);padding:8px 0;display:flex;flex-direction:column;justify-content:center">
+        <sc-for list="{{ activity }}" as="a" hint-placeholder-count="5">
+          <div style="display:flex;align-items:center;gap:12px;padding:9px 16px;cursor:pointer;transition:background-color .12s" style-hover="background:rgba(255,255,255,.025)">
+            <dc-import name="Relay App Icon" kind="{{ a.kind }}" size="26" hint-size="26px,26px"></dc-import>
+            <div style="flex:1;min-width:0;font-size:13px;color:#8a8f98;white-space:nowrap;overflow:hidden;text-overflow:ellipsis"><span style="color:#f7f8f8;font-weight:500">{{ a.who }}</span> {{ a.what }}</div>
+            <span style="font-size:12px;color:#62666d;font-variant-numeric:tabular-nums;flex:none">{{ a.when }}</span>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1100,&quot;height&quot;:900}}">
+class Component extends DCLogic {
+  state = { banner: !/[?&]plan=pro/i.test(window.location.search) };
+  renderVals() {
+    const h = new Date().getHours();
+    const cat = (key, name, desc, count, accent, rgb, from, settle) => ({
+      key, name, desc, accent, count: count ? count.toLocaleString('en-US') : '154', locked: ({collections:'311',payouts:'407',bank:'316',cards:'154',kyc:'212'})[key], from, settle, has: count > 0, empty: count === 0,
+      countColor: count ? '#f7f8f8' : '#62666d', countNote: count ? 'Providers' : 'Locked',
+      glow: `radial-gradient(120% 90% at 0% 0%, rgba(${rgb},.09), rgba(255,255,255,.012) 60%)`
+    });
+    return {
+      greeting: h < 12 ? 'Good morning' : h < 18 ? 'Good afternoon' : 'Good evening',
+      bannerRows: this.state.banner ? '1fr' : '0fr', bannerOp: this.state.banner ? 1 : 0, bannerMb: this.state.banner ? '0px' : '-28px',
+      dismiss: () => this.setState({ banner: false }),
+      stats: [
+        { label: 'Providers worldwide', value: '1,600', note: '+38 this month' },
+        { label: 'Countries', value: '140', note: '8 regions' },
+        { label: 'Open requests', value: '0', note: 'None in flight' },
+        { label: 'Shortlisted', value: '0', note: 'None yet' },
+      ],
+      legend: [{ n: 'Collections', c: '#6fe3b4' }, { n: 'Payouts', c: '#d6ee4e' }, { n: 'Banks', c: '#ff8fb1' }, { n: 'Cards', c: '#b9a3ff' }, { n: 'KYC', c: '#ffab7a' }],
+      regions: [
+        ['Europe', 412, '32%', [104, 128, 72, 46, 62], [['GB','United Kingdom',118],['DE','Germany',86],['NL','Netherlands',54]]],
+        ['North America', 368, '29%', [92, 110, 48, 58, 60], [['US','United States',284],['CA','Canada',61],['MX','Mexico',23]]],
+        ['Asia-Pacific', 296, '23%', [70, 96, 44, 32, 54], [['SG','Singapore',88],['JP','Japan',64],['AU','Australia',57]]],
+        ['Latin America', 141, '11%', [32, 48, 20, 12, 29], [['BR','Brazil',62],['CO','Colombia',31],['CL','Chile',24]]],
+        ['Middle East', 67, '5%', [14, 26, 12, 6, 9], [['AE','United Arab Emirates',34],['SA','Saudi Arabia',18],['IL','Israel',15]]]
+      ].map(([name, count, share, mix, top]) => ({
+        name, share, count: count.toLocaleString('en-US'),
+        mix: mix.map((v, i) => ({ v, c: ['#6fe3b4','#d6ee4e','#8fb8ff','#b9a3ff','#ffab7a'][i] })),
+        top: top.map(([code, n2, n]) => ({ code, name: n2, n }))
+      })),
+      rings: [98, 140, 182].map((r, i) => ({ d: (2 * r) + 'px', left: `calc(58% - ${r}px)`, bottom: (-r) + 'px', a: ['.08', '.06', '.04'][i] })),
+      radar: [
+        ['collections', 158, 98, 28, .9, -6], ['payouts', 118, 98, 28, .9, 4], ['fx', 62, 98, 28, .9, -3], ['cards', 22, 98, 26, .9, 6],
+        ['kyc', 164, 140, 24, .7, 5], ['bank', 132, 140, 22, .7, -8], ['globe', 92, 140, 24, .7, 3], ['wallet', 54, 140, 22, .7, -5], ['api', 18, 140, 22, .7, 8],
+        ['chart', 152, 182, 20, .45, -4], ['cards', 128, 182, 18, .45, 7], ['all', 104, 182, 20, .45, -6], ['collections', 80, 182, 18, .45, 5], ['kyc', 56, 182, 20, .45, -7], ['bank', 32, 182, 18, .45, 4], ['payouts', 10, 182, 22, .45, -3]
+      ].map(([key, deg, r, size, op, rot]) => {
+        const t = deg * Math.PI / 180, x = r * Math.cos(t), y = r * Math.sin(t);
+        return { key, size, op, rot, left: `calc(58% + ${(x - size / 2).toFixed(1)}px)`, bottom: (y - size / 2).toFixed(1) + 'px' };
+      }),
+      orbit: ['collections','payouts','bank','cards','kyc'].map((key, i) => {
+        const a = (-90 + i * 72) * Math.PI / 180, r = 104;
+        return { key, locked: ({collections:'311',payouts:'407',bank:'316',cards:'154',kyc:'212'})[key], x: (132 + r * Math.cos(a) - 36) + 'px', y: (132 + r * Math.sin(a) - 30) + 'px' };
+      }),
+      cats: [
+        cat('collections', 'Collections', 'Acceptance, invoicing and receivables', 312, '#6fe3b4', '111,227,180', '0.2%', 'Instant'),
+        cat('payouts', 'Payouts', 'Disbursements, mass pay, cross-border', 408, '#d6ee4e', '214,238,78', '0.3%', 'Instant'),
+        cat('bank', 'Banks', 'Sponsor, partner and safeguarding banks', 316, '#ff8fb1', '255,143,177', '€80 / mo', 'Same day'),
+        cat('cards', 'Cards', 'Issuing, processing, program management', 0, '#b9a3ff', '185,163,255'),
+        cat('kyc', 'KYC', 'Identity, KYB, sanctions screening', 214, '#ffab7a', '255,171,122', '$0.45', 'Real-time')
+      ],
+      activity: [
+        { kind: 'payouts', who: 'Ledgerline', what: 'published new payout commercials', when: '2m' },
+        { kind: 'kyc', who: 'Kestrel Identity', what: 'went live in the directory', when: '1h' },
+        { kind: 'fx', who: 'Meridian FX', what: 'updated EUR → USD settlement times', when: '3h' },
+        { kind: 'all', who: 'Relay', what: 'scored 5 Providers with your weighting', when: '1d' },
+        { kind: 'collections', who: 'Tidepool Pay', what: 'added SEPA Instant collections', when: '1d' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

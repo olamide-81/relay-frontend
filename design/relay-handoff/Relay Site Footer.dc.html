@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<footer data-screen-label="Footer" style="position:relative;margin-top:{{ mt }};border-top:1px solid rgba(255,255,255,.06);background:linear-gradient(180deg,#0f1011,#0c0d0e);font-family:Geist,system-ui,sans-serif;color:#f7f8f8">
+  <sc-if value="{{ showCta }}" hint-placeholder-val="{{ true }}">
+    <div style="max-width:1200px;margin:0 auto;padding:96px 24px 80px;display:flex;align-items:flex-end;justify-content:space-between;gap:32px;flex-wrap:wrap">
+      <h2 style="margin:0;font-weight:500;font-size:clamp(34px,4.4vw,52px);line-height:1.04;letter-spacing:-0.04em;max-width:640px;text-wrap:balance">Find the partners behind your next market.</h2>
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+        <a href="#" style="height:42px;padding:0 20px;display:inline-flex;align-items:center;border-radius:10px;font-size:14.5px;font-weight:500;color:#0f1011;background:#f7f8f8;transition:background-color .15s,transform .2s cubic-bezier(.2,.8,.2,1),box-shadow .2s" style-hover="background:#ffffff;color:#0f1011;transform:translateY(-1px);box-shadow:0 10px 30px -8px rgba(255,255,255,.35)">Start for free</a>
+        <a href="Relay%20Contact.dc.html" style="height:42px;padding:0 18px;display:inline-flex;align-items:center;border-radius:10px;font-size:14.5px;font-weight:500;color:#d4d6da;box-shadow:inset 0 0 0 1px rgba(255,255,255,.12);transition:background-color .15s,color .15s,box-shadow .15s,transform .2s" style-hover="background:rgba(255,255,255,.05);color:#f7f8f8;box-shadow:inset 0 0 0 1px rgba(255,255,255,.22);transform:translateY(-1px)">Talk to sales</a>
+      </div>
+    </div>
+  </sc-if>
+  <div style="max-width:1200px;margin:0 auto;padding:56px 24px 40px;border-top:1px solid rgba(255,255,255,.06);display:flex;flex-wrap:wrap;gap:40px">
+    <div style="flex:1 1 240px;display:flex;flex-direction:column;gap:14px">
+      <a href="Relay%20Landing.dc.html" style="display:flex;align-items:center;gap:9px;color:#f7f8f8"><img src="assets/relay-icon.png" alt="Relay" style="width:22px;height:22px;display:block;border-radius:5px"><span style="font-weight:500;font-size:16px;letter-spacing:-0.02em">Relay</span></a>
+      <span style="font-size:13.5px;line-height:1.55;color:#62666d;max-width:260px">Relay by Gratebridge. The directory of financial infrastructure partners.</span>
+      <span style="font-size:12.5px;line-height:1.6;color:#62666d;max-width:260px">1021 E Lincolnway Suite #7415<br>Cheyenne, Wyoming 82001<br>United States</span>
+      <a href="https://relay.gratebridge.com" style="font-size:12.5px;color:#8a8f98">relay.gratebridge.com</a>
+    </div>
+    <div style="flex:3 1 520px;display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:32px">
+      <sc-for list="{{ cols }}" as="col" hint-placeholder-count="4">
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <span style="font-size:13px;font-weight:500;color:#f7f8f8">{{ col.title }}</span>
+          <sc-for list="{{ col.links }}" as="l" hint-placeholder-count="4"><a href="{{ l.href }}" style="font-size:13.5px;color:#8a8f98">{{ l.label }}</a></sc-for>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+  <div style="max-width:1200px;margin:0 auto;padding:20px 24px 32px;display:flex;align-items:center;gap:20px;flex-wrap:wrap;font-size:12.5px;color:#62666d">
+    <span>© 2026 Gratebridge Labs. Relay by Gratebridge.</span>
+    <a href="Relay%20Security.dc.html#status" style="display:inline-flex;align-items:center;gap:7px;font-size:12.5px;color:#62666d"><span style="width:7px;height:7px;border-radius:50%;background:#6fe3b4"></span>All systems normal</a>
+    <span style="flex:1"></span>
+    <span onClick="{{ openCookies }}" style="cursor:pointer;transition:color .12s" style-hover="color:#f7f8f8">Cookie preferences</span>
+    <a href="Relay%20Legal.dc.html?doc=privacy" style="font-size:12.5px;color:#62666d">Privacy</a>
+    <a href="Relay%20Legal.dc.html?doc=terms" style="font-size:12.5px;color:#62666d">Terms</a>
+  </div>
+</footer>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1200,&quot;height&quot;:560},&quot;cta&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
+const P = n => 'Relay%20' + n + '.dc.html';
+const C = k => P('Category') + '?kind=' + k;
+const COLS = [
+  ['Product', [['Overview', P('Product')], ['Directory', P('Directory Page')], ['Compare', P('Product') + '#compare'], ['Shortlists', P('Product') + '#shortlists'], ['Intelligence', P('Intelligence Page')], ['Pricing', P('Pricing')]]],
+  ['Categories', [['Collections', C('collections')], ['Payouts', C('payouts')], ['FX', C('fx')], ['Cards', C('cards')], ['KYC', C('kyc')], ['Banks', C('bank')]]],
+  ['Company', [['About', P('About')], ['Customers', P('Customers')], ['Careers', P('Careers')], ['Contact', P('Contact')]]],
+  ['Resources', [['Changelog', P('Changelog')], ['Developers', P('Developers')], ['Security', P('Security')], ['For Providers', P('For Providers')], ['Cookie policy', P('Legal') + '?doc=cookies']]]
+];
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      showCta: this.props.cta ?? true, mt: (this.props.cta ?? true) ? '160px' : '120px',
+      cols: COLS.map(([title, links]) => ({ title, links: links.map(([label, href]) => ({ label, href })) })),
+      openCookies: () => window.dispatchEvent(new CustomEvent('relay:cookies'))
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="relay-data.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;background:#161719;color:#f7f8f8;font-family:"Geist",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#8a8f98;text-decoration:none}
+a:hover{color:#f7f8f8}
+</style>
+</helmet>
+<div style="font-family:Geist,system-ui,sans-serif;color:#f7f8f8">
+<sc-if value="{{ isFull }}">
+  <div style="position:relative">
+    <div style="position:absolute;inset:0 0 auto 0;height:340px;pointer-events:none;background:{{ fr.glow }}"></div>
+    <article style="position:relative;max-width:920px;margin:0 auto;padding:28px 40px 80px;display:flex;flex-direction:column;gap:28px">
+      <span onClick="{{ closeFull }}" style="width:fit-content;display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 8px 0 4px;border-radius:7px;font-size:12.5px;font-weight:500;color:#8a8f98;cursor:pointer" style-hover="color:#f7f8f8;background:rgba(255,255,255,.04)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"></path></svg>{{ fr.backLabel }}</span>
+      <header style="display:flex;flex-direction:column;gap:16px">
+        <div style="display:flex;align-items:center;gap:12px"><dc-import name="Relay App Icon" kind="{{ fr.kind }}" size="44" hint-size="44px,44px"></dc-import><div style="display:flex;gap:8px;flex-wrap:wrap;font-size:12.5px;color:#8a8f98"><span style="height:22px;padding:0 8px;display:inline-flex;align-items:center;border-radius:999px;color:#d4d6da;box-shadow:inset 0 0 0 1px rgba(255,255,255,.1)">{{ fr.tag }}</span><span style="display:inline-flex;align-items:center">{{ fr.scope }} · {{ fr.date }} · {{ fr.read }}</span></div></div>
+        <h1 style="margin:0;font-size:clamp(28px,3.4vw,40px);font-weight:500;letter-spacing:-0.035em;line-height:1.1;text-wrap:balance">{{ fr.title }}</h1>
+        <p style="margin:0;font-size:17px;line-height:1.6;color:#b4b8bf;text-wrap:pretty">{{ fr.summary }}</p>
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding-top:4px">
+          <span style="display:flex;align-items:center;gap:8px;font-size:13px;color:#8a8f98;flex:1 1 200px"><span style="width:26px;height:26px;border-radius:7px;overflow:hidden;display:block"><img src="assets/relay-icon.png" alt="" style="width:100%;height:100%;object-fit:cover;display:block"></span>{{ fr.source }}</span>
+          <span onClick="{{ shareFull }}" style="height:32px;padding:0 12px;display:inline-flex;align-items:center;gap:6px;border-radius:8px;font-size:13px;font-weight:500;color:#d4d6da;cursor:pointer;box-shadow:inset 0 0 0 1px rgba(255,255,255,.1)" style-hover="background:rgba(255,255,255,.05)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"></path><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"></path></svg>Copy link</span>
+          <span style="height:32px;padding:0 14px;display:inline-flex;align-items:center;gap:6px;border-radius:8px;font-size:13px;font-weight:500;color:#0f1011;background:#f7f8f8;cursor:pointer" style-hover="background:#e3e5e8"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"></path></svg>Download PDF</span>
+        </div>
+      </header>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px">
+        <sc-for list="{{ fr.kpis }}" as="k" hint-placeholder-count="4"><div style="padding:16px;border-radius:12px;background:rgba(255,255,255,.015);box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)"><div style="font-size:12px;color:#62666d">{{ k.k }}</div><div style="font-size:24px;font-weight:500;letter-spacing:-0.025em;margin-top:6px;font-variant-numeric:tabular-nums">{{ k.v }}</div><div style="font-size:12px;margin-top:4px;color:{{ k.c }}">{{ k.d }}</div></div></sc-for>
+      </div>
+      <section style="padding:20px;border-radius:14px;background:rgba(255,255,255,.012);box-shadow:inset 0 0 0 1px rgba(255,255,255,.06);display:flex;flex-direction:column;gap:16px">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap"><span style="font-size:14px;font-weight:500">{{ fr.chartTitle }}</span><span style="font-size:12px;color:#62666d">{{ fr.chartNote }}</span></div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <sc-for list="{{ fr.chart }}" as="c" hint-placeholder-count="6"><div style="display:grid;grid-template-columns:120px minmax(0,1fr) 56px;align-items:center;gap:12px;font-size:12.5px"><span style="color:#b4b8bf">{{ c.label }}</span><div style="height:10px;border-radius:4px;background:rgba(255,255,255,.04);overflow:hidden"><div style="height:100%;border-radius:4px;background:{{ fr.accent }};opacity:{{ c.op }};width:{{ c.w }}"></div></div><span style="text-align:right;color:#d4d6da;font-variant-numeric:tabular-nums">{{ c.v }}</span></div></sc-for>
+        </div>
+      </section>
+      <sc-for list="{{ fr.sections }}" as="s" hint-placeholder-count="3">
+        <section style="display:flex;flex-direction:column;gap:12px">
+          <h2 style="margin:0;font-size:19px;font-weight:500;letter-spacing:-0.015em">{{ s.h }}</h2>
+          <p style="margin:0;font-size:15px;line-height:1.7;color:#b4b8bf;text-wrap:pretty">{{ s.p }}</p>
+          <div style="display:flex;flex-direction:column;gap:8px"><sc-for list="{{ s.points }}" as="pt" hint-placeholder-count="2"><div style="display:flex;gap:10px;font-size:14px;line-height:1.55;color:#d4d6da"><span style="width:6px;height:6px;border-radius:50%;margin-top:8px;flex:none;background:{{ fr.accent }}"></span>{{ pt }}</div></sc-for></div>
+        </section>
+      </sc-for>
+      <section style="display:flex;flex-direction:column;gap:12px">
+        <h2 style="margin:0;font-size:19px;font-weight:500;letter-spacing:-0.015em">Providers in this report</h2>
+        <div style="border-radius:12px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.06);background:rgba(255,255,255,.012);overflow-x:auto">
+          <div style="min-width:560px">
+            <div style="display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1.2fr) 90px 110px;align-items:center;height:38px;padding:0 16px;border-bottom:1px solid rgba(255,255,255,.06);font-size:12px;color:#62666d"><span>Provider</span><span>Headquarters</span><span>Score</span><span style="text-align:right">Change</span></div>
+            <sc-for list="{{ fr.providers }}" as="p" hint-placeholder-count="5"><div style="display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1.2fr) 90px 110px;align-items:center;min-height:50px;padding:0 16px;border-bottom:1px solid rgba(255,255,255,.04)"><span style="display:flex;align-items:center;gap:10px;min-width:0"><dc-import name="Relay App Icon" kind="{{ p.kind }}" size="24" hint-size="24px,24px"></dc-import><span style="font-size:13.5px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ p.name }}</span></span><span style="font-size:13px;color:#b4b8bf">{{ p.hq }}</span><span style="font-size:13px;font-variant-numeric:tabular-nums">{{ p.score }}</span><span style="font-size:12.5px;text-align:right;font-variant-numeric:tabular-nums;color:{{ p.c }}">{{ p.delta }}</span></div></sc-for>
+          </div>
+        </div>
+      </section>
+      <section style="display:flex;flex-direction:column;gap:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,.06)">
+        <div style="font-size:13.5px;font-weight:500">Related</div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px">
+          <sc-for list="{{ fr.related }}" as="r" hint-placeholder-count="3"><div onClick="{{ r.open }}" style="padding:14px;border-radius:12px;display:flex;gap:12px;cursor:pointer;background:rgba(255,255,255,.012);box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)" style-hover="background:rgba(255,255,255,.03)"><dc-import name="Relay App Icon" kind="{{ r.kind }}" size="30" hint-size="30px,30px"></dc-import><div style="min-width:0"><div style="font-size:12px;color:#62666d">{{ r.tag }} · {{ r.scope }}</div><div style="font-size:13px;font-weight:500;margin-top:3px;text-wrap:pretty">{{ r.title }}</div></div></div></sc-for>
+        </div>
+      </section>
+    </article>
+  </div>
+</sc-if>
+<sc-if value="{{ notFull }}" hint-placeholder-val="{{ true }}">
+<div style="max-width:1200px;margin:0 auto;padding:36px 40px 56px;display:flex;flex-direction:column;gap:20px">
+  <div style="display:flex;align-items:flex-end;gap:16px;flex-wrap:wrap">
+    <div style="flex:1 1 320px;min-width:0">
+      <h1 style="margin:0;font-size:22px;font-weight:500;letter-spacing:-0.02em">Intelligence</h1>
+      <div style="font-size:13.5px;color:#8a8f98;margin-top:6px">What changed across the Provider market, refreshed daily.</div>
+    </div>
+    <div style="display:flex;gap:2px;padding:2px;border-radius:9px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.07);flex-wrap:wrap">
+      <sc-for list="{{ scopes }}" as="s" hint-placeholder-count="6">
+        <span onClick="{{ s.pick }}" style="height:28px;padding:0 10px;display:inline-flex;align-items:center;gap:6px;border-radius:7px;font-size:12.5px;font-weight:500;cursor:pointer;white-space:nowrap;transition:background-color .12s,color .12s;background:{{ s.bg }};color:{{ s.fg }}" style-hover="color:#f7f8f8">{{ s.label }}</span>
+      </sc-for>
+    </div>
+  </div>
+  <div style="display:flex;gap:4px;border-bottom:1px solid rgba(255,255,255,.06);overflow-x:auto;scrollbar-width:none">
+    <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="5">
+      <span onClick="{{ t.pick }}" style="position:relative;display:inline-flex;align-items:center;gap:6px;height:36px;padding:0 10px;font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap;transition:color .12s;color:{{ t.fg }}" style-hover="color:#f7f8f8">{{ t.label }}<span style="font-size:11.5px;color:#62666d;font-variant-numeric:tabular-nums">{{ t.count }}</span><span style="position:absolute;left:8px;right:8px;bottom:-1px;height:2px;border-radius:2px;background:#f7f8f8;transition:opacity .15s;opacity:{{ t.line }}"></span></span>
+    </sc-for>
+  </div>
+
+  <sc-if value="{{ isFeed }}" hint-placeholder-val="{{ true }}">
+    <div style="border-radius:12px;box-shadow:0 0 0 1px rgba(255,255,255,.06);background:rgba(255,255,255,.012)">
+      <sc-for list="{{ feed }}" as="s" hint-placeholder-count="6">
+        <div style="border-bottom:1px solid rgba(255,255,255,.04)">
+          <div onClick="{{ s.toggle }}" style="display:flex;align-items:center;gap:14px;padding:14px 16px;cursor:pointer;transition:background-color .12s" style-hover="background:rgba(255,255,255,.02)">
+            <dc-import name="Relay App Icon" kind="{{ s.kind }}" size="32" hint-size="32px,32px"></dc-import>
+            <div style="flex:1;min-width:0"><div style="font-size:13.5px;color:#f7f8f8;font-weight:500;text-wrap:pretty">{{ s.title }}</div><div style="font-size:12px;color:#62666d;margin-top:3px">{{ s.meta }}</div></div>
+            <span style="font-size:11.5px;font-weight:500;padding:2px 8px;border-radius:999px;color:#b4b8bf;box-shadow:inset 0 0 0 1px rgba(255,255,255,.1);flex:none;white-space:nowrap">{{ s.tag }}</span>
+            <span style="width:52px;text-align:right;font-size:12px;color:#62666d;flex:none">{{ s.when }}</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#62666d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:none;transition:transform .2s;transform:{{ s.rot }}"><path d="m6 9 6 6 6-6"></path></svg>
+          </div>
+          <div style="display:grid;transition:grid-template-rows .24s cubic-bezier(.2,.8,.2,1),opacity .2s;grid-template-rows:{{ s.rows }};opacity:{{ s.op }}">
+            <div style="min-height:0;overflow:hidden">
+              <div style="padding:0 16px 18px 62px;display:flex;flex-direction:column;gap:12px">
+                <p style="margin:0;font-size:13.5px;line-height:1.6;color:#b4b8bf;max-width:720px;text-wrap:pretty">{{ s.body }}</p>
+                <div style="display:flex;flex-direction:column;gap:6px">
+                  <sc-for list="{{ s.points }}" as="p" hint-placeholder-count="2"><div style="display:flex;gap:9px;font-size:13px;color:#d4d6da"><span style="width:5px;height:5px;border-radius:50%;margin-top:7px;flex:none;background:{{ s.accent }}"></span>{{ p }}</div></sc-for>
+                </div>
+                <div style="display:flex;gap:8px;flex-wrap:wrap">
+                  <span onClick="{{ s.full }}" style="height:30px;padding:0 12px;display:inline-flex;align-items:center;gap:6px;border-radius:7px;font-size:12.5px;font-weight:500;color:#0f1011;background:#f7f8f8;cursor:pointer" style-hover="background:#e3e5e8">Read full report<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></span>
+                  <span style="height:30px;padding:0 12px;display:inline-flex;align-items:center;border-radius:7px;font-size:12.5px;font-weight:500;color:#d4d6da;cursor:pointer;box-shadow:inset 0 0 0 1px rgba(255,255,255,.1)" style-hover="background:rgba(255,255,255,.05)">{{ s.cta }}</span>
+                  <span style="height:30px;padding:0 12px;display:inline-flex;align-items:center;border-radius:7px;font-size:12.5px;font-weight:500;color:#8a8f98">{{ s.source }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </sc-for>
+      <sc-if value="{{ feedEmpty }}"><div style="padding:48px 24px;text-align:center;font-size:13px;color:#62666d">Nothing new in this region yet.</div></sc-if>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ isReports }}">
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px">
+      <sc-for list="{{ reports }}" as="r" hint-placeholder-count="4">
+        <div onClick="{{ r.toggle }}" style="border-radius:12px;box-shadow:0 0 0 1px rgba(255,255,255,.06);background:rgba(255,255,255,.012);padding:16px;display:flex;flex-direction:column;gap:12px;cursor:pointer;transition:background-color .12s" style-hover="background:rgba(255,255,255,.025)">
+          <div style="display:flex;align-items:center;gap:12px">
+            <dc-import name="Relay App Icon" kind="{{ r.kind }}" size="40" hint-size="40px,40px"></dc-import>
+            <div style="flex:1;min-width:0"><div style="font-size:12px;color:#62666d">{{ r.type }} · {{ r.scope }}</div><div style="font-size:14px;font-weight:500;margin-top:3px;text-wrap:pretty">{{ r.title }}</div></div>
+          </div>
+          <div style="font-size:12.5px;color:#8a8f98">{{ r.meta }}</div>
+          <div style="display:grid;transition:grid-template-rows .24s cubic-bezier(.2,.8,.2,1),opacity .2s;grid-template-rows:{{ r.rows }};opacity:{{ r.op }}">
+            <div style="min-height:0;overflow:hidden">
+              <div style="display:flex;flex-direction:column;gap:8px;padding-top:4px;border-top:1px solid rgba(255,255,255,.06)">
+                <div style="font-size:12px;color:#62666d;padding-top:10px">Key findings</div>
+                <sc-for list="{{ r.points }}" as="p" hint-placeholder-count="3"><div style="display:flex;gap:9px;font-size:13px;color:#d4d6da"><span style="width:5px;height:5px;border-radius:50%;margin-top:7px;flex:none;background:{{ r.accent }}"></span>{{ p }}</div></sc-for>
+                <div style="display:flex;gap:8px;margin-top:6px"><span onClick="{{ r.full }}" style="height:30px;padding:0 12px;display:inline-flex;align-items:center;gap:6px;border-radius:7px;font-size:12.5px;font-weight:500;color:#0f1011;background:#f7f8f8;cursor:pointer" style-hover="background:#e3e5e8">Read full report</span><span style="height:30px;width:fit-content;padding:0 12px;display:inline-flex;align-items:center;gap:6px;border-radius:7px;font-size:12.5px;font-weight:500;color:#d4d6da;box-shadow:inset 0 0 0 1px rgba(255,255,255,.1)" style-hover="background:rgba(255,255,255,.05)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"></path></svg>Download PDF</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ isBench }}">
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div style="border-radius:12px;box-shadow:0 0 0 1px rgba(255,255,255,.06);background:rgba(255,255,255,.012);overflow-x:auto">
+        <div style="min-width:720px">
+          <div style="display:grid;grid-template-columns:minmax(0,1.2fr) 120px minmax(0,1.6fr) 120px 140px;align-items:center;height:38px;padding:0 16px;border-bottom:1px solid rgba(255,255,255,.06);font-size:12px;color:#62666d"><span>Corridor</span><span>Median spread</span><span>Best Provider</span><span>Best spread</span><span style="text-align:right">30 days</span></div>
+          <sc-for list="{{ bench }}" as="b" hint-placeholder-count="6">
+            <div style="display:grid;grid-template-columns:minmax(0,1.2fr) 120px minmax(0,1.6fr) 120px 140px;align-items:center;min-height:52px;padding:0 16px;border-bottom:1px solid rgba(255,255,255,.04)" style-hover="background:rgba(255,255,255,.02)">
+              <span style="font-family:'Geist Mono',monospace;font-size:13px">{{ b.pair }}</span>
+              <span style="font-size:13px;color:#b4b8bf;font-variant-numeric:tabular-nums">{{ b.median }}</span>
+              <span style="display:flex;align-items:center;gap:10px;min-width:0"><dc-import name="Relay App Icon" kind="fx" size="22" hint-size="22px,22px"></dc-import><span style="font-size:13px;color:#d4d6da">{{ b.best }}</span></span>
+              <span style="font-size:13px;font-weight:500;color:#8fb8ff;font-variant-numeric:tabular-nums">{{ b.bestSpread }}</span>
+              <span style="display:flex;justify-content:flex-end;align-items:center;gap:10px"><svg width="72" height="22" viewBox="0 0 72 22" fill="none"><polyline points="{{ b.pts }}" stroke="{{ b.line }}" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"></polyline></svg><span style="width:44px;text-align:right;font-size:12px;font-variant-numeric:tabular-nums;color:{{ b.line }}">{{ b.delta }}</span></span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+      <div style="font-size:12px;color:#62666d;padding:0 2px">Spreads quoted on €100k equivalent against mid-market, business accounts.</div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ isLic }}">
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div style="display:flex;align-items:center;gap:8px;padding:0 2px"><span style="font-size:13.5px;font-weight:500">Licences across the industry</span><span style="font-size:12px;color:#62666d">{{ licCount }}</span></div>
+      <div style="border-radius:12px;box-shadow:0 0 0 1px rgba(255,255,255,.06);background:rgba(255,255,255,.012)">
+        <sc-for list="{{ catalogue }}" as="l" hint-placeholder-count="8">
+          <div style="border-bottom:1px solid rgba(255,255,255,.04)">
+            <div onClick="{{ l.toggle }}" style="display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr) 120px 110px 20px;gap:12px;align-items:center;min-height:54px;padding:0 16px;cursor:pointer" style-hover="background:rgba(255,255,255,.02)">
+              <div style="min-width:0"><div style="display:flex;align-items:center;gap:8px"><span style="font-size:13.5px;font-weight:500">{{ l.name }}</span><sc-if value="{{ l.top }}"><span style="font-size:11px;font-weight:500;color:#6fe3b4;padding:1px 7px;border-radius:999px;background:rgba(111,227,180,.1)">Top</span></sc-if></div><div style="font-size:12px;color:#62666d;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ l.permits }}</div></div>
+              <span style="font-size:13px;color:#b4b8bf">{{ l.jurisdiction }}</span>
+              <span style="font-family:'Geist Mono',monospace;font-size:12px;color:#8a8f98">{{ l.reg }}</span>
+              <span style="font-size:13px;color:#d4d6da;font-variant-numeric:tabular-nums;text-align:right">{{ l.holders }}</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#62666d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transition:transform .2s;transform:{{ l.rot }}"><path d="m6 9 6 6 6-6"></path></svg>
+            </div>
+            <div style="display:grid;transition:grid-template-rows .24s cubic-bezier(.2,.8,.2,1),opacity .2s;grid-template-rows:{{ l.rows }};opacity:{{ l.op }}">
+              <div style="min-height:0;overflow:hidden">
+                <div style="padding:2px 16px 18px;display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1px;border-radius:10px">
+                  <sc-for list="{{ l.facts }}" as="f" hint-placeholder-count="4"><div style="padding:10px 12px;border-radius:8px;background:rgba(255,255,255,.02);margin:3px"><div style="font-size:11.5px;color:#62666d">{{ f.k }}</div><div style="font-size:13px;margin-top:4px;color:#f7f8f8">{{ f.v }}</div></div></sc-for>
+                </div>
+              </div>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:8px;padding:12px 2px 0"><span style="font-size:13.5px;font-weight:500">Watched changes</span></div>
+      <div style="border-radius:12px;box-shadow:0 0 0 1px rgba(255,255,255,.06);background:rgba(255,255,255,.012);overflow-x:auto">
+        <div style="min-width:680px">
+          <sc-for list="{{ lic }}" as="l" hint-placeholder-count="6">
+            <div style="display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1.4fr) minmax(0,.8fr) 120px 60px;align-items:center;min-height:52px;padding:0 16px;border-bottom:1px solid rgba(255,255,255,.04)" style-hover="background:rgba(255,255,255,.02)">
+              <span style="display:flex;align-items:center;gap:10px;min-width:0"><dc-import name="Relay App Icon" kind="{{ l.kind }}" size="24" hint-size="24px,24px"></dc-import><span style="font-size:13.5px;font-weight:500">{{ l.provider }}</span></span>
+              <span style="font-size:13px;color:#b4b8bf">{{ l.licence }}</span>
+              <span style="font-family:'Geist Mono',monospace;font-size:12px;color:#8a8f98">{{ l.reg }}</span>
+              <span style="display:inline-flex;align-items:center;gap:7px;font-size:12.5px;color:#d4d6da"><span style="width:7px;height:7px;border-radius:50%;background:{{ l.dot }}"></span>{{ l.status }}</span>
+              <span style="display:flex;justify-content:flex-end"><span onClick="{{ l.toggle }}" style="width:30px;height:18px;border-radius:999px;position:relative;cursor:pointer;transition:background-color .15s;background:{{ l.track }}"><span style="position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;background:#f7f8f8;transition:transform .15s;transform:{{ l.knob }}"></span></span></span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+</div>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const ACC = { collections: '#6fe3b4', payouts: '#d6ee4e', fx: '#8fb8ff', cards: '#b9a3ff', kyc: '#ffab7a', bank: '#ff8fb1', all: '#8a8f98' };
+const SCOPES = ['Global', 'Europe', 'North America', 'Asia-Pacific', 'Latin America', 'Middle East'];
+const SIG = [
+  ['Launch', 'fx', 'Meridian FX moved EUR → USD to same-day settlement', 'Europe', '2h', 'Business accounts now settle EUR → USD conversions the same day, with spreads unchanged at 0.15%.', ['Cut-off moved to 15:00 London', 'Applies to all plans'], 'View Provider'],
+  ['Pricing', 'payouts', 'Ledgerline cut SEPA Instant pricing to 0.3% on all tiers', 'Europe', '5h', 'The new rate removes the previous volume threshold, making instant payouts cheaper for early-stage teams.', ['Previous entry tier was 0.45%', 'No change to SWIFT pricing'], 'Compare pricing'],
+  ['Licence', 'kyc', 'Orbis Verify granted a Major Payment Institution licence', 'Asia-Pacific', 'Today', 'The MAS licence lets Orbis bundle identity verification with account-to-account payments in Singapore.', ['Effective immediately', 'Expands to e-money issuance'], 'View Provider'],
+  ['Coverage', 'bank', 'Albion Trust Bank opened virtual IBANs in 14 EU markets', 'Europe', 'Mon', 'Fintech clients can now issue local IBANs for collections and safeguarding across the eurozone.', ['Supports SEPA Instant', 'Onboarding in under 10 days'], 'View Provider'],
+  ['Launch', 'collections', 'Arcadia Pay added PayNow QR for Singapore merchants', 'Asia-Pacific', 'Mon', 'Merchants can accept PayNow QR payments with instant confirmation and same-day settlement.', ['No terminal hardware needed', 'Webhook confirmation under 2s'], 'View Provider'],
+  ['Coverage', 'payouts', 'Rio Payouts expanded Pix payouts to business wallets', 'Latin America', 'Oct 11', 'Pix payouts now reach business wallets with 24/7 settlement.', ['Covers all major Brazilian banks', 'Flat fee per payout'], 'View Provider'],
+  ['Coverage', 'fx', 'Gulfline FX added AED, SAR and QAR wallets', 'Middle East', 'Oct 10', 'Multi-currency wallets now hold Gulf currencies with local settlement.', ['Same-day AED settlement', 'Forwards up to 12 months'], 'View Provider'],
+  ['Pricing', 'cards', 'Hudson Issuing lowered commercial card interchange share', 'North America', 'Oct 9', 'Programme managers now keep a larger share of commercial card interchange.', ['Applies to new programmes', 'Volume tiers from $1M'], 'View Provider']
+];
+const NEWS = [
+  ['Regulation', 'all', 'EU instant payments regulation reaches its next deadline', 'Europe', 'Today', 'Payment providers across the eurozone must now send instant credit transfers at no extra cost compared with standard transfers.', ['Verification of payee becomes mandatory', 'Expect pricing changes from payout Providers'], 'Read briefing', 'Relay Research'],
+  ['Market', 'bank', 'Sponsor banks tighten fintech onboarding in the US', 'North America', 'Yesterday', 'Several sponsor banks have introduced stricter programme reviews following recent consent orders.', ['Longer due diligence timelines', 'More demand for compliance tooling'], 'Read briefing', 'Relay Research'],
+  ['Regulation', 'kyc', 'MAS publishes updated e-KYC guidelines', 'Asia-Pacific', 'Mon', 'Updated guidance clarifies liveness and document requirements for remote onboarding in Singapore.', ['Biometric liveness now expected', 'Applies from Q2 next year'], 'Read briefing', 'Regulator notice'],
+  ['Market', 'payouts', 'Cross-border payout volumes up 18% year on year', 'Global', 'Oct 10', 'Relay data across 1,600 Providers shows sustained growth in B2B payouts, led by Asia-Pacific corridors.', ['APAC corridors grew fastest', 'Median fees fell 6 bp'], 'Read briefing', 'Relay Research'],
+  ['Regulation', 'fx', 'Brazil central bank modernises FX framework', 'Latin America', 'Oct 8', 'New rules simplify cross-border FX for payment institutions and allow broader use of foreign currency accounts.', ['Lower barriers for EUR and USD flows', 'Phased rollout over 12 months'], 'Read briefing', 'Regulator notice'],
+  ['Market', 'cards', 'Virtual card issuing grows in the Gulf', 'Middle East', 'Oct 6', 'New BIN sponsors in the UAE and Saudi Arabia are opening programmes to fintechs.', ['Two new sponsors this quarter', 'Typical go-live under 6 weeks'], 'Read briefing', 'Relay Research']
+];
+const REPORTS = [
+  ['Market map', 'bank', 'Sponsor and partner banks for fintechs', 'Global', '42 pages · Updated October', ['316 banks profiled across 8 regions', 'Virtual IBAN support now in 61% of EU banks', 'Median onboarding time is 23 days']],
+  ['Benchmark', 'fx', 'FX spreads on major corridors, Q3', 'Global', '18 pages · Updated October', ['Median EUR → USD spread fell to 0.29%', 'Best quotes came from Switzerland and the UK', 'Forwards pricing widened in APAC']],
+  ['Quarterly', 'payouts', 'Payouts in Europe, Q3', 'Europe', '26 pages · Updated September', ['Instant payouts now default for 7 in 10 Providers', 'Fees converged around 0.3%', 'Verification of payee adoption accelerating']],
+  ['Market map', 'kyc', 'Identity verification in Asia-Pacific', 'Asia-Pacific', '31 pages · Updated September', ['84 KYC Providers active in APAC', 'Liveness is now table stakes', 'India and Singapore lead adoption']],
+  ['Benchmark', 'collections', 'Local payment methods in Latin America', 'Latin America', '22 pages · Updated August', ['Pix accounts for 38% of online payments in Brazil', 'Mexico SPEI growth continues', 'Cards still lead in Argentina']],
+  ['Quarterly', 'cards', 'Card issuing in North America, Q3', 'North America', '24 pages · Updated August', ['Commercial cards outgrew consumer', 'Sponsor bank concentration rising', 'Tokenisation now standard']]
+];
+const BENCH = [['EUR → USD', 0.32, 0.29, 'Cobalt Markets', '0.12%', 'Europe'], ['GBP → EUR', 0.28, 0.27, 'Meridian FX', '0.11%', 'Europe'], ['EUR → CHF', 0.25, 0.22, 'Cobalt Markets', '0.09%', 'Europe'], ['USD → CAD', 0.36, 0.34, 'Atlas Exchange', '0.15%', 'North America'], ['USD → MXN', 0.52, 0.49, 'Pampa FX', '0.24%', 'Latin America'], ['USD → JPY', 0.41, 0.44, 'Pacifica FX', '0.18%', 'Asia-Pacific'], ['GBP → AUD', 0.48, 0.45, 'Pacifica FX', '0.2%', 'Asia-Pacific'], ['USD → AED', 0.3, 0.28, 'Gulfline FX', '0.14%', 'Middle East']];
+const CAT = [
+  ['E-money institution', 'United Kingdom', 'FCA', 'Europe', 142, 'Issue e-money, hold client funds, payment services', '6–12 months', '€350k', 'No · UK only'],
+  ['E-money institution', 'European Union', 'CBI · BoL · DNB', 'Europe', 238, 'Issue e-money across the EU with one licence', '6–12 months', '€350k', 'Yes · 30 EEA markets'],
+  ['Payment institution', 'European Union', 'National regulators', 'Europe', 196, 'Payment services, money remittance, acquiring', '4–9 months', '€125k', 'Yes · 30 EEA markets'],
+  ['Crypto-asset service provider', 'European Union', 'MiCA', 'Europe', 41, 'Custody, exchange and transfer of crypto-assets', '6–12 months', '€125k', 'Yes · 30 EEA markets'],
+  ['Money services business', 'United States', 'FinCEN', 'North America', 211, 'Money transmission and currency exchange, with state licences', '3–6 months', 'Varies by state', 'No · State licences needed'],
+  ['National bank charter', 'United States', 'OCC', 'North America', 34, 'Full banking, deposits and card sponsorship', '18–24 months', '$20M+', 'Nationwide'],
+  ['Money services business', 'Canada', 'FINTRAC', 'North America', 88, 'Funds transfer, FX dealing and payouts', '2–4 months', 'None', 'Nationwide'],
+  ['Major payment institution', 'Singapore', 'MAS', 'Asia-Pacific', 64, 'Accounts, transfers, e-money and DPT services', '9–12 months', 'S$250k', 'Singapore'],
+  ['Australian financial services licence', 'Australia', 'ASIC', 'Asia-Pacific', 52, 'FX derivatives, payments and advice', '6–9 months', 'A$1M NTA', 'Australia'],
+  ['Stored value facility', 'Hong Kong', 'HKMA', 'Asia-Pacific', 19, 'Wallets and stored value payments', '9–15 months', 'HK$25M', 'Hong Kong'],
+  ['Funds transfer service provider', 'Japan', 'JFSA', 'Asia-Pacific', 27, 'Domestic and cross-border transfers', '6–12 months', '¥10M', 'Japan'],
+  ['Payment institution', 'Brazil', 'BCB', 'Latin America', 46, 'Pix participation, e-money and acquiring', '6–12 months', 'R$1M+', 'Brazil'],
+  ['Electronic payment fund institution', 'Mexico', 'CNBV', 'Latin America', 23, 'E-money wallets and SPEI transfers', '9–15 months', 'Varies', 'Mexico'],
+  ['Stored value facility', 'United Arab Emirates', 'CBUAE', 'Middle East', 21, 'Wallets, stored value and payouts', '6–12 months', 'AED 15M', 'UAE'],
+  ['Payment service provider', 'Saudi Arabia', 'SAMA', 'Middle East', 18, 'Payments, e-money and acquiring', '6–12 months', 'SAR 5M', 'Saudi Arabia'],
+  ['Full banking licence', 'Global', 'Various', 'Global', 316, 'Deposits, lending, safeguarding and sponsorship', '18–36 months', 'High', 'Varies']
+];
+const LST = { granted: ['Granted', '#6fe3b4'], pending: ['Pending', '#e9b949'], renewed: ['Renewed', '#8fb8ff'], restricted: ['Restricted', '#ff8a7a'] };
+const LIC = [['Orbis Verify', 'kyc', 'Major payment institution', 'MAS', 'granted', 'Asia-Pacific'], ['Meridian FX', 'fx', 'Authorised payment institution', 'FCA', 'renewed', 'Europe'], ['Albion Trust Bank', 'bank', 'Full banking licence', 'PRA', 'renewed', 'Europe'], ['Atlas Exchange', 'fx', 'Money services business', 'FinCEN', 'pending', 'North America'], ['Quanta Cards', 'cards', 'Bank sponsorship', 'OCC', 'restricted', 'North America'], ['Gulfline FX', 'fx', 'Stored value facility', 'CBUAE', 'pending', 'Middle East'], ['Rio Payouts', 'payouts', 'Payment institution', 'BCB', 'granted', 'Latin America']].map(([provider, kind, licence, reg, st, region]) => ({ provider, kind, licence, reg, st, region }));
+const series = (a, b) => { const out = []; let v = a; for (let i = 0; i < 10; i++) { v += (b - a) / 10 + Math.sin(i * 1.7 + a * 9) * 0.008; out.push(v); } return out; };
+class Component extends DCLogic {
+  state = { full: null, tab: this.props.tab ?? 'signals', scope: 'Global', open: null, watch: { 0: true, 1: true, 2: true, 3: true } };
+  componentDidMount() { if (!window.RELAY) this._i = setInterval(() => { if (window.RELAY) { clearInterval(this._i); this.forceUpdate(); } }, 40); }
+  componentWillUnmount() { clearInterval(this._i); }
+  componentDidUpdate(prev) { if (prev.tab !== this.props.tab && this.props.tab) this.setState({ tab: this.props.tab, open: null, full: null }); }
+  openFull(item) { this.setState({ full: item }); let sc = document.querySelector('main [style*="overflow-y"]'); sc && sc.scrollTo({ top: 0 }); }
+  buildFull(it) {
+    const R = window.RELAY, acc = ACC[it.kind], seed = it.title.length;
+    const rgb = { collections: '111,227,180', payouts: '214,238,78', fx: '143,184,255', cards: '185,163,255', kyc: '255,171,122', bank: '255,143,177', all: '201,207,219' }[it.kind];
+    const regs = ['Europe', 'North America', 'Asia-Pacific', 'Latin America', 'Middle East', 'Africa'];
+    const vals = regs.map((r, i) => Math.round(18 + ((seed * (i + 3)) % 70) + (r === it.scope ? 30 : 0)));
+    const mx = Math.max(...vals);
+    const pool = (R?.providers ?? []).filter(p => it.kind === 'all' || p.kind === it.kind).filter(p => it.scope === 'Global' || p.region === it.scope || it.kind === 'all');
+    const provs = (pool.length >= 3 ? pool : (R?.providers ?? []).filter(p => it.kind === 'all' || p.kind === it.kind)).sort((a, b) => b.score - a.score).slice(0, 6);
+    const all = [...SIG.map(s => ({ tag: s[0], kind: s[1], title: s[2], scope: s[3], body: s[5], points: s[6] })), ...NEWS.map(s => ({ tag: s[0], kind: s[1], title: s[2], scope: s[3], body: s[5], points: s[6] })), ...REPORTS.map(r => ({ tag: r[0], kind: r[1], title: r[2], scope: r[3], body: r[2], points: r[5] }))];
+    const label = R?.CAT[it.kind]?.label ?? 'Market';
+    return {
+      ...it, accent: acc, glow: `radial-gradient(60% 100% at 0% 0%,rgba(${rgb},.08),transparent 70%)`,
+      backLabel: 'Intelligence', date: it.when === 'Today' || /h$/.test(it.when ?? '') ? 'Today' : (it.when ?? 'October'), read: (6 + seed % 7) + ' min read',
+      source: it.source && !/^Source/.test(it.source) ? it.source : 'Relay Research', summary: it.body,
+      kpis: [{ k: label + ' Providers tracked', v: R ? R.fmt(R.CAT[it.kind]?.count ?? R.TOTAL) : '—', d: '+' + (4 + seed % 9) + ' this month', c: '#6fe3b4' }, { k: 'Median price change', v: '−' + (2 + seed % 6) + ' bp', d: 'vs last quarter', c: '#6fe3b4' }, { k: 'Markets affected', v: 6 + seed % 24, d: it.scope, c: '#8a8f98' }, { k: 'Teams watching', v: 120 + seed * 7, d: 'On Relay', c: '#8a8f98' }],
+      chartTitle: label + ' activity by region', chartNote: 'Index, last 90 days',
+      chart: regs.map((r, i) => ({ label: r, v: vals[i], w: (vals[i] / mx * 100).toFixed(0) + '%', op: r === it.scope ? 1 : .55 })),
+      sections: [
+        { h: 'What changed', p: it.body, points: it.points ?? [] },
+        { h: 'Why it matters', p: `For teams sourcing ${label.toLowerCase()} Providers in ${it.scope === 'Global' ? 'multiple regions' : it.scope}, this shifts the balance between price, speed and coverage. Expect competing Providers to respond within one or two quarters.`, points: ['Re-run comparisons that include affected Providers', 'Check whether your shortlist weighting still reflects your priorities'] },
+        { h: 'What to do next', p: 'Relay has re-scored the Providers below with the latest data. Use Compare to see the impact on your current options, or request updated commercials directly.', points: ['Open a comparison with the top three Providers', 'Request updated pricing from Providers already on your shortlists'] }
+      ],
+      providers: provs.map((p, i) => ({ ...p, delta: i % 3 === 2 ? '−1' : '+' + (1 + (seed + i) % 4), c: i % 3 === 2 ? '#ff7b7b' : '#6fe3b4' })),
+      related: all.filter(x => x.title !== it.title && (x.kind === it.kind || x.scope === it.scope)).slice(0, 3).map(x => ({ ...x, open: () => this.openFull(x) }))
+    };
+  }
+  renderVals() {
+    const S = this.state, inScope = r => S.scope === 'Global' || r === S.scope || r === 'Global';
+    const exp = (key) => { const o = S.open === key; return { toggle: () => this.setState({ open: o ? null : key }), rows: o ? '1fr' : '0fr', op: o ? 1 : 0, rot: o ? 'rotate(180deg)' : 'rotate(0)' }; };
+    const sig = SIG.filter(s => inScope(s[3])), news = NEWS.filter(s => inScope(s[3])), reps = REPORTS.filter(r => inScope(r[3])), bench = BENCH.filter(b => inScope(b[5])), cat = CAT.filter(c => inScope(c[3]));
+    const topN = [...CAT].sort((a, b) => b[4] - a[4]).slice(0, 3).map(c => c[0] + c[1]);
+    const tab = (k, l, n) => ({ label: l, count: n, pick: () => this.setState({ tab: k, open: null }), fg: S.tab === k ? '#f7f8f8' : '#8a8f98', line: S.tab === k ? 1 : 0 });
+    const feedSrc = S.tab === 'news' ? news.map(([tag, kind, title, region, when, body, points, cta, source]) => ({ tag, kind, title, region, when, body, points, cta, source })) : sig.map(([tag, kind, title, region, when, body, points, cta]) => ({ tag, kind, title, region, when, body, points, cta, source: 'Source · Provider announcement' }));
+    return {
+      scopes: SCOPES.map(s => ({ label: s, pick: () => this.setState({ scope: s, open: null }), bg: S.scope === s ? 'rgba(255,255,255,.08)' : 'transparent', fg: S.scope === s ? '#f7f8f8' : '#8a8f98' })),
+      tabs: [tab('signals', 'Signals', sig.length), tab('news', 'News', news.length), tab('reports', 'Reports', reps.length), tab('benchmarks', 'FX benchmarks', bench.length), tab('licences', 'Licence watch', cat.length)],
+      isFeed: S.tab === 'signals' || S.tab === 'news', isReports: S.tab === 'reports', isBench: S.tab === 'benchmarks', isLic: S.tab === 'licences',
+      isFull: !!S.full, notFull: !S.full,
+      fr: S.full ? this.buildFull(S.full) : { kpis: [], chart: [], sections: [], providers: [], related: [] },
+      closeFull: () => this.setState({ full: null }),
+      shareFull: () => { navigator.clipboard?.writeText(location.href).catch(() => {}); },
+      feed: feedSrc.map((s, i) => ({ ...s, meta: s.region, accent: ACC[s.kind], ...exp(S.tab + i), full: e => { e.stopPropagation(); this.openFull({ ...s, scope: s.region }); } })), feedEmpty: feedSrc.length === 0,
+      reports: reps.map(([type, kind, title, scope, meta, points], i) => ({ type, kind, title, scope, meta, points, accent: ACC[kind], ...exp('r' + i), full: e => { e.stopPropagation(); this.openFull({ tag: type, kind, title, scope, body: `Relay’s ${type.toLowerCase()} on ${title.charAt(0).toLowerCase() + title.slice(1)}, built from verified Provider data and quarterly pricing surveys.`, points, source: 'Relay Research · ' + meta }); } })),
+      bench: bench.map(([pair, a, b, best, bestSpread]) => { const s = series(a, b), mn = Math.min(...s), mx = Math.max(...s), down = b <= a; return { pair, median: b.toFixed(2) + '%', best, bestSpread, delta: (down ? '−' : '+') + Math.abs(Math.round((b - a) * 100)) + ' bp', line: down ? '#6fe3b4' : '#ff8a7a', pts: s.map((v, i) => `${(i * 71 / 9 + .5).toFixed(1)},${(2 + (1 - (v - mn) / (mx - mn || 1)) * 18).toFixed(1)}`).join(' ') }; }),
+      licCount: cat.length + ' licence types',
+      catalogue: cat.map(([name, jurisdiction, reg, region, holders, permits, time, capital, passport], i) => ({ name, jurisdiction, reg, holders: holders + ' Providers', permits, top: topN.includes(name + jurisdiction), ...exp('l' + i), facts: [{ k: 'Permits', v: permits }, { k: 'Time to obtain', v: time }, { k: 'Minimum capital', v: capital }, { k: 'Passporting', v: passport }] })),
+      lic: LIC.filter(l => inScope(l.region)).map((l, i) => { const w = !!S.watch[i]; return { ...l, status: LST[l.st][0], dot: LST[l.st][1], track: w ? '#6fe3b4' : 'rgba(255,255,255,.14)', knob: w ? 'translateX(12px)' : 'translateX(0)', toggle: () => this.setState(s => ({ watch: { ...s.watch, [i]: !w } })) }; })
+    };
+  }
+}
+</script>
+</body>
+</html>

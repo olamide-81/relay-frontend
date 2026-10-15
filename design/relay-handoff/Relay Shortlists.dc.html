@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="relay-data.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;height:100%;background:#161719;color:#f7f8f8;font-family:"Geist",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#8a8f98;text-decoration:none}
+a:hover{color:#f7f8f8}
+input::placeholder,textarea::placeholder{color:#62666d}
+</style>
+</helmet>
+<div style="position:relative;height:100%;min-height:560px;display:flex;font-family:Geist,system-ui,sans-serif;color:#f7f8f8">
+  <div style="flex:0 1 300px;min-width:240px;display:flex;flex-direction:column;border-right:1px solid rgba(255,255,255,.06)">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 16px 10px">
+      <span style="font-size:13.5px;font-weight:500">Shortlists</span>
+      <span onClick="{{ create }}" title="New shortlist" style="width:28px;height:28px;display:grid;place-items:center;border-radius:7px;color:#8a8f98;cursor:pointer" style-hover="background:rgba(255,255,255,.05);color:#f7f8f8"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg></span>
+    </div>
+    <div style="flex:1;overflow-y:auto;scrollbar-width:none;padding:0 8px 12px;display:flex;flex-direction:column;gap:2px">
+      <sc-for list="{{ lists }}" as="l" hint-placeholder-count="4">
+        <div onClick="{{ l.open }}" style="display:flex;align-items:center;gap:12px;padding:10px;border-radius:9px;cursor:pointer;transition:background-color .12s;background:{{ l.bg }}" style-hover="background:rgba(255,255,255,.035)">
+          <dc-import name="Relay App Icon" kind="{{ l.kind }}" size="30" hint-size="30px,30px"></dc-import>
+          <div style="flex:1;min-width:0"><div style="font-size:13.5px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:{{ l.fg }}">{{ l.name }}</div><div style="font-size:12px;color:#62666d;margin-top:2px">{{ l.meta }}</div></div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <div style="flex:1 1 400px;min-width:320px;overflow-y:auto">
+    <sc-if value="{{ hasSel }}" hint-placeholder-val="{{ true }}">
+      <div style="max-width:820px;margin:0 auto;padding:36px clamp(20px,4vw,40px) 56px;display:flex;flex-direction:column;gap:22px">
+        <div style="display:flex;align-items:flex-start;gap:16px;flex-wrap:wrap">
+          <div style="flex:1 1 260px;min-width:0">
+            <div style="display:flex;align-items:center;gap:10px"><h1 style="margin:0;font-size:22px;font-weight:500;letter-spacing:-0.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ sel.name }}</h1><span style="display:inline-flex;align-items:center;gap:6px;height:22px;padding:0 8px;border-radius:999px;font-size:12px;color:#8a8f98;box-shadow:inset 0 0 0 1px rgba(255,255,255,.09);flex:none"><span style="width:6px;height:6px;border-radius:50%;background:{{ sel.accent }}"></span>{{ sel.catLabel }}</span></div>
+            <div style="font-size:13px;color:#8a8f98;margin-top:6px">{{ sel.meta }}</div>
+          </div>
+          <div style="display:flex;gap:8px">
+            <span onClick="{{ edit }}" title="Edit shortlist" style="height:32px;padding:0 12px;display:inline-flex;align-items:center;gap:6px;border-radius:8px;font-size:13px;font-weight:500;color:#d4d6da;cursor:pointer;box-shadow:inset 0 0 0 1px rgba(255,255,255,.1)" style-hover="background:rgba(255,255,255,.05)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"></path><path d="M16.4 3.6a2 2 0 0 1 2.9 2.9L7 18.8l-4 1 1-4z"></path></svg>Edit</span>
+            <span onClick="{{ openAdd }}" style="height:32px;padding:0 12px;display:inline-flex;align-items:center;gap:6px;border-radius:8px;font-size:13px;font-weight:500;color:#d4d6da;cursor:pointer;box-shadow:inset 0 0 0 1px rgba(255,255,255,.1)" style-hover="background:rgba(255,255,255,.05)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg>Add Providers</span>
+            <span onClick="{{ compare }}" style="height:32px;padding:0 14px;display:inline-flex;align-items:center;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;color:{{ cmp.fg }};background:{{ cmp.bg }}">Compare</span>
+          </div>
+        </div>
+        <textarea value="{{ sel.note }}" onChange="{{ onNote }}" placeholder="Add a note for your team" rows="2" style="width:100%;resize:none;padding:12px 14px;border:none;outline:none;border-radius:10px;background:rgba(255,255,255,.02);box-shadow:inset 0 0 0 1px rgba(255,255,255,.06);color:#d4d6da;font:13.5px/1.55 Geist,system-ui,sans-serif" style-focus="box-shadow:inset 0 0 0 1px rgba(111,227,180,.4)"></textarea>
+
+        <sc-if value="{{ hasItems }}" hint-placeholder-val="{{ true }}">
+          <div style="border-radius:12px;box-shadow:0 0 0 1px rgba(255,255,255,.06);background:rgba(255,255,255,.012)">
+            <sc-for list="{{ items }}" as="p" hint-placeholder-count="4">
+              <div style="display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid rgba(255,255,255,.04)">
+                <span style="width:20px;flex:none;font-size:12px;color:#62666d;font-family:'Geist Mono',monospace">{{ p.rank }}</span>
+                <dc-import name="Relay App Icon" kind="{{ p.kind }}" size="32" hint-size="32px,32px"></dc-import>
+                <div style="flex:1;min-width:0"><div style="font-size:13.5px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ p.name }}</div><div style="font-size:12px;color:#62666d;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ p.why }} · {{ p.hq }}</div></div>
+                <div style="display:flex;align-items:center;gap:10px;flex:none">
+                  <div style="width:clamp(28px,6vw,72px);height:4px;border-radius:999px;background:rgba(255,255,255,.07);overflow:hidden"><div style="height:100%;border-radius:999px;background:{{ p.accent }};width:{{ p.scoreW }}"></div></div>
+                  <span style="width:24px;font-size:12.5px;color:#d4d6da;font-variant-numeric:tabular-nums;text-align:right">{{ p.score }}</span>
+                </div>
+                <span onClick="{{ p.remove }}" title="Remove" style="width:26px;height:26px;flex:none;display:grid;place-items:center;border-radius:6px;color:#62666d;cursor:pointer" style-hover="background:rgba(255,255,255,.06);color:#f7f8f8"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"></path></svg></span>
+              </div>
+            </sc-for>
+            <div style="padding:10px 16px;font-size:12px;color:#62666d">Relay score blends pricing, coverage, uptime and go-live using your workspace weighting.</div>
+          </div>
+        </sc-if>
+        <sc-if value="{{ noItems }}">
+          <div style="border-radius:12px;border:1px dashed rgba(255,255,255,.1);padding:48px 24px;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center">
+            <div style="font-size:13.5px;font-weight:500">This shortlist is empty</div>
+            <div style="font-size:12.5px;color:#62666d">Add Providers to start ranking them.</div>
+            <span onClick="{{ openAdd }}" style="margin-top:10px;height:30px;padding:0 12px;display:inline-flex;align-items:center;border-radius:7px;font-size:12.5px;font-weight:500;color:#0f1011;background:#f7f8f8;cursor:pointer" style-hover="background:#e3e5e8">Add Providers</span>
+          </div>
+        </sc-if>
+      </div>
+    </sc-if>
+    <sc-if value="{{ noSel }}">
+      <div style="height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center;padding:32px">
+        <div style="font-size:13.5px;font-weight:500">No shortlists yet</div>
+        <div style="font-size:12.5px;color:#62666d">Group Providers you're considering and rank them together.</div>
+        <span onClick="{{ create }}" style="margin-top:10px;height:32px;padding:0 14px;display:inline-flex;align-items:center;border-radius:8px;font-size:13px;font-weight:500;color:#0f1011;background:#f7f8f8;cursor:pointer" style-hover="background:#e3e5e8">New shortlist</span>
+      </div>
+    </sc-if>
+  </div>
+
+  <div onClick="{{ closeAdd }}" style="position:fixed;inset:0;z-index:40;background:rgba(0,0,0,.45);transition:opacity .18s;opacity:{{ am.op }};pointer-events:{{ am.pe }}"></div>
+  <div style="position:fixed;left:50%;top:50%;z-index:41;width:520px;max-width:calc(100% - 32px);height:min(560px,calc(100% - 64px));display:flex;flex-direction:column;border-radius:14px;background:rgba(28,29,32,.97);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);box-shadow:0 0 0 1px rgba(255,255,255,.08),0 24px 64px rgba(0,0,0,.55);transition:opacity .18s,transform .22s cubic-bezier(.2,.8,.2,1);opacity:{{ am.op }};transform:{{ am.tf }};pointer-events:{{ am.pe }}">
+    <div style="padding:18px 20px 12px;display:flex;flex-direction:column;gap:12px;border-bottom:1px solid rgba(255,255,255,.06)">
+      <div style="font-size:15px;font-weight:500">Add Providers to {{ sel.name }}</div>
+      <div style="position:relative"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#62666d" stroke-width="1.9" stroke-linecap="round" style="position:absolute;left:11px;top:10px"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg><input value="{{ aq }}" onChange="{{ onAq }}" placeholder="Search {{ total }} Providers" style="width:100%;height:36px;padding:0 12px 0 34px;border:none;outline:none;border-radius:8px;background:rgba(255,255,255,.03);box-shadow:inset 0 0 0 1px rgba(255,255,255,.08);color:#f7f8f8;font:13px Geist,system-ui,sans-serif" style-focus="box-shadow:inset 0 0 0 1px rgba(111,227,180,.45)"></div>
+      <div style="display:flex;gap:4px;overflow-x:auto;scrollbar-width:none"><sc-for list="{{ addCats }}" as="c" hint-placeholder-count="7"><span onClick="{{ c.pick }}" style="height:26px;padding:0 9px;display:inline-flex;align-items:center;border-radius:7px;font-size:12px;font-weight:500;white-space:nowrap;flex:none;cursor:pointer;background:{{ c.bg }};color:{{ c.fg }}">{{ c.label }}</span></sc-for></div>
+    </div>
+    <div style="flex:1;overflow-y:auto;padding:6px 8px">
+      <sc-for list="{{ addOptions }}" as="o" hint-placeholder-count="6">
+        <div onClick="{{ o.toggle }}" style="display:flex;align-items:center;gap:12px;padding:8px 10px;border-radius:8px;cursor:pointer;background:{{ o.bg }}" style-hover="background:rgba(255,255,255,.04)">
+          <span style="width:16px;height:16px;border-radius:4px;display:grid;place-items:center;flex:none;background:{{ o.boxBg }};box-shadow:{{ o.boxRing }}"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#0f1011" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" style="opacity:{{ o.checkOp }}"><path d="M20 6 9 17l-5-5"></path></svg></span>
+          <dc-import name="Relay App Icon" kind="{{ o.kind }}" size="26" hint-size="26px,26px"></dc-import>
+          <div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ o.name }}</div><div style="font-size:12px;color:#62666d;margin-top:1px">{{ o.cat }} · {{ o.hq }}</div></div>
+          <sc-if value="{{ o.already }}"><span style="font-size:12px;color:#62666d">Added</span></sc-if>
+        </div>
+      </sc-for>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;padding:14px 20px;border-top:1px solid rgba(255,255,255,.06)">
+      <span style="flex:1;font-size:12.5px;color:#8a8f98">{{ addCount }}</span>
+      <span onClick="{{ closeAdd }}" style="height:32px;padding:0 12px;display:inline-flex;align-items:center;border-radius:8px;font-size:13px;font-weight:500;color:#d4d6da;cursor:pointer" style-hover="background:rgba(255,255,255,.05)">Cancel</span>
+      <span onClick="{{ confirmAdd }}" style="height:32px;padding:0 14px;display:inline-flex;align-items:center;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;color:{{ addBtn.fg }};background:{{ addBtn.bg }}">Add</span>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const EMPTY = { CAT: {}, providers: [], byId: {}, TOTAL: 0, fmt: String };
+class Component extends DCLogic {
+  state = { sel: this.props.initial ?? null, filter: 'all', add: false, aq: '', acat: 'all', picks: [] };
+  componentDidMount() { if (!window.RELAY) this._i = setInterval(() => { if (window.RELAY) { clearInterval(this._i); this.forceUpdate(); } }, 40); }
+  componentWillUnmount() { clearInterval(this._i); }
+  componentDidUpdate(prev) {
+    if (prev.initial !== this.props.initial && this.props.initial) this.setState({ sel: this.props.initial });
+    if (prev.focus !== this.props.focus && this.props.focus) this.setState({ sel: this.props.focus, filter: 'all' });
+  }
+  renderVals() {
+    const R = window.RELAY ?? EMPTY, S = this.state, all = this.props.lists ?? [];
+    const visible = all;
+    const sel = all.find(l => l.id === S.sel) ?? visible[0] ?? all[0];
+    const meta = l => `${l.ids.length} Provider${l.ids.length === 1 ? '' : 's'} · Updated ${l.updated}`;
+    const catLabel = k => k === 'all' ? 'All categories' : R.CAT[k]?.label;
+    const many = sel && sel.ids.length > 1;
+    const chip = (k, label, cur, fn) => ({ label, pick: () => fn(k), bg: cur === k ? 'rgba(255,255,255,.08)' : 'transparent', fg: cur === k ? '#f7f8f8' : '#8a8f98' });
+    const cats = Object.entries(R.CAT);
+    const q = S.aq.trim().toLowerCase(), aOn = S.add;
+    const opts = R.providers.filter(p => (S.acat === 'all' || p.kind === S.acat) && (!q || (p.name + ' ' + p.hq + ' ' + p.cat).toLowerCase().includes(q))).slice(0, 50);
+    return {
+      total: R.fmt(R.TOTAL),
+      filters: [chip('all', 'All', S.filter, k => this.setState({ filter: k })), ...cats.map(([k, v]) => chip(k, v.label, S.filter, k2 => this.setState({ filter: k2 })))],
+      lists: visible.map(l => ({ ...l, meta: meta(l), open: () => this.setState({ sel: l.id }), bg: sel && l.id === sel.id ? 'rgba(255,255,255,.05)' : 'transparent', fg: sel && l.id === sel.id ? '#f7f8f8' : '#d4d6da' })),
+      filterEmpty: visible.length === 0 && all.length > 0,
+      hasSel: !!sel, noSel: !sel,
+      sel: sel ? { ...sel, meta: meta(sel), catLabel: catLabel(sel.kind), accent: sel.kind === 'all' ? '#8a8f98' : R.CAT[sel.kind]?.accent } : { name: '' },
+      items: sel ? sel.ids.map(id => R.byId[id]).filter(Boolean).sort((a, b) => b.score - a.score).map((p, i) => ({ ...p, rank: String(i + 1).padStart(2, '0'), scoreW: p.score + '%', remove: () => this.props.onRemoveItem?.(sel.id, p.id) })) : [],
+      hasItems: !!sel && sel.ids.length > 0, noItems: !!sel && sel.ids.length === 0,
+      onNote: e => this.props.onNote?.(sel.id, e.target.value),
+      create: () => this.props.onCreate?.(),
+      edit: () => sel && this.props.onEdit?.(sel.id),
+      cmp: { fg: many ? '#0f1011' : '#62666d', bg: many ? '#f7f8f8' : 'rgba(255,255,255,.05)' },
+      compare: () => many && this.props.onCompare?.(sel.ids.slice(0, 4)),
+      openAdd: () => this.setState({ add: true, picks: [], aq: '', acat: sel && sel.kind !== 'all' ? sel.kind : 'all' }), closeAdd: () => this.setState({ add: false }),
+      am: { op: aOn ? 1 : 0, pe: aOn ? 'auto' : 'none', tf: aOn ? 'translate(-50%,-50%) scale(1)' : 'translate(-50%,-48%) scale(.98)' },
+      aq: S.aq, onAq: e => this.setState({ aq: e.target.value }),
+      addCats: [chip('all', 'All', S.acat, k => this.setState({ acat: k })), ...cats.map(([k, v]) => chip(k, v.label, S.acat, k2 => this.setState({ acat: k2 })))],
+      addOptions: opts.map(p => { const already = !!sel && sel.ids.includes(p.id), on = already || S.picks.includes(p.id); return { ...p, already,
+        toggle: () => !already && this.setState(s => ({ picks: s.picks.includes(p.id) ? s.picks.filter(x => x !== p.id) : [...s.picks, p.id] })),
+        bg: S.picks.includes(p.id) ? 'rgba(111,227,180,.04)' : 'transparent', boxBg: on ? (already ? '#3a3c40' : '#6fe3b4') : 'transparent', boxRing: on ? 'none' : 'inset 0 0 0 1.5px rgba(255,255,255,.2)', checkOp: on ? 1 : 0 }; }),
+      addCount: S.picks.length ? `${S.picks.length} selected` : 'Select Providers to add',
+      addBtn: { fg: S.picks.length ? '#0f1011' : '#62666d', bg: S.picks.length ? '#f7f8f8' : 'rgba(255,255,255,.05)' },
+      confirmAdd: () => { if (!S.picks.length || !sel) return; this.props.onAddItems?.(sel.id, S.picks); this.setState({ add: false, picks: [] }); }
+    };
+  }
+}
+</script>
+</body>
+</html>
