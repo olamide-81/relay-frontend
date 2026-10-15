@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="relay-data.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;background:#161719;color:#f7f8f8;font-family:"Geist",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#8a8f98;text-decoration:none}
+a:hover{color:#f7f8f8}
+input::placeholder,textarea::placeholder{color:#62666d}
+select option{background:#1c1d20;color:#f7f8f8}
+</style>
+</helmet>
+<div style="position:relative;font-family:Geist,system-ui,sans-serif;color:#f7f8f8">
+<div style="max-width:1200px;margin:0 auto;padding:36px 40px 56px;display:flex;flex-direction:column;gap:20px">
+  <div style="display:flex;align-items:flex-end;gap:16px;flex-wrap:wrap">
+    <div style="flex:1 1 320px;min-width:0">
+      <h1 style="margin:0;font-size:22px;font-weight:500;letter-spacing:-0.02em">Requests</h1>
+      <div style="font-size:13.5px;color:#8a8f98;margin-top:6px">Intros, pricing and sandbox requests sent to Providers through Relay.</div>
+    </div>
+    <span onClick="{{ openNew }}" style="height:32px;padding:0 14px;display:inline-flex;align-items:center;gap:6px;border-radius:8px;font-size:13px;font-weight:500;color:#0f1011;background:#f7f8f8;cursor:pointer" style-hover="background:#e3e5e8"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg>New request</span>
+  </div>
+  <div style="display:flex;gap:4px;border-bottom:1px solid rgba(255,255,255,.06)">
+    <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="4">
+      <span onClick="{{ t.pick }}" style="position:relative;display:inline-flex;align-items:center;gap:6px;height:36px;padding:0 10px;font-size:13px;font-weight:500;cursor:pointer;transition:color .12s;color:{{ t.fg }}" style-hover="color:#f7f8f8">{{ t.label }}<span style="font-size:11.5px;color:#62666d;font-variant-numeric:tabular-nums">{{ t.count }}</span><span style="position:absolute;left:8px;right:8px;bottom:-1px;height:2px;border-radius:2px;background:#f7f8f8;transition:opacity .15s;opacity:{{ t.line }}"></span></span>
+    </sc-for>
+  </div>
+  <div style="border-radius:12px;box-shadow:0 0 0 1px rgba(255,255,255,.06);background:rgba(255,255,255,.012);overflow-x:auto">
+    <div style="min-width:760px">
+      <div style="display:grid;grid-template-columns:96px minmax(0,2.4fr) minmax(0,1.4fr) 120px 100px 20px;align-items:center;height:38px;padding:0 16px;border-bottom:1px solid rgba(255,255,255,.06);font-size:12px;color:#62666d"><span>ID</span><span>Request</span><span>Provider</span><span>Status</span><span style="text-align:right">Updated</span><span></span></div>
+      <sc-for list="{{ rows }}" as="r" hint-placeholder-count="8">
+        <div style="border-bottom:1px solid rgba(255,255,255,.04);background:{{ r.wrapBg }};transition:background-color .15s">
+          <div onClick="{{ r.toggle }}" style="display:grid;grid-template-columns:96px minmax(0,2.4fr) minmax(0,1.4fr) 120px 100px 20px;align-items:center;min-height:50px;padding:0 16px;cursor:pointer;transition:background-color .12s" style-hover="background:rgba(255,255,255,.025)">
+            <span style="font-family:'Geist Mono',monospace;font-size:12px;color:#62666d">{{ r.code }}</span>
+            <span style="font-size:13.5px;color:#d4d6da;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding-right:16px">{{ r.subject }}</span>
+            <span style="display:flex;align-items:center;gap:10px;min-width:0"><dc-import name="Relay App Icon" kind="{{ r.kind }}" size="22" hint-size="22px,22px"></dc-import><span style="font-size:13px;color:#b4b8bf;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ r.provider }}</span></span>
+            <span style="display:inline-flex;align-items:center;gap:7px;font-size:12.5px;color:#d4d6da"><span style="width:7px;height:7px;border-radius:50%;background:{{ r.dot }}"></span>{{ r.status }}</span>
+            <span style="font-size:12.5px;color:#62666d;text-align:right">{{ r.updated }}</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#62666d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="justify-self:end;transition:transform .2s;transform:{{ r.rot }}"><path d="m6 9 6 6 6-6"></path></svg>
+          </div>
+          <div style="display:grid;transition:grid-template-rows .26s cubic-bezier(.2,.8,.2,1),opacity .2s;grid-template-rows:{{ r.rowsOpen }};opacity:{{ r.op }}">
+            <div style="min-height:0;overflow:hidden">
+              <div style="padding:4px 16px 20px 112px;display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:28px">
+                <div style="display:flex;flex-direction:column;gap:14px;min-width:0">
+                  <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px">
+                    <sc-for list="{{ r.facts }}" as="f" hint-placeholder-count="3"><div style="padding:10px 12px;border-radius:9px;background:rgba(255,255,255,.025);box-shadow:inset 0 0 0 1px rgba(255,255,255,.05)"><div style="font-size:11.5px;color:#62666d">{{ f.k }}</div><div style="font-size:13px;margin-top:3px">{{ f.v }}</div></div></sc-for>
+                  </div>
+                  <div style="padding:12px 14px;border-radius:10px;background:rgba(255,255,255,.02);box-shadow:inset 0 0 0 1px rgba(255,255,255,.05)"><div style="font-size:11.5px;color:#62666d;margin-bottom:6px">Your message</div><div style="font-size:13px;line-height:1.55;color:#b4b8bf;text-wrap:pretty">{{ r.msg }}</div></div>
+                  <sc-if value="{{ r.hasReply }}"><div style="padding:12px 14px;border-radius:10px;background:rgba(111,227,180,.04);box-shadow:inset 0 0 0 1px rgba(111,227,180,.14)"><div style="display:flex;align-items:center;gap:8px;font-size:11.5px;color:#6fe3b4;margin-bottom:6px">Reply from {{ r.provider }}</div><div style="font-size:13px;line-height:1.55;color:#d4d6da;text-wrap:pretty">{{ r.reply }}</div></div></sc-if>
+                  <div style="display:flex;gap:8px;flex-wrap:wrap">
+                    <sc-if value="{{ r.hasReply }}"><span style="height:30px;padding:0 12px;display:inline-flex;align-items:center;border-radius:7px;font-size:12.5px;font-weight:500;color:#0f1011;background:#f7f8f8;cursor:pointer" style-hover="background:#e3e5e8">Open in Inbox</span></sc-if>
+                    <sc-if value="{{ r.canFollow }}"><span onClick="{{ r.follow }}" style="height:30px;padding:0 12px;display:inline-flex;align-items:center;border-radius:7px;font-size:12.5px;font-weight:500;color:#0f1011;background:#f7f8f8;cursor:pointer" style-hover="background:#e3e5e8">Send follow-up</span></sc-if>
+                    <sc-if value="{{ r.canClose }}"><span onClick="{{ r.askClose }}" style="height:30px;padding:0 12px;display:inline-flex;align-items:center;border-radius:7px;font-size:12.5px;font-weight:500;color:#d4d6da;cursor:pointer;box-shadow:inset 0 0 0 1px rgba(255,255,255,.1)" style-hover="background:rgba(255,255,255,.05)">Close request</span></sc-if>
+                  </div>
+                </div>
+                <div style="display:flex;flex-direction:column;gap:0">
+                  <div style="font-size:11.5px;color:#62666d;margin-bottom:10px">Timeline</div>
+                  <sc-for list="{{ r.timeline }}" as="t" hint-placeholder-count="3">
+                    <div style="display:flex;gap:12px">
+                      <div style="display:flex;flex-direction:column;align-items:center"><span style="width:10px;height:10px;border-radius:50%;margin-top:3px;flex:none;background:{{ t.dot }};box-shadow:0 0 0 3px {{ t.halo }}"></span><span style="flex:1;width:1px;min-height:18px;background:rgba(255,255,255,.08);opacity:{{ t.line }}"></span></div>
+                      <div style="padding-bottom:14px"><div style="font-size:13px;color:{{ t.fg }}">{{ t.label }}</div><div style="font-size:12px;color:#62666d;margin-top:2px">{{ t.when }}</div></div>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </sc-for>
+      <sc-if value="{{ empty }}"><div style="padding:56px 24px;text-align:center"><div style="font-size:13.5px;font-weight:500">No requests here</div><div style="font-size:12.5px;color:#62666d;margin-top:4px">Requests you send will be tracked in this list.</div></div></sc-if>
+    </div>
+  </div>
+  <sc-if value="{{ showPager }}">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+      <span style="font-size:12.5px;color:#62666d">{{ pagerLabel }}</span>
+      <div style="display:flex;gap:2px"><sc-for list="{{ pages }}" as="n" hint-placeholder-count="2"><span onClick="{{ n.go }}" style="min-width:30px;height:30px;display:grid;place-items:center;border-radius:7px;font-size:12.5px;font-weight:500;cursor:pointer;background:{{ n.bg }};color:{{ n.fg }}" style-hover="color:#f7f8f8">{{ n.label }}</span></sc-for></div>
+    </div>
+  </sc-if>
+</div>
+
+<div onClick="{{ closeNew }}" style="position:fixed;inset:0;z-index:40;background:rgba(0,0,0,.5);transition:opacity .18s;opacity:{{ m.op }};pointer-events:{{ m.pe }}"></div>
+<div style="position:fixed;left:50%;top:50%;z-index:41;width:620px;max-width:calc(100% - 32px);height:min(620px,calc(100% - 48px));display:flex;flex-direction:column;border-radius:14px;background:rgba(28,29,32,.97);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);box-shadow:0 0 0 1px rgba(255,255,255,.08),0 24px 64px rgba(0,0,0,.55);transition:opacity .18s,transform .22s cubic-bezier(.2,.8,.2,1);opacity:{{ m.op }};transform:{{ m.tf }};pointer-events:{{ m.pe }}">
+  <div style="display:flex;align-items:center;gap:16px;padding:16px 20px;border-bottom:1px solid rgba(255,255,255,.06)">
+    <span style="flex:1;font-size:15px;font-weight:500">New request</span>
+    <div style="display:flex;align-items:center;gap:6px">
+      <sc-for list="{{ steps }}" as="s" hint-placeholder-count="3"><span style="display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:500;color:{{ s.fg }}"><span style="width:18px;height:18px;border-radius:50%;display:grid;place-items:center;font-size:11px;background:{{ s.bg }};color:{{ s.numFg }}">{{ s.n }}</span>{{ s.label }}<span style="width:14px;height:1px;background:rgba(255,255,255,.12);margin-left:2px;opacity:{{ s.lineOp }}"></span></span></sc-for>
+    </div>
+  </div>
+
+  <sc-if value="{{ step1 }}" hint-placeholder-val="{{ true }}">
+    <div style="padding:14px 20px 10px;display:flex;flex-direction:column;gap:10px">
+      <div style="display:flex;gap:8px">
+        <div style="flex:1;position:relative"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#62666d" stroke-width="1.9" stroke-linecap="round" style="position:absolute;left:11px;top:10px"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg><input value="{{ q }}" onChange="{{ onQ }}" placeholder="Search {{ total }} Providers by name, country or rail" style="width:100%;height:36px;padding:0 12px 0 34px;border:none;outline:none;border-radius:8px;background:rgba(255,255,255,.03);box-shadow:inset 0 0 0 1px rgba(255,255,255,.08);color:#f7f8f8;font:13px Geist,system-ui,sans-serif" style-focus="box-shadow:inset 0 0 0 1px rgba(111,227,180,.45)"></div>
+        <select value="{{ region }}" onChange="{{ onRegion }}" style="height:36px;padding:0 10px;border:none;outline:none;border-radius:8px;background:rgba(255,255,255,.03);box-shadow:inset 0 0 0 1px rgba(255,255,255,.08);color:#d4d6da;font:13px Geist,system-ui,sans-serif;cursor:pointer"><sc-for list="{{ regionOpts }}" as="r" hint-placeholder-count="5"><option value="{{ r }}">{{ r }}</option></sc-for></select>
+      </div>
+      <div style="display:flex;gap:4px;overflow-x:auto;scrollbar-width:none"><sc-for list="{{ cats }}" as="c" hint-placeholder-count="7"><span onClick="{{ c.pick }}" style="height:26px;padding:0 9px;display:inline-flex;align-items:center;border-radius:7px;font-size:12px;font-weight:500;white-space:nowrap;flex:none;cursor:pointer;background:{{ c.bg }};color:{{ c.fg }}">{{ c.label }}</span></sc-for></div>
+      <sc-if value="{{ hasPicked }}">
+        <div style="display:flex;gap:6px;flex-wrap:wrap"><sc-for list="{{ pickedChips }}" as="p" hint-placeholder-count="2"><span style="height:28px;padding:0 6px 0 4px;display:inline-flex;align-items:center;gap:6px;border-radius:8px;font-size:12.5px;font-weight:500;background:rgba(111,227,180,.08);box-shadow:inset 0 0 0 1px rgba(111,227,180,.25)"><dc-import name="Relay App Icon" kind="{{ p.kind }}" size="20" hint-size="20px,20px"></dc-import>{{ p.name }}<span onClick="{{ p.remove }}" style="width:18px;height:18px;display:grid;place-items:center;border-radius:5px;color:#8a8f98;cursor:pointer" style-hover="color:#f7f8f8"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"></path></svg></span></span></sc-for></div>
+      </sc-if>
+    </div>
+    <div style="flex:1;min-height:0;overflow-y:auto;padding:0 12px 8px">
+      <div style="padding:4px 8px 6px;font-size:12px;color:#62666d">{{ resultLabel }}</div>
+      <sc-for list="{{ results }}" as="o" hint-placeholder-count="6">
+        <div onClick="{{ o.toggle }}" style="display:flex;align-items:center;gap:12px;padding:8px;border-radius:8px;cursor:pointer;background:{{ o.bg }}" style-hover="background:rgba(255,255,255,.04)">
+          <span style="width:16px;height:16px;border-radius:4px;display:grid;place-items:center;flex:none;background:{{ o.boxBg }};box-shadow:{{ o.boxRing }}"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#0f1011" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" style="opacity:{{ o.checkOp }}"><path d="M20 6 9 17l-5-5"></path></svg></span>
+          <dc-import name="Relay App Icon" kind="{{ o.kind }}" size="28" hint-size="28px,28px"></dc-import>
+          <div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ o.name }}</div><div style="font-size:12px;color:#62666d;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ o.cat }} · {{ o.hq }} · {{ o.railsText }}</div></div>
+          <span style="font-size:12px;color:#8a8f98;font-variant-numeric:tabular-nums;flex:none">{{ o.score }}</span>
+        </div>
+      </sc-for>
+      <sc-if value="{{ noResults }}"><div style="padding:32px 8px;text-align:center;font-size:12.5px;color:#62666d">No Providers match. Try a broader search.</div></sc-if>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ step2 }}">
+    <div style="flex:1;min-height:0;overflow-y:auto;padding:18px 20px;display:flex;flex-direction:column;gap:16px">
+      <div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:12px;color:#8a8f98">Request type</span>
+        <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px"><sc-for list="{{ types }}" as="t" hint-placeholder-count="4"><div onClick="{{ t.pick }}" style="padding:10px;border-radius:9px;cursor:pointer;transition:background-color .12s,box-shadow .12s;background:{{ t.bg }};box-shadow:{{ t.ring }}"><div style="font-size:13px;font-weight:500">{{ t.label }}</div><div style="font-size:11.5px;color:#62666d;margin-top:3px">{{ t.hint }}</div></div></sc-for></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:12px;color:#8a8f98">Monthly volume</span><select value="{{ form.volume }}" onChange="{{ onVolume }}" style="height:34px;padding:0 10px;border:none;outline:none;border-radius:8px;background:rgba(255,255,255,.03);box-shadow:inset 0 0 0 1px rgba(255,255,255,.08);color:#f7f8f8;font:13px Geist,system-ui,sans-serif"><sc-for list="{{ volumes }}" as="v" hint-placeholder-count="4"><option value="{{ v }}">{{ v }}</option></sc-for></select></div>
+        <div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:12px;color:#8a8f98">Timeline</span><select value="{{ form.timeline }}" onChange="{{ onTimeline }}" style="height:34px;padding:0 10px;border:none;outline:none;border-radius:8px;background:rgba(255,255,255,.03);box-shadow:inset 0 0 0 1px rgba(255,255,255,.08);color:#f7f8f8;font:13px Geist,system-ui,sans-serif"><sc-for list="{{ timelines }}" as="v" hint-placeholder-count="4"><option value="{{ v }}">{{ v }}</option></sc-for></select></div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:12px;color:#8a8f98">Message</span>
+        <textarea value="{{ form.msg }}" onChange="{{ onMsg }}" rows="5" placeholder="Tell Providers about your product, markets and what you need" style="resize:none;padding:10px 12px;border:none;outline:none;border-radius:8px;background:rgba(255,255,255,.03);box-shadow:inset 0 0 0 1px rgba(255,255,255,.08);color:#f7f8f8;font:13px/1.55 Geist,system-ui,sans-serif" style-focus="box-shadow:inset 0 0 0 1px rgba(111,227,180,.45)"></textarea>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ step3 }}">
+    <div style="flex:1;min-height:0;overflow-y:auto;padding:18px 20px;display:flex;flex-direction:column;gap:16px">
+      <div style="border-radius:10px;box-shadow:0 0 0 1px rgba(255,255,255,.06)">
+        <sc-for list="{{ review }}" as="r" hint-placeholder-count="4"><div style="display:flex;justify-content:space-between;gap:16px;padding:11px 14px;border-bottom:1px solid rgba(255,255,255,.04);font-size:13px"><span style="color:#8a8f98;flex:none">{{ r.k }}</span><span style="text-align:right;color:#f7f8f8">{{ r.v }}</span></div></sc-for>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:6px">
+        <sc-for list="{{ pickedChips }}" as="p" hint-placeholder-count="2"><div style="display:flex;align-items:center;gap:10px;font-size:13px"><dc-import name="Relay App Icon" kind="{{ p.kind }}" size="24" hint-size="24px,24px"></dc-import><span style="flex:1">{{ p.name }}</span><span style="font-family:'Geist Mono',monospace;font-size:12px;color:#62666d">{{ p.code }}</span></div></sc-for>
+      </div>
+      <div style="font-size:12.5px;color:#62666d">Each Provider receives a separate request. Replies land in your inbox.</div>
+    </div>
+  </sc-if>
+
+  <div style="display:flex;align-items:center;gap:8px;padding:14px 20px;border-top:1px solid rgba(255,255,255,.06)">
+    <span style="flex:1;font-size:12.5px;color:#8a8f98">{{ footLabel }}</span>
+    <span onClick="{{ back }}" style="height:32px;padding:0 12px;display:inline-flex;align-items:center;border-radius:8px;font-size:13px;font-weight:500;color:#d4d6da;cursor:pointer" style-hover="background:rgba(255,255,255,.05)">{{ backLabel }}</span>
+    <span onClick="{{ next }}" style="height:32px;padding:0 14px;display:inline-flex;align-items:center;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;color:{{ nextBtn.fg }};background:{{ nextBtn.bg }}">{{ nextLabel }}</span>
+  </div>
+</div>
+<dc-import name="Relay Confirm" open="{{ cancelAsk }}" tone="warning" title="Cancel this request?" body="You’ve selected Providers and started the details. Nothing will be sent." confirm-label="Cancel request" cancel-label="Keep editing" item="{{ cancelItem }}" item-kind="{{ cancelKind }}" item-meta="{{ cancelMeta }}" on-confirm="{{ cancelYes }}" on-cancel="{{ cancelNo }}" hint-size="0px,0px"></dc-import>
+<dc-import name="Relay Confirm" open="{{ closeAsk }}" tone="neutral" title="Close this request?" body="The Provider will be told you’re no longer looking. You can reopen it later." confirm-label="Close request" item="{{ closeItem }}" item-kind="{{ closeKind }}" item-meta="{{ closeMeta }}" on-confirm="{{ closeYes }}" on-cancel="{{ closeNo }}" hint-size="0px,0px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const EMPTY = { CAT: {}, providers: [], byId: {}, TOTAL: 0, REGIONS: [], fmt: String };
+const ST = { sent: ['Sent', '#8fb8ff'], replied: ['Replied', '#6fe3b4'], draft: ['Draft', '#62666d'], closed: ['Closed', '#3a3c40'] };
+const INIT = [
+  ['REQ-1052', 'Intro — safeguarding account and virtual IBANs', 'albion', 'sent', 'Today'],
+  ['REQ-1048', 'Intro — document verification for EU onboarding', 'kestrel', 'replied', 'Today'],
+  ['REQ-1047', 'Pricing — SEPA Instant payouts above €1M / month', 'ledgerline', 'sent', 'Today'],
+  ['REQ-1045', 'Sandbox — FIX API access for treasury desk', 'cobalt', 'sent', 'Mon'],
+  ['REQ-1044', 'RFP — sponsor bank for card programme', 'helix', 'replied', 'Mon'],
+  ['REQ-1042', 'Intro — virtual card issuing in the UK', 'northbeam', 'replied', 'Oct 9'],
+  ['REQ-1041', 'Pricing — Pix collections in Brazil', 'rio', 'sent', 'Oct 8'],
+  ['REQ-1039', 'Pricing — EUR → USD forwards', 'meridian', 'closed', 'Oct 2'],
+  ['REQ-1037', 'Intro — PayNow QR for Singapore merchants', 'arcadia', 'closed', 'Oct 1'],
+  ['REQ-1036', 'Intro — iDEAL and SEPA collections', 'tidepool', 'draft', 'Sep 30'],
+  ['REQ-1033', 'Sandbox — liveness SDK for mobile', 'orbis', 'closed', 'Sep 26'],
+  ['REQ-1031', 'Pricing — CAD payouts via Interac', 'northgate', 'closed', 'Sep 22']
+].map(([code, subject, pid, status, updated]) => ({ code, subject, pid, status, updated }));
+const TYPES = [['Intro', 'Meet the team'], ['Pricing', 'Commercial terms'], ['Sandbox', 'Test access'], ['RFP', 'Formal tender']];
+const VOL = ['Under €100k', '€100k – €1M', '€1M – €10M', 'Over €10M'];
+const TL = ['This month', 'Next quarter', 'In 6 months', 'Exploring'];
+const PER = 8;
+const MSG = { Intro: 'We’re a European fintech scaling into new markets and would like to explore a partnership. Could we set up a 30-minute intro call this week?', Pricing: 'Could you share commercial terms for our expected volumes? We’re comparing three Providers and aim to decide this quarter.', Sandbox: 'We’d like sandbox access to evaluate the API ahead of a technical review with our engineering team.', RFP: 'Please find our RFP attached. We’re looking for a long-term partner and would appreciate a response within two weeks.' };
+const REPLY = 'Thanks for reaching out through Relay. We’d be happy to help — I’ve shared sandbox credentials and a few times for a call. Looking forward to speaking.';
+class Component extends DCLogic {
+  state = { open: null, cancelAsk: false, closeAsk: null, tab: 'all', rows: INIT, page: 0, modal: false, step: 1, q: '', cat: 'all', region: 'All regions', picks: [], form: { type: 'Intro', volume: VOL[1], timeline: TL[1], msg: '' } };
+  componentDidMount() {
+    if (!window.RELAY) this._i = setInterval(() => { if (window.RELAY) { clearInterval(this._i); this.forceUpdate(); } }, 40);
+    if (this.props.provider) this.setState({ modal: true, step: 2, picks: [this.props.provider] });
+  }
+  componentWillUnmount() { clearInterval(this._i); }
+  componentDidUpdate(prev) { if (prev.provider !== this.props.provider && this.props.provider) this.setState({ modal: true, step: 2, picks: [this.props.provider] }); }
+  renderVals() {
+    const R = window.RELAY ?? EMPTY, S = this.state;
+    const f = { all: () => true, open: r => r.status === 'sent' || r.status === 'draft', replied: r => r.status === 'replied', closed: r => r.status === 'closed' };
+    const list = S.rows.filter(f[S.tab]);
+    const pages = Math.max(1, Math.ceil(list.length / PER)), page = Math.min(S.page, pages - 1);
+    const tab = (k, l) => ({ label: l, count: S.rows.filter(f[k]).length, pick: () => this.setState({ tab: k, page: 0 }), fg: S.tab === k ? '#f7f8f8' : '#8a8f98', line: S.tab === k ? 1 : 0 });
+    const on = S.modal, setF = p => this.setState(s => ({ form: { ...s.form, ...p } }));
+    const q = S.q.trim().toLowerCase();
+    const matches = R.providers.filter(p => (S.cat === 'all' || p.kind === S.cat) && (S.region === 'All regions' || p.region === S.region) && (!q || [p.name, p.hq, p.railsText, p.cat].join(' ').toLowerCase().includes(q)));
+    const picked = S.picks.map(id => R.byId[id]).filter(Boolean);
+    const can = S.step === 1 ? picked.length > 0 : S.step === 2 ? true : true;
+    const chip = (k, l) => ({ label: l, pick: () => this.setState({ cat: k }), bg: S.cat === k ? 'rgba(255,255,255,.08)' : 'transparent', fg: S.cat === k ? '#f7f8f8' : '#8a8f98' });
+    return {
+      tabs: [tab('all', 'All'), tab('open', 'Open'), tab('replied', 'Replied'), tab('closed', 'Closed')],
+      rows: list.slice(page * PER, page * PER + PER).map(r => { const p = R.byId[r.pid] ?? {}, o = S.open === r.code, type = r.subject.split(' — ')[0], st = r.status;
+        const steps = [['Draft created', true], ['Sent to ' + (p.name ?? 'Provider'), st !== 'draft'], ['Opened by Provider', st === 'replied' || st === 'closed'], [st === 'closed' ? 'Closed' : 'Reply received', st === 'replied' || st === 'closed']];
+        return { ...r, provider: p.name, kind: p.kind, status: ST[st][0], dot: ST[st][1],
+          toggle: () => this.setState({ open: o ? null : r.code }), rot: o ? 'rotate(180deg)' : 'rotate(0)', rowsOpen: o ? '1fr' : '0fr', op: o ? 1 : 0, wrapBg: o ? 'rgba(255,255,255,.018)' : 'transparent',
+          facts: [{ k: 'Type', v: type }, { k: 'Volume', v: r.volume ?? VOL[(r.code.charCodeAt(7) ?? 0) % 4] }, { k: 'Timeline', v: r.timeline ?? TL[(r.code.charCodeAt(6) ?? 0) % 4] }],
+          msg: r.msg || MSG[type] || MSG.Intro, hasReply: st === 'replied', reply: REPLY,
+          canFollow: st === 'sent', canClose: st === 'sent' || st === 'replied' || st === 'draft',
+          follow: () => this.props.onToast?.('Follow-up sent', 'success', p.name + ' will be nudged by email.'),
+          askClose: () => this.setState({ closeAsk: r.code }),
+          timeline: steps.map(([label, done], i) => ({ label, when: done ? (i === 0 ? r.updated : i === steps.length - 1 ? r.updated : r.updated) : 'Pending', dot: done ? '#6fe3b4' : 'transparent', halo: done ? 'rgba(111,227,180,.14)' : 'rgba(255,255,255,.1)', fg: done ? '#f7f8f8' : '#62666d', line: i < steps.length - 1 ? 1 : 0 })) }; }),
+      cancelAsk: S.cancelAsk, cancelItem: picked.length + ' Provider' + (picked.length === 1 ? '' : 's') + ' selected', cancelKind: picked[0]?.kind ?? 'all', cancelMeta: S.form.type + ' · ' + S.form.volume,
+      cancelYes: () => this.setState({ cancelAsk: false, modal: false, picks: [], step: 1, form: { ...S.form, msg: '' } }), cancelNo: () => this.setState({ cancelAsk: false }),
+      closeAsk: !!S.closeAsk, closeItem: R.byId[S.rows.find(x => x.code === S.closeAsk)?.pid]?.name ?? '', closeKind: R.byId[S.rows.find(x => x.code === S.closeAsk)?.pid]?.kind ?? 'all', closeMeta: S.closeAsk ?? '',
+      closeYes: () => { const c = S.closeAsk; this.setState(s => ({ closeAsk: null, rows: s.rows.map(x => x.code === c ? { ...x, status: 'closed', updated: 'Just now' } : x) })); this.props.onToast?.('Request closed', 'success', c + ' moved to Closed.'); },
+      closeNo: () => this.setState({ closeAsk: null }),
+      empty: list.length === 0, showPager: list.length > PER,
+      pagerLabel: `Showing ${page * PER + 1}–${Math.min(list.length, page * PER + PER)} of ${list.length}`,
+      pages: Array.from({ length: pages }, (_, i) => ({ label: String(i + 1), go: () => this.setState({ page: i }), bg: i === page ? 'rgba(255,255,255,.08)' : 'transparent', fg: i === page ? '#f7f8f8' : '#8a8f98' })),
+      m: { op: on ? 1 : 0, pe: on ? 'auto' : 'none', tf: on ? 'translate(-50%,-50%) scale(1)' : 'translate(-50%,-48%) scale(.98)' },
+      openNew: () => this.setState({ modal: true, step: 1, picks: [], q: '' }), closeNew: () => (S.picks.length || S.form.msg.trim()) ? this.setState({ cancelAsk: true }) : this.setState({ modal: false }),
+      steps: ['Providers', 'Details', 'Review'].map((label, i) => { const n = i + 1, done = S.step > n, cur = S.step === n; return { n: done ? '✓' : String(n), label, fg: cur || done ? '#f7f8f8' : '#62666d', bg: cur ? '#f7f8f8' : done ? 'rgba(111,227,180,.18)' : 'rgba(255,255,255,.06)', numFg: cur ? '#0f1011' : done ? '#6fe3b4' : '#8a8f98', lineOp: n < 3 ? 1 : 0 }; }),
+      step1: S.step === 1, step2: S.step === 2, step3: S.step === 3,
+      total: R.fmt(R.TOTAL), q: S.q, onQ: e => this.setState({ q: e.target.value }),
+      region: S.region, regionOpts: ['All regions', ...R.REGIONS], onRegion: e => this.setState({ region: e.target.value }),
+      cats: [chip('all', 'All'), ...Object.entries(R.CAT).map(([k, v]) => chip(k, v.label))],
+      resultLabel: matches.length > 30 ? `Top 30 of ${matches.length} matches · Refine to narrow down` : `${matches.length} match${matches.length === 1 ? '' : 'es'}`,
+      results: matches.slice(0, 30).map(p => { const s = S.picks.includes(p.id); return { ...p, toggle: () => this.setState(st => ({ picks: s ? st.picks.filter(x => x !== p.id) : st.picks.length < 5 ? [...st.picks, p.id] : st.picks })), bg: s ? 'rgba(111,227,180,.04)' : 'transparent', boxBg: s ? '#6fe3b4' : 'transparent', boxRing: s ? 'none' : 'inset 0 0 0 1.5px rgba(255,255,255,.2)', checkOp: s ? 1 : 0 }; }),
+      noResults: matches.length === 0,
+      hasPicked: picked.length > 0,
+      pickedChips: picked.map(p => ({ ...p, remove: () => this.setState(st => ({ picks: st.picks.filter(x => x !== p.id) })) })),
+      types: TYPES.map(([label, hint]) => ({ label, hint, pick: () => setF({ type: label }), bg: S.form.type === label ? 'rgba(255,255,255,.06)' : 'rgba(255,255,255,.015)', ring: S.form.type === label ? 'inset 0 0 0 1px rgba(255,255,255,.2)' : 'inset 0 0 0 1px rgba(255,255,255,.06)' })),
+      form: S.form, volumes: VOL, timelines: TL,
+      onVolume: e => setF({ volume: e.target.value }), onTimeline: e => setF({ timeline: e.target.value }), onMsg: e => setF({ msg: e.target.value }),
+      review: [{ k: 'Type', v: S.form.type }, { k: 'Monthly volume', v: S.form.volume }, { k: 'Timeline', v: S.form.timeline }, { k: 'Message', v: S.form.msg.trim() || 'Relay standard intro' }],
+      footLabel: S.step === 1 ? `${picked.length} of 5 Providers selected` : `${picked.length} Provider${picked.length === 1 ? '' : 's'}`,
+      backLabel: S.step === 1 ? 'Cancel' : 'Back',
+      back: () => S.step === 1 ? ((S.picks.length || S.form.msg.trim()) ? this.setState({ cancelAsk: true }) : this.setState({ modal: false })) : this.setState({ step: S.step - 1 }),
+      nextLabel: S.step === 3 ? `Send ${picked.length > 1 ? picked.length + ' requests' : 'request'}` : 'Continue',
+      nextBtn: { fg: can ? '#0f1011' : '#62666d', bg: can ? '#f7f8f8' : 'rgba(255,255,255,.05)' },
+      next: () => {
+        if (!can) return;
+        if (S.step < 3) return this.setState({ step: S.step + 1 });
+        const first = S.form.msg.trim().split('\n')[0].slice(0, 56);
+        this.setState(s => {
+          const top = Math.max(...s.rows.map(r => +r.code.slice(4)));
+          const fresh = s.picks.map((pid, i) => ({ code: 'REQ-' + (top + 1 + i), subject: `${s.form.type} — ${first || (R.byId[pid]?.cat + ' via Relay')}`, pid, status: 'sent', updated: 'Just now', volume: s.form.volume, timeline: s.form.timeline, msg: s.form.msg.trim() }));
+          setTimeout(() => this.props.onToast?.(fresh.length > 1 ? fresh.length + ' requests sent' : 'Request sent', 'success', 'Replies will land in your Inbox.'), 0);
+          return { modal: false, tab: 'all', page: 0, rows: [...fresh, ...s.rows], picks: [], step: 1, form: { ...s.form, msg: '' } };
+        });
+      }
+    };
+  }
+}
+</script>
+</body>
+</html>

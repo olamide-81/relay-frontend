@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="relay-data.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;background:#161719;color:#f7f8f8;font-family:"Geist",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#8a8f98;text-decoration:none}
+a:hover{color:#f7f8f8}
+</style>
+</helmet>
+<div style="position:relative;font-family:Geist,system-ui,sans-serif;color:#f7f8f8">
+  <div style="position:absolute;inset:0 0 auto 0;height:360px;pointer-events:none;background:{{ p.glow }}"></div>
+  <div style="position:relative;max-width:1200px;margin:0 auto;padding:28px 40px 72px;display:flex;flex-direction:column;gap:28px">
+    <span onClick="{{ back }}" style="width:fit-content;display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 8px 0 4px;border-radius:7px;font-size:12.5px;font-weight:500;color:#8a8f98;cursor:pointer" style-hover="color:#f7f8f8;background:rgba(255,255,255,.04)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"></path></svg>{{ backLabel }}</span>
+
+    <div style="display:flex;gap:28px;align-items:flex-start;flex-wrap:wrap">
+      <div style="flex:1 1 520px;min-width:0;display:flex;gap:20px;align-items:flex-start">
+        <dc-import name="Relay App Icon" kind="{{ p.kind }}" size="76" hint-size="76px,76px"></dc-import>
+        <div style="min-width:0;display:flex;flex-direction:column;gap:10px">
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><h1 style="margin:0;font-size:30px;font-weight:500;letter-spacing:-0.03em">{{ p.name }}</h1><span style="display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 9px;border-radius:999px;font-size:12px;color:#d4d6da;box-shadow:inset 0 0 0 1px rgba(255,255,255,.1)"><span style="width:6px;height:6px;border-radius:50%;background:{{ p.accent }}"></span>{{ p.cat }}</span><span style="display:inline-flex;align-items:center;gap:5px;height:24px;padding:0 9px;border-radius:999px;font-size:12px;color:#6fe3b4;background:rgba(111,227,180,.08)"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>Verified by Relay</span></div>
+          <div style="font-size:13.5px;color:#8a8f98">{{ p.hq }} · Founded {{ p.founded }} · {{ p.team }} people · <span style="font-family:'Geist Mono',monospace;font-size:12.5px">{{ p.code }}</span></div>
+          <p style="margin:4px 0 0;font-size:15px;line-height:1.6;color:#b4b8bf;max-width:640px;text-wrap:pretty">{{ p.desc }}</p>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">
+            <span onClick="{{ request }}" style="height:34px;padding:0 16px;display:inline-flex;align-items:center;border-radius:9px;font-size:13px;font-weight:500;color:#0f1011;background:#f7f8f8;cursor:pointer" style-hover="background:#e3e5e8">Request intro</span>
+            <span onClick="{{ shortlist }}" style="height:34px;padding:0 14px;display:inline-flex;align-items:center;border-radius:9px;font-size:13px;font-weight:500;color:#d4d6da;cursor:pointer;box-shadow:inset 0 0 0 1px rgba(255,255,255,.1)" style-hover="background:rgba(255,255,255,.05)">Add to shortlist</span>
+            <span onClick="{{ compare }}" style="height:34px;padding:0 14px;display:inline-flex;align-items:center;border-radius:9px;font-size:13px;font-weight:500;color:#d4d6da;cursor:pointer;box-shadow:inset 0 0 0 1px rgba(255,255,255,.1)" style-hover="background:rgba(255,255,255,.05)">Compare</span>
+          </div>
+        </div>
+      </div>
+      <div style="flex:0 0 240px;padding:18px;border-radius:14px;background:rgba(255,255,255,.02);box-shadow:inset 0 0 0 1px rgba(255,255,255,.07);display:flex;align-items:center;gap:16px">
+        <div style="position:relative;width:76px;height:76px;flex:none">
+          <svg width="76" height="76" viewBox="0 0 76 76"><circle cx="38" cy="38" r="32" fill="none" stroke="rgba(255,255,255,.07)" stroke-width="6"></circle><circle cx="38" cy="38" r="32" fill="none" stroke="{{ p.accent }}" stroke-width="6" stroke-linecap="round" stroke-dasharray="{{ ring }}" transform="rotate(-90 38 38)"></circle></svg>
+          <span style="position:absolute;inset:0;display:grid;place-items:center;font-size:20px;font-weight:500;font-variant-numeric:tabular-nums">{{ p.score }}</span>
+        </div>
+        <div><div style="font-size:13px;font-weight:500">Relay score</div><div style="font-size:12px;color:#62666d;margin-top:3px;line-height:1.45">{{ scoreNote }}</div></div>
+      </div>
+    </div>
+
+    <div style="position:sticky;top:0;z-index:5;display:flex;gap:4px;padding:8px 0;margin:0 -4px;background:linear-gradient(#161719 70%,rgba(22,23,25,0));overflow-x:auto;scrollbar-width:none">
+      <sc-for list="{{ nav }}" as="n" hint-placeholder-count="6"><span onClick="{{ n.go }}" style="height:30px;padding:0 12px;display:inline-flex;align-items:center;border-radius:8px;font-size:13px;font-weight:500;white-space:nowrap;cursor:pointer;transition:background-color .12s,color .12s;background:{{ n.bg }};color:{{ n.fg }}" style-hover="color:#f7f8f8">{{ n.label }}</span></sc-for>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px">
+      <sc-for list="{{ kpis }}" as="k" hint-placeholder-count="6"><div style="padding:14px 16px;border-radius:12px;background:rgba(255,255,255,.015);box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)"><div style="font-size:12px;color:#62666d">{{ k.k }}</div><div style="font-size:20px;font-weight:500;letter-spacing:-0.02em;margin-top:6px;font-variant-numeric:tabular-nums">{{ k.v }}</div><div style="font-size:12px;color:#8a8f98;margin-top:4px">{{ k.n }}</div></div></sc-for>
+    </div>
+
+    <section ref="{{ refs.commercials }}" style="display:flex;flex-direction:column;gap:12px;scroll-margin-top:60px">
+      <div style="font-size:15px;font-weight:500">Commercials</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px">
+        <sc-for list="{{ tiers }}" as="t" hint-placeholder-count="3">
+          <div style="padding:18px;border-radius:12px;display:flex;flex-direction:column;gap:12px;background:{{ t.bg }};box-shadow:{{ t.ring }}">
+            <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:13.5px;font-weight:500">{{ t.name }}</span><span style="font-size:12px;color:#62666d">{{ t.vol }}</span></div>
+            <div style="font-size:22px;font-weight:500;letter-spacing:-0.02em;font-variant-numeric:tabular-nums">{{ t.price }}</div>
+            <div style="display:flex;flex-direction:column;gap:7px"><sc-for list="{{ t.lines }}" as="l" hint-placeholder-count="3"><div style="display:flex;justify-content:space-between;gap:12px;font-size:12.5px"><span style="color:#8a8f98">{{ l.k }}</span><span style="color:#d4d6da;text-align:right">{{ l.v }}</span></div></sc-for></div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="font-size:12px;color:#62666d">Indicative list pricing collected by Relay. Final terms depend on volume and risk review.</div>
+    </section>
+
+    <section ref="{{ refs.coverage }}" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:12px;scroll-margin-top:60px">
+      <div style="padding:18px;border-radius:12px;background:rgba(255,255,255,.012);box-shadow:inset 0 0 0 1px rgba(255,255,255,.06);display:flex;flex-direction:column;gap:14px">
+        <div style="font-size:15px;font-weight:500">Coverage by region</div>
+        <sc-for list="{{ reach }}" as="r" hint-placeholder-count="3">
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:#d4d6da">{{ r.region }}</span><span style="color:#8a8f98;font-variant-numeric:tabular-nums">{{ r.w }}</span></div>
+            <div style="height:5px;border-radius:999px;background:rgba(255,255,255,.06);overflow:hidden"><div style="height:100%;border-radius:999px;background:{{ p.accent }};width:{{ r.w }}"></div></div>
+            <div style="display:flex;gap:5px;flex-wrap:wrap"><sc-for list="{{ r.countries }}" as="c" hint-placeholder-count="4"><span style="height:22px;padding:0 8px;display:inline-flex;align-items:center;border-radius:6px;font-size:11.5px;color:#b4b8bf;background:rgba(255,255,255,.04)">{{ c }}</span></sc-for></div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="padding:18px;border-radius:12px;background:rgba(255,255,255,.012);box-shadow:inset 0 0 0 1px rgba(255,255,255,.06);display:flex;flex-direction:column;gap:14px">
+        <div style="font-size:15px;font-weight:500">Products and rails</div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap"><sc-for list="{{ p.rails }}" as="r" hint-placeholder-count="4"><span style="height:28px;padding:0 11px;display:inline-flex;align-items:center;border-radius:8px;font-size:12.5px;color:#d4d6da;background:rgba(255,255,255,.04);box-shadow:inset 0 0 0 1px rgba(255,255,255,.07)">{{ r }}</span></sc-for></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;border-radius:10px;overflow:hidden;background:rgba(255,255,255,.06)">
+          <sc-for list="{{ ops }}" as="o" hint-placeholder-count="4"><div style="padding:12px 14px;background:#191a1c"><div style="font-size:11.5px;color:#62666d">{{ o.k }}</div><div style="font-size:13.5px;margin-top:4px">{{ o.v }}</div></div></sc-for>
+        </div>
+      </div>
+    </section>
+
+    <section ref="{{ refs.compliance }}" style="display:flex;flex-direction:column;gap:12px;scroll-margin-top:60px">
+      <div style="font-size:15px;font-weight:500">Compliance</div>
+      <div style="border-radius:12px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.06);background:rgba(255,255,255,.012);overflow-x:auto">
+        <div style="min-width:620px">
+          <div style="display:grid;grid-template-columns:110px minmax(0,1.6fr) minmax(0,1fr) 110px 110px;align-items:center;height:38px;padding:0 16px;border-bottom:1px solid rgba(255,255,255,.06);font-size:12px;color:#62666d"><span>Regulator</span><span>Licence</span><span>Jurisdiction</span><span>Since</span><span>Status</span></div>
+          <sc-for list="{{ licences }}" as="l" hint-placeholder-count="2"><div style="display:grid;grid-template-columns:110px minmax(0,1.6fr) minmax(0,1fr) 110px 110px;align-items:center;min-height:50px;padding:0 16px;border-bottom:1px solid rgba(255,255,255,.04)"><span style="font-family:'Geist Mono',monospace;font-size:12px;color:#d4d6da">{{ l.reg }}</span><span style="font-size:13px">{{ l.name }}</span><span style="font-size:13px;color:#b4b8bf">{{ l.country }}</span><span style="font-size:13px;color:#8a8f98">{{ l.since }}</span><span style="display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:#d4d6da"><span style="width:6px;height:6px;border-radius:50%;background:{{ l.dot }}"></span>{{ l.status }}</span></div></sc-for>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px">
+        <sc-for list="{{ assurance }}" as="a" hint-placeholder-count="4"><div style="display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:10px;background:rgba(255,255,255,.015);box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)"><span style="width:26px;height:26px;border-radius:7px;display:grid;place-items:center;flex:none;background:{{ a.tint }};color:{{ a.c }}"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="{{ a.icon }}"></path></svg></span><div style="min-width:0"><div style="font-size:13px;font-weight:500">{{ a.k }}</div><div style="font-size:12px;color:#62666d;margin-top:1px">{{ a.v }}</div></div></div></sc-for>
+      </div>
+    </section>
+
+    <section ref="{{ refs.integration }}" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:12px;scroll-margin-top:60px">
+      <div style="padding:18px;border-radius:12px;background:rgba(255,255,255,.012);box-shadow:inset 0 0 0 1px rgba(255,255,255,.06);display:flex;flex-direction:column;gap:12px">
+        <div style="font-size:15px;font-weight:500">Integration</div>
+        <sc-for list="{{ integ }}" as="i" hint-placeholder-count="5"><div style="display:flex;justify-content:space-between;gap:12px;font-size:13px;padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,.04)"><span style="color:#8a8f98">{{ i.k }}</span><span style="color:#f7f8f8;text-align:right">{{ i.v }}</span></div></sc-for>
+      </div>
+      <div style="padding:18px;border-radius:12px;background:rgba(255,255,255,.012);box-shadow:inset 0 0 0 1px rgba(255,255,255,.06);display:flex;flex-direction:column;gap:14px">
+        <div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font-size:15px;font-weight:500">Uptime, 90 days</span><span style="font-size:20px;font-weight:500;font-variant-numeric:tabular-nums">{{ p.uptime }}%</span></div>
+        <div style="display:flex;gap:2px;height:34px;align-items:stretch"><sc-for list="{{ bars }}" as="b" hint-placeholder-count="30"><span style="flex:1;border-radius:2px;background:{{ b }}"></span></sc-for></div>
+        <div style="display:flex;justify-content:space-between;font-size:11.5px;color:#62666d"><span>90 days ago</span><span>{{ incidents }}</span><span>Today</span></div>
+      </div>
+    </section>
+
+    <section ref="{{ refs.similar }}" style="display:flex;flex-direction:column;gap:12px;scroll-margin-top:60px">
+      <div style="font-size:15px;font-weight:500">Similar Providers</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px">
+        <sc-for list="{{ similar }}" as="s" hint-placeholder-count="4"><div onClick="{{ s.open }}" style="padding:14px;border-radius:12px;display:flex;align-items:center;gap:12px;cursor:pointer;background:rgba(255,255,255,.012);box-shadow:inset 0 0 0 1px rgba(255,255,255,.06);transition:background-color .12s" style-hover="background:rgba(255,255,255,.03)"><dc-import name="Relay App Icon" kind="{{ s.kind }}" size="34" hint-size="34px,34px"></dc-import><div style="flex:1;min-width:0"><div style="font-size:13.5px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ s.name }}</div><div style="font-size:12px;color:#62666d;margin-top:2px">{{ s.hq }} · Score {{ s.score }}</div></div></div></sc-for>
+      </div>
+    </section>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const RC = { Europe: ['United Kingdom', 'Germany', 'France', 'Netherlands', 'Ireland', 'Spain', 'Italy', 'Poland'], 'North America': ['United States', 'Canada', 'Mexico'], 'Asia-Pacific': ['Singapore', 'Japan', 'Australia', 'Hong Kong', 'India', 'South Korea'], 'Latin America': ['Brazil', 'Chile', 'Colombia', 'Argentina'], 'Middle East': ['United Arab Emirates', 'Saudi Arabia', 'Qatar', 'Bahrain'], Africa: ['South Africa', 'Kenya', 'Morocco'], 'Central Asia': ['Kazakhstan', 'Uzbekistan'], Caribbean: ['Bahamas', 'Barbados', 'Jamaica'] };
+const SECTIONS = [['commercials', 'Commercials'], ['coverage', 'Coverage'], ['compliance', 'Compliance'], ['integration', 'Integration'], ['similar', 'Similar']];
+const h = s => { let x = 7; for (let i = 0; i < s.length; i++) x = (x * 31 + s.charCodeAt(i)) >>> 0; return x; };
+class Component extends DCLogic {
+  refs = Object.fromEntries(SECTIONS.map(([k]) => [k, React.createRef()]));
+  state = { sec: 'commercials' };
+  componentDidMount() { if (!window.RELAY) this._i = setInterval(() => { if (window.RELAY) { clearInterval(this._i); this.forceUpdate(); } }, 40); }
+  componentWillUnmount() { clearInterval(this._i); }
+  componentDidUpdate(prev) { if (prev.pid !== this.props.pid) { const sc = this.refs.commercials.current?.closest('[style*="overflow-y"]'); sc && sc.scrollTo({ top: 0 }); } }
+  go(k) { this.setState({ sec: k }); const el = this.refs[k].current; if (!el) return; let sc = el.parentElement; while (sc && !/(auto|scroll)/.test(getComputedStyle(sc).overflowY)) sc = sc.parentElement; if (sc) sc.scrollTo({ top: el.getBoundingClientRect().top - sc.getBoundingClientRect().top + sc.scrollTop - 56, behavior: 'smooth' }); }
+  renderVals() {
+    const R = window.RELAY, p = R?.byId[this.props.pid] ?? R?.providers[0];
+    if (!p) return { p: {}, nav: [], kpis: [], tiers: [], reach: [], ops: [], licences: [], assurance: [], integ: [], bars: [], similar: [], refs: this.refs };
+    const seed = h(p.id), base = p.pn;
+    const unit = p.price.replace(/[\d.]+/, '').trim();
+    const fmtP = v => p.price.replace(/[\d.]+/, (Math.round(v * 100) / 100).toString());
+    const from = this.props.from ?? 'directory';
+    const rgb = { collections: '111,227,180', payouts: '214,238,78', fx: '143,184,255', cards: '185,163,255', kyc: '255,171,122', bank: '255,143,177' }[p.kind];
+    const bars = Array.from({ length: 90 }, (_, i) => { const r = ((seed >> (i % 24)) + i * 7) % 97; return r === 3 ? '#f2c14e' : r === 41 && p.uptime < 99.95 ? '#ff7b7b' : 'rgba(111,227,180,.55)'; });
+    const inc = bars.filter(b => b !== 'rgba(111,227,180,.55)').length;
+    return {
+      refs: this.refs,
+      p: { ...p, glow: `radial-gradient(60% 100% at 0% 0%,rgba(${rgb},.09),transparent 70%)` },
+      backLabel: from === 'providers' ? 'Providers' : 'Directory', back: () => this.props.onNavigate?.(from === 'providers' ? 'providers' : 'directory'),
+      ring: `${(p.score / 100 * 201).toFixed(1)} 201`,
+      scoreNote: p.score >= 85 ? 'Top 10% in ' + p.cat : p.score >= 75 ? 'Above median for ' + p.cat : 'Around median for ' + p.cat,
+      nav: SECTIONS.map(([k, label]) => ({ label, go: () => this.go(k), bg: this.state.sec === k ? 'rgba(255,255,255,.07)' : 'transparent', fg: this.state.sec === k ? '#f7f8f8' : '#8a8f98' })),
+      kpis: [
+        { k: 'Countries', v: p.countries, n: p.reach.length + ' regions' },
+        { k: 'Currencies', v: p.currencies || '—', n: p.currencies ? 'Settlement and payout' : 'Not applicable' },
+        { k: p.kind === 'kyc' ? 'Verification' : 'Settlement', v: p.settle, n: 'Typical' },
+        { k: 'Uptime', v: p.uptime + '%', n: 'Last 90 days' },
+        { k: 'Go-live', v: p.golive + ' days', n: 'Median for Relay teams' },
+        { k: 'Pricing from', v: p.price.split(' ')[0], n: unit || 'Per transaction' }
+      ],
+      tiers: [['Starter', 'Up to €100k / mo', 1], ['Growth', '€100k – €5M / mo', .8], ['Enterprise', 'Over €5M / mo', .6]].map(([name, vol, f], i) => ({ name, vol, price: i === 2 ? 'Custom' : fmtP(base * f), bg: i === 1 ? 'rgba(255,255,255,.03)' : 'rgba(255,255,255,.012)', ring: i === 1 ? `inset 0 0 0 1px rgba(${rgb},.35)` : 'inset 0 0 0 1px rgba(255,255,255,.06)',
+        lines: [{ k: 'Setup fee', v: i === 0 ? 'None' : i === 1 ? '€500' : 'Negotiable' }, { k: 'Monthly minimum', v: i === 0 ? 'None' : i === 1 ? '€250' : 'Negotiable' }, { k: 'Support', v: ['Email', 'Shared Slack', 'Dedicated manager'][i] }] })),
+      reach: p.reach.map(r => ({ region: r.region, w: r.pct + '%', countries: (RC[r.region] ?? []).slice(0, Math.max(2, Math.round(r.pct / 18))) })),
+      ops: [{ k: 'Onboarding', v: 5 + (seed % 10) + ' business days' }, { k: 'Customer types', v: ['Startups · Scale-ups', 'Scale-ups · Enterprise', 'All business sizes'][seed % 3] }, { k: 'Data residency', v: p.region === 'Europe' ? 'EU' : p.region === 'North America' ? 'US' : 'Local and EU' }, { k: 'Support hours', v: seed % 2 ? '24/7' : 'Business hours' }],
+      licences: p.licences.map((l, i) => ({ ...l, since: 2012 + ((seed >> i) % 11), dot: l.status === 'Active' ? '#6fe3b4' : '#f2c14e' })),
+      assurance: [...p.certs.map(c => ({ k: c, v: 'Audited ' + (2025 - (seed % 2)), c: '#6fe3b4', tint: 'rgba(111,227,180,.1)', icon: 'M20 6 9 17l-5-5' })), { k: 'Sanctions screening', v: 'Daily, OFAC · EU · UN', c: '#8fb8ff', tint: 'rgba(143,184,255,.1)', icon: 'M20 6 9 17l-5-5' }],
+      integ: [{ k: 'API', v: p.apiText }, { k: 'SDKs', v: ['Node · Python · Go', 'Node · Java · .NET', 'Python · Ruby · PHP'][seed % 3] }, { k: 'Sandbox', v: p.api.includes('Sandbox') ? 'Self-serve, instant' : 'On request' }, { k: 'Webhooks', v: p.api.includes('Webhooks') ? 'Signed, with retries' : 'Polling only' }, { k: 'Docs', v: ['Excellent', 'Good', 'Good'][seed % 3] }],
+      bars, incidents: inc ? inc + ' incident' + (inc > 1 ? 's' : '') : 'No incidents',
+      similar: R.providers.filter(x => x.kind === p.kind && x.id !== p.id).sort((a, b) => b.score - a.score).slice(0, 4).map(s => ({ ...s, open: () => this.props.onNavigate?.('provider', { id: s.id, from }) })),
+      request: () => this.props.onNavigate?.('requests', { provider: p.id }),
+      shortlist: () => this.props.onAddToShortlist?.([p.id]),
+      compare: () => this.props.onCompare?.([p.id, ...R.providers.filter(x => x.kind === p.kind && x.id !== p.id).sort((a, b) => b.score - a.score).slice(0, 2).map(x => x.id)])
+    };
+  }
+}
+</script>
+</body>
+</html>

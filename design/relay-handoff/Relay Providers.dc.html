@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;background:#161719;color:#f7f8f8;font-family:"Geist",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#8a8f98;text-decoration:none}
+a:hover{color:#f7f8f8}
+</style>
+</helmet>
+<div style="position:relative;min-height:100%;font-family:Geist,system-ui,sans-serif;color:#f7f8f8">
+<div style="max-width:1200px;margin:0 auto;padding:36px 40px 56px;display:flex;flex-direction:column;gap:20px">
+  <div style="display:flex;align-items:flex-end;gap:16px;flex-wrap:wrap">
+    <div style="flex:1 1 320px;min-width:0">
+      <h1 style="margin:0;font-size:22px;font-weight:500;letter-spacing:-0.02em">Providers</h1>
+      <div style="font-size:13.5px;color:#8a8f98;margin-top:6px">Providers your team is evaluating, integrating or running live.</div>
+    </div>
+    <span onClick="{{ goDirectory }}" style="height:32px;padding:0 14px;display:inline-flex;align-items:center;gap:6px;border-radius:8px;font-size:13px;font-weight:500;color:#0f1011;background:#f7f8f8;cursor:pointer" style-hover="background:#e3e5e8"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg>Add from directory</span>
+  </div>
+
+  <div style="display:flex;gap:4px;border-bottom:1px solid rgba(255,255,255,.06)">
+    <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="4">
+      <span onClick="{{ t.pick }}" style="position:relative;display:inline-flex;align-items:center;gap:6px;height:36px;padding:0 10px;font-size:13px;font-weight:500;cursor:pointer;transition:color .12s;color:{{ t.fg }}" style-hover="color:#f7f8f8">{{ t.label }}<span style="font-size:11.5px;color:#62666d;font-variant-numeric:tabular-nums">{{ t.count }}</span><span style="position:absolute;left:8px;right:8px;bottom:-1px;height:2px;border-radius:2px;background:#f7f8f8;transition:opacity .15s;opacity:{{ t.line }}"></span></span>
+    </sc-for>
+  </div>
+
+  <div style="border-radius:12px;box-shadow:0 0 0 1px rgba(255,255,255,.06);background:rgba(255,255,255,.012);overflow-x:auto">
+    <div style="min-width:760px">
+      <div style="display:grid;grid-template-columns:minmax(0,2fr) 140px minmax(0,1.2fr) minmax(0,1fr) 110px;align-items:center;height:38px;padding:0 16px;border-bottom:1px solid rgba(255,255,255,.06);font-size:12px;color:#62666d">
+        <span>Provider</span><span>Status</span><span>Owner</span><span>Volume, 30 days</span><span style="text-align:right">Updated</span>
+      </div>
+      <sc-for list="{{ rows }}" as="p" hint-placeholder-count="6">
+        <div onClick="{{ p.open }}" style="display:grid;grid-template-columns:minmax(0,2fr) 140px minmax(0,1.2fr) minmax(0,1fr) 110px;align-items:center;min-height:54px;padding:0 16px;border-bottom:1px solid rgba(255,255,255,.04);cursor:pointer;transition:background-color .12s;background:{{ p.bg }}" style-hover="background:rgba(255,255,255,.025)">
+          <div style="display:flex;align-items:center;gap:12px;min-width:0"><dc-import name="Relay App Icon" kind="{{ p.kind }}" size="28" hint-size="28px,28px"></dc-import><div style="min-width:0"><div style="font-size:13.5px;font-weight:500">{{ p.name }}</div><div style="font-size:12px;color:#62666d;margin-top:2px">{{ p.cat }} · {{ p.hq }}</div></div></div>
+          <span style="display:inline-flex;align-items:center;gap:7px;font-size:12.5px;color:#d4d6da"><span style="width:7px;height:7px;border-radius:50%;background:{{ p.dot }}"></span>{{ p.status }}</span>
+          <span style="display:flex;align-items:center;gap:8px;font-size:13px;color:#b4b8bf;min-width:0"><img src="{{ p.ownerImg }}" alt="" style="width:20px;height:20px;border-radius:50%;object-fit:cover;background:#2a2b2e"><span style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ p.owner }}</span></span>
+          <span style="font-size:13px;color:#b4b8bf;font-variant-numeric:tabular-nums">{{ p.volume }}</span>
+          <span style="font-size:12.5px;color:#62666d;text-align:right">{{ p.updated }}</span>
+        </div>
+      </sc-for>
+      <sc-if value="{{ empty }}"><div style="padding:48px 24px;text-align:center;font-size:13px;color:#62666d">No providers in this stage.</div></sc-if>
+    </div>
+  </div>
+</div>
+
+<div onClick="{{ close }}" style="position:fixed;inset:0;z-index:40;background:rgba(0,0,0,.35);transition:opacity .2s;opacity:{{ dr.op }};pointer-events:{{ dr.pe }}"></div>
+<aside style="position:fixed;top:12px;right:12px;bottom:12px;width:400px;max-width:calc(100% - 24px);z-index:41;display:flex;flex-direction:column;border-radius:12px;background:rgba(28,29,32,.94);backdrop-filter:blur(20px) saturate(140%);-webkit-backdrop-filter:blur(20px) saturate(140%);box-shadow:0 0 0 1px rgba(255,255,255,.08),0 24px 60px rgba(0,0,0,.5);transition:transform .26s cubic-bezier(.2,.8,.2,1),opacity .2s;transform:{{ dr.tf }};opacity:{{ dr.op }};pointer-events:{{ dr.pe }}">
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 14px 0 20px"><span style="flex:1;font-size:12px;color:#62666d;font-family:'Geist Mono',monospace">{{ cur.code }}</span><span style="display:flex;gap:6px;align-items:center"><span onClick="{{ expand }}" title="Open full profile" style="height:30px;padding:0 10px;display:inline-flex;align-items:center;gap:6px;border-radius:7px;font-size:12.5px;font-weight:500;color:#d4d6da;cursor:pointer;box-shadow:inset 0 0 0 1px rgba(255,255,255,.1)" style-hover="background:rgba(255,255,255,.06);color:#f7f8f8"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"></path><path d="M9 21H3v-6"></path><path d="M21 3l-7 7"></path><path d="M3 21l7-7"></path></svg>Expand</span><span onClick="{{ close }}" style="width:28px;height:28px;display:grid;place-items:center;border-radius:7px;color:#8a8f98;cursor:pointer" style-hover="background:rgba(255,255,255,.06);color:#f7f8f8"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"></path></svg></span></span></div>
+  <div style="flex:1;overflow-y:auto;padding:12px 20px 20px;display:grid;align-content:start;gap:22px">
+    <div style="display:flex;align-items:center;gap:14px"><dc-import name="Relay App Icon" kind="{{ cur.kind }}" size="48" hint-size="48px,48px"></dc-import><div><div style="font-size:17px;font-weight:500;letter-spacing:-0.01em">{{ cur.name }}</div><div style="font-size:12.5px;color:#8a8f98;margin-top:3px">{{ cur.cat }} · {{ cur.hq }}</div></div></div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <div style="font-size:12px;color:#62666d">Stage</div>
+      <div style="display:flex;gap:2px;padding:2px;border-radius:9px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.07)">
+        <sc-for list="{{ stages }}" as="s" hint-placeholder-count="3">
+          <span onClick="{{ s.pick }}" style="flex:1;height:28px;display:inline-flex;align-items:center;justify-content:center;gap:6px;border-radius:7px;font-size:12.5px;font-weight:500;cursor:pointer;transition:background-color .12s,color .12s;background:{{ s.bg }};color:{{ s.fg }}"><span style="width:6px;height:6px;border-radius:50%;background:{{ s.dot }}"></span>{{ s.label }}</span>
+        </sc-for>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;border-radius:10px;overflow:hidden;background:rgba(255,255,255,.06);box-shadow:0 0 0 1px rgba(255,255,255,.06)">
+      <sc-for list="{{ cur.facts }}" as="f" hint-placeholder-count="4"><div style="padding:12px 14px;background:#1c1d20"><div style="font-size:12px;color:#62666d">{{ f.k }}</div><div style="font-size:13.5px;font-weight:500;margin-top:4px">{{ f.v }}</div></div></sc-for>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div style="font-size:12px;color:#62666d">Activity</div>
+      <sc-for list="{{ cur.log }}" as="l" hint-placeholder-count="3">
+        <div style="display:flex;gap:10px;font-size:13px;color:#b4b8bf"><span style="width:5px;height:5px;border-radius:50%;background:#62666d;margin-top:7px;flex:none"></span><span style="flex:1">{{ l.t }}</span><span style="font-size:12px;color:#62666d;white-space:nowrap">{{ l.d }}</span></div>
+      </sc-for>
+    </div>
+    <div style="position:relative;min-height:200px">
+      <div style="display:flex;flex-direction:column;gap:10px;filter:blur(5px);opacity:.55;pointer-events:none;user-select:none">
+        <div style="font-size:12px;color:#62666d">Commercials and SLAs</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px"><div style="height:58px;border-radius:9px;background:rgba(255,255,255,.04)"></div><div style="height:58px;border-radius:9px;background:rgba(255,255,255,.04)"></div><div style="height:58px;border-radius:9px;background:rgba(255,255,255,.04)"></div><div style="height:58px;border-radius:9px;background:rgba(255,255,255,.04)"></div></div>
+        <div style="font-size:13px;color:#b4b8bf">Uptime 99.97% · Settlement same day · 3 licences</div>
+      </div>
+      <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center;background:linear-gradient(180deg,rgba(27,28,31,.2),rgba(27,28,31,.85) 55%);border-radius:12px">
+        <span style="width:34px;height:34px;border-radius:10px;display:grid;place-items:center;background:rgba(255,255,255,.06);box-shadow:inset 0 0 0 1px rgba(255,255,255,.1);color:#d4d6da"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"></path><path d="M9 21H3v-6"></path><path d="M21 3l-7 7"></path><path d="M3 21l7-7"></path></svg></span>
+        <div style="font-size:13.5px;font-weight:500">Commercials, coverage and compliance</div>
+        <span onClick="{{ expand }}" style="height:30px;padding:0 12px;display:inline-flex;align-items:center;border-radius:7px;font-size:12.5px;font-weight:500;color:#0f1011;background:#f7f8f8;cursor:pointer" style-hover="background:#e3e5e8">View full profile</span>
+      </div>
+    </div>
+  </div>
+  <div style="display:flex;gap:8px;padding:14px 20px;border-top:1px solid rgba(255,255,255,.06)">
+    <span style="flex:1;height:32px;display:inline-flex;align-items:center;justify-content:center;border-radius:8px;font-size:13px;font-weight:500;color:#0f1011;background:#f7f8f8;cursor:pointer" style-hover="background:#e3e5e8">Message provider</span>
+    <span onClick="{{ remove }}" style="height:32px;padding:0 12px;display:inline-flex;align-items:center;border-radius:8px;font-size:13px;font-weight:500;color:#d4d6da;cursor:pointer;box-shadow:inset 0 0 0 1px rgba(255,255,255,.1)" style-hover="background:rgba(255,255,255,.05)">Remove</span>
+  </div>
+</aside>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const CAT = { collections: 'Collections', payouts: 'Payouts', fx: 'FX', cards: 'Cards', kyc: 'KYC' };
+const STAGE = { live: ['Live', '#6fe3b4'], integrating: ['Integrating', '#8fb8ff'], evaluating: ['Evaluating', '#8a8f98'] };
+const PEOPLE = { 'Sarah Mitchell': 'women/44', 'James Carter': 'men/32', 'Emma Lawson': 'women/68', 'Daniel Brooks': 'men/46' };
+const ROWS = [
+  ['p1', 'Meridian FX', 'fx', 'United Kingdom', 'live', 'Sarah Mitchell', '€4.2M', '2h ago', 'FCA API', '0.15% spread'],
+  ['p2', 'Ledgerline', 'payouts', 'Ireland', 'live', 'James Carter', '€1.8M', 'Yesterday', 'CBI EMI', '0.3%'],
+  ['p3', 'Kestrel Identity', 'kyc', 'Estonia', 'integrating', 'Emma Lawson', '12,400 checks', 'Today', 'eIDAS QTSP', '$0.45 / check'],
+  ['p4', 'Northbeam Cards', 'cards', 'United Kingdom', 'integrating', 'Daniel Brooks', '—', 'Mon', 'FCA EMI', '£0.50 / card'],
+  ['p5', 'Tidepool Pay', 'collections', 'Netherlands', 'evaluating', 'Sarah Mitchell', '—', 'Oct 10', 'DNB EMI', '0.2% + €0.10'],
+  ['p6', 'Cobalt Markets', 'fx', 'Switzerland', 'evaluating', 'James Carter', '—', 'Oct 8', 'FINMA', '0.12% spread']
+].map(([id, name, kind, hq, stage, owner, volume, updated, licence, price], i) => ({ id, name, kind, hq, stage, owner, volume, updated, licence, price, pid: ['meridian', 'ledgerline', 'kestrel', 'northbeam', 'tidepool', 'cobalt'][i], code: 'PRV-' + (1040 + i * 7) }));
+class Component extends DCLogic {
+  state = { tab: 'all', open: null, stages: Object.fromEntries(ROWS.map(r => [r.id, r.stage])), removed: [] };
+  renderVals() {
+    const S = this.state;
+    const all = ROWS.filter(r => !S.removed.includes(r.id));
+    const list = all.filter(r => S.tab === 'all' || S.stages[r.id] === S.tab);
+    const tab = (k, l) => ({ label: l, count: k === 'all' ? all.length : all.filter(r => S.stages[r.id] === k).length, pick: () => this.setState({ tab: k }), fg: S.tab === k ? '#f7f8f8' : '#8a8f98', line: S.tab === k ? 1 : 0 });
+    const c = ROWS.find(r => r.id === S.open) ?? ROWS[0], on = !!S.open;
+    return {
+      tabs: [tab('all', 'All'), tab('live', 'Live'), tab('integrating', 'Integrating'), tab('evaluating', 'Evaluating')],
+      rows: list.map(r => ({ ...r, cat: CAT[r.kind], status: STAGE[S.stages[r.id]][0], dot: STAGE[S.stages[r.id]][1], ownerImg: `https://randomuser.me/api/portraits/${PEOPLE[r.owner]}.jpg`, open: () => this.setState({ open: r.id }), bg: S.open === r.id ? 'rgba(255,255,255,.03)' : 'transparent' })),
+      empty: list.length === 0,
+      dr: { op: on ? 1 : 0, pe: on ? 'auto' : 'none', tf: on ? 'translateX(0)' : 'translateX(24px)' },
+      close: () => this.setState({ open: null }),
+      cur: { ...c, cat: CAT[c.kind], facts: [{ k: 'Licence', v: c.licence }, { k: 'Pricing', v: c.price }, { k: 'Owner', v: c.owner }, { k: 'Volume, 30 days', v: c.volume }], log: [{ t: 'Stage set to ' + STAGE[S.stages[c.id]][0].toLowerCase(), d: c.updated }, { t: 'Sandbox keys received', d: 'Oct 6' }, { t: 'Added from directory by ' + c.owner.split(' ')[0], d: 'Sep 28' }] },
+      stages: Object.entries(STAGE).map(([k, [l, d]]) => { const a = S.stages[c.id] === k; return { label: l, dot: d, bg: a ? 'rgba(255,255,255,.08)' : 'transparent', fg: a ? '#f7f8f8' : '#8a8f98', pick: () => this.setState(s => ({ stages: { ...s.stages, [c.id]: k } })) }; }),
+      remove: () => this.setState(s => ({ removed: [...s.removed, c.id], open: null })),
+      expand: () => { this.setState({ open: null }); this.props.onOpenProvider ? this.props.onOpenProvider(c.pid, 'providers') : this.props.onNavigate?.('provider', { id: c.pid, from: 'providers' }); },
+      goDirectory: () => this.props.onNavigate?.('directory')
+    };
+  }
+}
+</script>
+</body>
+</html>

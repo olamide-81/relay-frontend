@@ -3,16 +3,30 @@ import { getAllReportSlugs } from '@/data/reports'
 import { routing } from '@/i18n/routing'
 import { languageAlternates, localizedPath } from '@/lib/seo'
 import { SITE_URL } from '@/lib/site'
+import { CATEGORY_META } from '@/lib/dc/meta'
 
 /** Public, indexable routes only — auth flows stay out of the sitemap. */
 const STATIC_PATHS = [
   '',
-  '/reports',
+  '/product',
+  '/directory',
+  '/intelligence',
+  '/customers',
+  '/pricing',
+  '/contact',
   '/about',
+  '/careers',
+  '/changelog',
+  '/security',
+  '/developers',
+  '/for-providers',
+  ...Object.keys(CATEGORY_META).map((kind) => `/categories/${kind}`),
+  '/reports',
   '/methodology',
   '/privacy',
   '/terms',
-] as const
+  '/cookies',
+]
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const entries: MetadataRoute.Sitemap = []

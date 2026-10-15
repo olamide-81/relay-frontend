@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<div style="position:relative;flex:none;width:{{ px }};height:{{ px }};border-radius:23%;overflow:hidden;background:{{ bg }};box-shadow:inset 0 1px 0 rgba(255,255,255,.45),inset 0 -3px 8px rgba(0,0,0,.18),0 0 0 1px rgba(0,0,0,.25),0 14px 34px -10px rgba(0,0,0,.7)">
+  <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.22) 0%,rgba(255,255,255,0) 48%)"></div>
+  <svg viewBox="0 0 100 100" width="100%" height="100%" style="position:absolute;inset:0;display:block;filter:drop-shadow(0 2px 3px rgba(0,0,0,.18))">
+    <sc-if value="{{ isAll }}" hint-placeholder-val="{{ true }}">
+      <rect x="18" y="18" width="29" height="29" rx="9" fill="#ffffff"></rect>
+      <rect x="53" y="18" width="29" height="29" rx="9" fill="#ffffff" fill-opacity=".5"></rect>
+      <rect x="18" y="53" width="29" height="29" rx="9" fill="#ffffff" fill-opacity=".5"></rect>
+      <circle cx="67.5" cy="67.5" r="14.5" fill="#6fe3b4"></circle>
+    </sc-if>
+    <sc-if value="{{ isBank }}">
+      <path d="M50 13 84 30.5a3 3 0 0 1-1.4 5.7H17.4a3 3 0 0 1-1.4-5.7z" fill="#ffffff"></path>
+      <circle cx="50" cy="27" r="5" fill="#d9467a"></circle>
+      <rect x="20" y="40" width="60" height="5" rx="2.5" fill="#ffffff" fill-opacity=".9"></rect>
+      <rect x="24" y="48" width="9" height="24" rx="3" fill="#ffffff" fill-opacity=".62"></rect>
+      <rect x="38.5" y="48" width="9" height="24" rx="3" fill="#ffffff" fill-opacity=".62"></rect>
+      <rect x="52.5" y="48" width="9" height="24" rx="3" fill="#ffffff" fill-opacity=".62"></rect>
+      <rect x="67" y="48" width="9" height="24" rx="3" fill="#ffffff" fill-opacity=".62"></rect>
+      <rect x="18" y="75" width="64" height="5.5" rx="2.75" fill="#ffffff" fill-opacity=".9"></rect>
+      <rect x="13" y="82.5" width="74" height="6" rx="3" fill="#ffffff"></rect>
+    </sc-if>
+    <sc-if value="{{ isGlobe }}">
+      <circle cx="50" cy="50" r="30" fill="#ffffff" fill-opacity=".3"></circle>
+      <circle cx="50" cy="50" r="30" fill="none" stroke="#ffffff" stroke-width="6"></circle>
+      <ellipse cx="50" cy="50" rx="13" ry="30" fill="none" stroke="#ffffff" stroke-width="5"></ellipse>
+      <path d="M21 50h58" stroke="#ffffff" stroke-width="5"></path>
+    </sc-if>
+    <sc-if value="{{ isWallet }}">
+      <rect x="16" y="26" width="62" height="50" rx="12" fill="#ffffff"></rect>
+      <rect x="54" y="42" width="30" height="20" rx="8" fill="#c9861a"></rect>
+      <circle cx="64" cy="52" r="4" fill="#ffffff"></circle>
+    </sc-if>
+    <sc-if value="{{ isApi }}">
+      <path d="M38 30 20 50l18 20" fill="none" stroke="#ffffff" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"></path>
+      <path d="M62 30 80 50 62 70" fill="none" stroke="#ffffff" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"></path>
+      <path d="M55 24 45 76" stroke="#ffffff" stroke-opacity=".55" stroke-width="7" stroke-linecap="round"></path>
+    </sc-if>
+    <sc-if value="{{ isChart }}">
+      <rect x="20" y="54" width="14" height="26" rx="5" fill="#ffffff" fill-opacity=".55"></rect>
+      <rect x="43" y="38" width="14" height="42" rx="5" fill="#ffffff" fill-opacity=".8"></rect>
+      <rect x="66" y="20" width="14" height="60" rx="5" fill="#ffffff"></rect>
+    </sc-if>
+    <sc-if value="{{ isPro }}">
+      <rect x="24" y="44" width="52" height="40" rx="11" fill="#ffffff"></rect>
+      <path d="M36 44V34a14 14 0 0 1 27-5" fill="none" stroke="#ffffff" stroke-width="8" stroke-linecap="round"></path>
+      <circle cx="50" cy="61" r="5.5" fill="#6b4fd8"></circle>
+      <rect x="47.5" y="62" width="5" height="11" rx="2.5" fill="#6b4fd8"></rect>
+    </sc-if>
+    <sc-if value="{{ isCollections }}">
+      <rect x="18" y="54" width="64" height="28" rx="10" fill="#ffffff" fill-opacity=".38"></rect>
+      <rect x="46.5" y="12" width="7" height="9" rx="3.5" fill="#ffffff" fill-opacity=".55"></rect>
+      <circle cx="50" cy="44" r="18" fill="#ffffff"></circle>
+      <path d="M42 41.5l8 8 8-8" fill="none" stroke="#15a171" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"></path>
+    </sc-if>
+    <sc-if value="{{ isPayouts }}">
+      <rect x="18" y="34" width="48" height="48" rx="13" fill="#10130a" fill-opacity=".16"></rect>
+      <path d="M40 60 72 28" fill="none" stroke="#10130a" stroke-width="10" stroke-linecap="round"></path>
+      <path d="M50 28h22v22" fill="none" stroke="#10130a" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"></path>
+    </sc-if>
+    <sc-if value="{{ isFx }}">
+      <circle cx="39" cy="40" r="22" fill="#ffffff" fill-opacity=".38"></circle>
+      <text x="39" y="49" text-anchor="middle" font-family="Geist,system-ui,sans-serif" font-size="25" font-weight="600" fill="#ffffff">€</text>
+      <circle cx="61" cy="61" r="22" fill="#ffffff"></circle>
+      <text x="61" y="70.5" text-anchor="middle" font-family="Geist,system-ui,sans-serif" font-size="26" font-weight="600" fill="#3b6be0">$</text>
+    </sc-if>
+    <sc-if value="{{ isCards }}">
+      <rect x="24" y="20" width="58" height="38" rx="8" fill="#ffffff" fill-opacity=".36" transform="rotate(-9 53 39)"></rect>
+      <rect x="16" y="40" width="66" height="42" rx="8" fill="#ffffff"></rect>
+      <rect x="24" y="50" width="13" height="10" rx="2.5" fill="#7a55e6"></rect>
+      <rect x="24" y="68" width="28" height="4.5" rx="2.25" fill="#7a55e6" fill-opacity=".4"></rect>
+      <rect x="58" y="68" width="16" height="4.5" rx="2.25" fill="#7a55e6" fill-opacity=".4"></rect>
+    </sc-if>
+    <sc-if value="{{ isKyc }}">
+      <rect x="14" y="24" width="66" height="48" rx="9" fill="#ffffff"></rect>
+      <circle cx="32" cy="43" r="7.5" fill="#ee7434"></circle>
+      <rect x="22.5" y="53" width="19" height="9" rx="4.5" fill="#ee7434"></rect>
+      <rect x="50" y="38" width="22" height="5" rx="2.5" fill="#ee7434" fill-opacity=".45"></rect>
+      <rect x="50" y="49" width="15" height="5" rx="2.5" fill="#ee7434" fill-opacity=".45"></rect>
+      <circle cx="76" cy="74" r="13" fill="#15a171" stroke="#ffffff" stroke-width="3.5"></circle>
+      <path d="M70.5 74.5l4 4 7-8" fill="none" stroke="#ffffff" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"></path>
+    </sc-if>
+  </svg>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:160,&quot;height&quot;:160},&quot;kind&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;all&quot;,&quot;collections&quot;,&quot;payouts&quot;,&quot;fx&quot;,&quot;cards&quot;,&quot;kyc&quot;,&quot;bank&quot;],&quot;default&quot;:&quot;all&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;size&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:96,&quot;tsType&quot;:&quot;number&quot;}}">
+const BG = {
+  all: 'linear-gradient(180deg,#43464e 0%,#18191c 100%)',
+  collections: 'linear-gradient(180deg,#8ff3cb 0%,#17a874 100%)',
+  payouts: 'linear-gradient(180deg,#eefa7c 0%,#a5cc1c 100%)',
+  fx: 'linear-gradient(180deg,#a9c9ff 0%,#3b6be0 100%)',
+  cards: 'linear-gradient(180deg,#d2c0ff 0%,#7a55e6 100%)',
+  kyc: 'linear-gradient(180deg,#ffc8a3 0%,#ee7434 100%)',
+  bank: 'linear-gradient(180deg,#ffa3c2 0%,#d9467a 100%)',
+  globe: 'linear-gradient(180deg,#7fe6e6 0%,#1a9ea8 100%)',
+  wallet: 'linear-gradient(180deg,#ffd98a 0%,#e0a130 100%)',
+  api: 'linear-gradient(180deg,#9aa6ff 0%,#4b55d6 100%)',
+  chart: 'linear-gradient(180deg,#9fe3ff 0%,#2f8fd0 100%)',
+  pro: 'linear-gradient(135deg,#6fe3b4 0%,#8fb8ff 40%,#b9a3ff 70%,#ffab7a 100%)'
+};
+class Component extends DCLogic {
+  renderVals() {
+    const k = this.props.kind ?? 'all';
+    return {
+      px: (this.props.size ?? 96) + 'px', bg: BG[k] ?? BG.all,
+      isAll: k === 'all', isCollections: k === 'collections', isPayouts: k === 'payouts', isFx: k === 'fx', isCards: k === 'cards', isKyc: k === 'kyc', isPro: k === 'pro', isBank: k === 'bank' || k === 'banks', isGlobe: k === 'globe', isWallet: k === 'wallet', isApi: k === 'api', isChart: k === 'chart'
+    };
+  }
+}
+</script>
+</body>
+</html>

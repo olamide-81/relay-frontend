@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="relay-data.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;background:#161719;color:#f7f8f8;font-family:"Geist",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#8a8f98;text-decoration:none}
+a:hover{color:#f7f8f8}
+input::placeholder{color:#62666d}
+</style>
+</helmet>
+<div style="position:relative;font-family:Geist,system-ui,sans-serif;color:#f7f8f8">
+<div style="max-width:1200px;margin:0 auto;padding:36px 40px 56px;display:flex;flex-direction:column;gap:24px">
+  <div style="display:flex;align-items:flex-end;gap:16px;flex-wrap:wrap">
+    <div style="flex:1 1 320px;min-width:0">
+      <h1 style="margin:0;font-size:22px;font-weight:500;letter-spacing:-0.02em">{{ heading }}</h1>
+      <div style="font-size:13.5px;color:#8a8f98;margin-top:6px">Line up to four Providers side by side. Best values are marked.</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+      <span onClick="{{ toggleDiff }}" style="display:inline-flex;align-items:center;gap:8px;height:32px;padding:0 12px;border-radius:8px;font-size:13px;font-weight:500;color:#d4d6da;cursor:pointer;box-shadow:inset 0 0 0 1px rgba(255,255,255,.09)" style-hover="background:rgba(255,255,255,.04)">
+        <span style="width:28px;height:16px;border-radius:999px;position:relative;transition:background-color .15s;background:{{ diffTrack }}"><span style="position:absolute;top:2px;left:2px;width:12px;height:12px;border-radius:50%;background:#f7f8f8;transition:transform .15s;transform:{{ diffKnob }}"></span></span>
+        Only differences
+      </span>
+      <span onClick="{{ addToShortlist }}" style="height:32px;padding:0 12px;display:inline-flex;align-items:center;border-radius:8px;font-size:13px;font-weight:500;color:#d4d6da;cursor:pointer;box-shadow:inset 0 0 0 1px rgba(255,255,255,.09);opacity:{{ actOp }}" style-hover="background:rgba(255,255,255,.04)">Add to shortlist</span>
+      <span onClick="{{ openSave }}" style="height:32px;padding:0 14px;display:inline-flex;align-items:center;border-radius:8px;font-size:13px;font-weight:500;color:#0f1011;background:#f7f8f8;cursor:pointer;opacity:{{ actOp }}" style-hover="background:#e3e5e8">Save comparison</span>
+    </div>
+  </div>
+
+  <sc-if value="{{ hasCols }}" hint-placeholder-val="{{ true }}">
+    <div style="border-radius:12px;box-shadow:0 0 0 1px rgba(255,255,255,.06);background:rgba(255,255,255,.012);overflow-x:auto">
+      <div style="min-width:760px">
+        <div style="display:grid;grid-template-columns:{{ cols }};border-bottom:1px solid rgba(255,255,255,.06)">
+          <div style="padding:18px 20px;font-size:12px;color:#62666d;display:flex;flex-direction:column;justify-content:flex-end;gap:8px"><span>{{ countLabel }}</span><span onClick="{{ clearAll }}" style="font-weight:500;color:#8a8f98;cursor:pointer;width:fit-content" style-hover="color:#f7f8f8">Clear all</span></div>
+          <sc-for list="{{ picked }}" as="p" hint-placeholder-count="3">
+            <div style="padding:18px 16px;border-left:1px solid rgba(255,255,255,.06);display:flex;flex-direction:column;gap:12px">
+              <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px">
+                <dc-import name="Relay App Icon" kind="{{ p.kind }}" size="36" hint-size="36px,36px"></dc-import>
+                <span onClick="{{ p.remove }}" title="Remove" style="width:24px;height:24px;display:grid;place-items:center;border-radius:6px;color:#62666d;cursor:pointer" style-hover="background:rgba(255,255,255,.06);color:#f7f8f8"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"></path></svg></span>
+              </div>
+              <div style="min-width:0">
+                <div style="font-size:14px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ p.name }}</div>
+                <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:#8a8f98;margin-top:4px;white-space:nowrap;overflow:hidden"><span style="width:6px;height:6px;border-radius:50%;flex:none;background:{{ p.accent }}"></span>{{ p.cat }} · {{ p.hq }}</div>
+              </div>
+            </div>
+          </sc-for>
+          <sc-if value="{{ canAdd }}">
+            <div style="padding:14px;border-left:1px solid rgba(255,255,255,.06);position:relative;display:flex">
+              <div onClick="{{ togglePicker }}" style="flex:1;min-height:96px;border-radius:10px;border:1px dashed rgba(255,255,255,.12);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:#8a8f98;font-size:12.5px;font-weight:500;cursor:pointer;transition:border-color .12s,color .12s" style-hover="border-color:rgba(255,255,255,.24);color:#f7f8f8">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg>
+                Add Provider
+              </div>
+              <div style="position:absolute;top:calc(100% - 6px);right:14px;width:320px;z-index:20;padding:6px;background:rgba(32,33,37,.92);backdrop-filter:blur(18px) saturate(140%);-webkit-backdrop-filter:blur(18px) saturate(140%);border-radius:10px;box-shadow:0 0 0 1px rgba(255,255,255,.08),0 16px 40px rgba(0,0,0,.45);transition:opacity .14s,transform .14s;opacity:{{ pick.op }};transform:{{ pick.tf }};pointer-events:{{ pick.pe }}">
+                <input value="{{ q }}" onChange="{{ onQ }}" placeholder="Search Providers" style="width:100%;height:32px;padding:0 10px;border:none;outline:none;border-radius:7px;background:rgba(255,255,255,.04);color:#f7f8f8;font:13px Geist,system-ui,sans-serif">
+                <div style="display:flex;gap:4px;padding:6px 0;overflow-x:auto;scrollbar-width:none">
+                  <sc-for list="{{ pickCats }}" as="c" hint-placeholder-count="7"><span onClick="{{ c.pick }}" style="height:24px;padding:0 8px;display:inline-flex;align-items:center;border-radius:6px;font-size:12px;font-weight:500;white-space:nowrap;cursor:pointer;background:{{ c.bg }};color:{{ c.fg }}">{{ c.label }}</span></sc-for>
+                </div>
+                <div style="max-height:260px;overflow-y:auto;scrollbar-width:none">
+                  <sc-for list="{{ options }}" as="o" hint-placeholder-count="4">
+                    <div onClick="{{ o.add }}" style="display:flex;align-items:center;gap:10px;height:38px;padding:0 8px;border-radius:7px;cursor:pointer" style-hover="background:rgba(255,255,255,.06)">
+                      <dc-import name="Relay App Icon" kind="{{ o.kind }}" size="22" hint-size="22px,22px"></dc-import>
+                      <span style="flex:1;min-width:0;font-size:13px;color:#d4d6da;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ o.name }}</span>
+                      <span style="font-size:12px;color:#62666d;white-space:nowrap">{{ o.hq }}</span>
+                    </div>
+                  </sc-for>
+                  <sc-if value="{{ noOptions }}"><div style="padding:14px 8px;font-size:12.5px;color:#62666d">No matching Providers</div></sc-if>
+                </div>
+              </div>
+            </div>
+          </sc-if>
+        </div>
+        <sc-for list="{{ rows }}" as="r" hint-placeholder-count="8">
+          <div style="display:grid;grid-template-columns:{{ cols }};border-bottom:1px solid rgba(255,255,255,.04);transition:background-color .12s" style-hover="background:rgba(255,255,255,.02)">
+            <div style="padding:14px 20px;font-size:13px;color:#8a8f98">{{ r.label }}</div>
+            <sc-for list="{{ r.cells }}" as="c" hint-placeholder-count="3">
+              <div style="padding:14px 16px;border-left:1px solid rgba(255,255,255,.06);display:flex;align-items:center;gap:8px;font-size:13px;font-variant-numeric:tabular-nums;color:{{ c.fg }};font-weight:{{ c.weight }}">
+                <span style="min-width:0">{{ c.v }}</span>
+                <sc-if value="{{ c.best }}"><span style="font-size:11px;font-weight:500;color:#6fe3b4;padding:1px 7px;border-radius:999px;background:rgba(111,227,180,.1)">Best</span></sc-if>
+              </div>
+            </sc-for>
+            <sc-if value="{{ canAdd }}"><div style="border-left:1px solid rgba(255,255,255,.06)"></div></sc-if>
+          </div>
+        </sc-for>
+        <div style="display:grid;grid-template-columns:{{ cols }}">
+          <div></div>
+          <sc-for list="{{ picked }}" as="p" hint-placeholder-count="3">
+            <div style="padding:14px 16px;border-left:1px solid rgba(255,255,255,.06)">
+              <span onClick="{{ p.request }}" style="height:30px;padding:0 12px;display:inline-flex;align-items:center;border-radius:7px;font-size:12.5px;font-weight:500;cursor:pointer;transition:background-color .12s;color:{{ p.btnFg }};background:{{ p.btnBg }}">{{ p.btnLabel }}</span>
+            </div>
+          </sc-for>
+          <sc-if value="{{ canAdd }}"><div style="border-left:1px solid rgba(255,255,255,.06)"></div></sc-if>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ noCols }}">
+    <div style="border-radius:12px;box-shadow:0 0 0 1px rgba(255,255,255,.06);background:rgba(255,255,255,.012);padding:64px 24px;display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center">
+      <dc-import name="Relay App Icon" kind="all" size="44" hint-size="44px,44px"></dc-import>
+      <div style="font-size:14px;font-weight:500;margin-top:8px">Nothing to compare yet</div>
+      <div style="font-size:13px;color:#62666d;max-width:320px">Add Providers from the directory, open a saved comparison, or start with a suggested set.</div>
+      <span onClick="{{ suggest }}" style="margin-top:10px;height:32px;padding:0 14px;display:inline-flex;align-items:center;border-radius:8px;font-size:13px;font-weight:500;color:#0f1011;background:#f7f8f8;cursor:pointer" style-hover="background:#e3e5e8">Compare FX Providers</span>
+    </div>
+  </sc-if>
+
+  <section style="display:flex;flex-direction:column;gap:12px">
+    <div style="display:flex;align-items:center;gap:8px;padding:0 2px"><span style="font-size:13.5px;font-weight:500">Saved comparisons</span><span style="font-size:12px;color:#62666d">{{ savedCount }}</span></div>
+    <sc-if value="{{ hasSaved }}" hint-placeholder-val="{{ true }}">
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px">
+        <sc-for list="{{ saved }}" as="s" hint-placeholder-count="3">
+          <div onClick="{{ s.open }}" style="position:relative;border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:12px;cursor:pointer;transition:background-color .12s,box-shadow .12s;background:{{ s.bg }};box-shadow:{{ s.ring }}" style-hover="background:rgba(255,255,255,.03)">
+            <div style="display:flex;align-items:center;gap:10px">
+              <dc-import name="Relay App Icon" kind="{{ s.kind }}" size="28" hint-size="28px,28px"></dc-import>
+              <div style="flex:1;min-width:0"><div style="font-size:13.5px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ s.name }}</div><div style="font-size:12px;color:#62666d;margin-top:2px">{{ s.meta }}</div></div>
+              <span onClick="{{ s.del }}" title="Delete" style="width:26px;height:26px;display:grid;place-items:center;border-radius:6px;color:#62666d;cursor:pointer" style-hover="background:rgba(255,255,255,.06);color:#f7f8f8"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"></path></svg></span>
+            </div>
+            <div style="font-size:12.5px;color:#8a8f98;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ s.names }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </sc-if>
+    <sc-if value="{{ noSaved }}">
+      <div style="border-radius:12px;border:1px dashed rgba(255,255,255,.1);padding:28px 20px;font-size:12.5px;color:#62666d;text-align:center">Save a comparison to come back to it, or star it to pin it in Favorites.</div>
+    </sc-if>
+  </section>
+</div>
+
+<div onClick="{{ closeSave }}" style="position:fixed;inset:0;z-index:40;background:rgba(0,0,0,.45);transition:opacity .18s;opacity:{{ sm.op }};pointer-events:{{ sm.pe }}"></div>
+<div style="position:fixed;left:50%;top:50%;z-index:41;width:440px;max-width:calc(100% - 32px);border-radius:14px;background:rgba(28,29,32,.97);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);box-shadow:0 0 0 1px rgba(255,255,255,.08),0 24px 64px rgba(0,0,0,.55);transition:opacity .18s,transform .22s cubic-bezier(.2,.8,.2,1);opacity:{{ sm.op }};transform:{{ sm.tf }};pointer-events:{{ sm.pe }}">
+  <div style="padding:18px 20px 0;font-size:15px;font-weight:500">Save comparison</div>
+  <div style="padding:16px 20px;display:flex;flex-direction:column;gap:14px">
+    <div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:12px;color:#8a8f98">Name</span>
+      <input value="{{ saveName }}" onChange="{{ onSaveName }}" placeholder="E.g. FX for APAC launch" style="height:34px;padding:0 10px;border:none;outline:none;border-radius:8px;background:rgba(255,255,255,.03);box-shadow:inset 0 0 0 1px rgba(255,255,255,.08);color:#f7f8f8;font:13px Geist,system-ui,sans-serif" style-focus="box-shadow:inset 0 0 0 1px rgba(111,227,180,.45)">
+    </div>
+    <div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:12px;color:#8a8f98">Category · Optional</span>
+      <div style="display:flex;gap:6px;flex-wrap:wrap">
+        <sc-for list="{{ saveCats }}" as="c" hint-placeholder-count="7"><span onClick="{{ c.pick }}" style="height:30px;padding:0 10px 0 5px;display:inline-flex;align-items:center;gap:7px;border-radius:8px;font-size:12.5px;font-weight:500;cursor:pointer;white-space:nowrap;transition:background-color .12s,box-shadow .12s;background:{{ c.bg }};color:{{ c.fg }};box-shadow:{{ c.ring }}"><dc-import name="Relay App Icon" kind="{{ c.kind }}" size="18" hint-size="18px,18px"></dc-import>{{ c.label }}</span></sc-for>
+      </div>
+    </div>
+    <div style="font-size:12.5px;color:#62666d">{{ saveSummary }}</div>
+  </div>
+  <div style="display:flex;justify-content:flex-end;gap:8px;padding:14px 20px;border-top:1px solid rgba(255,255,255,.06)">
+    <span onClick="{{ closeSave }}" style="height:32px;padding:0 12px;display:inline-flex;align-items:center;border-radius:8px;font-size:13px;font-weight:500;color:#d4d6da;cursor:pointer" style-hover="background:rgba(255,255,255,.05)">Cancel</span>
+    <span onClick="{{ doSave }}" style="height:32px;padding:0 14px;display:inline-flex;align-items:center;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;color:{{ saveBtn.fg }};background:{{ saveBtn.bg }}">Save</span>
+  </div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const EMPTY = { CAT: {}, providers: [], byId: {} };
+const ROWS = [
+  ['Pricing from', p => p.price, null],
+  ['Settlement', p => p.settle, null],
+  ['Countries', p => String(p.countries), p => p.countries],
+  ['Currencies', p => p.currencies ? String(p.currencies) : '—', p => p.currencies],
+  ['Licence', p => p.licence, null],
+  ['API', p => p.apiText, p => p.api.length],
+  ['Uptime, 90 days', p => p.uptime.toFixed(2) + '%', p => p.uptime],
+  ['Typical go-live', p => p.golive + ' days', p => -p.golive],
+  ['Relay score', p => p.score + ' / 100', p => p.score]
+];
+class Component extends DCLogic {
+  state = { ids: this.props.ids?.length ? this.props.ids.slice(0, 4) : ['meridian', 'cobalt', 'pacifica'], diff: false, picker: false, q: '', pcat: 'all', requested: {}, save: false, saveName: '', saveCat: null, activeSaved: this.props.savedId ?? null };
+  componentDidMount() { if (!window.RELAY) this._i = setInterval(() => { if (window.RELAY) { clearInterval(this._i); this.forceUpdate(); } }, 40); }
+  componentWillUnmount() { clearInterval(this._i); }
+  componentDidUpdate(prev) {
+    if (prev.ids !== this.props.ids && this.props.ids?.length) this.setState({ ids: this.props.ids.slice(0, 4), activeSaved: this.props.savedId ?? null });
+  }
+  renderVals() {
+    const R = window.RELAY ?? EMPTY, S = this.state;
+    const picked = S.ids.map(id => R.byId[id]).filter(Boolean);
+    const canAdd = picked.length < 4;
+    const cols = `200px repeat(${picked.length}, minmax(0,1fr))${canAdd ? ' minmax(0,1fr)' : ''}`;
+    let rows = ROWS.map(([label, fmt, score]) => {
+      const vals = picked.map(fmt);
+      const top = score && picked.length > 1 ? Math.max(...picked.map(score)) : null;
+      const bc = top == null ? 0 : picked.filter(p => score(p) === top).length;
+      return { label, same: new Set(vals).size <= 1, cells: picked.map((p, i) => { const best = top != null && bc < picked.length && score(p) === top; return { v: vals[i], best, fg: best ? '#f7f8f8' : '#b4b8bf', weight: best ? 500 : 400 }; }) };
+    });
+    if (S.diff) rows = rows.filter(r => !r.same);
+    const q = S.q.trim().toLowerCase();
+    const options = R.providers.filter(p => !S.ids.includes(p.id) && (S.pcat === 'all' || p.kind === S.pcat) && (!q || (p.name + ' ' + p.hq).toLowerCase().includes(q))).slice(0, 40).map(p => ({ ...p, add: () => this.setState(s => ({ ids: [...s.ids, p.id], picker: false, q: '' })) }));
+    const catChip = (k, label, cur, set) => ({ kind: k, label, pick: () => set(k), bg: cur === k ? 'rgba(255,255,255,.08)' : 'transparent', fg: cur === k ? '#f7f8f8' : '#8a8f98', ring: cur === k ? 'inset 0 0 0 1px rgba(255,255,255,.14)' : 'inset 0 0 0 1px rgba(255,255,255,.06)' });
+    const cats = Object.entries(R.CAT);
+    const on = S.picker, sOn = S.save, has = picked.length > 0, nameOk = S.saveName.trim().length > 0;
+    const saved = this.props.saved ?? [];
+    const act = saved.find(s => s.id === S.activeSaved);
+    return {
+      heading: act ? act.name : 'Compare Providers',
+      cols, rows, canAdd, hasCols: has, noCols: !has, actOp: has ? 1 : .4,
+      countLabel: picked.length + ' of 4 selected',
+      picked: picked.map(p => { const r = S.requested[p.id]; return { ...p, remove: () => this.setState(s => ({ ids: s.ids.filter(x => x !== p.id) })), request: () => this.setState(s => ({ requested: { ...s.requested, [p.id]: true } })), btnLabel: r ? 'Intro requested' : 'Request intro', btnFg: r ? '#6fe3b4' : '#0f1011', btnBg: r ? 'rgba(111,227,180,.1)' : '#f7f8f8' }; }),
+      options, noOptions: options.length === 0, q: S.q, onQ: e => this.setState({ q: e.target.value }),
+      pickCats: [catChip('all', 'All', S.pcat, k => this.setState({ pcat: k })), ...cats.map(([k, v]) => catChip(k, v.label, S.pcat, k2 => this.setState({ pcat: k2 })))],
+      togglePicker: () => this.setState(s => ({ picker: !s.picker })),
+      pick: { op: on ? 1 : 0, tf: on ? 'translateY(0) scale(1)' : 'translateY(-4px) scale(.98)', pe: on ? 'auto' : 'none' },
+      toggleDiff: () => this.setState(s => ({ diff: !s.diff })), diffTrack: S.diff ? '#6fe3b4' : 'rgba(255,255,255,.14)', diffKnob: S.diff ? 'translateX(12px)' : 'translateX(0)',
+      clearAll: () => this.setState({ ids: [], picker: false, activeSaved: null }),
+      suggest: () => this.setState({ ids: ['meridian', 'cobalt', 'pacifica'] }),
+      addToShortlist: () => has && this.props.onAddToShortlist?.(S.ids),
+      openSave: () => has && this.setState({ save: true, saveName: act?.name ?? '', saveCat: act?.kind && act.kind !== 'all' ? act.kind : null }),
+      closeSave: () => this.setState({ save: false }),
+      sm: { op: sOn ? 1 : 0, pe: sOn ? 'auto' : 'none', tf: sOn ? 'translate(-50%,-50%) scale(1)' : 'translate(-50%,-48%) scale(.98)' },
+      saveName: S.saveName, onSaveName: e => this.setState({ saveName: e.target.value }),
+      saveCats: [catChip('none', 'None', S.saveCat ?? 'none', () => this.setState({ saveCat: null })), ...cats.map(([k, v]) => catChip(k, v.label, S.saveCat, k2 => this.setState({ saveCat: k2 })))].map(c => c.kind === 'none' ? { ...c, kind: 'all' } : c),
+      saveSummary: picked.map(p => p.name).join(', '),
+      saveBtn: { fg: nameOk ? '#0f1011' : '#62666d', bg: nameOk ? '#f7f8f8' : 'rgba(255,255,255,.05)' },
+      doSave: () => { if (!nameOk) return; const id = act && act.name === S.saveName.trim() ? act.id : 'cmp' + Date.now(); this.props.onSaveCompare?.({ id, name: S.saveName.trim(), kind: S.saveCat ?? 'all', ids: S.ids }); this.setState({ save: false, activeSaved: id }); },
+      savedCount: saved.length || '', hasSaved: saved.length > 0, noSaved: saved.length === 0,
+      saved: saved.map(s => ({ ...s, meta: (s.kind !== 'all' ? R.CAT[s.kind]?.label + ' · ' : '') + s.ids.length + ' Providers', names: s.ids.map(i => R.byId[i]?.name).filter(Boolean).join(', '),
+        bg: s.id === S.activeSaved ? 'rgba(255,255,255,.035)' : 'rgba(255,255,255,.012)', ring: s.id === S.activeSaved ? '0 0 0 1px rgba(255,255,255,.14)' : '0 0 0 1px rgba(255,255,255,.06)',
+        open: () => this.setState({ ids: s.ids.slice(0, 4), activeSaved: s.id }),
+        del: e => { e.stopPropagation(); this.props.onDeleteCompare?.(s.id); if (S.activeSaved === s.id) this.setState({ activeSaved: null }); } }))
+    };
+  }
+}
+</script>
+</body>
+</html>

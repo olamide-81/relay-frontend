@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;height:100%;background:#151618;color:#f7f8f8;font-family:"Geist",system-ui,sans-serif;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+a{color:#8a8f98;text-decoration:none}
+a:hover{color:#f7f8f8}
+</style>
+</helmet>
+<aside style="width:256px;height:100vh;min-height:0;overflow-y:auto;overflow-x:hidden;scrollbar-width:none;display:flex;flex-direction:column;padding:8px 10px 16px;background:#151618;font-family:Geist,system-ui,sans-serif;-webkit-font-smoothing:antialiased;position:relative">
+
+
+
+  <div style="display:flex;align-items:center;gap:8px;height:44px;margin-bottom:6px;padding:0 8px 0 6px">
+    <img src="assets/relay-icon.png" alt="Relay" style="width:18px;height:18px;display:block;flex:none;border-radius:4px">
+    <span style="font-weight:600;font-size:14px;letter-spacing:-0.012em;color:#f7f8f8">Relay</span>
+  </div>
+
+  <nav style="display:flex;flex-direction:column;gap:4px">
+    <div onClick="{{ go.overview }}" style="display:flex;align-items:center;gap:9px;height:28px;padding:0 8px;border-radius:6px;cursor:pointer;transition:background-color .12s,color .12s;background:{{ nav.overview.bg }};color:{{ nav.overview.fg }}" style-hover="background:#1d1e21;color:#f7f8f8">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="{{ nav.overview.ic }}" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"></path></svg>
+      <span style="flex:1;font-size:13.5px;font-weight:500;letter-spacing:-0.006em">Overview</span>
+    </div>
+    <div onClick="{{ go.inbox }}" style="display:flex;align-items:center;gap:9px;height:28px;padding:0 8px;border-radius:6px;cursor:pointer;transition:background-color .12s,color .12s;background:{{ nav.inbox.bg }};color:{{ nav.inbox.fg }}" style-hover="background:#1d1e21;color:#f7f8f8">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="{{ nav.inbox.ic }}" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"></polyline><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path></svg>
+      <span style="flex:1;font-size:13.5px;font-weight:500;letter-spacing:-0.006em">Inbox</span>
+      <span style="min-width:18px;height:18px;padding:0 5px;border-radius:999px;background:#26272a;display:grid;place-items:center;font-size:11px;font-weight:500;color:#d4d6da;font-variant-numeric:tabular-nums;transition:opacity .2s,transform .2s;opacity:{{ badgeOp }};transform:{{ badgeTf }}">{{ unread }}</span>
+    </div>
+    <div onClick="{{ go.compare }}" style="display:flex;align-items:center;gap:9px;height:28px;padding:0 8px;border-radius:6px;cursor:pointer;transition:background-color .12s,color .12s;background:{{ nav.compare.bg }};color:{{ nav.compare.fg }}" style-hover="background:#1d1e21;color:#f7f8f8">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="{{ nav.compare.ic }}" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><circle cx="6" cy="6" r="3"></circle><circle cx="18" cy="18" r="3"></circle><path d="M13 6h3a2 2 0 0 1 2 2v7"></path><path d="M11 18H8a2 2 0 0 1-2-2V9"></path></svg>
+      <span style="flex:1;font-size:13.5px;font-weight:500;letter-spacing:-0.006em">Compare</span>
+    </div>
+  </nav>
+
+  <div onClick="{{ toggleWs }}" style="display:flex;align-items:center;gap:4px;height:28px;margin-top:16px;padding:0 8px;border-radius:6px;cursor:pointer;font-size:12px;font-weight:500;color:#6b6f76;width:fit-content;transition:color .12s,background-color .12s" style-hover="color:#9a9ea6;background:#1d1e21">Workspace<svg width="8" height="8" viewBox="0 0 8 8" style="transform:rotate({{ wsRot }}deg);transition:transform .2s cubic-bezier(.2,.8,.2,1);margin-top:1px"><path d="M1.5 2.75h5L4 5.75z" fill="currentColor"></path></svg></div>
+  <div style="display:grid;transition:grid-template-rows .24s cubic-bezier(.2,.8,.2,1),opacity .18s;grid-template-rows:{{ wsRows }};opacity:{{ wsOp }}">
+    <div style="min-height:0;overflow:hidden">
+      <div style="display:flex;flex-direction:column;gap:4px;padding-top:4px">
+        <div onClick="{{ go.directory }}" style="display:flex;align-items:center;gap:9px;height:28px;padding:0 8px;border-radius:6px;cursor:pointer;transition:background-color .12s,color .12s;background:{{ nav.directory.bg }};color:{{ nav.directory.fg }}" style-hover="background:#1d1e21;color:#f7f8f8">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="{{ nav.directory.ic }}" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><path d="M12 7v14"></path><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"></path></svg>
+          <span style="flex:1;font-size:13.5px;font-weight:500;letter-spacing:-0.006em">Directory</span>
+        </div>
+        <div onClick="{{ go.providers }}" style="display:flex;align-items:center;gap:9px;height:28px;padding:0 8px;border-radius:6px;cursor:pointer;transition:background-color .12s,color .12s;background:{{ nav.providers.bg }};color:{{ nav.providers.fg }}" style-hover="background:#1d1e21;color:#f7f8f8">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="{{ nav.providers.ic }}" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"></path><path d="M2 12h20"></path></svg>
+          <span style="flex:1;font-size:13.5px;font-weight:500;letter-spacing:-0.006em">Providers</span>
+        </div>
+        <div style="display:grid;transition:grid-template-rows .24s cubic-bezier(.2,.8,.2,1),opacity .18s;grid-template-rows:{{ moreRows }};opacity:{{ moreOp }};margin-top:{{ moreMt }}">
+          <div style="min-height:0;overflow:hidden"><div style="display:flex;flex-direction:column;gap:4px;padding-top:4px">
+          <div onClick="{{ go.shortlists }}" style="display:flex;align-items:center;gap:9px;height:28px;padding:0 8px;border-radius:6px;cursor:pointer;transition:background-color .12s,color .12s;background:{{ nav.shortlists.bg }};color:{{ nav.shortlists.fg }}" style-hover="background:#1d1e21;color:#f7f8f8">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="{{ nav.shortlists.ic }}" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"></path></svg>
+            <span style="flex:1;font-size:13.5px;font-weight:500;letter-spacing:-0.006em">Shortlists</span>
+          </div>
+        <div onClick="{{ go.requests }}" style="display:flex;align-items:center;gap:9px;height:28px;padding:0 8px;border-radius:6px;cursor:pointer;transition:background-color .12s,color .12s;background:{{ nav.requests.bg }};color:{{ nav.requests.fg }}" style-hover="background:#1d1e21;color:#f7f8f8">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="{{ nav.requests.ic }}" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><rect width="8" height="4" x="8" y="2" rx="1"></rect><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><path d="M12 11h4"></path><path d="M12 16h4"></path><path d="M8 11h.01"></path><path d="M8 16h.01"></path></svg>
+            <span style="flex:1;font-size:13.5px;font-weight:500;letter-spacing:-0.006em">Requests</span>
+          </div>
+        <div onClick="{{ go.intelligence }}" style="display:flex;align-items:center;gap:9px;height:28px;padding:0 8px;border-radius:6px;cursor:pointer;transition:background-color .12s,color .12s;background:{{ nav.intelligence.bg }};color:{{ nav.intelligence.fg }}" style-hover="background:#1d1e21;color:#f7f8f8">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="{{ nav.intelligence.ic }}" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><path d="M3 3v16a2 2 0 0 0 2 2h16"></path><path d="m19 9-5 5-4-4-3 3"></path></svg>
+            <span style="flex:1;font-size:13.5px;font-weight:500;letter-spacing:-0.006em">Intelligence</span>
+          </div>
+        
+          </div></div>
+        </div>
+        <div onClick="{{ toggleMore }}" style="display:flex;align-items:center;gap:9px;height:28px;padding:0 8px;border-radius:6px;cursor:pointer;color:#d4d6da;transition:background-color .12s,color .12s" style-hover="background:#1d1e21;color:#f7f8f8">
+          <sc-if value="{{ moreClosed }}" hint-placeholder-val="{{ true }}"><svg width="16" height="16" viewBox="0 0 24 24" fill="#8a8f98" style="flex:none"><circle cx="5" cy="12" r="1.6"></circle><circle cx="12" cy="12" r="1.6"></circle><circle cx="19" cy="12" r="1.6"></circle></svg></sc-if>
+          <sc-if value="{{ moreOpen }}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8a8f98" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><path d="m18 15-6-6-6 6"></path></svg></sc-if>
+          <span style="flex:1;font-size:13.5px;font-weight:500;letter-spacing:-0.006em">{{ moreLabel }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div onClick="{{ toggleFav }}" style="display:flex;align-items:center;gap:4px;height:28px;margin-top:16px;padding:0 8px;border-radius:6px;cursor:pointer;font-size:12px;font-weight:500;color:#6b6f76;width:fit-content;transition:color .12s,background-color .12s" style-hover="color:#9a9ea6;background:#1d1e21">Favorites<svg width="8" height="8" viewBox="0 0 8 8" style="transform:rotate({{ favRot }}deg);transition:transform .2s cubic-bezier(.2,.8,.2,1);margin-top:1px"><path d="M1.5 2.75h5L4 5.75z" fill="currentColor"></path></svg></div>
+  <div style="display:grid;transition:grid-template-rows .24s cubic-bezier(.2,.8,.2,1),opacity .18s;grid-template-rows:{{ favRows }};opacity:{{ favOp }}">
+    <div style="min-height:0;overflow:hidden">
+      <div style="display:flex;flex-direction:column;gap:4px;padding-top:4px">
+        <sc-for list="{{ favs }}" as="f" hint-placeholder-count="4">
+          <div onClick="{{ f.select }}" onMouseEnter="{{ f.enter }}" onMouseLeave="{{ leaveFav }}" style="display:flex;align-items:center;gap:9px;height:28px;padding:0 4px 0 8px;border-radius:6px;cursor:pointer;transition:background-color .12s,color .12s;background:{{ f.bg }};color:{{ f.fg }}">
+            <span style="width:16px;height:16px;flex:none;display:grid;place-items:center">
+              <sc-if value="{{ f.isCorridor }}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#e9b949" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3 4 7l4 4"></path><path d="M4 7h16"></path><path d="m16 21 4-4-4-4"></path><path d="M20 17H4"></path></svg></sc-if>
+              <sc-if value="{{ f.isShortlist }}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6fe3b4" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path><path d="m9 12 2 2 4-4"></path></svg></sc-if>
+              <sc-if value="{{ f.isBenchmark }}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7b8ff2" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M16 7h6v6"></path><path d="m22 7-8.5 8.5-5-5L2 17"></path></svg></sc-if>
+              <sc-if value="{{ f.isPage }}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#b9a3ff" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M11.53 2.3a.53.53 0 0 1 .94 0l2.31 4.68a2.12 2.12 0 0 0 1.6 1.16l5.16.76a.53.53 0 0 1 .3.9l-3.74 3.63a2.12 2.12 0 0 0-.61 1.88l.88 5.14a.53.53 0 0 1-.77.56l-4.62-2.43a2.12 2.12 0 0 0-1.97 0L6.4 21.01a.53.53 0 0 1-.77-.56l.88-5.14a2.12 2.12 0 0 0-.61-1.88L2.16 9.8a.53.53 0 0 1 .3-.9l5.16-.76a2.12 2.12 0 0 0 1.6-1.16z"></path></svg></sc-if>
+              <sc-if value="{{ f.isWatch }}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ec7a45" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M10 18v-7"></path><path d="M11.12 2.198a2 2 0 0 1 1.76.006l7.866 3.847c.476.233.31.949-.22.949H3.474c-.53 0-.695-.716-.22-.949z"></path><path d="M14 18v-7"></path><path d="M18 18v-7"></path><path d="M3 22h18"></path><path d="M6 18v-7"></path></svg></sc-if>
+            </span>
+            <span style="flex:1;min-width:0;font-size:13.5px;font-weight:500;letter-spacing:-0.006em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ f.label }}</span>
+            <span onClick="{{ f.remove }}" title="Remove from favorites" style="width:22px;height:22px;flex:none;border-radius:5px;display:grid;place-items:center;color:#8a8f98;transition:opacity .12s;opacity:{{ f.xOp }}" style-hover="background:#2c2d30;color:#f7f8f8"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></span>
+          </div>
+        </sc-for>
+        <sc-if value="{{ favsEmpty }}">
+          <div style="margin-top:2px;padding:14px 12px;border:1px dashed #2e2f33;border-radius:8px;display:flex;flex-direction:column;gap:6px">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#62666d" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M11.53 2.3a.53.53 0 0 1 .94 0l2.31 4.68a2.12 2.12 0 0 0 1.6 1.16l5.16.76a.53.53 0 0 1 .3.9l-3.74 3.63a2.12 2.12 0 0 0-.61 1.88l.88 5.14a.53.53 0 0 1-.77.56l-4.62-2.43a2.12 2.12 0 0 0-1.97 0L6.4 21.01a.53.53 0 0 1-.77-.56l.88-5.14a2.12 2.12 0 0 0-.61-1.88L2.16 9.8a.53.53 0 0 1 .3-.9l5.16-.76a2.12 2.12 0 0 0 1.6-1.16z"></path></svg>
+            <div style="font-size:13px;font-weight:500;color:#d4d6da;margin-top:2px">No favorites yet</div>
+            <div style="font-size:12px;line-height:1.45;color:#6b6f76">Star a provider, shortlist or corridor to keep it one click away.</div>
+            <div style="display:flex;gap:6px;margin-top:6px">
+              <span onClick="{{ go.directory }}" style="height:24px;padding:0 9px;border-radius:6px;display:inline-flex;align-items:center;font-size:12px;font-weight:500;color:#f7f8f8;background:#26272a;box-shadow:inset 0 0 0 1px #2c2d30;cursor:pointer" style-hover="background:#2c2d30">Browse directory</span>
+              <span onClick="{{ restoreFavs }}" style="height:24px;padding:0 8px;border-radius:6px;display:inline-flex;align-items:center;font-size:12px;color:#8a8f98;cursor:pointer" style-hover="color:#f7f8f8;background:#1d1e21">Restore</span>
+            </div>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+  </div>
+</aside>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:256,&quot;height&quot;:640},&quot;startEmptyFavorites&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;States&quot;},&quot;inboxUnread&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:3,&quot;min&quot;:0,&quot;max&quot;:99,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;States&quot;},&quot;onNavigate&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;(key: string) =&gt; void&quot;}}">
+const DEFAULT_FAVS = [
+  { id: 'f1', label: 'EUR → USD payouts', kind: 'corridor' },
+  { id: 'f2', label: 'KYC shortlist', kind: 'shortlist' },
+  { id: 'f3', label: 'FX benchmarks', kind: 'benchmark' },
+  { id: 'f4', label: 'Licence watch', kind: 'watch' }
+];
+class Component extends DCLogic {
+  state = {
+    active: 'overview', ws: true, fav: true, wsMenu: false, more: false, hoverFav: null,
+    unread: this.props.inboxUnread ?? 3,
+    favs: this.props.startEmptyFavorites ? [] : DEFAULT_FAVS
+  };
+  componentDidMount() {
+    this._key = e => { if (e.key === 'Escape') this.setState({ wsMenu: false, more: false }); };
+    document.addEventListener('keydown', this._key);
+  }
+  componentWillUnmount() { document.removeEventListener('keydown', this._key); }
+  componentDidUpdate(prev) {
+    if (prev.startEmptyFavorites !== this.props.startEmptyFavorites) this.setState({ favs: this.props.startEmptyFavorites ? [] : DEFAULT_FAVS });
+    if (prev.inboxUnread !== this.props.inboxUnread) this.setState({ unread: this.props.inboxUnread ?? 3 });
+  }
+  navigate(k) {
+    this.setState(s => ({ active: k, wsMenu: false, unread: k === 'inbox' ? 0 : s.unread }));
+    this.props.onNavigate?.(k);
+  }
+  pop(open) {
+    return { vis: open ? 'visible' : 'hidden', op: open ? 1 : 0, tf: open ? 'translateY(0) scale(1)' : 'translateY(-4px) scale(.98)', pe: open ? 'auto' : 'none' };
+  }
+  renderVals() {
+    const S = this.state;
+    const style = on => ({ bg: on ? '#232427' : 'transparent', fg: on ? '#f7f8f8' : '#d4d6da', ic: on ? '#f7f8f8' : '#8a8f98' });
+    const A = this.props.active ?? S.active;
+    const nav = {}, go = {};
+    ['overview','inbox','compare','directory','providers','shortlists','requests','intelligence'].forEach(k => {
+      nav[k] = style(A === k);
+      go[k] = () => this.navigate(k);
+    });
+    const ws = this.pop(S.wsMenu);
+    const favs = (this.props.favorites ?? S.favs).map(f => {
+      const on = A === f.id, hov = S.hoverFav === f.id;
+      return {
+        ...f, ...style(on), bg: on ? '#232427' : hov ? '#1d1e21' : 'transparent', fg: on || hov ? '#f7f8f8' : '#d4d6da',
+        isCorridor: f.kind === 'corridor', isPage: f.kind === 'page', isShortlist: f.kind === 'shortlist', isBenchmark: f.kind === 'benchmark', isWatch: f.kind === 'watch',
+        xOp: hov ? 1 : 0,
+        select: () => this.navigate(f.id),
+        enter: () => this.setState({ hoverFav: f.id }),
+        remove: e => { e.stopPropagation(); if (this.props.onRemoveFav) { this.setState({ hoverFav: null }); return this.props.onRemoveFav(f.id); } this.setState(s => ({ favs: s.favs.filter(x => x.id !== f.id), hoverFav: null, active: s.active === f.id ? 'overview' : s.active })); }
+      };
+    });
+    return {
+      nav, go, favs, favsEmpty: favs.length === 0,
+      leaveFav: () => this.setState({ hoverFav: null }),
+      restoreFavs: () => this.props.onRestoreFavs ? this.props.onRestoreFavs() : this.setState({ favs: DEFAULT_FAVS }),
+      unread: S.unread, badgeOp: S.unread > 0 ? 1 : 0, badgeTf: S.unread > 0 ? 'scale(1)' : 'scale(.6)',
+      wsRot: S.ws ? 0 : -90, favRot: S.fav ? 0 : -90,
+      wsRows: S.ws ? '1fr' : '0fr', wsOp: S.ws ? 1 : 0,
+      favRows: S.fav ? '1fr' : '0fr', favOp: S.fav ? 1 : 0,
+      toggleWs: () => this.setState(s => ({ ws: !s.ws })),
+      toggleFav: () => this.setState(s => ({ fav: !s.fav })),
+      anyMenu: S.wsMenu,
+      closeMenus: () => this.setState({ wsMenu: false, more: false }),
+      toggleWsMenu: () => this.setState(s => ({ wsMenu: !s.wsMenu, more: false })),
+      wsBtnBg: S.wsMenu ? '#1d1e21' : 'transparent',
+      wsMenuOp: ws.op, wsMenuTf: ws.tf, wsMenuPe: ws.pe,
+      wsMenuItems: [
+                { label: 'Invite members', kbd: '' },
+        { label: 'Switch workspace', kbd: '⌥ W' }
+      ],
+      toggleMore: () => this.setState(s => ({ more: !s.more, wsMenu: false })),
+      moreOpen: S.more, moreClosed: !S.more, moreLabel: S.more ? 'Less' : 'More',
+      moreRows: S.more ? '1fr' : '0fr', moreMt: '-4px', moreOp: S.more ? 1 : 0
+    };
+  }
+}
+</script>
+</body>
+</html>

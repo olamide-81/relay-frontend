@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;background:#151618;color:#f7f8f8;font-family:"Geist",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#8a8f98;text-decoration:none}
+a:hover{color:#f7f8f8}
+</style>
+</helmet>
+<div style="font-family:Geist,system-ui,sans-serif;color:#f7f8f8">
+  <header style="max-width:1240px;margin:0 auto;padding:88px 40px 56px;display:flex;flex-direction:column;gap:18px">
+    <div style="font-family:'Geist Mono',monospace;font-size:12px;color:#62666d">RELAY · FEEDBACK SYSTEM</div>
+    <h1 style="margin:0;font-weight:500;font-size:clamp(36px,5vw,64px);letter-spacing:-0.045em;line-height:1">Toasts and confirmations. <span style="color:#8a8f98">Quiet until they matter.</span></h1>
+    <p style="margin:0;max-width:620px;font-size:16px;line-height:1.6;color:#8a8f98">Four toast states share one glass surface. Colour lives in a solid icon tile, the action and a countdown ring around dismiss. Confirmations stop destructive or lossy actions and always name what is affected.</p>
+  </header>
+
+  <section data-screen-label="Toasts" style="border-top:1px solid rgba(255,255,255,.06)">
+    <div style="max-width:1240px;margin:0 auto;padding:64px 40px;display:grid;grid-template-columns:repeat(auto-fit,minmax(360px,1fr));gap:56px;align-items:start">
+      <div style="display:flex;flex-direction:column;gap:20px">
+        <h2 style="margin:0;font-size:28px;font-weight:500;letter-spacing:-0.03em">Toasts</h2>
+        <div style="display:flex;flex-direction:column;border-radius:12px;box-shadow:0 0 0 1px rgba(255,255,255,.06)">
+          <sc-for list="{{ legend }}" as="l" hint-placeholder-count="4">
+            <div style="display:grid;grid-template-columns:110px 1fr;gap:16px;padding:14px 16px;border-bottom:1px solid rgba(255,255,255,.04)">
+              <span style="display:flex;align-items:center;gap:8px;font-size:13px;font-weight:500"><span style="width:8px;height:8px;border-radius:50%;background:{{ l.c }}"></span>{{ l.name }}</span>
+              <span style="font-size:13px;line-height:1.5;color:#8a8f98">{{ l.use }}</span>
+            </div>
+          </sc-for>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px;font-size:12.5px;color:#62666d;line-height:1.5">
+          <div>Stack bottom right, newest at the bottom, max three visible.</div>
+          <div>Auto-dismiss after 4.2s, shown by the ring. Errors stay until dismissed.</div>
+          <div>Titles are sentence case and name the outcome, not the action.</div>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;padding-top:4px">
+          <sc-for list="{{ triggers }}" as="b" hint-placeholder-count="4"><span onClick="{{ b.fire }}" style="height:32px;padding:0 12px;display:inline-flex;align-items:center;gap:8px;border-radius:8px;font-size:13px;font-weight:500;color:#d4d6da;cursor:pointer;box-shadow:inset 0 0 0 1px rgba(255,255,255,.1)" style-hover="background:rgba(255,255,255,.05);color:#f7f8f8"><span style="width:7px;height:7px;border-radius:50%;background:{{ b.c }}"></span>{{ b.label }}</span></sc-for>
+        </div>
+      </div>
+      <div style="padding:28px;border-radius:20px;background:radial-gradient(80% 80% at 100% 100%,rgba(255,255,255,.03),transparent 70%),#161719;box-shadow:inset 0 0 0 1px rgba(255,255,255,.06);display:flex;justify-content:center">
+        <dc-import name="Relay Toast" inline="{{ true }}" toasts="{{ samples }}" hint-size="360px,420px"></dc-import>
+      </div>
+    </div>
+  </section>
+
+  <section data-screen-label="Confirmations" style="border-top:1px solid rgba(255,255,255,.06)">
+    <div style="max-width:1240px;margin:0 auto;padding:64px 40px 96px;display:flex;flex-direction:column;gap:28px">
+      <div style="display:flex;align-items:flex-end;gap:16px;flex-wrap:wrap">
+        <div style="flex:1 1 360px"><h2 style="margin:0;font-size:28px;font-weight:500;letter-spacing:-0.03em">Confirmation modals</h2><p style="margin:8px 0 0;font-size:14px;color:#8a8f98;max-width:560px;line-height:1.55">Rose-red is reserved for irreversible deletes. Amber warns about lost work. Neutral confirms anything that can be undone.</p></div>
+        <span onClick="{{ openLive }}" style="height:34px;padding:0 14px;display:inline-flex;align-items:center;border-radius:9px;font-size:13px;font-weight:500;color:#0f1011;background:#f7f8f8;cursor:pointer" style-hover="background:#e3e5e8">Try a live confirmation</span>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(420px,1fr));gap:24px;justify-items:center">
+        <sc-for list="{{ confirms }}" as="c" hint-placeholder-count="6">
+          <div style="display:flex;flex-direction:column;gap:10px;align-items:flex-start">
+            <span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:#62666d">{{ c.tag }}</span>
+            <dc-import name="Relay Confirm" inline="{{ true }}" tone="{{ c.tone }}" title="{{ c.title }}" body="{{ c.body }}" confirm-label="{{ c.ok }}" cancel-label="{{ c.no }}" item="{{ c.item }}" item-kind="{{ c.kind }}" item-meta="{{ c.meta }}" hint-size="420px,260px"></dc-import>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <dc-import name="Relay Confirm" open="{{ live }}" tone="danger" title="Delete shortlist?" body="KYC shortlist and its notes will be removed for everyone in your workspace. This can’t be undone." confirm-label="Delete shortlist" item="KYC shortlist" item-kind="kyc" item-meta="4 Providers · Updated today" on-confirm="{{ liveYes }}" on-cancel="{{ liveNo }}" hint-size="0px,0px"></dc-import>
+  <dc-import name="Relay Toast" toasts="{{ live2 }}" on-dismiss="{{ dismiss }}" hint-size="0px,0px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const SAMPLES = [
+  { id: 's1', type: 'success', title: 'Comparison saved', desc: 'FX for APAC launch is in Compare and pinned to Favorites.', action: 'Open' },
+  { id: 's2', type: 'error', title: 'Request couldn’t be sent', desc: 'Cobalt Markets isn’t accepting new requests right now. Try again in a few minutes.', action: 'Retry' },
+  { id: 's3', type: 'warning', title: 'You’re at 4 of 5 seats', desc: 'Upgrade to Pro for unlimited seats before inviting more teammates.', action: 'Upgrade' },
+  { id: 's4', type: 'info', title: 'Directory updated', desc: '38 new Providers joined this week, including 9 banks.' }
+];
+const LIVE = { success: SAMPLES[0], error: SAMPLES[1], warning: SAMPLES[2], info: SAMPLES[3] };
+class Component extends DCLogic {
+  state = { live: false, toasts: [], n: 0 };
+  push(t) { const id = 'l' + this.state.n; this.setState(s => ({ n: s.n + 1, toasts: [...s.toasts, { ...t, id }].slice(-3) })); if (t.type !== 'error') setTimeout(() => this.drop(id), 4200); }
+  drop(id) { this.setState(s => ({ toasts: s.toasts.map(t => t.id === id ? { ...t, leaving: true } : t) })); setTimeout(() => this.setState(s => ({ toasts: s.toasts.filter(t => t.id !== id) })), 260); }
+  renderVals() {
+    return {
+      samples: SAMPLES,
+      legend: [['Success', '#6fe3b4', 'Something finished as expected — saved, sent, added.'], ['Error', '#ff7b7b', 'An action failed. Explain why and offer a retry.'], ['Warning', '#f2c14e', 'Nothing broke, but a limit or risk is close.'], ['Info', '#8fb8ff', 'Neutral news the user didn’t trigger.']].map(([name, c, use]) => ({ name, c, use })),
+      triggers: Object.entries(LIVE).map(([k, t]) => ({ label: k[0].toUpperCase() + k.slice(1), c: { success: '#6fe3b4', error: '#ff7b7b', warning: '#f2c14e', info: '#8fb8ff' }[k], fire: () => this.push(t) })),
+      live2: this.state.toasts, dismiss: id => this.drop(id),
+      confirms: [
+        { tag: 'DELETE · DANGER', tone: 'danger', title: 'Delete shortlist?', body: 'This removes the shortlist and its notes for everyone in your workspace. This can’t be undone.', ok: 'Delete shortlist', no: 'Cancel', item: 'KYC shortlist', kind: 'kyc', meta: '4 Providers · Updated today' },
+        { tag: 'DELETE · DANGER', tone: 'danger', title: 'Delete saved comparison?', body: 'The comparison will be removed from Compare and Favorites.', ok: 'Delete', no: 'Keep it', item: 'Sponsor banks in Europe', kind: 'bank', meta: '3 Providers' },
+        { tag: 'UNSAVED · WARNING', tone: 'warning', title: 'Discard unsaved changes?', body: 'You’ve edited your profile. Leaving now will lose those changes.', ok: 'Discard changes', no: 'Keep editing', item: '', kind: 'all', meta: '' },
+        { tag: 'CANCEL FLOW · WARNING', tone: 'warning', title: 'Cancel this request?', body: 'You’ve selected Providers and written a message. Nothing will be sent.', ok: 'Cancel request', no: 'Keep writing', item: '3 Providers selected', kind: 'payouts', meta: 'Pricing · €1M – €10M' },
+        { tag: 'REVOKE · DANGER', tone: 'danger', title: 'Revoke API key?', body: 'Any service using this key will stop working immediately.', ok: 'Revoke key', no: 'Cancel', item: 'Production', kind: 'api', meta: 'rl_live_••••7f3a · Used 2h ago' },
+        { tag: 'CONFIRM · NEUTRAL', tone: 'neutral', title: 'Close this request?', body: 'The Provider will be told you’re no longer looking. You can reopen it later.', ok: 'Close request', no: 'Cancel', item: 'Kestrel Identity', kind: 'kyc', meta: 'REQ-1048 · Replied today' }
+      ],
+      live: this.state.live,
+      openLive: () => this.setState({ live: true }),
+      liveNo: () => this.setState({ live: false }),
+      liveYes: () => { this.setState({ live: false }); this.push({ type: 'success', title: 'Shortlist deleted', desc: 'KYC shortlist was removed.', action: 'Undo' }); }
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&display=swap" rel="stylesheet">
+<style>html,body{margin:0;background:#151618}a{color:#8a8f98}a:hover{color:#f7f8f8}</style>
+</helmet>
+<div style="font-family:Geist,system-ui,sans-serif;color:#f7f8f8">
+  <sc-if value="{{ modal }}">
+    <div onClick="{{ cancel }}" style="position:fixed;inset:0;z-index:70;background:rgba(0,0,0,.55);transition:opacity .18s;opacity:{{ op }};pointer-events:{{ pe }}"></div>
+  </sc-if>
+  <div style="position:{{ pos }};left:{{ left }};top:{{ top }};z-index:71;width:420px;max-width:calc(100vw - 32px);border-radius:16px;overflow:hidden;background:rgba(28,29,32,.98);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);box-shadow:0 0 0 1px rgba(255,255,255,.08),0 28px 70px rgba(0,0,0,.6);transition:opacity .18s,transform .24s cubic-bezier(.2,.9,.25,1.1);opacity:{{ op }};transform:{{ tf }};pointer-events:{{ pe }}">
+    <div style="position:absolute;inset:0;pointer-events:none;background:{{ v.glow }}"></div>
+    <div style="position:relative;padding:22px 22px 18px;display:flex;flex-direction:column;gap:14px">
+      <span style="width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:{{ v.tint }};color:{{ v.color }};box-shadow:inset 0 0 0 1px {{ v.ring }}">
+        <sc-if value="{{ v.isDanger }}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"></path></svg></sc-if>
+        <sc-if value="{{ v.isWarning }}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8v5"></path><path d="M12 16.5h.01"></path><path d="M10.3 3.9 2.4 17.5A2 2 0 0 0 4.1 20.5h15.8a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"></path></svg></sc-if>
+        <sc-if value="{{ v.isNeutral }}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 11v5"></path><path d="M12 7.5h.01"></path></svg></sc-if>
+      </span>
+      <div>
+        <div style="font-size:16px;font-weight:500;letter-spacing:-0.01em">{{ title }}</div>
+        <div style="font-size:13.5px;line-height:1.55;color:#8a8f98;margin-top:6px;text-wrap:pretty">{{ body }}</div>
+      </div>
+      <sc-if value="{{ hasItem }}">
+        <div style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;background:rgba(255,255,255,.03);box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)">
+          <dc-import name="Relay App Icon" kind="{{ itemKind }}" size="26" hint-size="26px,26px"></dc-import>
+          <div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ item }}</div><div style="font-size:12px;color:#62666d;margin-top:1px">{{ itemMeta }}</div></div>
+        </div>
+      </sc-if>
+    </div>
+    <div style="position:relative;display:flex;justify-content:flex-end;gap:8px;padding:14px 22px;border-top:1px solid rgba(255,255,255,.06);background:rgba(0,0,0,.12)">
+      <span onClick="{{ cancel }}" style="height:34px;padding:0 14px;display:inline-flex;align-items:center;border-radius:9px;font-size:13px;font-weight:500;color:#d4d6da;cursor:pointer;box-shadow:inset 0 0 0 1px rgba(255,255,255,.1)" style-hover="background:rgba(255,255,255,.05)">{{ cancelLabel }}</span>
+      <span onClick="{{ confirm }}" style="height:34px;padding:0 16px;display:inline-flex;align-items:center;border-radius:9px;font-size:13px;font-weight:500;cursor:pointer;color:{{ v.btnFg }};background:{{ v.btnBg }}" style-hover="filter:brightness(1.08)">{{ confirmLabel }}</span>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:480,&quot;height&quot;:360},&quot;inline&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;},&quot;open&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;},&quot;tone&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;danger&quot;,&quot;warning&quot;,&quot;neutral&quot;],&quot;default&quot;:&quot;danger&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;title&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Delete shortlist?&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;body&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;This removes the shortlist for everyone in your workspace.&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;confirmLabel&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Delete&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;cancelLabel&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Cancel&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;item&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;itemKind&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;all&quot;,&quot;collections&quot;,&quot;payouts&quot;,&quot;fx&quot;,&quot;cards&quot;,&quot;kyc&quot;,&quot;bank&quot;],&quot;default&quot;:&quot;all&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;itemMeta&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;onConfirm&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;() =&gt; void&quot;},&quot;onCancel&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;() =&gt; void&quot;}}">
+const TONE = {
+  danger: { color: '#ff7b7b', tint: 'rgba(255,123,123,.12)', ring: 'rgba(255,123,123,.22)', glow: 'radial-gradient(90% 70% at 0% 0%,rgba(255,123,123,.08),transparent 60%)', btnFg: '#1a0b0b', btnBg: '#ff7b7b' },
+  warning: { color: '#f2c14e', tint: 'rgba(242,193,78,.12)', ring: 'rgba(242,193,78,.22)', glow: 'radial-gradient(90% 70% at 0% 0%,rgba(242,193,78,.07),transparent 60%)', btnFg: '#0f1011', btnBg: '#f7f8f8' },
+  neutral: { color: '#d4d6da', tint: 'rgba(255,255,255,.06)', ring: 'rgba(255,255,255,.1)', glow: 'none', btnFg: '#0f1011', btnBg: '#f7f8f8' }
+};
+class Component extends DCLogic {
+  renderVals() {
+    const standalone = P0 => P0.open === undefined && P0.onConfirm === undefined && P0.title === undefined;
+    const sa = standalone(this.props);
+    const P = sa ? { tone: 'danger', title: 'Delete shortlist?', body: 'This removes the shortlist and its notes for everyone in your workspace. This can’t be undone.', confirmLabel: 'Delete shortlist', item: 'KYC shortlist', itemKind: 'kyc', itemMeta: '4 Providers · Updated today', ...this.props, inline: true } : this.props;
+    const inline = !!P.inline, open = inline || !!P.open, tone = P.tone ?? 'neutral';
+    return {
+      modal: !inline, pos: inline ? 'relative' : 'fixed', left: inline ? 'auto' : '50%', top: inline ? 'auto' : '50%',
+      op: open ? 1 : 0, pe: open ? 'auto' : 'none',
+      tf: inline ? 'none' : open ? 'translate(-50%,-50%) scale(1)' : 'translate(-50%,-48%) scale(.97)',
+      v: { ...TONE[tone], isDanger: tone === 'danger', isWarning: tone === 'warning', isNeutral: tone === 'neutral' },
+      title: P.title ?? 'Are you sure?', body: P.body ?? '',
+      confirmLabel: P.confirmLabel ?? 'Confirm', cancelLabel: P.cancelLabel ?? 'Cancel',
+      hasItem: !!P.item, item: P.item, itemKind: P.itemKind ?? 'all', itemMeta: P.itemMeta ?? '',
+      confirm: () => P.onConfirm?.(), cancel: () => P.onCancel?.()
+    };
+  }
+}
+</script>
+</body>
+</html>

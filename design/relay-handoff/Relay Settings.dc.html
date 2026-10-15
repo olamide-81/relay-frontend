@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;height:100%;background:#161719;color:#f7f8f8;font-family:"Geist",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#8a8f98;text-decoration:none}
+a:hover{color:#f7f8f8}
+input::placeholder{color:#62666d}
+select option{background:#1c1d20;color:#f7f8f8}
+</style>
+</helmet>
+<div style="height:100%;min-height:600px;display:flex;font-family:Geist,system-ui,sans-serif;color:#f7f8f8">
+  <nav style="flex:0 0 220px;padding:28px 12px;border-right:1px solid rgba(255,255,255,.06);display:flex;flex-direction:column;gap:18px;overflow-y:auto">
+    <sc-for list="{{ groups }}" as="g" hint-placeholder-count="2">
+      <div style="display:flex;flex-direction:column;gap:2px">
+        <div style="padding:0 10px 6px;font-size:12px;font-weight:500;color:#62666d">{{ g.label }}</div>
+        <sc-for list="{{ g.items }}" as="i" hint-placeholder-count="4">
+          <span onClick="{{ i.pick }}" style="display:flex;align-items:center;height:30px;padding:0 10px;border-radius:7px;font-size:13px;font-weight:500;cursor:pointer;transition:background-color .12s,color .12s;background:{{ i.bg }};color:{{ i.fg }}" style-hover="color:#f7f8f8;background:rgba(255,255,255,.035)">{{ i.label }}</span>
+        </sc-for>
+      </div>
+    </sc-for>
+  </nav>
+
+  <div style="flex:1;min-width:0;overflow-y:auto">
+    <div style="max-width:760px;margin:0 auto;padding:36px clamp(20px,4vw,40px) 64px;display:flex;flex-direction:column;gap:24px">
+      <div style="display:flex;align-items:center;gap:14px">
+        <span style="width:40px;height:40px;flex:none;border-radius:10px;display:grid;place-items:center;background:rgba(255,255,255,.04);box-shadow:inset 0 0 0 1px rgba(255,255,255,.08),inset 0 1px 0 rgba(255,255,255,.05);color:#d4d6da"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><sc-for list="{{ head.icon }}" as="d" hint-placeholder-count="2"><path d="{{ d }}"></path></sc-for></svg></span>
+        <div style="min-width:0">
+          <h1 style="margin:0;font-size:22px;font-weight:500;letter-spacing:-0.02em">{{ head.title }}</h1>
+          <div style="font-size:13.5px;color:#8a8f98;margin-top:4px">{{ head.sub }}</div>
+        </div>
+      </div>
+
+      <sc-if value="{{ is.general }}" hint-placeholder-val="{{ true }}">
+        <div style="border-radius:12px;box-shadow:0 0 0 1px rgba(255,255,255,.06);background:rgba(255,255,255,.012)">
+          <div style="display:flex;align-items:center;gap:16px;padding:14px 16px;border-bottom:1px solid rgba(255,255,255,.04);flex-wrap:wrap">
+            <div style="flex:1 1 220px"><div style="font-size:13.5px">Theme</div><div style="font-size:12.5px;color:#62666d;margin-top:2px">Relay is designed dark-first.</div></div>
+            <div style="display:flex;gap:2px;padding:2px;border-radius:9px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.07)">
+              <sc-for list="{{ themes }}" as="t" hint-placeholder-count="3"><span onClick="{{ t.pick }}" style="height:28px;padding:0 12px;display:inline-flex;align-items:center;border-radius:7px;font-size:12.5px;font-weight:500;cursor:pointer;transition:background-color .12s,color .12s;background:{{ t.bg }};color:{{ t.fg }}">{{ t.label }}</span></sc-for>
+            </div>
+          </div>
+          <sc-for list="{{ selects }}" as="s" hint-placeholder-count="3">
+            <div style="display:flex;align-items:center;gap:16px;padding:14px 16px;border-bottom:1px solid rgba(255,255,255,.04);flex-wrap:wrap">
+              <div style="flex:1 1 220px"><div style="font-size:13.5px">{{ s.label }}</div><div style="font-size:12.5px;color:#62666d;margin-top:2px">{{ s.hint }}</div></div>
+              <select value="{{ s.value }}" onChange="{{ s.onChange }}" style="height:32px;min-width:180px;padding:0 10px;border:none;outline:none;border-radius:8px;background:rgba(255,255,255,.03);box-shadow:inset 0 0 0 1px rgba(255,255,255,.08);color:#f7f8f8;font:13px Geist,system-ui,sans-serif;cursor:pointer">
+                <sc-for list="{{ s.options }}" as="o" hint-placeholder-count="3"><option value="{{ o }}">{{ o }}</option></sc-for>
+              </select>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ is.notifications }}">
+        <div style="border-radius:12px;box-shadow:0 0 0 1px rgba(255,255,255,.06);background:rgba(255,255,255,.012)">
+          <div style="display:flex;align-items:center;gap:16px;padding:14px 16px;border-bottom:1px solid rgba(255,255,255,.04);flex-wrap:wrap">
+            <div style="flex:1 1 220px"><div style="font-size:13.5px">Delivery</div><div style="font-size:12.5px;color:#62666d;margin-top:2px">How often Relay batches non-urgent updates.</div></div>
+            <div style="display:flex;gap:2px;padding:2px;border-radius:9px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.07)"><sc-for list="{{ freq }}" as="t" hint-placeholder-count="3"><span onClick="{{ t.pick }}" style="height:28px;padding:0 12px;display:inline-flex;align-items:center;border-radius:7px;font-size:12.5px;font-weight:500;cursor:pointer;transition:background-color .12s,color .12s;background:{{ t.bg }};color:{{ t.fg }}">{{ t.label }}</span></sc-for></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:16px;padding:14px 16px">
+            <div style="flex:1"><div style="font-size:13.5px">Quiet hours</div><div style="font-size:12.5px;color:#62666d;margin-top:2px">Pause email and Slack from 19:00 to 08:00 in your time zone.</div></div>
+            <span onClick="{{ toggleQuiet }}" style="width:32px;height:18px;flex:none;border-radius:999px;position:relative;cursor:pointer;transition:background-color .15s;background:{{ quiet.track }}"><span style="position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;background:#f7f8f8;transition:transform .15s;transform:{{ quiet.knob }}"></span></span>
+          </div>
+        </div>
+        <div style="border-radius:12px;box-shadow:0 0 0 1px rgba(255,255,255,.06);background:rgba(255,255,255,.012);overflow-x:auto">
+          <div style="min-width:520px">
+            <div style="display:grid;grid-template-columns:minmax(0,1fr) repeat(3,76px);align-items:center;height:40px;padding:0 16px;border-bottom:1px solid rgba(255,255,255,.06);font-size:12px;color:#62666d">
+              <span>Event</span>
+              <sc-for list="{{ channels }}" as="c" hint-placeholder-count="3"><span onClick="{{ c.toggleAll }}" title="Toggle column" style="display:flex;align-items:center;justify-content:center;gap:6px;cursor:pointer" style-hover="color:#f7f8f8">{{ c.label }}</span></sc-for>
+            </div>
+            <sc-for list="{{ notifGroups }}" as="g" hint-placeholder-count="3">
+              <div style="padding:14px 16px 6px;font-size:12px;font-weight:500;color:#8a8f98">{{ g.label }}</div>
+              <sc-for list="{{ g.items }}" as="n" hint-placeholder-count="3">
+                <div style="display:grid;grid-template-columns:minmax(0,1fr) repeat(3,76px);align-items:center;min-height:52px;padding:0 16px;border-bottom:1px solid rgba(255,255,255,.04)" style-hover="background:rgba(255,255,255,.015)">
+                  <div style="min-width:0;padding:8px 0"><div style="font-size:13.5px">{{ n.label }}</div><div style="font-size:12.5px;color:#62666d;margin-top:2px">{{ n.hint }}</div></div>
+                  <sc-for list="{{ n.cells }}" as="c" hint-placeholder-count="3">
+                    <span style="display:flex;justify-content:center"><span onClick="{{ c.toggle }}" style="width:18px;height:18px;border-radius:5px;display:grid;place-items:center;cursor:pointer;transition:background-color .12s,box-shadow .12s;background:{{ c.bg }};box-shadow:{{ c.ring }}"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#0f1011" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" style="transition:opacity .12s;opacity:{{ c.op }}"><path d="M20 6 9 17l-5-5"></path></svg></span></span>
+                  </sc-for>
+                </div>
+              </sc-for>
+            </sc-for>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ is.security }}">
+        <div style="border-radius:12px;box-shadow:0 0 0 1px rgba(255,255,255,.06);background:rgba(255,255,255,.012)">
+          <div style="display:flex;align-items:center;gap:16px;padding:14px 16px;border-bottom:1px solid rgba(255,255,255,.04)">
+            <div style="flex:1"><div style="font-size:13.5px">Password</div><div style="font-size:12.5px;color:#62666d;margin-top:2px">Last changed 3 months ago</div></div>
+            <span style="height:30px;padding:0 12px;display:inline-flex;align-items:center;border-radius:7px;font-size:12.5px;font-weight:500;color:#d4d6da;cursor:pointer;box-shadow:inset 0 0 0 1px rgba(255,255,255,.1)" style-hover="background:rgba(255,255,255,.05)">Change password</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:16px;padding:14px 16px">
+            <div style="flex:1"><div style="font-size:13.5px">Two-factor authentication</div><div style="font-size:12.5px;color:#62666d;margin-top:2px">{{ twoFaHint }}</div></div>
+            <span onClick="{{ toggle2fa }}" style="width:32px;height:18px;flex:none;border-radius:999px;position:relative;cursor:pointer;transition:background-color .15s;background:{{ twoFa.track }}"><span style="position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;background:#f7f8f8;transition:transform .15s;transform:{{ twoFa.knob }}"></span></span>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div style="font-size:13px;font-weight:500;color:#d4d6da;padding:0 2px">Active sessions</div>
+          <div style="border-radius:12px;box-shadow:0 0 0 1px rgba(255,255,255,.06);background:rgba(255,255,255,.012)">
+            <sc-for list="{{ sessions }}" as="s" hint-placeholder-count="3">
+              <div style="display:flex;align-items:center;gap:14px;padding:14px 16px;border-bottom:1px solid rgba(255,255,255,.04)">
+                <span style="width:32px;height:32px;display:grid;place-items:center;border-radius:8px;background:rgba(255,255,255,.04);color:#8a8f98;flex:none"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"></rect><path d="M8 20h8M12 16v4"></path></svg></span>
+                <div style="flex:1;min-width:0"><div style="font-size:13.5px">{{ s.device }}</div><div style="font-size:12.5px;color:#62666d;margin-top:2px">{{ s.where }}</div></div>
+                <sc-if value="{{ s.current }}"><span style="font-size:12px;font-weight:500;color:#6fe3b4">This device</span></sc-if>
+                <sc-if value="{{ s.other }}"><span onClick="{{ s.revoke }}" style="font-size:12.5px;font-weight:500;color:#8a8f98;cursor:pointer" style-hover="color:#f7f8f8">Revoke</span></sc-if>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ is.members }}">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
+          <span style="font-size:12.5px;color:#62666d">{{ seatLabel }}</span>
+          <span onClick="{{ openInvite }}" style="height:32px;padding:0 14px;display:inline-flex;align-items:center;gap:6px;border-radius:8px;font-size:13px;font-weight:500;color:#0f1011;background:#f7f8f8;cursor:pointer" style-hover="background:#e3e5e8"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg>Invite team members</span>
+        </div>
+        <div style="border-radius:12px;box-shadow:0 0 0 1px rgba(255,255,255,.06);background:rgba(255,255,255,.012)">
+          <sc-for list="{{ members }}" as="m" hint-placeholder-count="4">
+            <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid rgba(255,255,255,.04)">
+              <sc-if value="{{ m.hasImg }}"><img src="{{ m.img }}" alt="" style="width:32px;height:32px;border-radius:50%;object-fit:cover;background:#2a2b2e;flex:none"></sc-if>
+              <sc-if value="{{ m.pending }}"><span style="width:32px;height:32px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.05);color:#8a8f98;font-size:12px;font-weight:500;flex:none">{{ m.initial }}</span></sc-if>
+              <div style="flex:1;min-width:0"><div style="font-size:13.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ m.name }}</div><div style="font-size:12.5px;color:#62666d;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ m.email }}</div></div>
+              <select value="{{ m.role }}" onChange="{{ m.onRole }}" style="height:30px;padding:0 8px;border:none;outline:none;border-radius:7px;background:transparent;box-shadow:inset 0 0 0 1px rgba(255,255,255,.08);color:#d4d6da;font:12.5px Geist,system-ui,sans-serif;cursor:pointer"><option value="Admin">Admin</option><option value="Member">Member</option><option value="Viewer">Viewer</option></select>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ is.billing }}">
+        <div style="position:relative;overflow:hidden;border-radius:14px;box-shadow:0 0 0 1px rgba(255,255,255,.08);background:radial-gradient(120% 140% at 100% 100%,rgba(111,227,180,.08),rgba(255,255,255,0) 55%),rgba(255,255,255,.015);padding:22px 22px 20px;display:flex;flex-direction:column;gap:16px">
+          <div style="display:flex;align-items:flex-start;gap:16px;flex-wrap:wrap">
+            <div style="flex:1 1 260px">
+              <div style="font-size:12px;color:#62666d">Current plan</div>
+              <div style="font-size:18px;font-weight:500;margin-top:4px;letter-spacing:-0.01em">Free</div>
+              <div style="font-size:13px;color:#8a8f98;margin-top:4px">Upgrade to Relay Pro for unlimited compares, intros and market signals.</div>
+            </div>
+            <div style="display:flex;padding-left:6px">
+              <sc-for list="{{ cats }}" as="c" hint-placeholder-count="5"><span style="margin-left:-6px;border-radius:9px;box-shadow:0 0 0 2px #1a1b1d;display:block"><dc-import name="Relay App Icon" kind="{{ c }}" size="30" hint-size="30px,30px"></dc-import></span></sc-for>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px">
+            <sc-for list="{{ usage }}" as="u" hint-placeholder-count="3">
+              <div style="display:flex;flex-direction:column;gap:8px">
+                <div style="display:flex;justify-content:space-between;font-size:12.5px"><span style="color:#b4b8bf">{{ u.label }}</span><span style="color:#8a8f98;font-variant-numeric:tabular-nums">{{ u.v }}</span></div>
+                <div style="height:4px;border-radius:999px;background:rgba(255,255,255,.07);overflow:hidden"><div style="height:100%;border-radius:999px;background:#f7f8f8;width:{{ u.w }}"></div></div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+        <div style="display:flex;justify-content:flex-end">
+          <div style="display:flex;gap:2px;padding:2px;border-radius:9px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.07)">
+            <sc-for list="{{ cycles }}" as="c" hint-placeholder-count="2"><span onClick="{{ c.pick }}" style="height:28px;padding:0 12px;display:inline-flex;align-items:center;gap:6px;border-radius:7px;font-size:12.5px;font-weight:500;cursor:pointer;transition:background-color .12s,color .12s;background:{{ c.bg }};color:{{ c.fg }}">{{ c.label }}</span></sc-for>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px">
+          <sc-for list="{{ plans }}" as="p" hint-placeholder-count="3">
+            <div style="border-radius:12px;padding:18px;display:flex;flex-direction:column;gap:14px;box-shadow:{{ p.ring }};background:{{ p.bg }}">
+              <div style="display:flex;align-items:center;justify-content:space-between"><span style="font-size:14px;font-weight:500">{{ p.name }}</span><sc-if value="{{ p.isCurrent }}"><span style="font-size:11.5px;color:#8a8f98">Current</span></sc-if></div>
+              <div style="display:flex;align-items:baseline;gap:4px"><span style="font-size:26px;font-weight:500;letter-spacing:-0.03em;font-variant-numeric:tabular-nums">{{ p.price }}</span><span style="font-size:12.5px;color:#62666d">{{ p.per }}</span></div>
+              <div style="display:flex;flex-direction:column;gap:8px">
+                <sc-for list="{{ p.features }}" as="f" hint-placeholder-count="3"><div style="display:flex;gap:8px;font-size:12.5px;color:#b4b8bf"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6fe3b4" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:1px"><path d="M20 6 9 17l-5-5"></path></svg>{{ f }}</div></sc-for>
+              </div>
+              <span onClick="{{ p.act }}" style="margin-top:auto;height:32px;display:inline-flex;align-items:center;justify-content:center;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;color:{{ p.btnFg }};background:{{ p.btnBg }};box-shadow:{{ p.btnRing }}">{{ p.cta }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ is.api }}">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+          <span style="font-size:12.5px;color:#62666d">Keys give read access to directory and benchmark data.</span>
+          <span onClick="{{ createKey }}" style="height:32px;padding:0 14px;display:inline-flex;align-items:center;border-radius:8px;font-size:13px;font-weight:500;color:#0f1011;background:#f7f8f8;cursor:pointer" style-hover="background:#e3e5e8">Create key</span>
+        </div>
+        <div style="border-radius:12px;box-shadow:0 0 0 1px rgba(255,255,255,.06);background:rgba(255,255,255,.012)">
+          <sc-for list="{{ keys }}" as="k" hint-placeholder-count="2">
+            <div style="display:flex;align-items:center;gap:14px;padding:14px 16px;border-bottom:1px solid rgba(255,255,255,.04);flex-wrap:wrap">
+              <div style="flex:1 1 200px;min-width:0"><div style="font-size:13.5px">{{ k.name }}</div><div style="font-family:'Geist Mono',monospace;font-size:12px;color:#8a8f98;margin-top:3px">{{ k.masked }}</div></div>
+              <span style="font-size:12px;color:#62666d">{{ k.meta }}</span>
+              <span onClick="{{ k.copy }}" style="font-size:12.5px;font-weight:500;cursor:pointer;color:{{ k.copyFg }}" style-hover="color:#f7f8f8">{{ k.copyLabel }}</span>
+              <span onClick="{{ k.revoke }}" style="font-size:12.5px;font-weight:500;color:#8a8f98;cursor:pointer" style-hover="color:#ff8a7a">Revoke</span>
+            </div>
+          </sc-for>
+          <sc-if value="{{ noKeys }}"><div style="padding:40px 24px;text-align:center"><div style="font-size:13.5px;font-weight:500">No API keys</div><div style="font-size:12.5px;color:#62666d;margin-top:4px">Create a key to query Relay from your own systems.</div></div></sc-if>
+        </div>
+      </sc-if>
+    </div>
+  </div>
+  <div onClick="{{ closeInvite }}" style="position:fixed;inset:0;z-index:40;background:rgba(0,0,0,.5);transition:opacity .18s;opacity:{{ im.op }};pointer-events:{{ im.pe }}"></div>
+  <div style="position:fixed;left:50%;top:50%;z-index:41;width:500px;max-width:calc(100% - 32px);border-radius:14px;background:rgba(28,29,32,.97);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);box-shadow:0 0 0 1px rgba(255,255,255,.08),0 24px 64px rgba(0,0,0,.55);transition:opacity .18s,transform .22s cubic-bezier(.2,.8,.2,1);opacity:{{ im.op }};transform:{{ im.tf }};pointer-events:{{ im.pe }}">
+    <div style="padding:18px 20px 0"><div style="font-size:15px;font-weight:500">Invite team members</div><div style="font-size:12.5px;color:#8a8f98;margin-top:4px">They'll get an email to join your Relay workspace.</div></div>
+    <div style="padding:16px 20px;display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:12px;color:#8a8f98">Email addresses</span>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;min-height:40px;padding:6px;border-radius:8px;background:rgba(255,255,255,.03);box-shadow:inset 0 0 0 1px rgba(255,255,255,.08)">
+          <sc-for list="{{ inviteChips }}" as="c" hint-placeholder-count="0"><span style="height:26px;padding:0 4px 0 9px;display:inline-flex;align-items:center;gap:4px;border-radius:6px;font-size:12.5px;background:{{ c.bg }};color:{{ c.fg }}">{{ c.email }}<span onClick="{{ c.remove }}" style="width:18px;height:18px;display:grid;place-items:center;border-radius:4px;cursor:pointer;color:#8a8f98" style-hover="color:#f7f8f8"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"></path></svg></span></span></sc-for>
+          <input value="{{ invite }}" onChange="{{ onInvite }}" onKeyDown="{{ onInviteKey }}" onBlur="{{ commitInvite }}" placeholder="{{ invitePh }}" style="flex:1;min-width:160px;height:26px;padding:0 4px;border:none;outline:none;background:transparent;color:#f7f8f8;font:13px Geist,system-ui,sans-serif">
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:12px;color:#8a8f98">Role</span>
+        <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px"><sc-for list="{{ roles }}" as="r" hint-placeholder-count="3"><div onClick="{{ r.pick }}" style="padding:10px;border-radius:9px;cursor:pointer;transition:background-color .12s,box-shadow .12s;background:{{ r.bg }};box-shadow:{{ r.ring }}"><div style="font-size:13px;font-weight:500">{{ r.label }}</div><div style="font-size:11.5px;color:#62666d;margin-top:3px">{{ r.hint }}</div></div></sc-for></div>
+      </div>
+      <div style="font-size:12.5px;color:#62666d">{{ seatHint }}</div>
+    </div>
+    <div style="display:flex;justify-content:flex-end;gap:8px;padding:14px 20px;border-top:1px solid rgba(255,255,255,.06)">
+      <span onClick="{{ closeInvite }}" style="height:32px;padding:0 12px;display:inline-flex;align-items:center;border-radius:8px;font-size:13px;font-weight:500;color:#d4d6da;cursor:pointer" style-hover="background:rgba(255,255,255,.05)">Cancel</span>
+      <span onClick="{{ sendInvites }}" style="height:32px;padding:0 14px;display:inline-flex;align-items:center;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;color:{{ sendBtn.fg }};background:{{ sendBtn.bg }}">{{ sendLabel }}</span>
+    </div>
+  </div>
+  <div style="position:fixed;left:50%;bottom:24px;z-index:50;display:flex;align-items:center;gap:8px;height:38px;padding:0 14px;border-radius:10px;font-size:13px;font-weight:500;background:rgba(36,37,41,.95);box-shadow:0 0 0 1px rgba(255,255,255,.09),0 12px 32px rgba(0,0,0,.45);transition:opacity .2s,transform .2s;pointer-events:none;opacity:{{ toast.op }};transform:{{ toast.tf }}"><span style="width:7px;height:7px;border-radius:50%;background:#6fe3b4"></span>{{ toast.text }}</div>
+  <dc-import name="Relay Confirm" open="{{ keyAsk }}" tone="danger" title="Revoke API key?" body="Any service using this key will stop working immediately. This can’t be undone." confirm-label="Revoke key" item="{{ keyItem }}" item-kind="api" item-meta="{{ keyMeta }}" on-confirm="{{ keyYes }}" on-cancel="{{ keyNo }}" hint-size="0px,0px"></dc-import>
+  <dc-import name="Relay Confirm" open="{{ sessAsk }}" tone="neutral" title="Sign out this session?" body="The device will be signed out of Relay right away." confirm-label="Sign out" item="{{ sessItem }}" item-kind="all" item-meta="{{ sessMeta }}" on-confirm="{{ sessYes }}" on-cancel="{{ sessNo }}" hint-size="0px,0px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const SECTIONS = {
+  general: ['General', 'Appearance and defaults for your account.'],
+  notifications: ['Notifications', 'Choose what Relay tells you about, and where.'],
+  security: ['Security', 'Sign-in and active sessions.'],
+  members: ['Members', 'Invite teammates and manage roles.'],
+  billing: ['Billing', 'Plan, usage and invoices.'],
+  api: ['API keys', 'Programmatic access to the Relay directory.']
+};
+const NAV = [['Account', ['general', 'notifications', 'security']], ['Workspace', ['members', 'billing', 'api']]];
+const ICONS = { general: ['M20 7h-9', 'M14 17H5', 'M17 17a3 3 0 1 0 6 0 3 3 0 1 0-6 0', 'M3 7a3 3 0 1 0 6 0 3 3 0 1 0-6 0'], notifications: ['M10.3 21a1.94 1.94 0 0 0 3.4 0', 'M3.26 15.33A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.67C19.41 13.96 18 12.5 18 8A6 6 0 0 0 6 8c0 4.5-1.41 5.96-2.74 7.33'], security: ['M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z', 'm9 12 2 2 4-4'], members: ['M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2', 'M5 7a4 4 0 1 0 8 0 4 4 0 1 0-8 0', 'M22 21v-2a4 4 0 0 0-3-3.87', 'M16 3.13a4 4 0 0 1 0 7.75'], billing: ['M2 7a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2z', 'M2 10h20', 'M6 15h4'], api: ['m15.5 7.5 2.3 2.3a1 1 0 0 0 1.4 0l2.1-2.1a1 1 0 0 0 0-1.4L19 4', 'm21 2-9.6 9.6', 'M2 15.5a5.5 5.5 0 1 0 11 0 5.5 5.5 0 1 0-11 0'] };
+const MATRIX = [['Providers', [['m1', 'Request replies', 'When a Provider responds to your request'], ['m2', 'Pricing changes', 'For Providers on your shortlists'], ['m3', 'New Providers', 'Matching your saved directory filters']]], ['Market', [['m4', 'Licence changes', 'For licences and Providers you watch'], ['m5', 'News and reports', 'New briefings in your regions'], ['m6', 'Weekly digest', 'A summary every Sunday']]], ['Team', [['m7', 'Mentions', 'When a teammate mentions you'], ['m8', 'Shortlist updates', 'When shortlists you follow change']]]];
+const CH = [['email', 'Email'], ['app', 'In app'], ['slack', 'Slack']];
+const NOTIF = [['Email', [['e1', 'Request replies', 'When a provider responds to your request'], ['e2', 'Weekly digest', 'New providers and changes every Sunday'], ['e3', 'Licence changes', 'For providers on your licence watch']]], ['In app', [['a1', 'Pricing changes', 'For providers on your shortlists'], ['a2', 'New providers', 'Matching your saved filters'], ['a3', 'Mentions', 'When a teammate mentions you']]]];
+const P = p => `https://randomuser.me/api/portraits/${p}.jpg`;
+class Component extends DCLogic {
+  state = {
+    sec: this.props.section ?? 'general', plan: this.props.plan ?? 'Free', theme: 'Dark', currency: 'EUR', start: 'Overview', region: 'All regions',
+    notif: { e1: true, e2: true, e3: false, a1: true, a2: false, a3: true }, twoFa: true,
+    mx: { m1: { email: 1, app: 1, slack: 1 }, m2: { email: 1, app: 1 }, m3: { app: 1 }, m4: { email: 1, app: 1, slack: 1 }, m5: { app: 1 }, m6: { email: 1 }, m7: { email: 1, app: 1, slack: 1 }, m8: { app: 1 } }, freq: 'Daily', quiet: true,
+    inviteOpen: !!this.props.invite, inviteList: [], inviteRole: 'Member', toast: null,
+    sessions: [['s1', 'MacBook Pro · Chrome', 'London · Active now', true], ['s2', 'iPhone 16 · Safari', 'London · 2 hours ago', false], ['s3', 'Windows · Edge', 'Dublin · Oct 8', false]],
+    ws: { name: 'Relay', slug: 'relay' }, invite: '',
+    members: [['Sarah Mitchell', 'sarah.mitchell@relay.so', 'Admin', P('women/44')], ['James Carter', 'james.carter@relay.so', 'Member', P('men/32')], ['Emma Lawson', 'emma.lawson@relay.so', 'Member', P('women/68')], ['Daniel Brooks', 'daniel.brooks@relay.so', 'Viewer', P('men/46')]],
+    cycle: 'yearly',
+    keys: [['k1', 'Production', 'rl_live_••••••••••••7f3a', 'Created Sep 12 · Used 2h ago'], ['k2', 'Staging', 'rl_test_••••••••••••c91d', 'Created Aug 30 · Used Oct 9']], kn: 3, copied: null
+  };
+  componentDidUpdate(prev) {
+    if (prev.section !== this.props.section && this.props.section) this.setState({ sec: this.props.section });
+    if (prev.invite !== this.props.invite && this.props.invite) this.setState({ inviteOpen: true, sec: 'members' });
+    if (prev.plan !== this.props.plan && this.props.plan) this.setState({ plan: this.props.plan });
+  }
+  flash(t, type = 'success', desc) { if (this.props.onToast) return this.props.onToast(t, type, desc); clearTimeout(this._ft); this.setState({ toast: t }); this._ft = setTimeout(() => this.setState({ toast: null }), 1800); }
+  renderVals() {
+    const S = this.state, set = p => this.setState(p);
+    const valid = em => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em);
+    const pending = S.invite.split(/[,\s]+/).map(x => x.trim()).filter(Boolean);
+    const commit = () => { if (!pending.length) return; this.setState(s => ({ invite: '', inviteList: [...new Set([...s.inviteList, ...pending])] })); };
+    const goodInv = [...new Set([...S.inviteList, ...pending])].filter(valid);
+    const sw = on => ({ track: on ? '#6fe3b4' : 'rgba(255,255,255,.14)', knob: on ? 'translateX(14px)' : 'translateX(0)' });
+    const seg = (cur, key) => v => ({ label: v, pick: () => set({ [key]: v }), bg: cur === v ? 'rgba(255,255,255,.08)' : 'transparent', fg: cur === v ? '#f7f8f8' : '#8a8f98' });
+    const yr = S.cycle === 'yearly';
+    const plan = (name, price, per, features, cta) => { const cur = S.plan === name, pro = name === 'Pro'; return { name, price, per, features, isCurrent: cur, cta: cur ? 'Current plan' : cta,
+      ring: pro ? '0 0 0 1px rgba(111,227,180,.35)' : '0 0 0 1px rgba(255,255,255,.06)', bg: pro ? 'rgba(111,227,180,.03)' : 'rgba(255,255,255,.012)',
+      btnFg: cur ? '#62666d' : pro ? '#0f1011' : '#d4d6da', btnBg: cur ? 'rgba(255,255,255,.04)' : pro ? '#f7f8f8' : 'transparent', btnRing: cur || pro ? 'none' : 'inset 0 0 0 1px rgba(255,255,255,.1)',
+      act: () => { if (cur || name === 'Enterprise') return; if (name === 'Pro') return this.props.onUpgrade ? this.props.onUpgrade() : set({ plan: 'Pro' }); set({ plan: name }); } }; };
+    return {
+      groups: NAV.map(([label, keys]) => ({ label, items: keys.map(k => ({ label: SECTIONS[k][0], pick: () => set({ sec: k }), bg: S.sec === k ? 'rgba(255,255,255,.06)' : 'transparent', fg: S.sec === k ? '#f7f8f8' : '#8a8f98' })) })),
+      head: { title: SECTIONS[S.sec][0], sub: SECTIONS[S.sec][1], icon: ICONS[S.sec] },
+      freq: ['Instant', 'Daily', 'Weekly'].map(seg(S.freq, 'freq')), quiet: sw(S.quiet), toggleQuiet: () => this.setState(s => ({ quiet: !s.quiet })),
+      channels: CH.map(([k, label]) => { const allIds = MATRIX.flatMap(g => g[1].map(i => i[0])), allOn = allIds.every(id => S.mx[id]?.[k]); return { label, toggleAll: () => this.setState(s => ({ mx: Object.fromEntries(allIds.map(id => [id, { ...s.mx[id], [k]: allOn ? 0 : 1 }])) })) }; }),
+      notifGroups: MATRIX.map(([label, items]) => ({ label, items: items.map(([id, l, hint]) => ({ label: l, hint, cells: CH.map(([k]) => { const on = !!S.mx[id]?.[k]; return { toggle: () => this.setState(s => ({ mx: { ...s.mx, [id]: { ...s.mx[id], [k]: on ? 0 : 1 } } })), bg: on ? '#6fe3b4' : 'transparent', ring: on ? 'none' : 'inset 0 0 0 1.5px rgba(255,255,255,.2)', op: on ? 1 : 0 }; }) })) })),
+      is: { [S.sec]: true },
+      themes: ['Dark', 'Light', 'System'].map(seg(S.theme, 'theme')),
+      selects: [['Default currency', 'Used for pricing and volume figures', 'currency', ['EUR', 'USD', 'GBP', 'CHF', 'JPY']], ['Start page', 'Where Relay opens', 'start', ['Overview', 'Inbox', 'Directory', 'Compare']], ['Default region', 'Pre-applied in the directory', 'region', ['All regions', 'Europe', 'Americas', 'Asia-Pacific', 'Middle East']]].map(([label, hint, k, options]) => ({ label, hint, options, value: S[k], onChange: e => set({ [k]: e.target.value }) })),
+      twoFa: sw(S.twoFa), twoFaHint: S.twoFa ? 'On · Authenticator app' : 'Off · Recommended for admins', toggle2fa: () => this.setState(s => ({ twoFa: !s.twoFa })),
+      sessions: S.sessions.map(([id, device, where, current]) => ({ device, where, current, other: !current, revoke: () => set({ sessAsk: id }) })),
+      invite: S.invite, onInvite: e => set({ invite: e.target.value }),
+      onInviteKey: e => { if (e.key === 'Enter' || e.key === ',' || e.key === ' ') { e.preventDefault(); commit(); } else if (e.key === 'Backspace' && !S.invite && S.inviteList.length) this.setState(s => ({ inviteList: s.inviteList.slice(0, -1) })); },
+      commitInvite: () => commit(),
+      invitePh: S.inviteList.length ? 'Add another' : 'name@company.com, separated by commas',
+      inviteChips: S.inviteList.map((em, i) => { const ok = valid(em); return { email: em, bg: ok ? 'rgba(255,255,255,.07)' : 'rgba(255,138,122,.12)', fg: ok ? '#f7f8f8' : '#ff8a7a', remove: () => this.setState(s => ({ inviteList: s.inviteList.filter((_, j) => j !== i) })) }; }),
+      roles: [['Admin', 'Billing and members'], ['Member', 'Full product access'], ['Viewer', 'Read only']].map(([label, hint]) => ({ label, hint, pick: () => set({ inviteRole: label }), bg: S.inviteRole === label ? 'rgba(255,255,255,.06)' : 'rgba(255,255,255,.015)', ring: S.inviteRole === label ? 'inset 0 0 0 1px rgba(255,255,255,.2)' : 'inset 0 0 0 1px rgba(255,255,255,.06)' })),
+      seatLabel: S.members.length + ' of ' + (S.plan === 'Pro' ? 'unlimited' : '5') + ' seats used',
+      seatHint: S.plan === 'Pro' ? 'Pro includes unlimited seats.' : `${Math.max(0, 5 - S.members.length)} seats left on the Free plan.`,
+      openInvite: () => set({ inviteOpen: true }), closeInvite: () => set({ inviteOpen: false, invite: '', inviteList: [] }),
+      im: { op: S.inviteOpen ? 1 : 0, pe: S.inviteOpen ? 'auto' : 'none', tf: S.inviteOpen ? 'translate(-50%,-50%) scale(1)' : 'translate(-50%,-48%) scale(.98)' },
+      sendLabel: goodInv.length > 1 ? `Send ${goodInv.length} invites` : 'Send invite',
+      sendBtn: { fg: goodInv.length ? '#0f1011' : '#62666d', bg: goodInv.length ? '#f7f8f8' : 'rgba(255,255,255,.05)' },
+      sendInvites: () => { if (!goodInv.length) return; this.setState(s => ({ inviteOpen: false, invite: '', inviteList: [], members: [...s.members, ...goodInv.map(em => ['Invite pending', em, s.inviteRole, null])] })); this.flash(goodInv.length > 1 ? goodInv.length + ' invites sent' : 'Invite sent', 'success', goodInv.join(', ')); },
+      toast: { text: S.toast ?? '', op: S.toast ? 1 : 0, tf: S.toast ? 'translate(-50%,0)' : 'translate(-50%,8px)' },
+      members: S.members.map(([name, email, role, img], i) => ({ name, email, role, img, hasImg: !!img, pending: !img, initial: email[0].toUpperCase(), onRole: e => { const v = e.target.value; this.setState(s => ({ members: s.members.map((m, j) => j === i ? [m[0], m[1], v, m[3]] : m) })); } })),
+      cats: ['collections', 'payouts', 'fx', 'cards', 'kyc'],
+      usage: [{ label: 'Compares this month', v: '3 of 5', w: '60%' }, { label: 'Intro requests', v: '2 of 3', w: '66%' }, { label: 'Seats', v: '4 of 5', w: '80%' }],
+      cycles: [['monthly', 'Monthly'], ['yearly', 'Yearly · save 20%']].map(([k, l]) => ({ label: l, pick: () => set({ cycle: k }), bg: S.cycle === k ? 'rgba(255,255,255,.08)' : 'transparent', fg: S.cycle === k ? '#f7f8f8' : '#8a8f98' })),
+      plans: [
+        plan('Free', '€0', 'forever', ['5 compares a month', '3 intro requests', 'Directory search'], 'Downgrade'),
+        plan('Pro', yr ? '€39' : '€49', 'per seat / month', ['Unlimited compares and intros', 'Market signals and licence watch', 'FX benchmarks and exports'], 'Upgrade to Pro'),
+        plan('Enterprise', 'Custom', '', ['SSO and audit log', 'API access at volume', 'Dedicated analyst'], 'Contact sales')
+      ],
+      keys: S.keys.map(([id, name, masked, meta]) => ({ name, masked, meta, copyLabel: S.copied === id ? 'Copied' : 'Copy', copyFg: S.copied === id ? '#6fe3b4' : '#8a8f98',
+        copy: () => { navigator.clipboard?.writeText(masked).catch(() => {}); set({ copied: id }); clearTimeout(this.t); this.t = setTimeout(() => set({ copied: null }), 1400); },
+        revoke: () => set({ keyAsk: id }) })),
+      keyAsk: !!S.keyAsk, keyItem: S.keys.find(k => k[0] === S.keyAsk)?.[1] ?? '', keyMeta: (S.keys.find(k => k[0] === S.keyAsk)?.[2] ?? ''),
+      keyYes: () => { const id = S.keyAsk, nm = S.keys.find(k => k[0] === id)?.[1]; this.setState(s => ({ keyAsk: null, keys: s.keys.filter(k => k[0] !== id) })); this.flash('API key revoked', 'success', nm + ' can no longer access Relay.'); },
+      keyNo: () => set({ keyAsk: null }),
+      sessAsk: !!S.sessAsk, sessItem: S.sessions.find(x => x[0] === S.sessAsk)?.[1] ?? '', sessMeta: S.sessions.find(x => x[0] === S.sessAsk)?.[2] ?? '',
+      sessYes: () => { const id = S.sessAsk; this.setState(s => ({ sessAsk: null, sessions: s.sessions.filter(x => x[0] !== id) })); this.flash('Session signed out', 'success'); },
+      sessNo: () => set({ sessAsk: null }),
+      noKeys: S.keys.length === 0,
+      createKey: () => this.setState(s => ({ kn: s.kn + 1, keys: [['k' + s.kn, 'New key ' + (s.kn - 2), 'rl_live_••••••••••••' + Math.random().toString(16).slice(2, 6), 'Created just now · Never used'], ...s.keys] }))
+    };
+  }
+}
+</script>
+</body>
+</html>

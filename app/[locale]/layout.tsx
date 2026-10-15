@@ -3,8 +3,8 @@ import { NextIntlClientProvider, hasLocale } from 'next-intl'
 import { getMessages, setRequestLocale } from 'next-intl/server'
 import { notFound } from 'next/navigation'
 import { routing } from '@/i18n/routing'
-import { WaitlistProvider } from '@/components/WaitlistModal'
-import { CatalogProvider } from '@/components/dashboard/CatalogContext'
+import DCProvider from '@/components/relay-app/DCProvider'
+import '../relay.css'
 import JsonLd from '@/components/JsonLd'
 import { buildMetadata } from '@/lib/seo'
 import { organizationJsonLd, websiteJsonLd } from '@/lib/jsonld'
@@ -65,9 +65,7 @@ export default async function LocaleLayout({ children, params }: Props) {
     <>
       <JsonLd data={[organizationJsonLd(), websiteJsonLd(locale)]} />
       <NextIntlClientProvider messages={messages}>
-        <WaitlistProvider>
-          <CatalogProvider>{children}</CatalogProvider>
-        </WaitlistProvider>
+        <DCProvider locale={locale}>{children}</DCProvider>
       </NextIntlClientProvider>
     </>
   )

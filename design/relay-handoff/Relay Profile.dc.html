@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;background:#161719;color:#f7f8f8;font-family:"Geist",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#8a8f98;text-decoration:none}
+a:hover{color:#f7f8f8}
+select option{background:#1c1d20;color:#f7f8f8}
+</style>
+</helmet>
+<div style="max-width:880px;margin:0 auto;padding:40px 40px 64px;display:flex;flex-direction:column;gap:32px;font-family:Geist,system-ui,sans-serif;color:#f7f8f8">
+  <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap">
+    <div style="position:relative;flex:none">
+      <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Sarah Mitchell" style="width:80px;height:80px;border-radius:50%;object-fit:cover;display:block;background:#2a2b2e;box-shadow:0 0 0 1px rgba(255,255,255,.08)">
+      <span style="position:absolute;right:2px;bottom:2px;width:14px;height:14px;border-radius:50%;background:#6fe3b4;box-shadow:0 0 0 3px #161719"></span>
+    </div>
+    <div style="flex:1 1 240px;min-width:0">
+      <div style="font-size:24px;font-weight:500;letter-spacing:-0.02em">{{ saved.name }}</div>
+      <div style="font-size:13.5px;color:#8a8f98;margin-top:5px">{{ saved.title }} · Relay workspace</div>
+      <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">
+        <span style="display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 9px;border-radius:999px;font-size:12px;font-weight:500;color:#d4d6da;box-shadow:inset 0 0 0 1px rgba(255,255,255,.1)">Admin</span>
+        <span style="display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 9px;border-radius:999px;font-size:12px;font-weight:500;color:#d4d6da;box-shadow:inset 0 0 0 1px rgba(255,255,255,.1)">Free plan</span>
+        <span style="display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 9px;border-radius:999px;font-size:12px;color:#8a8f98;box-shadow:inset 0 0 0 1px rgba(255,255,255,.1)">Member since March 2025</span>
+      </div>
+    </div>
+  </div>
+
+  <section style="display:flex;flex-direction:column;gap:12px">
+    <div style="font-size:13.5px;font-weight:500;padding:0 2px">Personal details</div>
+    <div style="border-radius:12px;box-shadow:0 0 0 1px rgba(255,255,255,.06);background:rgba(255,255,255,.012)">
+      <sc-for list="{{ fields }}" as="f" hint-placeholder-count="5">
+        <div style="display:grid;grid-template-columns:minmax(0,200px) minmax(0,1fr);align-items:center;gap:16px;padding:12px 16px;border-bottom:1px solid rgba(255,255,255,.04)">
+          <span style="font-size:13px;color:#8a8f98">{{ f.label }}</span>
+          <sc-if value="{{ f.isSelect }}"><select value="{{ f.value }}" onChange="{{ f.onChange }}" style="width:100%;height:34px;padding:0 10px;border:none;outline:none;border-radius:8px;background:rgba(255,255,255,.03);box-shadow:inset 0 0 0 1px rgba(255,255,255,.08);color:#f7f8f8;font:13px Geist,system-ui,sans-serif;cursor:pointer"><sc-for list="{{ f.options }}" as="o" hint-placeholder-count="6"><option value="{{ o }}">{{ o }}</option></sc-for></select></sc-if>
+          <sc-if value="{{ f.isText }}"><input value="{{ f.value }}" onChange="{{ f.onChange }}" style="width:100%;height:34px;padding:0 10px;border:none;outline:none;border-radius:8px;background:rgba(255,255,255,.03);box-shadow:inset 0 0 0 1px rgba(255,255,255,.08);color:#f7f8f8;font:13px Geist,system-ui,sans-serif;transition:box-shadow .12s" style-focus="box-shadow:inset 0 0 0 1px rgba(111,227,180,.45)"></sc-if>
+        </div>
+      </sc-for>
+      <div style="display:flex;align-items:center;justify-content:flex-end;gap:8px;padding:12px 16px">
+        <span style="font-size:12.5px;color:#6fe3b4;transition:opacity .2s;opacity:{{ savedOp }}">Saved</span>
+        <span onClick="{{ discard }}" style="height:30px;padding:0 12px;display:inline-flex;align-items:center;border-radius:7px;font-size:12.5px;font-weight:500;color:#d4d6da;cursor:pointer;transition:opacity .15s;opacity:{{ dirtyOp }};pointer-events:{{ dirtyPe }}" style-hover="background:rgba(255,255,255,.05)">Discard</span>
+        <span onClick="{{ save }}" style="height:30px;padding:0 14px;display:inline-flex;align-items:center;border-radius:7px;font-size:12.5px;font-weight:500;cursor:pointer;transition:background-color .15s,color .15s;color:{{ saveFg }};background:{{ saveBg }}">Save changes</span>
+      </div>
+    </div>
+  </section>
+
+  <section style="display:flex;flex-direction:column;gap:12px">
+    <div style="font-size:13.5px;font-weight:500;padding:0 2px">Recent activity</div>
+    <div style="border-radius:12px;box-shadow:0 0 0 1px rgba(255,255,255,.06);background:rgba(255,255,255,.012);padding:6px 0">
+      <sc-for list="{{ activity }}" as="a" hint-placeholder-count="5">
+        <div style="display:flex;align-items:center;gap:12px;padding:10px 16px">
+          <dc-import name="Relay App Icon" kind="{{ a.kind }}" size="26" hint-size="26px,26px"></dc-import>
+          <span style="flex:1;min-width:0;font-size:13px;color:#b4b8bf">{{ a.text }}</span>
+          <span style="font-size:12px;color:#62666d;white-space:nowrap">{{ a.when }}</span>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+<dc-import name="Relay Confirm" open="{{ ask }}" tone="warning" title="Discard unsaved changes?" body="You’ve edited your profile. Discarding will restore your last saved details." confirm-label="Discard changes" cancel-label="Keep editing" on-confirm="{{ askYes }}" on-cancel="{{ askNo }}" hint-size="0px,0px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const INIT = { name: 'Sarah Mitchell', title: 'Head of payments', email: 'sarah.mitchell@relay.so', location: 'London, United Kingdom', timezone: '(GMT+00:00) London' };
+const TZ = ['(GMT−08:00) Los Angeles', '(GMT−06:00) Mexico City', '(GMT−05:00) New York', '(GMT−05:00) Toronto', '(GMT−03:00) São Paulo', '(GMT+00:00) London', '(GMT+00:00) Dublin', '(GMT+01:00) Amsterdam', '(GMT+01:00) Berlin', '(GMT+01:00) Paris', '(GMT+01:00) Zurich', '(GMT+02:00) Tallinn', '(GMT+03:00) Riyadh', '(GMT+04:00) Dubai', '(GMT+05:30) Mumbai', '(GMT+08:00) Singapore', '(GMT+08:00) Hong Kong', '(GMT+09:00) Tokyo', '(GMT+09:00) Seoul', '(GMT+10:00) Sydney', '(GMT+12:00) Auckland'];
+const LABELS = [['name', 'Full name'], ['title', 'Role'], ['email', 'Email'], ['location', 'Location'], ['timezone', 'Time zone']];
+const ACT = [['fx', 'Compared Meridian FX, Cobalt Markets and Pacifica FX', '2h ago'], ['kyc', 'Requested an intro from Kestrel Identity', 'Today'], ['payouts', 'Added Ledgerline to EU payout partners', 'Mon'], ['cards', 'Moved Northbeam Cards to integrating', 'Oct 9'], ['all', 'Updated workspace weighting', 'Oct 6']];
+class Component extends DCLogic {
+  state = { saved: INIT, draft: INIT, flash: false, ask: false };
+  renderVals() {
+    const S = this.state, dirty = LABELS.some(([k]) => S.draft[k] !== S.saved[k]);
+    return {
+      saved: S.saved,
+      fields: LABELS.map(([k, label]) => ({ label, value: S.draft[k], isSelect: k === 'timezone', isText: k !== 'timezone', options: TZ, onChange: e => { const v = e.target.value; this.setState(s => ({ draft: { ...s.draft, [k]: v } })); } })),
+      dirtyOp: dirty ? 1 : 0, dirtyPe: dirty ? 'auto' : 'none',
+      saveFg: dirty ? '#0f1011' : '#62666d', saveBg: dirty ? '#f7f8f8' : 'rgba(255,255,255,.05)', savedOp: S.flash ? 1 : 0,
+      save: () => { if (!dirty) return; this.setState(s => ({ saved: s.draft, flash: true })); this.props.onToast?.('Profile updated', 'success', 'Your details are saved.'); clearTimeout(this.t); this.t = setTimeout(() => this.setState({ flash: false }), 1600); },
+      discard: () => this.setState({ ask: true }),
+      ask: S.ask, askYes: () => this.setState(s => ({ ask: false, draft: s.saved })), askNo: () => this.setState({ ask: false }),
+      activity: ACT.map(([kind, text, when]) => ({ kind, text, when }))
+    };
+  }
+}
+</script>
+</body>
+</html>

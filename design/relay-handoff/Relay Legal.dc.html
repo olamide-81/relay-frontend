@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;background:#0f1011;color:#f7f8f8;font-family:"Geist",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#8a8f98;text-decoration:none;transition:color .12s}
+a:hover{color:#f7f8f8}
+</style>
+</helmet>
+<div style="position:relative;min-height:100vh;overflow-x:clip;font-family:Geist,system-ui,sans-serif;color:#f7f8f8;background:#0f1011">
+  <dc-import name="Relay Site Nav" hint-size="100%,64px" style="position:sticky;top:0;z-index:50"></dc-import>
+  <section data-screen-label="Legal" style="position:relative;max-width:1100px;margin:0 auto;padding:96px 24px 0;display:grid;grid-template-columns:200px minmax(0,1fr);gap:48px 64px">
+    <nav style="position:sticky;top:96px;align-self:start;display:flex;flex-direction:column;gap:2px">
+      <span style="font-size:12px;color:#62666d;margin-bottom:10px">Legal</span>
+      <sc-for list="{{ docs }}" as="d" hint-placeholder-count="3"><a href="{{ d.href }}" style="height:32px;padding:0 10px;display:flex;align-items:center;border-radius:8px;font-size:13.5px;font-weight:500;color:{{ d.fg }};background:{{ d.bg }}" style-hover="color:#f7f8f8;background:rgba(255,255,255,.04)">{{ d.label }}</a></sc-for>
+    </nav>
+    <article style="max-width:680px">
+      <h1 style="margin:0;font-weight:500;font-size:clamp(36px,4.6vw,52px);line-height:1.05;letter-spacing:-0.04em">{{ doc.title }}</h1>
+      <div style="font-size:13.5px;color:#62666d;margin-top:14px">Last updated October 1, 2026</div>
+      <p style="margin:32px 0 0;font-size:16px;line-height:1.7;color:#b4b8bf">{{ doc.intro }}</p>
+      <sc-for list="{{ doc.sections }}" as="s" hint-placeholder-count="4">
+        <h2 style="margin:44px 0 0;font-size:19px;font-weight:500;letter-spacing:-0.015em">{{ s.h }}</h2>
+        <p style="margin:12px 0 0;font-size:15px;line-height:1.7;color:#8a8f98">{{ s.p }}</p>
+      </sc-for>
+      <sc-if value="{{ isCookies }}"><span onClick="{{ openCookies }}" style="margin-top:32px;height:40px;padding:0 16px;display:inline-flex;align-items:center;border-radius:10px;font-size:14px;font-weight:500;color:#0f1011;background:#f7f8f8;cursor:pointer" style-hover="background:#ffffff">Manage cookie preferences</span></sc-if>
+    </article>
+  </section>
+  <dc-import name="Relay Site Footer" cta="{{ false }}" hint-size="100%,400px"></dc-import>
+  <dc-import name="Relay Site Cookies" hint-size="0px,0px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;doc&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;privacy&quot;,&quot;terms&quot;,&quot;cookies&quot;],&quot;default&quot;:&quot;privacy&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+const DOCS = {
+  privacy: ['Privacy policy', 'Gratebridge Labs respects your privacy. This policy explains what we collect, why, and the choices you have.', [['What we collect', 'Account details such as your name, work email and company, how you use Relay, and the requests you send to Providers.'], ['How we use it', 'To run and improve Relay, to send requests on your behalf and to keep your workspace secure. We never sell your data.'], ['Sharing with Providers', 'Providers only see the details you include in a request. Browsing and comparisons are never shared.'], ['Your rights', 'You can access, correct, export or delete your data at any time from Settings or by emailing privacy@relay.gratebridge.com.']]],
+  terms: ['Terms of service', 'These terms govern your use of Relay. By creating a workspace you agree to them on behalf of your organisation.', [['Your account', 'You are responsible for activity in your workspace and for keeping credentials secure.'], ['Acceptable use', 'Don’t scrape, resell or misrepresent Relay data, or use it to contact Providers for unrelated purposes.'], ['Data accuracy', 'We verify Provider data weekly but it is provided for information. Confirm terms directly before signing.'], ['Billing', 'Paid plans renew automatically. You can cancel anytime and keep access until the period ends.']]],
+  cookies: ['Cookie policy', 'We use a small number of cookies to run Relay and, with your consent, to understand how it is used.', [['Essential', 'Required for sign-in, security and remembering your preferences. These can’t be switched off.'], ['Analytics', 'Help us understand which features are used so we can improve them. Off unless you opt in.'], ['Marketing', 'Measure the performance of our campaigns on other sites. Off unless you opt in.'], ['Changing your choice', 'You can update your preferences at any time below or from the footer of any page.']]]
+};
+class Component extends DCLogic {
+  renderVals() {
+    const m = /[?&]doc=(\w+)/.exec(location.search), k = this.props.doc ?? (m && DOCS[m[1]] ? m[1] : 'privacy');
+    const [title, intro, sections] = DOCS[k];
+    return {
+      docs: Object.entries(DOCS).map(([key, d]) => ({ label: d[0], href: 'Relay%20Legal.dc.html?doc=' + key, fg: key === k ? '#f7f8f8' : '#8a8f98', bg: key === k ? 'rgba(255,255,255,.06)' : 'transparent' })),
+      doc: { title, intro, sections: sections.map(([h, p]) => ({ h, p })) },
+      isCookies: k === 'cookies', openCookies: () => window.dispatchEvent(new CustomEvent('relay:cookies'))
+    };
+  }
+}
+</script>
+</body>
+</html>

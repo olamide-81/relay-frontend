@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<div style="position:fixed;right:20px;bottom:20px;z-index:80;width:400px;max-width:calc(100vw - 40px);font-family:Geist,system-ui,sans-serif;color:#f7f8f8;border-radius:16px;background:rgba(26,27,30,.94);backdrop-filter:blur(24px) saturate(150%);-webkit-backdrop-filter:blur(24px) saturate(150%);box-shadow:0 0 0 1px rgba(255,255,255,.08),inset 0 1px 0 rgba(255,255,255,.05),0 24px 64px -12px rgba(0,0,0,.7);transition:opacity .3s,transform .45s cubic-bezier(.2,.9,.25,1.1);opacity:{{ op }};transform:{{ tf }};pointer-events:{{ pe }}">
+  <div style="padding:18px 18px 0;display:flex;gap:12px;align-items:flex-start">
+    <span style="width:32px;height:32px;flex:none;border-radius:9px;display:grid;place-items:center;background:rgba(255,255,255,.05);box-shadow:inset 0 0 0 1px rgba(255,255,255,.08);color:#d4d6da"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10 4 4 0 0 1-5-5 4 4 0 0 1-5-5"></path><path d="M8.5 8.5v.01"></path><path d="M16 15.5v.01"></path><path d="M12 12v.01"></path><path d="M11 17v.01"></path><path d="M7 14v.01"></path></svg></span>
+    <div style="flex:1;min-width:0">
+      <div style="font-size:14px;font-weight:500">Cookies on Relay</div>
+      <div style="font-size:13px;line-height:1.5;color:#8a8f98;margin-top:4px;text-wrap:pretty">We use essential cookies to run the site, and optional ones to understand usage and improve Relay. <a href="Relay%20Legal.dc.html?doc=cookies" style="color:#d4d6da">Cookie policy</a></div>
+    </div>
+  </div>
+  <div style="display:grid;transition:grid-template-rows .3s cubic-bezier(.2,.8,.2,1),opacity .25s;grid-template-rows:{{ rows }};opacity:{{ prefOp }}">
+    <div style="min-height:0;overflow:hidden">
+      <div style="margin:14px 18px 0;border-radius:10px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.07)">
+        <sc-for list="{{ prefs }}" as="p" hint-placeholder-count="3">
+          <div style="display:flex;align-items:center;gap:12px;padding:11px 12px;border-bottom:1px solid rgba(255,255,255,.05)">
+            <div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:500">{{ p.label }}</div><div style="font-size:12px;color:#62666d;margin-top:2px">{{ p.hint }}</div></div>
+            <span onClick="{{ p.toggle }}" style="width:30px;height:18px;flex:none;border-radius:999px;position:relative;transition:background-color .15s;cursor:{{ p.cursor }};background:{{ p.track }};opacity:{{ p.lockOp }}"><span style="position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;background:#f7f8f8;transition:transform .15s;transform:{{ p.knob }}"></span></span>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+  <div style="display:flex;align-items:center;gap:8px;padding:16px 18px 18px">
+    <span onClick="{{ toggleCustom }}" style="font-size:13px;font-weight:500;color:#8a8f98;cursor:pointer;margin-right:auto" style-hover="color:#f7f8f8">{{ customLabel }}</span>
+    <span onClick="{{ reject }}" style="height:32px;padding:0 12px;display:inline-flex;align-items:center;border-radius:8px;font-size:13px;font-weight:500;color:#d4d6da;cursor:pointer;box-shadow:inset 0 0 0 1px rgba(255,255,255,.1);transition:background-color .15s,color .15s" style-hover="background:rgba(255,255,255,.05);color:#f7f8f8">{{ secondary }}</span>
+    <span onClick="{{ accept }}" style="height:32px;padding:0 14px;display:inline-flex;align-items:center;border-radius:8px;font-size:13px;font-weight:500;color:#0f1011;background:#f7f8f8;cursor:pointer;transition:background-color .15s,transform .2s" style-hover="background:#ffffff;transform:translateY(-1px)">Accept all</span>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const CK = 'relay-cookie-consent';
+class Component extends DCLogic {
+  state = { open: false, custom: false, prefs: { analytics: true, marketing: false } };
+  componentDidMount() {
+    let saved = null; try { saved = localStorage.getItem(CK); } catch (e) {}
+    if (!saved) this._t = setTimeout(() => this.setState({ open: true }), 1400);
+    this._ev = () => this.setState({ open: true, custom: true });
+    window.addEventListener('relay:cookies', this._ev);
+  }
+  componentWillUnmount() { clearTimeout(this._t); window.removeEventListener('relay:cookies', this._ev); }
+  consent(v) { try { localStorage.setItem(CK, JSON.stringify(v)); } catch (e) {} this.setState({ open: false, custom: false }); }
+  renderVals() {
+    const S = this.state;
+    return {
+      op: S.open ? 1 : 0, pe: S.open ? 'auto' : 'none', tf: S.open ? 'translateY(0) scale(1)' : 'translateY(16px) scale(.98)',
+      rows: S.custom ? '1fr' : '0fr', prefOp: S.custom ? 1 : 0, customLabel: S.custom ? 'Hide options' : 'Customise',
+      toggleCustom: () => this.setState(s => ({ custom: !s.custom })),
+      secondary: S.custom ? 'Save choices' : 'Reject optional',
+      reject: () => this.consent(S.custom ? { essential: true, ...S.prefs } : { essential: true, analytics: false, marketing: false }),
+      accept: () => this.consent({ essential: true, analytics: true, marketing: true }),
+      prefs: [['essential', 'Essential', 'Needed for sign-in and security', true], ['analytics', 'Analytics', 'Helps us understand how Relay is used'], ['marketing', 'Marketing', 'Measures campaigns on other sites']].map(([k, label, hint, locked]) => { const on = locked || !!S.prefs[k]; return { label, hint, track: on ? '#6fe3b4' : 'rgba(255,255,255,.14)', knob: on ? 'translateX(12px)' : 'translateX(0)', cursor: locked ? 'default' : 'pointer', lockOp: locked ? 0.55 : 1, toggle: () => !locked && this.setState(s => ({ prefs: { ...s.prefs, [k]: !s.prefs[k] } })) }; })
+    };
+  }
+}
+</script>
+</body>
+</html>
