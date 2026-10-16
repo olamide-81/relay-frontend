@@ -538,6 +538,7 @@ async function convertFile(fp) {
   if (patch.vals) {
     js += `\n{\n  const designVals = Component.prototype.renderVals\n  const appVals = ${patch.vals}\n  Component.prototype.renderVals = function () {\n    const v = designVals.call(this)\n    return { ...v, ...appVals.call(this, v) }\n  }\n}\n`
   }
+  if (patch.after) js += '\n' + patch.after + '\n'
 
   const ctx = new Ctx(base)
   const frag = parseFragment(encodeCase(template))

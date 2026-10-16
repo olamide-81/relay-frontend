@@ -6,6 +6,8 @@
  * needs a look). `find` may also be a RegExp. `prelude` is code placed before
  * the logic class; `vals` is a function (this = logic, arg = the design's
  * renderVals result) whose returned object is merged into renderVals().
+ * `after` is code placed after the class (e.g. `Component = wireX(Component)`
+ * from lib/dc/wiring, which seeds state from the API and syncs changes back).
  *
  * Props the app passes in (see components/relay-app/*):
  *   Dashboard: initialRoute, route, onRoute, plan, user, onLogout, onUpgradePlan
@@ -28,14 +30,16 @@ const SIGN_UP = 'Relay%20Sign%20Up.dc.html'
 
 export default {
   'Relay Dashboard': {
-    prelude: "import { getReportEntry } from '@/lib/reports'",
+    prelude: "import { getReportEntry } from '@/lib/reports'\nimport { wireDashboard, dashboardVals } from '@/lib/dc/wiring'",
     vals: `function (v) {
       const rep = this.state.page === 'report' ? getReportEntry(this.state.params.slug, 'app') : null;
       return {
         appOpenReport: (slug) => this.go('report', { slug }, 'intelligence'),
         ...(rep ? { title: rep.cardTitle, activeKey: 'intelligence', page: 'intelligence' } : {}),
+        ...dashboardVals.call(this, v),
       };
     }`,
+    after: 'Component = wireDashboard(Component)',
     logic: [
       [
         "state = { page: 'overview', params: {}, activeKey: 'overview',",
@@ -75,6 +79,13 @@ export default {
       ['<dc-import name="Relay Requests" ', '<dc-import name="Relay Requests" on-navigate="{{ onNavigate }}" '],
       ['<dc-import name="Relay Profile" ', '<dc-import name="Relay Profile" user="{{ user }}" '],
       ['<dc-import name="Relay Settings" ', '<dc-import name="Relay Settings" user="{{ user }}" '],
+      ['<dc-import name="Relay Sidebar" ', '<dc-import name="Relay Sidebar" inbox-unread="{{ appInboxUnread }}" '],
+      ['<dc-import name="Relay Inbox" ', '<dc-import name="Relay Inbox" on-navigate="{{ onNavigate }}" '],
+      // The signed-in workspace (lib/dc/app-bridge) for every screen; undefined on the website's product shots.
+      [
+        /<dc-import name="(Relay (?:Sidebar|Topbar|Overview|Inbox|Compare|Directory|Providers|Shortlists|Provider|Requests|Intelligence|Profile|Settings|Modals))" /g,
+        '<dc-import name="$1" app="{{ app }}" ',
+      ],
     ],
   },
 
@@ -87,6 +98,8 @@ export default {
         '<div onClick="{{ closeMenus }}" style="display:flex;align-items:center;height:30px;padding:0 8px;border-radius:6px;cursor:pointer;font-size:13px;color:#d4d6da" style-hover="background:#2a2b2e;color:#f7f8f8">Log out</div>',
         '<div onClick="{{ logOut }}" style="display:flex;align-items:center;height:30px;padding:0 8px;border-radius:6px;cursor:pointer;font-size:13px;color:#d4d6da" style-hover="background:#2a2b2e;color:#f7f8f8">Log out</div>',
       ],
+      [/<span (style="[^"]*" style-hover="[^"]*">\{\{ n\.action \}\})/, '<span onClick="{{ n.appAction }}" $1'],
+      [/<span (style="[^"]*">Dismiss<\/span>)/, '<span onClick="{{ n.appDismiss }}" $1'],
     ],
     logic: [
       [
@@ -95,12 +108,18 @@ export default {
       userName: userName(this.props.user), avatar: userAvatar(this.props.user, 'https://randomuser.me/api/portraits/women/44.jpg'),
       logOut: () => { this.setState({ menu: null }); this.props.onLogout?.(); },`,
       ],
+      // Bell notifications come from the API when signed in.
+      [/(?<!const )\bNOTES\b/g, '(this.props.app?.data.notifications ?? NOTES)'],
     ],
+    prelude: "import { wireTopbar, topbarVals } from '@/lib/dc/wiring'",
+    vals: 'function (v) { return topbarVals.call(this, v) }',
+    after: 'Component = wireTopbar(Component)',
   },
 
   'Relay Overview': {
     template: [
       ['{{ greeting }}, Sarah', '{{ greeting }}, {{ firstName }}'],
+      ['From $49 / month', 'From {{ appFromPrice }} / month'],
       click('New shortlist', 'appNewShortlist'),
       click('Request intro', 'appRequestIntro'),
       click('Upgrade to Pro', 'appUpgrade'),
@@ -108,9 +127,10 @@ export default {
       click('View directory', 'appDirectory'),
       [/(<span) (style="font-size:12\.5px;font-weight:500;color:\{\{ c\.accent \}\}">Unlock →<\/span>)/, '$1 onClick="{{ appUpgrade }}" $2'],
     ],
-    vals: `function () {
+    prelude: "import { overviewVals } from '@/lib/dc/wiring'",
+    vals: `function (v) {
       const nav = (k, p) => () => this.props.onNavigate?.(k, p);
-      return { appNewShortlist: () => this.props.onCreateList?.(), appRequestIntro: nav('requests'), appUpgrade: () => this.props.onUpgrade?.(), appComparePlans: nav('settings', { section: 'billing' }), appDirectory: nav('directory') };
+      return { appNewShortlist: () => this.props.onCreateList?.(), appRequestIntro: nav('requests'), appUpgrade: () => this.props.onUpgrade?.(), appComparePlans: nav('settings', { section: 'billing' }), appDirectory: nav('directory'), ...overviewVals.call(this, v) };
     }`,
     logic: [
       [
@@ -133,8 +153,10 @@ export default {
         `state = { saved: withUser(INIT, this.props.user), draft: withUser(INIT, this.props.user), flash: false, ask: false };`,
       ],
     ],
-    vals: "function () { return { avatar: userAvatar(this.props.user, 'https://randomuser.me/api/portraits/women/44.jpg') } }",
-    prelude: `const withUser = (init, u) => u ? { ...init, name: u.name || init.name, email: u.email || init.email } : init;`,
+    vals: "function (v) { return { avatar: userAvatar(this.props.user, 'https://randomuser.me/api/portraits/women/44.jpg'), ...profileVals.call(this, v) } }",
+    prelude: `import { wireProfile, profileVals } from '@/lib/dc/wiring'
+const withUser = (init, u) => u ? { ...init, name: u.name || init.name, email: u.email || init.email } : init;`,
+    after: 'Component = wireProfile(Component)',
   },
 
   // Phones: list and message become two full-screen views (tap a message to open it, "Inbox"
@@ -143,6 +165,7 @@ export default {
   'Relay Inbox': {
     template: [
       click('View provider', 'appViewProvider'),
+      [/<span (style="[^"]*" style-hover="[^"]*">\{\{ sel\.primary \}\})/, '<span onClick="{{ appPrimary }}" $1'],
       ['<div data-r="m-col" style="height:100%;min-height:560px;display:flex;', '<div data-r="m-col" data-mview="{{ appMView }}" style="height:100%;min-height:560px;display:flex;'],
       ['<div data-r="m-pane" style="flex:0 1 380px;', '<div data-r="m-pane" data-inbox="list" style="flex:0 1 380px;'],
       [
@@ -151,23 +174,102 @@ export default {
       ],
     ],
     logic: [
+      [/(?<!const )\bMSGS\b/g, '(this.props.app?.data.inbox ?? MSGS)'],
+      ['componentDidMount() { this.read(1); }', 'componentDidMount() { if (this.state.sel != null) this.read(this.state.sel); }'],
       [
         'open: () => this.read(m.id),',
         "open: () => { this.read(m.id); this.setState({ appDetail: true }); if (window.matchMedia?.('(max-width: 768px)').matches) document.querySelector('main [style*=\"overflow-y\"]')?.scrollTo({ top: 0 }); },",
       ],
     ],
+    prelude: "import { wireInbox, inboxVals } from '@/lib/dc/wiring'",
     vals: `function (v) {
       return {
         appViewProvider: () => { const p = RELAY.providers.find(x => x.name === v.sel?.from); if (p) this.props.onOpenProvider?.(p.id, 'inbox'); },
         appMView: this.state.appDetail ? 'detail' : 'list',
         appBack: () => this.setState({ appDetail: false }),
+        ...inboxVals.call(this, v),
       };
     }`,
+    after: 'Component = wireInbox(Component)',
   },
 
   'Relay Requests': {
     template: [click('Open in Inbox', 'appOpenInbox')],
-    vals: "function () { return { appOpenInbox: () => this.props.onNavigate?.('inbox') } }",
+    prelude: "import { wireRequests, requestsVals } from '@/lib/dc/wiring'",
+    vals: "function (v) { return { appOpenInbox: () => this.props.onNavigate?.('inbox'), ...requestsVals.call(this, v) } }",
+    after: 'Component = wireRequests(Component)',
+  },
+
+  // The workspace's real Providers pipeline (relay-api WsPipeline) in the design's ROWS shape.
+  'Relay Providers': {
+    logic: [[/(?<!const )\bROWS\b/g, '(this.props.app ? pipelineRows(this.props.app) : ROWS)']],
+    prelude: "import { wireProviders, providersVals, pipelineRows } from '@/lib/dc/wiring'",
+    vals: 'function (v) { return providersVals.call(this, v) }',
+    after: 'Component = wireProviders(Component)',
+  },
+
+  'Relay Compare': {
+    prelude: "import { wireCompare, compareVals } from '@/lib/dc/wiring'",
+    vals: 'function (v) { return compareVals.call(this, v) }',
+    after: 'Component = wireCompare(Component)',
+  },
+
+  // Phones: the region tabs (413px) were wider than the screen, so the whole panel slid
+  // sideways while scrolling. At <=768px only "All regions" and "Europe" stay as tabs;
+  // North America and Asia-Pacific move into More with the other regions.
+  'Relay Directory': {
+    prelude: "import { wireDirectory, directoryVals } from '@/lib/dc/wiring'\nconst narrow = () => typeof window !== 'undefined' && !!window.matchMedia?.('(max-width: 768px)').matches;",
+    logic: [
+      ["const MAIN = ['All regions', 'Europe', 'North America', 'Asia-Pacific']", "const MAIN_ALL = ['All regions', 'Europe', 'North America', 'Asia-Pacific']"],
+      ['const extra = R.REGIONS.filter(r => !MAIN.includes(r))', 'const MAIN = narrow() ? MAIN_ALL.slice(0, 2) : MAIN_ALL, extra = R.REGIONS.filter(r => !MAIN.includes(r))'],
+      [
+        'componentDidMount() { ',
+        "componentDidMount() { this._appMq = window.matchMedia?.('(max-width: 768px)'); this._appMqFn = () => this.forceUpdate(); this._appMq?.addEventListener?.('change', this._appMqFn); this.forceUpdate(); ",
+      ],
+      ['componentWillUnmount() { ', "componentWillUnmount() { this._appMq?.removeEventListener?.('change', this._appMqFn); "],
+    ],
+    vals: 'function (v) { return directoryVals.call(this, v) }',
+    after: 'Component = wireDirectory(Component)',
+  },
+
+  'Relay Modals': {
+    template: [['>€39<', '>{{ appPrice }}<']],
+    prelude: "import { PRICE } from '@/lib/site-content'",
+    vals: 'function () { return { appPrice: PRICE.yearly } }',
+  },
+
+  'Relay Pricing': {
+    logic: [
+      ["plan('Free', '€0'", "plan('Free', PRICE.free"],
+      ["plan('Pro', yr ? '€39' : '€49'", "plan('Pro', yr ? PRICE.yearly : PRICE.monthly"],
+      ["false, '#')", `false, '${SIGN_UP}')`],
+      ["true, '#')", `true, '${SIGN_UP}')`],
+    ],
+    template: [['>−20%<', '>−{{ appSave }}%<']],
+    prelude: "import { PRICE } from '@/lib/site-content'",
+    vals: 'function () { return { appSave: PRICE.savePct } }',
+  },
+
+  // Admin-managed website content (relay-api /api/site/content); the design's constants are the defaults.
+  'Relay Changelog': { prelude: "import { cmsBind } from '@/lib/site-content'", after: "cmsBind('changelog.entries', E)" },
+  'Relay Customers': {
+    prelude: "import { cmsBind } from '@/lib/site-content'",
+    after: "cmsBind('customers.stories', STORIES)\ncmsBind('customers.logos', LOGOS)",
+  },
+  'Relay Careers': { prelude: "import { cmsBind } from '@/lib/site-content'", after: "cmsBind('careers.roles', ROLES)" },
+
+  'Relay Contact': {
+    logic: [
+      [
+        'setTimeout(() => this.setState({ sending: false, done: true }), 900);',
+        `this.setState({ apiErr: null });
+        sendContact({ ...S.f, size: S.size, needs: S.needs, message: S.msg })
+          .then(() => this.setState({ sending: false, done: true }))
+          .catch(e => this.setState({ sending: false, apiErr: (e && e.message) || 'Could not send. Try again or email us.' }));`,
+      ],
+    ],
+    prelude: "import { sendContact } from '@/lib/api/site'",
+    vals: "function (v) { return this.state.apiErr ? { hint: this.state.apiErr, hintFg: '#ff7b7b' } : {} }",
   },
 
 
@@ -175,6 +277,8 @@ export default {
     // Categories: each category gets an equal "hold" where it's fully sharp (first 60% of its
     // scroll step), then moves to the next; the last one holds like the others instead of only
     // resolving at the final pixel. Max blur is halved and starts later.
+    prelude: "import { cmsBind } from '@/lib/site-content'",
+    after: "cmsBind('customers.quotes', QUOTES)\ncmsBind('customers.marquee', MARQUEE)",
     // The hero preview iframe is in the server HTML, so it can finish loading before
     // React attaches onLoad; start the readiness check on mount as well.
     logic: [
@@ -219,20 +323,16 @@ export default {
   // Phones: the region tabs (413px) were wider than the screen, so the whole panel slid
   // sideways while scrolling. At <=768px only "All regions" and "Europe" stay as tabs;
   // North America and Asia-Pacific move into More with the other regions.
-  'Relay Directory': {
-    prelude: "const narrow = () => typeof window !== 'undefined' && !!window.matchMedia?.('(max-width: 768px)').matches;",
-    logic: [
-      ["const MAIN = ['All regions', 'Europe', 'North America', 'Asia-Pacific']", "const MAIN_ALL = ['All regions', 'Europe', 'North America', 'Asia-Pacific']"],
-      ['const extra = R.REGIONS.filter(r => !MAIN.includes(r))', 'const MAIN = narrow() ? MAIN_ALL.slice(0, 2) : MAIN_ALL, extra = R.REGIONS.filter(r => !MAIN.includes(r))'],
-      [
-        'componentDidMount() { ',
-        "componentDidMount() { this._appMq = window.matchMedia?.('(max-width: 768px)'); this._appMqFn = () => this.forceUpdate(); this._appMq?.addEventListener?.('change', this._appMqFn); this.forceUpdate(); ",
-      ],
-      ['componentWillUnmount() { ', "componentWillUnmount() { this._appMq?.removeEventListener?.('change', this._appMqFn); "],
-    ],
-  },
 
   'Relay Intelligence': {
+    prelude: "import { cmsBind } from '@/lib/site-content'",
+    after: [
+      "cmsBind('intelligence.signals', SIG)",
+      "cmsBind('intelligence.news', NEWS)",
+      "cmsBind('intelligence.benchmarks', BENCH)",
+      "cmsBind('intelligence.licenceCatalog', CAT)",
+      "cmsBind('intelligence.licenceChanges', LIC)",
+    ].join('\n'),
     template: [click('Download PDF', 'appPrint')],
     vals: "function () { return { appPrint: () => window.print() } }",
     logic: [
@@ -263,8 +363,17 @@ export default {
   'Relay Security': { template: [link('security@relay.gratebridge.com', 'mailto:security@relay.gratebridge.com')] },
 
   'Relay Settings': {
-    template: [click('Change password', 'appChangePassword')],
-    vals: "function () { return { appChangePassword: () => dcNavigate('Relay%20Forgot%20Password.dc.html') } }",
+    template: [
+      click('Change password', 'appChangePassword'),
+      ['letter-spacing:-0.01em">Free</div>', 'letter-spacing:-0.01em">{{ appPlanName }}</div>'],
+      ['>Upgrade to Relay Pro for unlimited compares, intros and market signals.<', '>{{ appPlanNote }}<'],
+      ['>Last changed 3 months ago<', '>{{ appPwNote }}<'],
+    ],
+    prelude: "import { wireSettings, settingsVals } from '@/lib/dc/wiring'",
+    vals: `function (v) {
+      return { appChangePassword: () => dcNavigate('Relay%20Forgot%20Password.dc.html'), appPlanName: 'Free', appPlanNote: 'Upgrade to Relay Pro for unlimited compares, intros and market signals.', appPwNote: 'Last changed 3 months ago', ...settingsVals.call(this, v) };
+    }`,
+    after: 'Component = wireSettings(Component)',
     logic: [
       [
         "members: [['Sarah Mitchell', 'sarah.mitchell@relay.so', 'Admin', P('women/44')],",

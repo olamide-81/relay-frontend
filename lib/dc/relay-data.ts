@@ -86,3 +86,38 @@ providers.sort((a, b) => h(a.id + 'mix') - h(b.id + 'mix'));
 const byId = Object.fromEntries(providers.map(p => [p.id, p]));
 export const RELAY = { CAT, TOTAL, REGIONS, providers, byId, fmt: n => n.toLocaleString('en-GB') };
 
+const DEMO = { CAT: JSON.parse(JSON.stringify(CAT)), TOTAL, REGIONS: [...REGIONS], providers: [...providers] };
+
+/**
+ * Swap the design's demo catalog for the signed-in workspace's real one (from
+ * /api/app/bootstrap). Mutates in place so every component's RELAY import sees it.
+ */
+export function hydrateRelay(catalog) {
+  if (!catalog) return;
+  for (const k of Object.keys(RELAY.CAT)) delete RELAY.CAT[k];
+  Object.assign(RELAY.CAT, catalog.CAT);
+  RELAY.TOTAL = catalog.TOTAL;
+  RELAY.REGIONS.splice(0, RELAY.REGIONS.length, ...catalog.REGIONS);
+  RELAY.providers.splice(0, RELAY.providers.length, ...catalog.providers);
+  for (const k of Object.keys(RELAY.byId)) delete RELAY.byId[k];
+  for (const p of catalog.providers) RELAY.byId[p.id] = p;
+}
+
+/** Marketing counts per category (admin › Content › Stats). Applies to the demo catalog the site shows. */
+export function applyStats(categories) {
+  if (!categories) return;
+  for (const [k, n] of Object.entries(categories)) {
+    if (DEMO.CAT[k] && Number.isFinite(Number(n))) DEMO.CAT[k].count = Number(n);
+  }
+  DEMO.TOTAL = Object.values(DEMO.CAT).reduce((a, c) => a + c.count, 0);
+  if (RELAY.providers.length === DEMO.providers.length && RELAY.providers[0] === DEMO.providers[0]) {
+    for (const [k, v] of Object.entries(DEMO.CAT)) if (RELAY.CAT[k]) RELAY.CAT[k].count = v.count;
+    RELAY.TOTAL = DEMO.TOTAL;
+  }
+}
+
+/** Back to the design's demo data (signed out, or the marketing site's product shots). */
+export function resetRelay() {
+  hydrateRelay(DEMO);
+}
+

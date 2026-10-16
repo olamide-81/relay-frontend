@@ -30,6 +30,8 @@ import {
 } from '@/lib/dc/runtime'
 import RelayAppIcon from './RelayAppIcon'
 
+import { wireTopbar, topbarVals } from '@/lib/dc/wiring'
+
 const NOTES = [
   {
     id: 1,
@@ -181,14 +183,21 @@ class Component extends DCLogic {
       bellBg: S.menu === 'bell' ? '#232427' : 'transparent',
       dotOp: S.unread ? 1 : 0,
       dotTf: S.unread ? 'scale(1)' : 'scale(.4)',
-      markRead: () => this.setState({ unread: false, readIds: Object.fromEntries(NOTES.map((n) => [n.id, true])) }),
+      markRead: () =>
+        this.setState({
+          unread: false,
+          readIds: Object.fromEntries((this.props.app?.data.notifications ?? NOTES).map((n) => [n.id, true])),
+        }),
       noteTabs: [
         ['all', 'All'],
         ['unread', 'Unread'],
         ['requests', 'Requests'],
       ].map(([k, l]) => ({
         label: l,
-        count: NOTES.filter((n) => k === 'all' || (k === 'unread' ? !S.readIds[n.id] : n.type === k)).length || '',
+        count:
+          (this.props.app?.data.notifications ?? NOTES).filter(
+            (n) => k === 'all' || (k === 'unread' ? !S.readIds[n.id] : n.type === k),
+          ).length || '',
         pick: () => this.setState({ ntab: k }),
         bg: S.ntab === k ? 'rgba(255,255,255,.07)' : 'transparent',
         fg: S.ntab === k ? '#f7f8f8' : '#8a8f98',
@@ -196,28 +205,33 @@ class Component extends DCLogic {
       noteGroups: ['Today', 'Earlier']
         .map((day) => ({
           label: day,
-          items: NOTES.filter(
-            (n) => n.day === day && (S.ntab === 'all' || (S.ntab === 'unread' ? !S.readIds[n.id] : n.type === S.ntab)),
-          ).map((n) => {
-            const un = !S.readIds[n.id]
-            return {
-              ...n,
-              hasAction: !!n.action,
-              weight: un ? 600 : 500,
-              titleFg: un ? '#f7f8f8' : '#d4d6da',
-              bg: un ? 'rgba(111,227,180,.025)' : 'transparent',
-              dotOp: un ? 1 : 0,
-              dotTf: un ? 'scale(1)' : 'scale(.4)',
-              read: () =>
-                this.setState((s) => {
-                  const r = { ...s.readIds, [n.id]: true }
-                  return { readIds: r, unread: NOTES.some((x) => !r[x.id]) }
-                }),
-            }
-          }),
+          items: (this.props.app?.data.notifications ?? NOTES)
+            .filter(
+              (n) =>
+                n.day === day && (S.ntab === 'all' || (S.ntab === 'unread' ? !S.readIds[n.id] : n.type === S.ntab)),
+            )
+            .map((n) => {
+              const un = !S.readIds[n.id]
+              return {
+                ...n,
+                hasAction: !!n.action,
+                weight: un ? 600 : 500,
+                titleFg: un ? '#f7f8f8' : '#d4d6da',
+                bg: un ? 'rgba(111,227,180,.025)' : 'transparent',
+                dotOp: un ? 1 : 0,
+                dotTf: un ? 'scale(1)' : 'scale(.4)',
+                read: () =>
+                  this.setState((s) => {
+                    const r = { ...s.readIds, [n.id]: true }
+                    return { readIds: r, unread: (this.props.app?.data.notifications ?? NOTES).some((x) => !r[x.id]) }
+                  }),
+              }
+            }),
         }))
         .filter((g) => g.items.length),
-      notesEmpty: !NOTES.some((n) => S.ntab === 'all' || (S.ntab === 'unread' ? !S.readIds[n.id] : n.type === S.ntab)),
+      notesEmpty: !(this.props.app?.data.notifications ?? NOTES).some(
+        (n) => S.ntab === 'all' || (S.ntab === 'unread' ? !S.readIds[n.id] : n.type === S.ntab),
+      ),
       openInbox: () => {
         this.setState({ menu: null })
         this.props.onNavigate?.('inbox')
@@ -258,6 +272,19 @@ class Component extends DCLogic {
     }
   }
 }
+
+{
+  const designVals = Component.prototype.renderVals
+  const appVals = function (v) {
+    return topbarVals.call(this, v)
+  }
+  Component.prototype.renderVals = function () {
+    const v = designVals.call(this)
+    return { ...v, ...appVals.call(this, v) }
+  }
+}
+
+Component = wireTopbar(Component)
 
 function template(v0, self) {
   return (
@@ -943,6 +970,7 @@ function template(v0, self) {
                                   <>
                                     <div style={{ display: 'flex', gap: '6px', marginTop: '8px' }}>
                                       <span
+                                        onClick={v2.n?.appAction}
                                         style={{
                                           height: '24px',
                                           padding: '0 9px',
@@ -959,6 +987,7 @@ function template(v0, self) {
                                         {hole(v2.n?.action)}
                                       </span>
                                       <span
+                                        onClick={v2.n?.appDismiss}
                                         style={{
                                           height: '24px',
                                           padding: '0 9px',

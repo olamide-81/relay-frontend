@@ -5,6 +5,7 @@ import { SITE_URL } from '@/lib/site'
 import { CATEGORY_META } from '@/lib/dc/meta'
 import { isPageVisible } from '@/lib/site-pages'
 import { getReportEntries } from '@/lib/reports'
+import { syncSiteContent } from '@/lib/site-content.server'
 
 /** Redesigned pages are English-only: one URL each, under /en. */
 const SITE_PAGES: [path: string, priority: number, freq: 'weekly' | 'monthly'][] = [
@@ -31,7 +32,8 @@ const SITE_PAGES: [path: string, priority: number, freq: 'weekly' | 'monthly'][]
 /** Research pages are translated, so they keep every locale with hreflang. */
 const TRANSLATED = ['/methodology'] as const
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  await syncSiteContent()
   const now = new Date()
   const entries: MetadataRoute.Sitemap = SITE_PAGES.filter(([path]) => isPageVisible(path || '/')).map(([path, priority, changeFrequency]) => ({
     url: `${SITE_URL}${localizedPath(routing.defaultLocale, path || '/')}`,

@@ -31,6 +31,7 @@ import {
 import { RELAY } from '@/lib/dc/relay-data'
 import RelayAppIcon from './RelayAppIcon'
 
+import { wireDirectory, directoryVals } from '@/lib/dc/wiring'
 const narrow = () => typeof window !== 'undefined' && !!window.matchMedia?.('(max-width: 768px)').matches
 
 const EMPTY = { CAT: {}, TOTAL: 0, REGIONS: [], providers: [], byId: {}, fmt: String }
@@ -211,6 +212,19 @@ class Component extends DCLogic {
     }
   }
 }
+
+{
+  const designVals = Component.prototype.renderVals
+  const appVals = function (v) {
+    return directoryVals.call(this, v)
+  }
+  Component.prototype.renderVals = function () {
+    const v = designVals.call(this)
+    return { ...v, ...appVals.call(this, v) }
+  }
+}
+
+Component = wireDirectory(Component)
 
 function template(v0, self) {
   return (

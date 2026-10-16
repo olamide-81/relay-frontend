@@ -22,7 +22,13 @@ export type ReportEntry = {
   report: DataReport
 }
 
-const CONFIG = config.reports as ReportConfig[]
+/** Defaults from config/reports.json; replaced in place by the admin-managed list (lib/site-content). */
+const CONFIG = [...config.reports] as ReportConfig[]
+
+export function setReportConfig(rows: ReportConfig[] | null | undefined) {
+  if (!Array.isArray(rows)) return
+  CONFIG.splice(0, CONFIG.length, ...rows)
+}
 
 const TYPE_LABEL: Record<string, string> = {
   'Market maps': 'Market map',

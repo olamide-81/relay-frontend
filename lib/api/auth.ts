@@ -1,5 +1,5 @@
 import { ApiError, delay } from './simulate'
-import { api } from './client'
+import { api, apiRequest, refreshAccessToken } from './client'
 import { apiBaseUrl, useLiveApi } from './config'
 import {
   clearSession,
@@ -10,8 +10,6 @@ import {
   type SessionUser,
   type UserRole,
 } from '../session'
-import { writeStoredPlan } from '../plans'
-
 type LoginInput = {
   email: string
   password: string
@@ -112,14 +110,62 @@ function sessionFromApi(accessToken: string, user: ApiAuthUser): Session {
   return persist(mapped, accessToken)
 }
 
+type SessionResponse =
+  | { accessToken: string; user: ApiAuthUser; twoFactorRequired?: undefined }
+  | { twoFactorRequired: true; twoFactorToken: string; accessToken?: undefined }
+
+const TWO_FA_KEY = 'relay-2fa'
+const INVITE_KEY = 'relay-invite'
+
+/** Password (or Google) was right; the account has 2FA on, so the code screen comes next. */
+export class TwoFactorRequired extends Error {
+  constructor() {
+    super('Enter the code from your authenticator app.')
+  }
+}
+
+function sessionOrChallenge(result: SessionResponse): Session {
+  if (result.twoFactorRequired) {
+    sessionStorage.setItem(TWO_FA_KEY, result.twoFactorToken)
+    throw new TwoFactorRequired()
+  }
+  return sessionFromApi(result.accessToken, { ...result.user, id: String(result.user.id) })
+}
+
+/** POST /api/auth/2fa — finish a login that stopped at the authenticator step. */
+export async function completeTwoFactor(code: string): Promise<Session> {
+  const token = sessionStorage.getItem(TWO_FA_KEY)
+  if (!token) throw new ApiError(401, 'Your login expired. Log in again.')
+  const result = await api.post<SessionResponse>('/api/auth/2fa', { token, code: code.replace(/\s+/g, '') })
+  sessionStorage.removeItem(TWO_FA_KEY)
+  return sessionOrChallenge(result)
+}
+
+export function hasTwoFactorChallenge() {
+  return typeof window !== 'undefined' && Boolean(sessionStorage.getItem(TWO_FA_KEY))
+}
+
+/** Workspace invite links (`?invite=`) are remembered until the invitee has a session. */
+export function rememberInvite(token: string | null) {
+  if (token) sessionStorage.setItem(INVITE_KEY, token)
+}
+
+export function pendingInvite() {
+  return typeof window === 'undefined' ? null : sessionStorage.getItem(INVITE_KEY)
+}
+
+export function clearInvite() {
+  sessionStorage.removeItem(INVITE_KEY)
+}
+
 /** POST /api/auth/login */
 export async function login(input: LoginInput): Promise<Session> {
   if (useLiveApi) {
-    const result = await api.post<{ accessToken: string; user: ApiAuthUser }>('/api/auth/login', {
+    const result = await api.post<SessionResponse>('/api/auth/login', {
       email: input.email.trim().toLowerCase(),
       password: input.password,
     })
-    return sessionFromApi(result.accessToken, { ...result.user, id: String(result.user.id) })
+    return sessionOrChallenge(result)
   }
 
   await delay()
@@ -166,11 +212,13 @@ export async function register(input: RegisterInput): Promise<Session> {
         fullName: input.fullName,
         company: input.company,
         role: input.role ?? 'founder',
+        ...(pendingInvite() ? { invite: pendingInvite() } : {}),
       }
     )
     if (!result.accessToken || !result.user) {
       throw new ApiError(201, result.message || 'Check your email to verify your account')
     }
+    clearInvite()
     return sessionFromApi(result.accessToken, { ...result.user, id: String(result.user.id) })
   }
 
@@ -233,10 +281,8 @@ export async function loginWithGoogle(
 
 /** POST /api/auth/google/complete — finish the Google redirect. */
 export async function completeGoogleLogin(ticket: string): Promise<Session> {
-  const result = await api.post<{ accessToken: string; user: ApiAuthUser }>('/api/auth/google/complete', {
-    ticket,
-  })
-  return sessionFromApi(result.accessToken, { ...result.user, id: String(result.user.id) })
+  const result = await api.post<SessionResponse>('/api/auth/google/complete', { ticket })
+  return sessionOrChallenge(result)
 }
 
 export const googleAuthErrorMessage: Record<string, string> = {
@@ -279,35 +325,28 @@ export async function logout() {
 
 /** POST /api/auth/forgot-password */
 export async function forgotPassword(email: string) {
-  await delay(800)
   if (!email.includes('@')) throw new ApiError(400, 'Email required')
-  return { message: 'If that account exists, we sent a reset link.' }
+  return api.post<{ message: string }>('/api/auth/forgot-password', { email: email.trim().toLowerCase() })
 }
 
-export async function activateSubscription(plan: 'pro' | 'proMax' = 'pro'): Promise<SessionUser> {
-  await delay(900)
-  const session = getSession()
-  if (!session) throw new ApiError(401, 'Not authenticated')
-  writeStoredPlan(plan)
-  const user: SessionUser = {
-    ...session.user,
-    subscriptionStatus: 'active',
-    currentPeriodEnd: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
-  }
-  persist(user)
-  return user
+/** POST /api/auth/reset-password */
+export async function resetPassword(token: string, password: string) {
+  return api.post<{ message: string }>('/api/auth/reset-password', { token, password })
 }
 
-export async function cancelSubscription(): Promise<SessionUser> {
-  await delay(600)
-  const session = getSession()
-  if (!session) throw new ApiError(401, 'Not authenticated')
-  writeStoredPlan('free')
-  const user: SessionUser = {
-    ...session.user,
-    subscriptionStatus: 'canceled',
-    currentPeriodEnd: null,
-  }
-  persist(user)
-  return user
+/** POST /api/auth/verify-email */
+export async function verifyEmail(token: string) {
+  return api.post<{ message: string }>('/api/auth/verify-email', { token })
 }
+
+/** Rebuild the tab's session from the refresh cookie (new tab, reload after sessionStorage was cleared). */
+export async function restoreSession(): Promise<SessionUser | null> {
+  const token = await refreshAccessToken()
+  if (!token) return null
+  const user = await apiRequest<ApiAuthUser>('/api/auth/me', {
+    headers: { Authorization: `Bearer ${token}` },
+  }).catch(() => null)
+  if (!user) return null
+  return sessionFromApi(token, { ...user, id: String(user.id) }).user
+}
+

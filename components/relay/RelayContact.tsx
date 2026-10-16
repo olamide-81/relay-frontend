@@ -33,6 +33,8 @@ import RelayAppIcon from './RelayAppIcon'
 import RelaySiteFooter from './RelaySiteFooter'
 import RelaySiteCookies from './RelaySiteCookies'
 
+import { sendContact } from '@/lib/api/site'
+
 const CH = [
   [
     'Sales',
@@ -144,7 +146,12 @@ class Component extends DCLogic {
         if (S.sending) return
         if (!ok) return this.setState({ tried: true })
         this.setState({ sending: true })
-        setTimeout(() => this.setState({ sending: false, done: true }), 900)
+        this.setState({ apiErr: null })
+        sendContact({ ...S.f, size: S.size, needs: S.needs, message: S.msg })
+          .then(() => this.setState({ sending: false, done: true }))
+          .catch((e) =>
+            this.setState({ sending: false, apiErr: (e && e.message) || 'Could not send. Try again or email us.' }),
+          )
       },
       formOp: S.done ? 0 : 1,
       formTf: S.done ? 'translateY(-12px)' : 'none',
@@ -157,6 +164,17 @@ class Component extends DCLogic {
       reset: () =>
         this.setState({ done: false, tried: false, msg: '', f: { name: '', email: '', company: '', role: '' } }),
     }
+  }
+}
+
+{
+  const designVals = Component.prototype.renderVals
+  const appVals = function (v) {
+    return this.state.apiErr ? { hint: this.state.apiErr, hintFg: '#ff7b7b' } : {}
+  }
+  Component.prototype.renderVals = function () {
+    const v = designVals.call(this)
+    return { ...v, ...appVals.call(this, v) }
   }
 }
 
