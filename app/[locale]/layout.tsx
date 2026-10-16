@@ -21,15 +21,16 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params
-  return {
-    ...buildMetadata({
+  const base = buildMetadata({
       locale,
       title: SITE_TITLE,
       description: SITE_DESCRIPTION,
       path: '/',
       keywords: SITE_KEYWORDS,
       englishOnly: true,
-    }),
+    })
+  return {
+    ...base,
     title: { default: SITE_TITLE, template: '%s | Relay' },
     applicationName: 'Relay',
     appleWebApp: { title: 'Relay', statusBarStyle: 'black-translucent' },

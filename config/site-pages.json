@@ -1,0 +1,26 @@
+{
+  "_readme": "Show or hide website pages without deleting them. true = live; false = hidden: the page returns 'not found', every link to it disappears (nav, footer, in-page links) and it leaves the sitemap. Keys are paths without the language prefix. A key also covers everything under it (\"/categories\" covers /categories/fx). Pages not listed are visible.",
+  "pages": {
+    "/": true,
+    "/product": true,
+    "/directory": true,
+    "/intelligence": true,
+    "/reports": true,
+    "/customers": true,
+    "/pricing": true,
+    "/contact": true,
+    "/about": true,
+    "/careers": false,
+    "/changelog": true,
+    "/security": true,
+    "/developers": true,
+    "/for-providers": true,
+    "/categories": true,
+    "/privacy": true,
+    "/terms": true,
+    "/cookies": true,
+    "/methodology": true,
+    "/signin": true,
+    "/signup": true
+  }
+}

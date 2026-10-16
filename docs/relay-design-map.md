@@ -74,3 +74,17 @@ so deep links, refresh and Back/Forward work (`lib/dc/dashboard-route.ts`). Old 
 
 - `/reports`, `/reports/[slug]`, `/methodology` keep their previous design (`app/[locale]/(legacy)`, Tailwind).
 - Reference boards not ported: `Relay Feedback`, `Relay Category Identity v2`.
+
+## Content switches (no code changes needed)
+
+- **`config/site-pages.json`** — `true`/`false` per page. A hidden page answers 404, every link to it
+  disappears (nav, footer, in-page) and it leaves the sitemap. Careers is off.
+- **`config/reports.json`** — Relay Research reports: `public` (website + dashboard), `private`
+  (signed-in dashboard only) or `hidden`; order, icon and the short title/summary used in lists.
+  Report content lives in `data/<report>.ts` (with translations); images in `public/reports/`
+  (add a `.webp` next to each `.png` and its size to `lib/report-image-sizes.json`).
+
+Public reports render at `/reports/<slug>` (`components/relay-app/ReportArticle.tsx`, laid out like the
+dashboard's full report view) with article metadata, hreflang for each translation, a generated social
+card (`/og/report/<slug>`), and the RSS feed at `/feed.xml`. In the dashboard they appear under
+Intelligence › Reports and open at `/dashboard/report?slug=…`.

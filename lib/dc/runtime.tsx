@@ -16,6 +16,7 @@
 import React from 'react'
 import NextLink from 'next/link'
 import { dcHref, dcFrameSrc, dcAsset } from './routes'
+import { isHiddenHref } from '@/lib/site-pages'
 
 export { dcHref, dcFrameSrc, dcAsset }
 
@@ -136,9 +137,13 @@ export function asset(raw: any): string | undefined {
   return dcAsset(String(raw))
 }
 
-/** Anchor that uses client-side navigation for internal routes. */
+/**
+ * Anchor that uses client-side navigation for internal routes. Links to pages
+ * switched off in config/site-pages.json aren't rendered at all.
+ */
 export function A(props: AnyProps) {
   const { href: h, ...rest } = props
+  if (isHiddenHref(h)) return null
   if (typeof h === 'string' && h.startsWith('/')) {
     return <NextLink href={h} {...rest} />
   }

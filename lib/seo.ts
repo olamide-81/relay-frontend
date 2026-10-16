@@ -103,6 +103,7 @@ export function buildMetadata({
     alternates: {
       canonical: url,
       languages: englishOnly ? undefined : languageAlternates(path),
+      types: { 'application/rss+xml': [{ url: '/feed.xml', title: 'Relay Research' }] },
     },
     robots: noIndex
       ? { index: false, follow: false }

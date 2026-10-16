@@ -1,0 +1,19 @@
+{
+  "_readme": "Controls which Relay Research reports appear and where. visibility: \"public\" = on the website (Intelligence > Latest reports, its own SEO page, sitemap, RSS) and in the dashboard; \"private\" = signed-in dashboard only; \"hidden\" = nowhere. Order here is display order. kind sets the category icon/colour (all, collections, payouts, fx, cards, kyc, bank). cardTitle / cardSummary are the short versions shown in lists; the report keeps its full title on its own page. Report content lives in data/<report>.ts.",
+  "reports": [
+    {
+      "slug": "asia-pacific-payment-rails",
+      "visibility": "public",
+      "kind": "fx",
+      "cardTitle": "Asia-Pacific deep dive: the financial powerhouse waking up",
+      "cardSummary": "$13T in daily volume across 12 markets, the rails behind it and where operators can still win"
+    },
+    {
+      "slug": "fintech-35-trillion-daily",
+      "visibility": "public",
+      "kind": "all",
+      "cardTitle": "Fintech now clears over 10% of $35T in daily global flow",
+      "cardSummary": "Up from less than 1% a decade ago: wallets, instant rails, remittances and what gets built next"
+    }
+  ]
+}
