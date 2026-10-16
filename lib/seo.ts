@@ -42,6 +42,12 @@ type BuildMetadataInput = {
   modifiedTime?: string
   authors?: string[]
   noIndex?: boolean
+  /**
+   * The page's content exists only in English: every locale URL points its
+   * canonical at /en and no hreflang alternates are emitted, so the seven
+   * locale copies aren't treated as duplicates.
+   */
+  englishOnly?: boolean
 }
 
 export function buildMetadata({
@@ -57,7 +63,9 @@ export function buildMetadata({
   authors,
   noIndex = false,
   titleTemplate = false,
+  englishOnly = false,
 }: BuildMetadataInput & { titleTemplate?: boolean }): Metadata {
+  if (englishOnly) locale = routing.defaultLocale
   const url = absoluteUrl(localizedPath(locale, path))
   const ogImage = image ?? {
     url: absoluteUrl('/og-image.png'),
@@ -66,7 +74,9 @@ export function buildMetadata({
     alt: `${SITE_NAME} — Every financial Provider. One directory.`,
   }
 
-  const ogLocales = routing.locales
+  const ogLocales = englishOnly
+    ? []
+    : routing.locales
     .filter((l) => l !== locale)
     .map((l) => OG_LOCALE[l] ?? l)
 
@@ -92,7 +102,7 @@ export function buildMetadata({
     referrer: 'origin-when-cross-origin',
     alternates: {
       canonical: url,
-      languages: languageAlternates(path),
+      languages: englishOnly ? undefined : languageAlternates(path),
     },
     robots: noIndex
       ? { index: false, follow: false }

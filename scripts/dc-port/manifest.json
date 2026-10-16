@@ -308,7 +308,7 @@
     "base": "Relay Landing",
     "C": "RelayLanding",
     "helmetCss": [
-      "*,*::before,*::after{box-sizing:border-box}\nhtml,body{margin:0;background:#0f1011;color:#f7f8f8;font-family:\"Geist\",system-ui,sans-serif;-webkit-font-smoothing:antialiased}\na{color:#8a8f98;text-decoration:none;transition:color .12s}\na:hover{color:#f7f8f8}"
+      "*,*::before,*::after{box-sizing:border-box}\nhtml,body{margin:0;background:#0f1011;color:#f7f8f8;font-family:\"Geist\",system-ui,sans-serif;-webkit-font-smoothing:antialiased}\na{color:#8a8f98;text-decoration:none;transition:color .12s}\na:hover{color:#f7f8f8}\n@keyframes rl-sweep{0%{transform:translateX(-560px)}100%{transform:translateX(2000px)}}\n@keyframes rl-breathe{0%,100%{opacity:.55}50%{opacity:1}}\n@media (prefers-reduced-motion:reduce){[data-anim]{animation:none!important}}"
     ],
     "helmetOther": [
       "link https://fonts.googleapis.com",

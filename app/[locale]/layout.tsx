@@ -7,6 +7,7 @@ import DCProvider from '@/components/relay-app/DCProvider'
 import '../relay.css'
 import JsonLd from '@/components/JsonLd'
 import { buildMetadata } from '@/lib/seo'
+import { SITE_DESCRIPTION, SITE_KEYWORDS, SITE_TITLE } from '@/lib/dc/meta'
 import { organizationJsonLd, websiteJsonLd } from '@/lib/jsonld'
 
 type Props = {
@@ -20,22 +21,19 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params
-  const messages = (await import(`@/messages/${locale}.json`)).default
-  const seo = messages.seo as {
-    title: string
-    description: string
-    keywords: string[]
-  }
-
   return {
     ...buildMetadata({
       locale,
-      title: seo.title,
-      description: seo.description,
+      title: SITE_TITLE,
+      description: SITE_DESCRIPTION,
       path: '/',
-      keywords: seo.keywords,
-      titleTemplate: true,
+      keywords: SITE_KEYWORDS,
+      englishOnly: true,
     }),
+    title: { default: SITE_TITLE, template: '%s | Relay' },
+    applicationName: 'Relay',
+    appleWebApp: { title: 'Relay', statusBarStyle: 'black-translucent' },
+    formatDetection: { telephone: false },
     icons: {
       icon: [
         { url: '/favicon.ico', sizes: 'any' },

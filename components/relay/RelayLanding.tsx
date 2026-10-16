@@ -283,6 +283,67 @@ const WHO_ICONS = [
   ],
 ]
 const CK = 'relay-cookie-consent'
+const px = (v) => v + 'px'
+const SK_BOXES = [
+  [256, 8, 1176, 884, 12, '#161719'],
+  [296, 184, 1096, 236, 12, 'rgba(255,255,255,.012)'],
+  ...[296, 573, 850, 1127].map((x) => [x, 444, 265, 96, 10, 'rgba(255,255,255,.012)']),
+  [296, 564, 542, 300, 12, 'rgba(255,255,255,.012)'],
+  [850, 564, 542, 300, 12, 'rgba(255,255,255,.012)'],
+  [256, 68, 1176, 1, 0, 'rgba(255,255,255,.06)'],
+].map(([x, y, w, h, r, bg]) => ({ x: px(x), y: px(y), w: px(w), h: px(h), r: px(r), bg }))
+const SK_BONES = [
+  [16, 21, 18, 18, 4],
+  [42, 24, 52, 12],
+  ...[78, 52, 64].flatMap((w, i) => [
+    [18, 64 + i * 32, 16, 16, 4],
+    [44, 66 + i * 32, w, 12],
+  ]),
+  [18, 176, 70, 9],
+  ...[64, 72, 86, 58].flatMap((w, i) => [
+    [18, 200 + i * 32, 16, 16, 4],
+    [44, 202 + i * 32, w, 12],
+  ]),
+  [18, 340, 62, 9],
+  ...[112, 92, 98, 84].flatMap((w, i) => [
+    [18, 364 + i * 32, 16, 16, 4],
+    [44, 366 + i * 32, w, 12],
+  ]),
+  [16, 856, 28, 28, 14],
+  [52, 864, 96, 12],
+  [276, 30, 16, 16, 4],
+  [300, 32, 84, 12],
+  [924, 21, 380, 34, 9],
+  [1314, 21, 34, 34, 17],
+  [1356, 21, 62, 34, 17],
+  [296, 108, 200, 22, 6],
+  [296, 142, 340, 12],
+  [324, 212, 120, 11],
+  [324, 238, 380, 30, 6],
+  [324, 280, 260, 12],
+  [324, 300, 220, 12],
+  [324, 360, 104, 30, 15],
+  [438, 360, 88, 30, 15],
+  [536, 360, 96, 30, 15],
+  [1180, 228, 180, 160, 80],
+  ...[296, 573, 850, 1127].flatMap((x) => [
+    [x + 18, 464, 84, 10],
+    [x + 18, 488, 112, 26, 6],
+  ]),
+  ...[296, 850].flatMap((x, c) => [
+    [x + 20, 584, 130, 12],
+    ...[0, 1, 2, 3, 4].flatMap((i) => {
+      const y = 620 + i * 46,
+        w = [180, 140, 200, 160, 124][(i + c) % 5]
+      return [
+        [x + 20, y, 30, 30, 8],
+        [x + 64, y + 3, w, 11],
+        [x + 64, y + 20, Math.round(w * 0.6), 8],
+        [x + 522 - 56, y + 10, 56, 10],
+      ]
+    }),
+  ]),
+].map(([x, y, w, h, r = 4]) => ({ x: px(x), y: px(y), w: px(w), h: px(h), r: px(r), off: px(-x) }))
 const hidden = { op: 0, tf: 'translateY(28px)', w: '0%' },
   shown = { op: 1, tf: 'translateY(0)', w: '100%' }
 class Component extends DCLogic {
@@ -300,6 +361,10 @@ class Component extends DCLogic {
     blink: true,
     who: 0,
     whoGo: false,
+    intro: 'in',
+    lp: 0,
+    lpDur: '1.2s',
+    dash: false,
   }
   pickWho(i) {
     clearInterval(this._wi)
@@ -308,6 +373,7 @@ class Component extends DCLogic {
     )
     this._wi = setInterval(() => this.pickWho((this.state.who + 1) % 3), WHO_MS)
   }
+  dashRef = React.createRef()
   frameRef = React.createRef()
   marqueeRef = React.createRef()
   catRef = React.createRef()
@@ -345,7 +411,23 @@ class Component extends DCLogic {
       this._ro = new ResizeObserver(([e]) => this.setState({ w: e.contentRect.width }))
       this._ro.observe(el)
     }
-    this._t = setTimeout(() => this.setState({ ready: true }), 80)
+    const reduce = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
+    if (reduce) this.setState({ intro: 'gone', ready: true })
+    else {
+      this._t6 = setTimeout(() => this.setState({ lp: 1 }), 60)
+      const finish = () => {
+        if (this._done) return
+        this._done = true
+        this._t = setTimeout(() => this.setState({ intro: 'out', ready: true }), 120)
+        this._t3 = setTimeout(() => this.setState({ intro: 'gone' }), 1100)
+      }
+      if (location.hash !== '#hold-intro') {
+        Promise.all([document.fonts?.ready, new Promise((r) => setTimeout(r, 2100))]).then(finish)
+        this._t4 = setTimeout(finish, 3200)
+      }
+    }
+    this._t5 = setTimeout(() => this.setState({ dash: true }), 6000)
+    this.renderVals().dashLoaded()
     this._io = new IntersectionObserver(
       (es) => {
         const add = {}
@@ -408,6 +490,10 @@ class Component extends DCLogic {
     )
   }
   componentWillUnmount() {
+    clearTimeout(this._t3)
+    clearTimeout(this._t4)
+    clearTimeout(this._t5)
+    clearInterval(this._dp)
     window.removeEventListener('scroll', this._s)
     window.removeEventListener('resize', this._s)
     this._ro?.disconnect()
@@ -475,6 +561,43 @@ class Component extends DCLogic {
           },
         }
       }),
+      intro: {
+        on: S.intro !== 'gone',
+        op: S.intro === 'out' ? 0 : 1,
+        vis: S.intro === 'out' ? 'hidden' : 'visible',
+        tf: S.intro === 'out' ? 'scale(1.06)' : 'scale(1)',
+        blur: S.intro === 'out' ? 'blur(6px)' : 'blur(0)',
+        shine: S.lp ? 'translateX(130%)' : 'translateX(-130%)',
+        iop: S.lp ? 1 : 0,
+        iblur: S.lp ? 'blur(0)' : 'blur(8px)',
+        itf: S.lp ? 'scale(1)' : 'scale(.96)',
+        glow: S.lp ? 1 : 0,
+      },
+      dash: { op: S.dash ? 1 : 0, skOp: S.dash ? 0 : 1 },
+      skBoxes: SK_BOXES,
+      skBones: SK_BONES,
+      dashRef: this.dashRef,
+      dashLoaded: () => {
+        clearInterval(this._dp)
+        let n = 0
+        this._dp = setInterval(() => {
+          n++
+          let ok = false
+          try {
+            const d = this.dashRef.current?.contentDocument
+            ok =
+              !!d?.querySelector('aside') &&
+              (d.body?.innerText || '').length > 400 &&
+              d.querySelectorAll('img').length > 0
+          } catch (_) {
+            ok = true
+          }
+          if (ok || n > 40) {
+            clearInterval(this._dp)
+            setTimeout(() => this.setState({ dash: true }), 450)
+          }
+        }, 120)
+      },
       frameRef: this.frameRef,
       marqueeRef: this.marqueeRef,
       catRef: this.catRef,
@@ -721,6 +844,62 @@ function template(v0, self) {
         }}
       >
         {' '}
+        {v0.intro?.on ? (
+          <>
+            {' '}
+            <div
+              data-screen-label="Intro loader"
+              aria-hidden="true"
+              style={css(
+                `position:fixed;inset:0;z-index:200;display:flex;align-items:center;justify-content:center;background:#0f1011;transition:opacity .6s cubic-bezier(.4,0,.2,1),visibility .6s;opacity:${v0.intro?.op ?? ''};visibility:${v0.intro?.vis ?? ''}`,
+              )}
+            >
+              {' '}
+              <div
+                style={{
+                  position: 'absolute',
+                  left: '50%',
+                  top: '50%',
+                  width: '420px',
+                  height: '420px',
+                  transform: 'translate(-50%,-50%)',
+                  borderRadius: '50%',
+                  background: 'radial-gradient(closest-side,rgba(255,255,255,.05),rgba(255,255,255,0))',
+                  pointerEvents: 'none',
+                }}
+              />{' '}
+              <div
+                style={css(
+                  `position:relative;transition:transform .8s cubic-bezier(.2,.8,.2,1),filter .6s;transform:${v0.intro?.tf ?? ''};filter:${v0.intro?.blur ?? ''}`,
+                )}
+              >
+                {' '}
+                <div
+                  style={css(
+                    `position:absolute;left:50%;top:50%;width:160px;height:160px;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(closest-side,rgba(255,255,255,.07),rgba(255,255,255,0));transition:opacity 1.8s ease-out;opacity:${v0.intro?.glow ?? ''}`,
+                  )}
+                />{' '}
+                <div
+                  style={css(
+                    `position:relative;width:44px;height:44px;border-radius:10px;overflow:hidden;box-shadow:0 0 0 1px rgba(255,255,255,.08),0 16px 40px -10px rgba(0,0,0,.85);transition:opacity 1.6s cubic-bezier(.4,0,.2,1),filter 1.6s cubic-bezier(.2,.8,.2,1),transform 2s cubic-bezier(.2,.8,.2,1);opacity:${v0.intro?.iop ?? ''};filter:${v0.intro?.iblur ?? ''};transform:${v0.intro?.itf ?? ''}`,
+                  )}
+                >
+                  {' '}
+                  <img
+                    src={asset('assets/relay-icon.png')}
+                    alt=""
+                    style={{ display: 'block', width: '44px', height: '44px' }}
+                  />{' '}
+                  <div
+                    style={css(
+                      `position:absolute;inset:0;pointer-events:none;background:linear-gradient(105deg,rgba(255,255,255,0) 30%,rgba(255,255,255,.28) 48%,rgba(255,255,255,0) 64%);transition:transform 1.4s cubic-bezier(.4,0,.2,1) .75s;transform:${v0.intro?.shine ?? ''}`,
+                    )}
+                  />{' '}
+                </div>{' '}
+              </div>{' '}
+            </div>{' '}
+          </>
+        ) : null}{' '}
         <div
           style={{
             position: 'absolute',
@@ -884,13 +1063,58 @@ function template(v0, self) {
               >
                 {' '}
                 <iframe
+                  ref={v0.dashRef}
+                  onLoad={v0.dashLoaded}
                   src={frameSrc('Relay Dashboard.dc.html?plan=pro')}
                   title="Relay dashboard"
                   tabIndex="-1"
                   style={css(
-                    `position:absolute;left:0;top:0;width:1440px;height:900px;border:0;pointer-events:none;transform-origin:0 0;transform:scale(${v0.scale ?? ''})`,
+                    `position:absolute;left:0;top:0;width:1440px;height:900px;border:0;pointer-events:none;transform-origin:0 0;transition:opacity .7s cubic-bezier(.4,0,.2,1);opacity:${v0.dash?.op ?? ''};transform:scale(${v0.scale ?? ''})`,
                   )}
                 />{' '}
+                <div
+                  data-screen-label="Dashboard skeleton"
+                  aria-hidden="true"
+                  style={css(
+                    `position:absolute;left:0;top:0;width:1440px;height:900px;pointer-events:none;transform-origin:0 0;background:#151618;transition:opacity .7s cubic-bezier(.4,0,.2,1);opacity:${v0.dash?.skOp ?? ''};transform:scale(${v0.scale ?? ''})`,
+                  )}
+                >
+                  {' '}
+                  {list(v0.skBoxes).map((it1, i1) => {
+                    const v1 = { ...v0, b: it1, $index: i1 }
+                    return (
+                      <React.Fragment key={i1}>
+                        {' '}
+                        <div
+                          style={css(
+                            `position:absolute;left:${v1.b?.x ?? ''};top:${v1.b?.y ?? ''};width:${v1.b?.w ?? ''};height:${v1.b?.h ?? ''};border-radius:${v1.b?.r ?? ''};background:${v1.b?.bg ?? ''};box-shadow:inset 0 0 0 1px rgba(255,255,255,.055)`,
+                          )}
+                        />{' '}
+                      </React.Fragment>
+                    )
+                  })}{' '}
+                  {list(v0.skBones).map((it1, i1) => {
+                    const v1 = { ...v0, b: it1, $index: i1 }
+                    return (
+                      <React.Fragment key={i1}>
+                        {' '}
+                        <div
+                          style={css(
+                            `position:absolute;overflow:hidden;left:${v1.b?.x ?? ''};top:${v1.b?.y ?? ''};width:${v1.b?.w ?? ''};height:${v1.b?.h ?? ''};border-radius:${v1.b?.r ?? ''};background:rgba(255,255,255,.055)`,
+                          )}
+                        >
+                          {' '}
+                          <div
+                            data-anim="1"
+                            style={css(
+                              `position:absolute;top:0;bottom:0;width:520px;margin-left:${v1.b?.off ?? ''};background:linear-gradient(100deg,rgba(255,255,255,0) 0%,rgba(255,255,255,.075) 50%,rgba(255,255,255,0) 100%);animation:rl-sweep 2s cubic-bezier(.45,0,.25,1) infinite`,
+                            )}
+                          />{' '}
+                        </div>{' '}
+                      </React.Fragment>
+                    )
+                  })}{' '}
+                </div>{' '}
                 <div
                   style={css(
                     `position:absolute;inset:0;pointer-events:none;background:linear-gradient(105deg,rgba(255,255,255,0) 30%,rgba(255,255,255,.06) 45%,rgba(255,255,255,0) 60%);transition:transform 1.8s cubic-bezier(.4,0,.2,1) .9s;transform:${v0.shine ?? ''}`,

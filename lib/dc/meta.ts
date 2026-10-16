@@ -1,78 +1,165 @@
 import type { Metadata } from 'next'
 import { buildMetadata } from '@/lib/seo'
 
-/** Titles and descriptions for the redesigned marketing pages (copy from the designs). */
-export const PAGE_META: Record<string, { title: string; description: string; noIndex?: boolean }> = {
-  '/': {
-    title: 'Relay — Every financial Provider. One directory.',
-    description: 'Find, compare and partner with 1,600 Providers across 140 countries.',
-  },
+/**
+ * Search and social metadata for the redesigned pages. Copy follows the
+ * designs; titles stay under ~60 characters and descriptions ~155 so search
+ * results don't truncate them.
+ */
+type PageMeta = { title: string; description: string; keywords?: string[]; noIndex?: boolean; breadcrumb?: string }
+
+export const SITE_TITLE = 'Relay — Every financial Provider. One directory.'
+export const SITE_DESCRIPTION = 'Find, compare and partner with 1,600 Providers across 140 countries.'
+
+export const SITE_KEYWORDS = [
+  'fintech provider directory',
+  'financial infrastructure providers',
+  'payment service providers',
+  'sponsor banks',
+  'banking as a service',
+  'KYC providers',
+  'FX providers',
+  'card issuing providers',
+  'payout providers',
+  'collections providers',
+  'compare payment providers',
+  'Relay by Gratebridge',
+]
+
+export const PAGE_META: Record<string, PageMeta> = {
+  '/': { title: SITE_TITLE, description: SITE_DESCRIPTION, keywords: SITE_KEYWORDS },
   '/product': {
-    title: 'Product',
+    title: 'Product — Search, compare and partner with Providers',
     description:
-      'Search the market, compare real commercials, rank options with your team and open conversations, without leaving Relay.',
+      'One workspace for choosing financial partners: search 1,600 Providers, compare real commercials, rank options with your team and request intros.',
+    breadcrumb: 'Product',
   },
   '/directory': {
-    title: 'Directory',
-    description: 'Search 1,600 Providers across Collections, Payouts, FX, Cards, KYC and Banks. Verified every week.',
+    title: 'Directory — 1,600 fintech Providers, verified weekly',
+    description:
+      'Search Collections, Payouts, FX, Cards, KYC and Banking Providers by rail, licence, region and price. Every profile is verified every week.',
+    keywords: ['fintech provider directory', 'payment providers list', 'sponsor bank directory', 'KYC vendor directory'],
+    breadcrumb: 'Directory',
   },
   '/intelligence': {
-    title: 'Intelligence',
+    title: 'Intelligence — Pricing, launches and licence watch',
     description:
-      'Pricing changes, launches, licences and benchmarks across every Provider in Relay, refreshed daily and filtered to what you watch.',
+      'Pricing changes, launches, licences and FX benchmarks across every Provider in Relay, refreshed daily and filtered to what you watch.',
+    breadcrumb: 'Intelligence',
   },
   '/customers': {
-    title: 'Customers',
-    description: 'Teams that move money choose partners with Relay.',
+    title: 'Customers — Teams that move money choose Relay',
+    description:
+      'How founders, startups and enterprise teams use Relay to find sponsor banks, cut payout costs and run Provider procurement.',
+    breadcrumb: 'Customers',
   },
   '/pricing': {
-    title: 'Pricing',
-    description: 'Start free. Scale with your stack. Plans for founders, startups and enterprise teams.',
+    title: 'Pricing — Start free, upgrade when you scale',
+    description:
+      'Free for small teams, Pro at €49 per seat a month, and Enterprise for procurement at scale. No card required to start.',
+    breadcrumb: 'Pricing',
   },
   '/contact': {
-    title: 'Contact',
+    title: 'Contact sales — Talk to the team behind Relay',
     description:
       "Tell us what you're building and the markets you need. We'll reply within one business day.",
+    breadcrumb: 'Contact',
   },
   '/about': {
-    title: 'About',
-    description: 'Financial infrastructure is the most important market nobody could see. Relay is changing that.',
+    title: 'About — Making financial infrastructure visible',
+    description:
+      'Every fintech is built on partners. Relay maps the banks, payment and identity Providers behind them so choosing one takes days, not quarters.',
+    breadcrumb: 'About',
   },
   '/careers': {
-    title: 'Careers',
+    title: "Careers — Map the world's financial infrastructure",
     description:
-      "Map the world's financial infrastructure with us. A small, senior team across London, New York and Singapore.",
+      'Join a small, senior team across London, New York and Singapore. Remote-friendly across European and American time zones.',
+    breadcrumb: 'Careers',
   },
-  '/changelog': { title: 'Changelog', description: "What's new in Relay." },
-  '/security': { title: 'Security', description: 'Built for teams that answer to regulators.' },
+  '/changelog': {
+    title: "Changelog — What's new in Relay",
+    description: 'New features, improvements and fixes in Relay, including Banks in the directory and saved comparisons.',
+    breadcrumb: 'Changelog',
+  },
+  '/security': {
+    title: 'Security — Built for teams that answer to regulators',
+    description: 'SOC 2 Type II, GDPR, SSO and audit logs. How Relay protects your workspace and data, plus live system status.',
+    breadcrumb: 'Security',
+  },
   '/developers': {
-    title: 'Developers',
+    title: 'Developers — The Provider graph, as an API',
     description:
-      'Query 1,600 Providers, their licences, coverage and pricing from your own tools. Subscribe to webhooks when anything changes.',
+      'Query 1,600 Providers, their licences, coverage and pricing from your own tools, and subscribe to webhooks when anything changes.',
+    breadcrumb: 'Developers',
   },
   '/for-providers': {
-    title: 'For Providers',
+    title: 'For Providers — Be found by teams ready to sign',
     description:
-      'Claim your free profile, keep your data accurate and receive qualified requests. Placement is never for sale.',
+      'Claim your free Relay profile, keep your data accurate and receive qualified requests. Placement is never for sale.',
+    breadcrumb: 'For Providers',
   },
-  '/privacy': { title: 'Privacy policy', description: 'How Relay by Gratebridge collects and uses data.' },
-  '/terms': { title: 'Terms of service', description: 'The terms that govern your use of Relay.' },
-  '/cookies': { title: 'Cookie policy', description: 'How Relay uses cookies and how to manage them.' },
-  '/signin': { title: 'Log in', description: 'Log in to Relay.', noIndex: true },
+  '/privacy': { title: 'Privacy policy', description: 'How Relay by Gratebridge collects, uses and protects your data.', breadcrumb: 'Privacy policy' },
+  '/terms': { title: 'Terms of service', description: 'The terms that govern your use of Relay by Gratebridge.', breadcrumb: 'Terms of service' },
+  '/cookies': { title: 'Cookie policy', description: 'Which cookies Relay uses and how to change your preferences.', breadcrumb: 'Cookie policy' },
+  '/signin': { title: 'Log in', description: 'Log in to your Relay workspace.', noIndex: true },
   '/signup': {
-    title: 'Sign up',
-    description: 'Create your Relay workspace. Free forever for small teams. No card required.',
-    noIndex: true,
+    title: 'Sign up — Create your Relay workspace',
+    description: 'Create a free Relay workspace. Free forever for small teams. No card required.',
+  },
+  '/forgot-password': { title: 'Reset your password', description: 'Reset your Relay password.', noIndex: true },
+  '/reset-password': { title: 'Choose a new password', description: 'Choose a new Relay password.', noIndex: true },
+}
+
+export const CATEGORY_META: Record<string, { label: string; tag: string; title: string; description: string }> = {
+  collections: {
+    label: 'Collections',
+    tag: 'Money in.',
+    title: 'Collections Providers — Compare 214 worldwide',
+    description: 'Compare 214 Collections Providers for acceptance, invoicing and receivables on SEPA, ACH and cards, with pricing, licences and coverage.',
+  },
+  payouts: {
+    label: 'Payouts',
+    tag: 'Money out.',
+    title: 'Payout Providers — Compare 268 worldwide',
+    description: 'Compare 268 Payout Providers for paying suppliers, sellers and contractors in local currency, with pricing, settlement times and coverage.',
+  },
+  fx: {
+    label: 'FX',
+    tag: 'Every currency.',
+    title: 'FX Providers — Compare 183 on real spreads',
+    description: 'Compare 183 FX Providers on spreads, forwards and rate locks across 38 currencies, with licences and coverage for each.',
+  },
+  cards: {
+    label: 'Cards',
+    tag: 'Spend anywhere.',
+    title: 'Card issuing Providers — Compare 247 worldwide',
+    description: 'Compare 247 card issuing Providers for virtual and physical Visa and Mastercard programmes, with spend controls, pricing and go-live times.',
+  },
+  kyc: {
+    label: 'KYC',
+    tag: 'Know who you serve.',
+    title: 'KYC Providers — Compare 372 identity platforms',
+    description: 'Compare 372 KYC and KYB Providers for document checks, biometrics and sanctions screening across 190 countries, with pricing and pass rates.',
+  },
+  bank: {
+    label: 'Banks',
+    tag: 'The regulated core.',
+    title: 'Sponsor & partner banks — Compare 316 for fintech',
+    description: 'Compare 316 sponsor, partner and safeguarding banks for regulated fintech programmes, with licences, virtual IBANs and onboarding times.',
   },
 }
 
-export const CATEGORY_META: Record<string, { label: string; tag: string }> = {
-  collections: { label: 'Collections', tag: 'Money in.' },
-  payouts: { label: 'Payouts', tag: 'Money out.' },
-  fx: { label: 'FX', tag: 'Every currency.' },
-  cards: { label: 'Cards', tag: 'Spend anywhere.' },
-  kyc: { label: 'KYC', tag: 'Know who you serve.' },
-  bank: { label: 'Banks', tag: 'The regulated core.' },
+export function categoryMetadata(locale: string, kind: string): Metadata {
+  const c = CATEGORY_META[kind]
+  return buildMetadata({
+    locale,
+    englishOnly: true,
+    path: `/categories/${kind}`,
+    title: `${c.title} | Relay`,
+    description: c.description,
+    keywords: [`${c.label} providers`, `compare ${c.label.toLowerCase()} providers`, ...SITE_KEYWORDS.slice(0, 3)],
+  })
 }
 
 export function pageMetadata(locale: string, path: string): Metadata {
@@ -80,8 +167,20 @@ export function pageMetadata(locale: string, path: string): Metadata {
   return buildMetadata({
     locale,
     path,
+    englishOnly: true,
     title: path === '/' ? m.title : `${m.title} | Relay`,
     description: m.description,
+    keywords: m.keywords,
     noIndex: m.noIndex,
   })
+}
+
+/** Home › Page breadcrumb trail for structured data. */
+export function breadcrumbFor(path: string): { name: string; path: string }[] | null {
+  const m = PAGE_META[path]
+  if (!m?.breadcrumb) return null
+  return [
+    { name: 'Relay', path: '/' },
+    { name: m.breadcrumb, path },
+  ]
 }

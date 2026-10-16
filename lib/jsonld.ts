@@ -11,58 +11,55 @@ export function organizationJsonLd() {
     '@context': 'https://schema.org',
     '@type': 'Organization',
     '@id': `${SITE_URL}/#organization`,
-    name: SITE_NAME,
+    name: 'Relay by Gratebridge',
+    alternateName: SITE_NAME,
     legalName: SITE_LEGAL_NAME,
     url: SITE_URL,
     logo: {
       '@type': 'ImageObject',
-      url: absoluteUrl('/favicon.png'),
+      url: absoluteUrl('/relay/relay-icon.png'),
       width: 512,
       height: 512,
     },
     image: absoluteUrl('/og-image.png'),
     email: SITE_SUPPORT_EMAIL,
     description:
-      'Relay is the data directory and research layer for fintech infrastructure — providers, payment rails, and market intelligence across the Americas, Europe, Africa, and global corridors.',
-    foundingDate: '2024',
-    areaServed: [
-      { '@type': 'Place', name: 'United States' },
-      { '@type': 'Place', name: 'Europe' },
-      { '@type': 'Place', name: 'Africa' },
-      { '@type': 'Place', name: 'Latin America' },
-      { '@type': 'Place', name: 'Middle East' },
-      { '@type': 'Place', name: 'Asia-Pacific' },
-    ],
+      'Relay is the directory of financial infrastructure Providers: 1,600 collections, payouts, FX, cards, KYC and banking partners across 140 countries, with tools to compare them and request introductions.',
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: '1021 E Lincolnway Suite #7415',
+      addressLocality: 'Cheyenne',
+      addressRegion: 'WY',
+      postalCode: '82001',
+      addressCountry: 'US',
+    },
+    parentOrganization: { '@type': 'Organization', name: SITE_LEGAL_NAME },
+    areaServed: 'Worldwide',
     contactPoint: [
       {
         '@type': 'ContactPoint',
         contactType: 'sales',
         email: SITE_SUPPORT_EMAIL,
-        url: 'https://calendly.com/gratebridgelabs/30min',
-        areaServed: ['US', 'CA', 'GB', 'EU', 'AF', 'LATAM', 'ME'],
-        availableLanguage: ['English', 'French', 'Spanish'],
+        url: absoluteUrl('/en/contact'),
+        availableLanguage: ['English'],
       },
       {
         '@type': 'ContactPoint',
         contactType: 'customer support',
         email: SITE_SUPPORT_EMAIL,
-        availableLanguage: ['English', 'French', 'Spanish'],
+        availableLanguage: ['English'],
       },
     ],
-    sameAs: [
-      'https://calendly.com/gratebridgelabs/30min',
-    ],
     knowsAbout: [
-      'Fintech infrastructure',
-      'Payment rails',
-      'Cross-border payments',
-      'Digital wallets',
-      'Instant payments',
-      'KYC providers',
-      'FX corridors',
-      'Remittances',
-      'Stablecoins',
-      'Emerging market fintech',
+      'Payment service providers',
+      'Sponsor banks',
+      'Banking as a service',
+      'KYC and identity verification',
+      'FX and cross-border payments',
+      'Card issuing',
+      'Payouts',
+      'Collections and acquiring',
+      'Fintech licensing',
     ],
   }
 }
@@ -74,18 +71,39 @@ export function websiteJsonLd(locale: string) {
     '@id': `${SITE_URL}/#website`,
     url: absoluteUrl(`/${locale}`),
     name: SITE_NAME,
-    description:
-      'Data directory and research on fintech infrastructure providers, payment rails, and market intelligence worldwide.',
+    alternateName: 'Relay by Gratebridge',
+    description: 'Every financial Provider. One directory. Find, compare and partner with 1,600 Providers across 140 countries.',
     publisher: { '@id': `${SITE_URL}/#organization` },
-    inLanguage: locale,
-    potentialAction: {
-      '@type': 'ReadAction',
-      target: [
-        absoluteUrl(`/${locale}`),
-        absoluteUrl(`/${locale}/reports`),
-        absoluteUrl(`/${locale}/about`),
-      ],
-    },
+    inLanguage: 'en',
+  }
+}
+
+/** The product itself, with its public plans (Relay Pricing design). */
+export function softwareApplicationJsonLd() {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'SoftwareApplication',
+    '@id': `${SITE_URL}/#app`,
+    name: 'Relay',
+    applicationCategory: 'BusinessApplication',
+    applicationSubCategory: 'Fintech infrastructure directory',
+    operatingSystem: 'Web',
+    url: absoluteUrl('/en'),
+    image: absoluteUrl('/og-image.png'),
+    description:
+      'Search 1,600 financial infrastructure Providers by rail, licence, region and price, compare them side by side, build shortlists with your team and request introductions.',
+    publisher: { '@id': `${SITE_URL}/#organization` },
+    offers: [
+      { '@type': 'Offer', name: 'Free', price: '0', priceCurrency: 'EUR', url: absoluteUrl('/en/pricing') },
+      {
+        '@type': 'Offer',
+        name: 'Pro',
+        price: '49',
+        priceCurrency: 'EUR',
+        url: absoluteUrl('/en/pricing'),
+        priceSpecification: { '@type': 'UnitPriceSpecification', price: '49', priceCurrency: 'EUR', unitText: 'per seat per month' },
+      },
+    ],
   }
 }
 
