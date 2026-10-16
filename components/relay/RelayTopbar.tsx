@@ -133,6 +133,14 @@ class Component extends DCLogic {
       },
       title: this.props.title ?? 'Overview',
       is: { [this.props.page ?? 'overview']: true },
+      openMenu: () => {
+        this.setState({ menu: null })
+        this.props.onMenu?.()
+      },
+      openSearch: () => {
+        this.setState({ menu: null })
+        this.props.onNavigate?.('directory')
+      },
       anyMenu: !!S.menu,
       closeMenus: () => this.setState({ menu: null }),
       toggleStar: () => {
@@ -262,7 +270,7 @@ function template(v0, self) {
           display: 'flex',
           alignItems: 'center',
           gap: '10px',
-          padding: '0 14px 0 20px',
+          padding: '0 14px 0 clamp(10px,2vw,20px)',
           borderBottom: '1px solid rgba(255,255,255,.06)',
           background: 'transparent',
           borderRadius: '12px 12px 0 0',
@@ -275,8 +283,48 @@ function template(v0, self) {
             <div onClick={v0.closeMenus} style={{ position: 'fixed', inset: '0', zIndex: '1' }} />
           </>
         ) : null}{' '}
+        <span
+          data-r="m-show"
+          onClick={v0.openMenu}
+          title="Menu"
+          style={{
+            display: 'none',
+            width: '36px',
+            height: '36px',
+            flex: 'none',
+            alignItems: 'center',
+            justifyContent: 'center',
+            borderRadius: '9px',
+            cursor: 'pointer',
+            color: '#d4d6da',
+            position: 'relative',
+            zIndex: '2',
+            boxShadow: 'inset 0 0 0 1px #2e2f33',
+          }}
+          className={'dcp-1sucvc6'}
+        >
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.8"
+            strokeLinecap="round"
+          >
+            <path d="M4 7h16M4 12h16M4 17h10" />
+          </svg>
+        </span>{' '}
         <div
-          style={{ display: 'flex', alignItems: 'center', gap: '8px', flex: 'none', position: 'relative', zIndex: '2' }}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            flex: '0 1 auto',
+            minWidth: '0',
+            position: 'relative',
+            zIndex: '2',
+          }}
         >
           {' '}
           <span style={{ width: '16px', height: '16px', flex: 'none', display: 'grid', placeItems: 'center' }}>
@@ -504,7 +552,17 @@ function template(v0, self) {
               </>
             ) : null}
           </span>{' '}
-          <span style={{ fontSize: '13.5px', fontWeight: '500', letterSpacing: '-0.006em', whiteSpace: 'nowrap' }}>
+          <span
+            style={{
+              fontSize: '13.5px',
+              fontWeight: '500',
+              letterSpacing: '-0.006em',
+              whiteSpace: 'nowrap',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              minWidth: '0',
+            }}
+          >
             {hole(v0.title)}
           </span>{' '}
           <span
@@ -592,6 +650,7 @@ function template(v0, self) {
             </div>{' '}
           </div>{' '}
           <span
+            data-r="m-hide"
             style={css(
               `font-size:12px;color:#6fe3b4;transition:opacity .2s;opacity:${v0.toastOp ?? ''};white-space:nowrap`,
             )}
@@ -613,7 +672,40 @@ function template(v0, self) {
           }}
         >
           {' '}
+          <span
+            data-r="m-show"
+            onClick={v0.openSearch}
+            title="Search Providers"
+            style={{
+              display: 'none',
+              width: '34px',
+              height: '34px',
+              flex: 'none',
+              alignItems: 'center',
+              justifyContent: 'center',
+              borderRadius: '999px',
+              cursor: 'pointer',
+              color: '#d4d6da',
+              boxShadow: 'inset 0 0 0 1px #2e2f33',
+            }}
+            className={'dcp-1sucvc6'}
+          >
+            <svg
+              width="15"
+              height="15"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <circle cx="11" cy="11" r="7.5" />
+              <path d="m20.5 20.5-4.2-4.2" />
+            </svg>
+          </span>{' '}
           <label
+            data-r="m-hide"
             style={css(
               `display:flex;align-items:center;gap:10px;flex:0 1 380px;width:380px;min-width:140px;height:34px;padding:0 8px 0 12px;border-radius:9px;cursor:text;transition:background-color .15s,box-shadow .15s;background:${v0.searchBg ?? ''};box-shadow:${v0.searchSh ?? ''}`,
             )}
@@ -691,8 +783,9 @@ function template(v0, self) {
               />{' '}
             </span>{' '}
             <div
+              data-r="m-sheet"
               style={css(
-                `position:absolute;top:44px;right:0;width:400px;display:flex;flex-direction:column;max-height:560px;background:rgba(30,31,35,.9);backdrop-filter:blur(20px) saturate(140%);-webkit-backdrop-filter:blur(20px) saturate(140%);border-radius:14px;box-shadow:0 0 0 1px rgba(255,255,255,.08),0 20px 48px rgba(0,0,0,.55),0 2px 6px rgba(0,0,0,.3);transform-origin:top right;transition:opacity .14s ease-out,transform .16s cubic-bezier(.2,.8,.2,1),visibility .16s;opacity:${v0.bell?.op ?? ''};transform:${v0.bell?.tf ?? ''};visibility:${v0.bell?.vis ?? ''}`,
+                `position:absolute;top:44px;right:0;width:400px;display:flex;flex-direction:column;max-height:min(560px,calc(100dvh - 80px));background:rgba(30,31,35,.9);backdrop-filter:blur(20px) saturate(140%);-webkit-backdrop-filter:blur(20px) saturate(140%);border-radius:14px;box-shadow:0 0 0 1px rgba(255,255,255,.08),0 20px 48px rgba(0,0,0,.55),0 2px 6px rgba(0,0,0,.3);transform-origin:top right;transition:opacity .14s ease-out,transform .16s cubic-bezier(.2,.8,.2,1),visibility .16s;opacity:${v0.bell?.op ?? ''};transform:${v0.bell?.tf ?? ''};visibility:${v0.bell?.vis ?? ''}`,
               )}
             >
               {' '}
@@ -997,7 +1090,9 @@ function template(v0, self) {
                   background: '#2a2b2e',
                 }}
               />{' '}
-              <span style={{ fontSize: '13px', fontWeight: '500', whiteSpace: 'nowrap' }}>{hole(v0.userName)}</span>{' '}
+              <span data-r="m-hide" style={{ fontSize: '13px', fontWeight: '500', whiteSpace: 'nowrap' }}>
+                {hole(v0.userName)}
+              </span>{' '}
             </div>{' '}
             <div
               style={css(

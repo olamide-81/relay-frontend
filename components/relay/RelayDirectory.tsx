@@ -209,6 +209,7 @@ function template(v0, self) {
     <>
       <div style={{ position: 'relative', fontFamily: 'Geist,system-ui,sans-serif', color: '#f7f8f8' }}>
         <div
+          data-r="m-pad"
           style={{
             maxWidth: '1200px',
             margin: '0 auto',
@@ -385,6 +386,7 @@ function template(v0, self) {
             <div style={{ minWidth: '860px' }}>
               {' '}
               <div
+                data-r="m-row"
                 style={{
                   display: 'grid',
                   gridTemplateColumns: '36px minmax(0,2.2fr) minmax(0,1fr) minmax(0,1.2fr) 96px minmax(0,1.5fr) 44px',
@@ -412,6 +414,7 @@ function template(v0, self) {
                     {' '}
                     <div
                       onClick={v1.p?.open}
+                      data-r="m-row"
                       style={css(
                         `display:grid;grid-template-columns:36px minmax(0,2.2fr) minmax(0,1fr) minmax(0,1.2fr) 96px minmax(0,1.5fr) 44px;align-items:center;min-height:54px;padding:0 12px;border-bottom:1px solid rgba(255,255,255,.04);cursor:pointer;transition:background-color .12s;background:${v1.p?.rowBg ?? ''}`,
                       )}
@@ -857,7 +860,7 @@ function template(v0, self) {
             <p style={{ margin: '0', fontSize: '13.5px', lineHeight: '1.6', color: '#b4b8bf', textWrap: 'pretty' }}>
               {hole(v0.cur?.desc)}
             </p>{' '}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,minmax(0,1fr))', gap: '8px' }}>
+            <div data-r="m-g2" style={{ display: 'grid', gridTemplateColumns: 'repeat(4,minmax(0,1fr))', gap: '8px' }}>
               {' '}
               {list(v0.cur?.stats).map((it1, i1) => {
                 const v1 = { ...v0, s: it1, $index: i1 }
@@ -1053,7 +1056,7 @@ function template(v0, self) {
                     })}{' '}
                   </div>{' '}
                 </div>{' '}
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+                <div data-r="m-g1" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
                   {' '}
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                     <div style={{ fontSize: '12px', fontWeight: '500', color: '#8a8f98' }}>Integration</div>

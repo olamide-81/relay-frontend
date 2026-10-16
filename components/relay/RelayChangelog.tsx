@@ -137,6 +137,7 @@ function template(v0, self) {
         <RelaySiteNav __hostStyle={{ position: 'sticky', top: '0', zIndex: '50' }} />{' '}
         <section
           data-screen-label="Changelog"
+          data-r="m-sec"
           style={{ position: 'relative', maxWidth: '1000px', margin: '0 auto', padding: '120px 24px 0' }}
         >
           {' '}
@@ -164,6 +165,7 @@ function template(v0, self) {
                 <React.Fragment key={i1}>
                   {' '}
                   <article
+                    data-r="m-g1"
                     style={{
                       display: 'grid',
                       gridTemplateColumns: '180px minmax(0,1fr)',

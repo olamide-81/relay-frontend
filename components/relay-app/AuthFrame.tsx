@@ -41,15 +41,16 @@ export function AuthFrame({
         background: '#0f1011',
       }}
     >
-      <div style={{ position: 'relative', minHeight: '100vh', borderRight: '1px solid rgba(255,255,255,.06)' }}>
+      <div data-r="t-hide" style={{ position: 'relative', minHeight: '100vh', borderRight: '1px solid rgba(255,255,255,.06)' }}>
         <RelayAuthArt __hostStyle={{ position: 'absolute', inset: '0' }} />
       </div>
       <div
         style={{
           position: 'relative',
+          minHeight: '100dvh',
           display: 'flex',
           flexDirection: 'column',
-          padding: '28px 32px',
+          padding: 'clamp(18px,4vw,28px) clamp(18px,4vw,32px)',
           background: 'radial-gradient(80% 50% at 50% 0%,#1e1f22 0%,#0f1011 70%)',
         }}
       >
@@ -57,7 +58,9 @@ export function AuthFrame({
           <A href={`/${locale}`} style={{ display: 'flex', alignItems: 'center', gap: '9px', color: '#f7f8f8' }}>
             <img src="/relay/relay-icon.png" alt="Relay" style={{ width: '22px', height: '22px', display: 'block', borderRadius: '5px' }} />
             <span style={{ fontWeight: 500, fontSize: '16px', letterSpacing: '-0.02em' }}>Relay</span>
-            <span style={{ fontSize: '12.5px', color: '#62666d' }}>by Gratebridge</span>
+            <span data-r="s-hide" style={{ fontSize: '12.5px', color: '#62666d' }}>
+              by Gratebridge
+            </span>
           </A>
           <span style={{ fontSize: '13.5px', color: '#8a8f98' }}>
             New to Relay?{' '}

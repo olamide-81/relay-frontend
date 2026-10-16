@@ -52,7 +52,7 @@ const LINKS = [
   ['contact', 'Contact', P('Contact')],
 ]
 class Component extends DCLogic {
-  state = { y: 0, menu: null, ready: false }
+  state = { y: 0, menu: null, ready: false, m: false }
   componentDidMount() {
     this._s = () => {
       const y = (document.scrollingElement || document.documentElement).scrollTop
@@ -63,6 +63,8 @@ class Component extends DCLogic {
     this._t = setTimeout(() => this.setState({ ready: true }), 40)
   }
   componentWillUnmount() {
+    document.removeEventListener('keydown', this._appKey)
+    if (this.state.m) document.documentElement.style.overflow = ''
     window.removeEventListener('scroll', this._s)
     clearTimeout(this._t)
     clearTimeout(this._m)
@@ -72,10 +74,18 @@ class Component extends DCLogic {
       sc = S.y > 8,
       act = this.props.active
     return {
+      mOpen: S.m,
+      toggleM: () => {
+        const m = !S.m
+        document.documentElement.style.overflow = m ? 'hidden' : ''
+        this.setState({ m })
+      },
+      mIcon: S.m ? 'M6 6l12 12M18 6 6 18' : 'M4 8h16M4 16h16',
+      mLinks: LINKS.map(([key, label, href]) => ({ label, href, fg: act === key ? '#6fe3b4' : '#f7f8f8' })),
       nav: {
-        bg: sc ? 'rgba(15,16,17,.72)' : 'transparent',
-        line: sc ? '0 1px 0 rgba(255,255,255,.06)' : 'none',
-        blur: sc ? 'blur(20px) saturate(150%)' : 'none',
+        bg: S.m ? '#0f1011' : sc ? 'rgba(15,16,17,.72)' : 'transparent',
+        line: sc || S.m ? '0 1px 0 rgba(255,255,255,.06)' : 'none',
+        blur: S.m ? 'none' : sc ? 'blur(20px) saturate(150%)' : 'none',
         op: S.ready ? 1 : 0,
         tf: S.ready ? 'none' : 'translateY(-8px)',
       },
@@ -111,6 +121,31 @@ class Component extends DCLogic {
   }
 }
 
+{
+  const designVals = Component.prototype.renderVals
+  const appVals = function () {
+    const close = () => {
+      document.documentElement.style.overflow = ''
+      this.setState({ m: false })
+    }
+    if (!this._appKey && typeof document !== 'undefined') {
+      this._appKey = (e) => {
+        if (e.key === 'Escape' && this.state.m) close()
+      }
+      document.addEventListener('keydown', this._appKey)
+    }
+    return {
+      appMenuClick: (e) => {
+        if (e.target.closest && e.target.closest('a')) close()
+      },
+    }
+  }
+  Component.prototype.renderVals = function () {
+    const v = designVals.call(this)
+    return { ...v, ...appVals.call(this, v) }
+  }
+}
+
 function template(v0, self) {
   return (
     <>
@@ -122,7 +157,7 @@ function template(v0, self) {
         {' '}
         <nav
           style={css(
-            `position:relative;max-width:1200px;margin:0 auto;height:64px;padding:0 24px;display:flex;align-items:center;gap:32px;transition:opacity .6s,transform .6s cubic-bezier(.2,.8,.2,1);opacity:${v0.nav?.op ?? ''};transform:${v0.nav?.tf ?? ''}`,
+            `position:relative;max-width:1200px;margin:0 auto;height:64px;padding:0 clamp(16px,4vw,24px);display:flex;align-items:center;gap:clamp(12px,3vw,32px);transition:opacity .6s,transform .6s cubic-bezier(.2,.8,.2,1);opacity:${v0.nav?.op ?? ''};transform:${v0.nav?.tf ?? ''}`,
           )}
         >
           {' '}
@@ -139,7 +174,7 @@ function template(v0, self) {
             <span style={{ fontWeight: '500', fontSize: '16px', letterSpacing: '-0.02em' }}>Relay</span>{' '}
           </A>{' '}
           <span style={{ flex: '1' }} />{' '}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '2px', flex: 'none' }}>
+          <div data-r="m-hide" style={{ display: 'flex', alignItems: 'center', gap: '2px', flex: 'none' }}>
             {' '}
             {list(v0.links).map((it1, i1) => {
               const v1 = { ...v0, l: it1, $index: i1 }
@@ -307,11 +342,13 @@ function template(v0, self) {
             })}{' '}
           </div>{' '}
           <span
+            data-r="m-hide"
             style={{ width: '1px', height: '16px', background: 'rgba(255,255,255,.1)', flex: 'none', margin: '0 -8px' }}
           />{' '}
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flex: 'none' }}>
             {' '}
             <A
+              data-r="s-hide"
               href={href('Relay%20Login.dc.html')}
               style={{
                 height: '32px',
@@ -343,8 +380,126 @@ function template(v0, self) {
             >
               Sign up
             </A>{' '}
+            <span
+              data-r="m-show"
+              onClick={v0.toggleM}
+              title="Menu"
+              style={{
+                display: 'none',
+                width: '36px',
+                height: '36px',
+                alignItems: 'center',
+                justifyContent: 'center',
+                borderRadius: '9px',
+                cursor: 'pointer',
+                color: '#f7f8f8',
+                boxShadow: 'inset 0 0 0 1px rgba(255,255,255,.1)',
+                marginRight: '-4px',
+              }}
+            >
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.8"
+                strokeLinecap="round"
+              >
+                <path d={v0.mIcon} />
+              </svg>
+            </span>{' '}
           </div>{' '}
-        </nav>
+        </nav>{' '}
+        {v0.mOpen ? (
+          <>
+            {' '}
+            <div
+              data-r="m-show"
+              onClick={v0.appMenuClick}
+              style={{
+                display: 'none',
+                position: 'fixed',
+                top: '64px',
+                left: '0',
+                right: '0',
+                bottom: '0',
+                zIndex: '49',
+                flexDirection: 'column',
+                padding: '8px 16px 32px',
+                background: '#0f1011',
+                overflowY: 'auto',
+                boxShadow: '0 -1px 0 rgba(255,255,255,.06)',
+              }}
+            >
+              {' '}
+              {list(v0.mLinks).map((it1, i1) => {
+                const v1 = { ...v0, l: it1, $index: i1 }
+                return (
+                  <React.Fragment key={i1}>
+                    {' '}
+                    <A
+                      href={href(v1.l?.href)}
+                      style={css(
+                        `display:flex;align-items:center;justify-content:space-between;height:56px;padding:0 4px;border-bottom:1px solid rgba(255,255,255,.06);font-size:17px;font-weight:500;letter-spacing:-0.01em;color:${v1.l?.fg ?? ''}`,
+                      )}
+                    >
+                      {hole(v1.l?.label)}
+                      <svg
+                        width="14"
+                        height="14"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="#62666d"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <path d="m9 6 6 6-6 6" />
+                      </svg>
+                    </A>{' '}
+                  </React.Fragment>
+                )
+              })}{' '}
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', marginTop: '24px' }}>
+                {' '}
+                <A
+                  href={href('Relay%20Login.dc.html')}
+                  style={{
+                    height: '46px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    borderRadius: '10px',
+                    fontSize: '15px',
+                    fontWeight: '500',
+                    color: '#f7f8f8',
+                    boxShadow: 'inset 0 0 0 1px rgba(255,255,255,.12)',
+                  }}
+                >
+                  Log in
+                </A>{' '}
+                <A
+                  href={href('Relay%20Sign%20Up.dc.html')}
+                  style={{
+                    height: '46px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    borderRadius: '10px',
+                    fontSize: '15px',
+                    fontWeight: '500',
+                    color: '#0f1011',
+                    background: '#f7f8f8',
+                  }}
+                  className={'dcp-1b7r7rq'}
+                >
+                  Sign up
+                </A>{' '}
+              </div>{' '}
+            </div>{' '}
+          </>
+        ) : null}
       </header>
     </>
   )

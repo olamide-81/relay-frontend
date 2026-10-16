@@ -1,5 +1,6 @@
 /* Relay design system base: fonts + generated interaction states. */
 @import '../components/relay/pseudo.css';
+@import './relay-responsive.css';
 
 @font-face {
   font-family: 'Geist';
@@ -14,4 +15,13 @@
   font-weight: 100 900;
   font-style: normal;
   font-display: swap;
+}
+
+/* Stop iOS Safari zooming into focused fields (RESPONSIVE.md, Auth). */
+@media (max-width: 768px) {
+  input,
+  textarea,
+  select {
+    font-size: 16px !important;
+  }
 }

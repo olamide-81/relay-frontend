@@ -161,6 +161,7 @@ function template(v0, self) {
         <RelaySiteNav active="customers" __hostStyle={{ position: 'sticky', top: '0', zIndex: '50' }} />{' '}
         <section
           data-screen-label="Customers hero"
+          data-r="m-sec"
           style={{ position: 'relative', maxWidth: '1200px', margin: '0 auto', padding: '120px 24px 0' }}
         >
           {' '}
@@ -194,7 +195,7 @@ function template(v0, self) {
             style={{
               position: 'relative',
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit,minmax(340px,1fr))',
+              gridTemplateColumns: 'repeat(auto-fit,minmax(min(100%,340px),1fr))',
               borderRadius: '20px',
               overflow: 'hidden',
               background: '#121315',
@@ -266,6 +267,7 @@ function template(v0, self) {
                 “We found our sponsor bank and KYC partner in under two weeks. Relay replaced months of cold outreach.”
               </div>{' '}
               <div
+                data-r="s-g1"
                 style={{
                   display: 'grid',
                   gridTemplateColumns: 'repeat(3,1fr)',
@@ -319,6 +321,7 @@ function template(v0, self) {
         </section>{' '}
         <section
           data-screen-label="Stories"
+          data-r="m-sec"
           style={{ position: 'relative', maxWidth: '1200px', margin: '0 auto', padding: '120px 24px 0' }}
         >
           {' '}
@@ -374,7 +377,7 @@ function template(v0, self) {
             style={{
               marginTop: '32px',
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fill,minmax(320px,1fr))',
+              gridTemplateColumns: 'repeat(auto-fill,minmax(min(100%,320px),1fr))',
               gap: '16px',
             }}
           >
@@ -437,6 +440,7 @@ function template(v0, self) {
         </section>{' '}
         <section
           data-screen-label="Logos"
+          data-r="m-sec"
           style={{ position: 'relative', maxWidth: '1200px', margin: '0 auto', padding: '120px 24px 0' }}
         >
           {' '}
@@ -446,7 +450,7 @@ function template(v0, self) {
           <div
             style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fill,minmax(180px,1fr))',
+              gridTemplateColumns: 'repeat(auto-fill,minmax(min(100%,180px),1fr))',
               gap: '1px',
               borderRadius: '14px',
               overflow: 'hidden',

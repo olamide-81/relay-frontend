@@ -131,6 +131,7 @@ function template(v0, self) {
   return (
     <>
       <div
+        data-r="m-pad"
         style={{
           maxWidth: '880px',
           margin: '0 auto',
@@ -251,6 +252,7 @@ function template(v0, self) {
                 <React.Fragment key={i1}>
                   {' '}
                   <div
+                    data-r="m-g1"
                     style={{
                       display: 'grid',
                       gridTemplateColumns: 'minmax(0,200px) minmax(0,1fr)',

@@ -166,7 +166,7 @@ function template(v0, self) {
       <aside
         style={{
           width: '256px',
-          height: '100vh',
+          height: '100dvh',
           minHeight: '0',
           overflowY: 'auto',
           overflowX: 'hidden',

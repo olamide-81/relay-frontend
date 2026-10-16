@@ -99,6 +99,7 @@ function template(v0, self) {
           <>
             {' '}
             <div
+              data-r="m-sec"
               style={{
                 maxWidth: '1200px',
                 margin: '0 auto',

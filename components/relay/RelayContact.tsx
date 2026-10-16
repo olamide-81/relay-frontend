@@ -188,6 +188,7 @@ function template(v0, self) {
         <RelaySiteNav active="contact" __hostStyle={{ position: 'sticky', top: '0', zIndex: '50' }} />{' '}
         <section
           data-screen-label="Contact"
+          data-r="m-sec"
           style={{
             position: 'relative',
             maxWidth: '1200px',
@@ -302,7 +303,7 @@ function template(v0, self) {
                 )
               })}{' '}
             </div>{' '}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: '16px' }}>
+            <div data-r="s-g1" style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: '16px' }}>
               {' '}
               {list(v0.offices).map((it1, i1) => {
                 const v1 = { ...v0, o: it1, $index: i1 }
@@ -335,7 +336,7 @@ function template(v0, self) {
               )}
             >
               {' '}
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+              <div data-r="m-g1" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
                 {' '}
                 {list(v0.top).map((it1, i1) => {
                   const v1 = { ...v0, f: it1, $index: i1 }

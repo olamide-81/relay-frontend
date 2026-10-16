@@ -236,6 +236,7 @@ function template(v0, self) {
           )}
         />{' '}
         <div
+          data-r="m-pad"
           style={{
             position: 'relative',
             maxWidth: '1200px',
@@ -534,7 +535,13 @@ function template(v0, self) {
           >
             {' '}
             <div style={{ fontSize: '15px', fontWeight: '500' }}>Commercials</div>{' '}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(240px,1fr))', gap: '10px' }}>
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit,minmax(min(100%,240px),1fr))',
+                gap: '10px',
+              }}
+            >
               {' '}
               {list(v0.tiers).map((it1, i1) => {
                 const v1 = { ...v0, t: it1, $index: i1 }
@@ -594,7 +601,7 @@ function template(v0, self) {
             ref={v0.refs?.coverage}
             style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit,minmax(340px,1fr))',
+              gridTemplateColumns: 'repeat(auto-fit,minmax(min(100%,340px),1fr))',
               gap: '12px',
               scrollMarginTop: '60px',
             }}
@@ -704,6 +711,7 @@ function template(v0, self) {
                 })}
               </div>{' '}
               <div
+                data-r="m-g1"
                 style={{
                   display: 'grid',
                   gridTemplateColumns: '1fr 1fr',
@@ -801,7 +809,13 @@ function template(v0, self) {
                 })}{' '}
               </div>{' '}
             </div>{' '}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(200px,1fr))', gap: '10px' }}>
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit,minmax(min(100%,200px),1fr))',
+                gap: '10px',
+              }}
+            >
               {' '}
               {list(v0.assurance).map((it1, i1) => {
                 const v1 = { ...v0, a: it1, $index: i1 }
@@ -850,7 +864,7 @@ function template(v0, self) {
             ref={v0.refs?.integration}
             style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit,minmax(340px,1fr))',
+              gridTemplateColumns: 'repeat(auto-fit,minmax(min(100%,340px),1fr))',
               gap: '12px',
               scrollMarginTop: '60px',
             }}
@@ -931,7 +945,13 @@ function template(v0, self) {
           >
             {' '}
             <div style={{ fontSize: '15px', fontWeight: '500' }}>Similar Providers</div>{' '}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(240px,1fr))', gap: '10px' }}>
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fill,minmax(min(100%,240px),1fr))',
+                gap: '10px',
+              }}
+            >
               {' '}
               {list(v0.similar).map((it1, i1) => {
                 const v1 = { ...v0, s: it1, $index: i1 }

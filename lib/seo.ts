@@ -61,9 +61,9 @@ export function buildMetadata({
   const url = absoluteUrl(localizedPath(locale, path))
   const ogImage = image ?? {
     url: absoluteUrl('/og-image.png'),
-    width: 1768,
-    height: 931,
-    alt: `${SITE_NAME} — fintech infrastructure data and research`,
+    width: 1200,
+    height: 630,
+    alt: `${SITE_NAME} — Every financial Provider. One directory.`,
   }
 
   const ogLocales = routing.locales

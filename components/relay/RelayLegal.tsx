@@ -118,6 +118,7 @@ function template(v0, self) {
         <RelaySiteNav __hostStyle={{ position: 'sticky', top: '0', zIndex: '50' }} />{' '}
         <section
           data-screen-label="Legal"
+          data-r="m-g1 m-sec"
           style={{
             position: 'relative',
             maxWidth: '1100px',

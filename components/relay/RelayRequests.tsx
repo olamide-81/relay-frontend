@@ -359,6 +359,7 @@ function template(v0, self) {
     <>
       <div style={{ position: 'relative', fontFamily: 'Geist,system-ui,sans-serif', color: '#f7f8f8' }}>
         <div
+          data-r="m-pad"
           style={{
             maxWidth: '1200px',
             margin: '0 auto',
@@ -561,6 +562,7 @@ function template(v0, self) {
                         <div style={{ minHeight: '0', overflow: 'hidden' }}>
                           {' '}
                           <div
+                            data-r="m-g1"
                             style={{
                               padding: '4px 16px 20px 112px',
                               display: 'grid',
@@ -572,6 +574,7 @@ function template(v0, self) {
                             <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', minWidth: '0' }}>
                               {' '}
                               <div
+                                data-r="s-g1"
                                 style={{ display: 'grid', gridTemplateColumns: 'repeat(3,minmax(0,1fr))', gap: '8px' }}
                               >
                                 {' '}
@@ -1102,7 +1105,10 @@ function template(v0, self) {
                 {' '}
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
                   <span style={{ fontSize: '12px', color: '#8a8f98' }}>Request type</span>{' '}
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,minmax(0,1fr))', gap: '6px' }}>
+                  <div
+                    data-r="m-g2"
+                    style={{ display: 'grid', gridTemplateColumns: 'repeat(4,minmax(0,1fr))', gap: '6px' }}
+                  >
                     {list(v0.types).map((it1, i1) => {
                       const v1 = { ...v0, t: it1, $index: i1 }
                       return (
@@ -1123,7 +1129,7 @@ function template(v0, self) {
                     })}
                   </div>{' '}
                 </div>{' '}
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                <div data-r="m-g1" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
                   {' '}
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
                     <span style={{ fontSize: '12px', color: '#8a8f98' }}>Monthly volume</span>

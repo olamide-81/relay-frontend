@@ -457,6 +457,7 @@ function template(v0, self) {
   return (
     <>
       <div
+        data-r="m-col"
         style={{
           height: '100%',
           minHeight: '600px',
@@ -467,6 +468,7 @@ function template(v0, self) {
       >
         {' '}
         <nav
+          data-r="m-hnav"
           style={{
             flex: '0 0 220px',
             padding: '28px 12px',
@@ -1233,7 +1235,11 @@ function template(v0, self) {
                     </div>{' '}
                   </div>{' '}
                   <div
-                    style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(180px,1fr))', gap: '12px' }}
+                    style={{
+                      display: 'grid',
+                      gridTemplateColumns: 'repeat(auto-fit,minmax(min(100%,180px),1fr))',
+                      gap: '12px',
+                    }}
                   >
                     {' '}
                     {list(v0.usage).map((it1, i1) => {
@@ -1297,7 +1303,11 @@ function template(v0, self) {
                   </div>{' '}
                 </div>{' '}
                 <div
-                  style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(200px,1fr))', gap: '12px' }}
+                  style={{
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(auto-fit,minmax(min(100%,200px),1fr))',
+                    gap: '12px',
+                  }}
                 >
                   {' '}
                   {list(v0.plans).map((it1, i1) => {
@@ -1575,7 +1585,10 @@ function template(v0, self) {
             </div>{' '}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
               <span style={{ fontSize: '12px', color: '#8a8f98' }}>Role</span>{' '}
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,minmax(0,1fr))', gap: '6px' }}>
+              <div
+                data-r="s-g1"
+                style={{ display: 'grid', gridTemplateColumns: 'repeat(3,minmax(0,1fr))', gap: '6px' }}
+              >
                 {list(v0.roles).map((it1, i1) => {
                   const v1 = { ...v0, r: it1, $index: i1 }
                   return (

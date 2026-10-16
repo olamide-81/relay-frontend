@@ -747,6 +747,7 @@ function template(v0, self) {
         <RelaySiteNav __hostStyle={{ position: 'sticky', top: '0', zIndex: '50' }} />{' '}
         <section
           data-screen-label="Hero"
+          data-r="m-sec"
           style={{ position: 'relative', maxWidth: '1200px', margin: '0 auto', padding: '128px 24px 0' }}
         >
           {' '}
@@ -912,13 +913,14 @@ function template(v0, self) {
         </section>{' '}
         <section
           data-screen-label="Who Relay is for"
+          data-r="m-sec"
           style={{ position: 'relative', maxWidth: '1200px', margin: '0 auto', padding: '140px 24px 0' }}
         >
           {' '}
           <div
             data-rv="journeyHead"
             style={css(
-              `display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:24px 64px;align-items:end;transition:opacity .9s,transform .9s cubic-bezier(.2,.8,.2,1);opacity:${v0.rv?.journeyHead?.op ?? ''};transform:${v0.rv?.journeyHead?.tf ?? ''}`,
+              `display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:24px 64px;align-items:end;transition:opacity .9s,transform .9s cubic-bezier(.2,.8,.2,1);opacity:${v0.rv?.journeyHead?.op ?? ''};transform:${v0.rv?.journeyHead?.tf ?? ''}`,
             )}
           >
             {' '}
@@ -1253,6 +1255,7 @@ function template(v0, self) {
               )
             })}{' '}
             <div
+              data-r="m-g1 m-sec"
               style={{
                 position: 'relative',
                 maxWidth: '1200px',
@@ -1358,6 +1361,7 @@ function template(v0, self) {
                           {hole(v1.c?.desc)}
                         </p>{' '}
                         <div
+                          data-r="s-g1"
                           style={{
                             display: 'grid',
                             gridTemplateColumns: 'repeat(3,1fr)',
@@ -1553,13 +1557,14 @@ function template(v0, self) {
         </section>{' '}
         <section
           data-screen-label="How it works"
+          data-r="m-sec"
           style={{ position: 'relative', maxWidth: '1200px', margin: '0 auto', padding: '160px 24px 0' }}
         >
           {' '}
           <div
             data-rv="howHead"
             style={css(
-              `display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:24px 64px;align-items:end;transition:opacity .9s,transform .9s cubic-bezier(.2,.8,.2,1);opacity:${v0.rv?.howHead?.op ?? ''};transform:${v0.rv?.howHead?.tf ?? ''}`,
+              `display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:24px 64px;align-items:end;transition:opacity .9s,transform .9s cubic-bezier(.2,.8,.2,1);opacity:${v0.rv?.howHead?.op ?? ''};transform:${v0.rv?.howHead?.tf ?? ''}`,
             )}
           >
             {' '}
@@ -1607,7 +1612,7 @@ function template(v0, self) {
             style={{
               marginTop: '56px',
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit,minmax(320px,1fr))',
+              gridTemplateColumns: 'repeat(auto-fit,minmax(min(100%,320px),1fr))',
               gap: '16px',
             }}
           >
@@ -1967,7 +1972,7 @@ function template(v0, self) {
               style={{
                 marginTop: '48px',
                 display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit,minmax(300px,1fr))',
+                gridTemplateColumns: 'repeat(auto-fit,minmax(min(100%,300px),1fr))',
                 gap: '16px',
               }}
             >

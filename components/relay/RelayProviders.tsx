@@ -174,6 +174,7 @@ function template(v0, self) {
         style={{ position: 'relative', minHeight: '100%', fontFamily: 'Geist,system-ui,sans-serif', color: '#f7f8f8' }}
       >
         <div
+          data-r="m-pad"
           style={{
             maxWidth: '1200px',
             margin: '0 auto',
@@ -508,6 +509,7 @@ function template(v0, self) {
               </div>{' '}
             </div>{' '}
             <div
+              data-r="m-g1"
               style={{
                 display: 'grid',
                 gridTemplateColumns: '1fr 1fr',
@@ -572,7 +574,7 @@ function template(v0, self) {
               >
                 {' '}
                 <div style={{ fontSize: '12px', color: '#62666d' }}>Commercials and SLAs</div>{' '}
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+                <div data-r="m-g1" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
                   <div style={{ height: '58px', borderRadius: '9px', background: 'rgba(255,255,255,.04)' }} />
                   <div style={{ height: '58px', borderRadius: '9px', background: 'rgba(255,255,255,.04)' }} />
                   <div style={{ height: '58px', borderRadius: '9px', background: 'rgba(255,255,255,.04)' }} />

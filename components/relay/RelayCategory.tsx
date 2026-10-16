@@ -227,13 +227,14 @@ function template(v0, self) {
         <RelaySiteNav __hostStyle={{ position: 'sticky', top: '0', zIndex: '50' }} />{' '}
         <section
           data-screen-label="Category hero"
+          data-r="m-sec"
           style={{
             position: 'relative',
             maxWidth: '1200px',
             margin: '0 auto',
             padding: '100px 24px 0',
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit,minmax(340px,1fr))',
+            gridTemplateColumns: 'repeat(auto-fit,minmax(min(100%,340px),1fr))',
             gap: '48px 72px',
             alignItems: 'center',
           }}
@@ -315,6 +316,7 @@ function template(v0, self) {
             </div>{' '}
           </div>{' '}
           <div
+            data-r="m-g1"
             style={{
               display: 'grid',
               gridTemplateColumns: '1fr 1fr',
@@ -343,6 +345,7 @@ function template(v0, self) {
         </section>{' '}
         <section
           data-screen-label="Top Providers"
+          data-r="m-sec"
           style={{ position: 'relative', maxWidth: '1200px', margin: '0 auto', padding: '120px 24px 0' }}
         >
           {' '}
@@ -463,13 +466,14 @@ function template(v0, self) {
         </section>{' '}
         <section
           data-screen-label="What to look for"
+          data-r="m-sec"
           style={{
             position: 'relative',
             maxWidth: '1200px',
             margin: '0 auto',
             padding: '120px 24px 0',
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit,minmax(300px,1fr))',
+            gridTemplateColumns: 'repeat(auto-fit,minmax(min(100%,300px),1fr))',
             gap: '40px 72px',
           }}
         >
@@ -529,11 +533,18 @@ function template(v0, self) {
         </section>{' '}
         <section
           data-screen-label="Other categories"
+          data-r="m-sec"
           style={{ position: 'relative', maxWidth: '1200px', margin: '0 auto', padding: '120px 24px 0' }}
         >
           {' '}
           <div style={{ fontSize: '13.5px', color: '#8a8f98', marginBottom: '20px' }}>Other categories</div>{' '}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(180px,1fr))', gap: '10px' }}>
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fill,minmax(min(100%,180px),1fr))',
+              gap: '10px',
+            }}
+          >
             {' '}
             {list(v0.others).map((it1, i1) => {
               const v1 = { ...v0, o: it1, $index: i1 }

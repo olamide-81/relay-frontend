@@ -226,6 +226,7 @@ function template(v0, self) {
         <RelaySiteNav active="pricing" __hostStyle={{ position: 'sticky', top: '0', zIndex: '50' }} />{' '}
         <section
           data-screen-label="Pricing hero"
+          data-r="m-sec"
           style={{ position: 'relative', maxWidth: '1200px', margin: '0 auto', padding: '120px 24px 0' }}
         >
           {' '}
@@ -303,7 +304,7 @@ function template(v0, self) {
             style={{
               marginTop: '56px',
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit,minmax(300px,1fr))',
+              gridTemplateColumns: 'repeat(auto-fit,minmax(min(100%,300px),1fr))',
               gap: '16px',
             }}
           >
@@ -446,6 +447,7 @@ function template(v0, self) {
         </section>{' '}
         <section
           data-screen-label="Compare plans"
+          data-r="m-sec"
           style={{ position: 'relative', maxWidth: '1200px', margin: '0 auto', padding: '140px 24px 0' }}
         >
           {' '}
@@ -537,13 +539,14 @@ function template(v0, self) {
         </section>{' '}
         <section
           data-screen-label="FAQ"
+          data-r="m-sec"
           style={{
             position: 'relative',
             maxWidth: '1200px',
             margin: '0 auto',
             padding: '140px 24px 0',
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit,minmax(300px,1fr))',
+            gridTemplateColumns: 'repeat(auto-fit,minmax(min(100%,300px),1fr))',
             gap: '40px 64px',
           }}
         >

@@ -18,9 +18,10 @@ a{color:#8a8f98;text-decoration:none}
 a:hover{color:#f7f8f8}
 input::placeholder,textarea::placeholder{color:#62666d}
 </style>
+<link rel="stylesheet" href="relay-responsive.css">
 </helmet>
-<div style="position:relative;height:100%;min-height:560px;display:flex;font-family:Geist,system-ui,sans-serif;color:#f7f8f8">
-  <div style="flex:0 1 300px;min-width:240px;display:flex;flex-direction:column;border-right:1px solid rgba(255,255,255,.06)">
+<div data-r="m-col" style="position:relative;height:100%;min-height:560px;display:flex;font-family:Geist,system-ui,sans-serif;color:#f7f8f8">
+  <div data-r="m-pane" style="flex:0 1 300px;min-width:240px;display:flex;flex-direction:column;border-right:1px solid rgba(255,255,255,.06)">
     <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 16px 10px">
       <span style="font-size:13.5px;font-weight:500">Shortlists</span>
       <span onClick="{{ create }}" title="New shortlist" style="width:28px;height:28px;display:grid;place-items:center;border-radius:7px;color:#8a8f98;cursor:pointer" style-hover="background:rgba(255,255,255,.05);color:#f7f8f8"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg></span>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&display=swap" rel="stylesheet">
+<style>html,body{margin:0;background:#0b0c0d;color:#f7f8f8;font-family:"Geist",system-ui,sans-serif}a{color:#8a8f98}a:hover{color:#f7f8f8}</style>
+</helmet>
+<div style="padding:48px;display:flex;flex-direction:column;gap:24px">
+  <div style="font-size:22px;font-weight:500;letter-spacing:-0.02em">Relay — mobile (390 × 844)</div>
+  <div style="display:flex;flex-wrap:wrap;gap:32px">
+    <sc-for list="{{ pages }}" as="p" hint-placeholder-count="8">
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div style="font-size:13px;color:#8a8f98">{{ p.label }}</div>
+        <div style="width:390px;height:844px;border-radius:28px;overflow:hidden;box-shadow:0 0 0 1px rgba(255,255,255,.1),0 30px 80px rgba(0,0,0,.6);background:#0f1011">
+          <iframe src="{{ p.src }}" title="{{ p.label }}" style="width:390px;height:844px;border:0;display:block"></iframe>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const PAGES = [['Landing', 'Relay Landing'], ['Dashboard', 'Relay Dashboard'], ['Product', 'Relay Product'], ['Pricing', 'Relay Pricing'], ['Directory', 'Relay Directory Page'], ['Log in', 'Relay Login'], ['Sign up', 'Relay Sign Up'], ['Contact', 'Relay Contact'], ['Category', 'Relay Category'], ['Legal', 'Relay Legal'], ['About', 'Relay About'], ['Developers', 'Relay Developers']];
+class Component extends DCLogic {
+  renderVals() { return { pages: PAGES.map(([label, f]) => ({ label, src: f + '.dc.html' })) }; }
+}
+</script>
+</body>
+</html>

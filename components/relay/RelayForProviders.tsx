@@ -84,6 +84,7 @@ function template(v0, self) {
         <RelaySiteNav __hostStyle={{ position: 'sticky', top: '0', zIndex: '50' }} />{' '}
         <section
           data-screen-label="For Providers hero"
+          data-r="m-sec"
           style={{ position: 'relative', maxWidth: '1200px', margin: '0 auto', padding: '120px 24px 0' }}
         >
           {' '}
@@ -153,13 +154,14 @@ function template(v0, self) {
         </section>{' '}
         <section
           data-screen-label="How it works for Providers"
+          data-r="m-sec"
           style={{ position: 'relative', maxWidth: '1200px', margin: '0 auto', padding: '120px 24px 0' }}
         >
           {' '}
           <div
             style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit,minmax(260px,1fr))',
+              gridTemplateColumns: 'repeat(auto-fit,minmax(min(100%,260px),1fr))',
               gap: '1px',
               borderRadius: '16px',
               overflow: 'hidden',
@@ -197,13 +199,14 @@ function template(v0, self) {
         </section>{' '}
         <section
           data-screen-label="Provider stats"
+          data-r="m-sec"
           style={{
             position: 'relative',
             maxWidth: '1200px',
             margin: '0 auto',
             padding: '120px 24px 0',
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit,minmax(300px,1fr))',
+            gridTemplateColumns: 'repeat(auto-fit,minmax(min(100%,300px),1fr))',
             gap: '40px 72px',
             alignItems: 'center',
           }}
@@ -222,6 +225,7 @@ function template(v0, self) {
             <span style={{ color: '#8a8f98' }}>with real volume.</span>
           </h2>{' '}
           <div
+            data-r="m-g1"
             style={{
               display: 'grid',
               gridTemplateColumns: '1fr 1fr',
