@@ -19,9 +19,10 @@ a:hover{color:#f7f8f8}
 input::placeholder,textarea::placeholder{color:#62666d}
 select option{background:#1c1d20;color:#f7f8f8}
 </style>
+<link rel="stylesheet" href="relay-responsive.css">
 </helmet>
 <div style="position:relative;font-family:Geist,system-ui,sans-serif;color:#f7f8f8">
-<div style="max-width:1200px;margin:0 auto;padding:36px 40px 56px;display:flex;flex-direction:column;gap:20px">
+<div data-r="m-pad" style="max-width:1200px;margin:0 auto;padding:36px 40px 56px;display:flex;flex-direction:column;gap:20px">
   <div style="display:flex;align-items:flex-end;gap:16px;flex-wrap:wrap">
     <div style="flex:1 1 320px;min-width:0">
       <h1 style="margin:0;font-size:22px;font-weight:500;letter-spacing:-0.02em">Requests</h1>
@@ -49,9 +50,9 @@ select option{background:#1c1d20;color:#f7f8f8}
           </div>
           <div style="display:grid;transition:grid-template-rows .26s cubic-bezier(.2,.8,.2,1),opacity .2s;grid-template-rows:{{ r.rowsOpen }};opacity:{{ r.op }}">
             <div style="min-height:0;overflow:hidden">
-              <div style="padding:4px 16px 20px 112px;display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:28px">
+              <div data-r="m-g1" style="padding:4px 16px 20px 112px;display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:28px">
                 <div style="display:flex;flex-direction:column;gap:14px;min-width:0">
-                  <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px">
+                  <div data-r="s-g1" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px">
                     <sc-for list="{{ r.facts }}" as="f" hint-placeholder-count="3"><div style="padding:10px 12px;border-radius:9px;background:rgba(255,255,255,.025);box-shadow:inset 0 0 0 1px rgba(255,255,255,.05)"><div style="font-size:11.5px;color:#62666d">{{ f.k }}</div><div style="font-size:13px;margin-top:3px">{{ f.v }}</div></div></sc-for>
                   </div>
                   <div style="padding:12px 14px;border-radius:10px;background:rgba(255,255,255,.02);box-shadow:inset 0 0 0 1px rgba(255,255,255,.05)"><div style="font-size:11.5px;color:#62666d;margin-bottom:6px">Your message</div><div style="font-size:13px;line-height:1.55;color:#b4b8bf;text-wrap:pretty">{{ r.msg }}</div></div>
@@ -124,9 +125,9 @@ select option{background:#1c1d20;color:#f7f8f8}
   <sc-if value="{{ step2 }}">
     <div style="flex:1;min-height:0;overflow-y:auto;padding:18px 20px;display:flex;flex-direction:column;gap:16px">
       <div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:12px;color:#8a8f98">Request type</span>
-        <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px"><sc-for list="{{ types }}" as="t" hint-placeholder-count="4"><div onClick="{{ t.pick }}" style="padding:10px;border-radius:9px;cursor:pointer;transition:background-color .12s,box-shadow .12s;background:{{ t.bg }};box-shadow:{{ t.ring }}"><div style="font-size:13px;font-weight:500">{{ t.label }}</div><div style="font-size:11.5px;color:#62666d;margin-top:3px">{{ t.hint }}</div></div></sc-for></div>
+        <div data-r="m-g2" style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px"><sc-for list="{{ types }}" as="t" hint-placeholder-count="4"><div onClick="{{ t.pick }}" style="padding:10px;border-radius:9px;cursor:pointer;transition:background-color .12s,box-shadow .12s;background:{{ t.bg }};box-shadow:{{ t.ring }}"><div style="font-size:13px;font-weight:500">{{ t.label }}</div><div style="font-size:11.5px;color:#62666d;margin-top:3px">{{ t.hint }}</div></div></sc-for></div>
       </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div data-r="m-g1" style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
         <div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:12px;color:#8a8f98">Monthly volume</span><select value="{{ form.volume }}" onChange="{{ onVolume }}" style="height:34px;padding:0 10px;border:none;outline:none;border-radius:8px;background:rgba(255,255,255,.03);box-shadow:inset 0 0 0 1px rgba(255,255,255,.08);color:#f7f8f8;font:13px Geist,system-ui,sans-serif"><sc-for list="{{ volumes }}" as="v" hint-placeholder-count="4"><option value="{{ v }}">{{ v }}</option></sc-for></select></div>
         <div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:12px;color:#8a8f98">Timeline</span><select value="{{ form.timeline }}" onChange="{{ onTimeline }}" style="height:34px;padding:0 10px;border:none;outline:none;border-radius:8px;background:rgba(255,255,255,.03);box-shadow:inset 0 0 0 1px rgba(255,255,255,.08);color:#f7f8f8;font:13px Geist,system-ui,sans-serif"><sc-for list="{{ timelines }}" as="v" hint-placeholder-count="4"><option value="{{ v }}">{{ v }}</option></sc-for></select></div>
       </div>

@@ -17,6 +17,13 @@ Each `*.dc.html` design file is compiled into a React component in `components/r
 - **Links.** `Relay X.dc.html` links map to app routes in `lib/dc/routes.ts`.
 - **Data.** `relay-data.js` is ported as `lib/dc/relay-data.ts` (deterministic, SSR-safe).
 
+- **Responsive layer.** The designs mark elements with `data-r="m-g1 m-pad …"` tokens (spec:
+  `design/relay-handoff/RESPONSIVE.md`). The converter keeps those attributes, and
+  `app/relay-responsive.css` (a copy of the design's `relay-responsive.css`) applies them at ≤1024 / ≤768 / ≤480px.
+  It's a stylesheet rather than Tailwind `max-md:` classes because the ported components keep the designs'
+  inline styles: the rules must override those with `!important`, exactly as in the prototypes.
+  Hand-built screens (`components/relay-app/AuthFrame.tsx`) use the same tokens.
+
 Don't hand-edit files in `components/relay/`. Change the design or a patch, then re-run the converter.
 
 ## Marketing site — `app/[locale]/(site)`

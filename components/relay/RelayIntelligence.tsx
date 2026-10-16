@@ -954,7 +954,11 @@ function template(v0, self) {
                   </div>{' '}
                 </header>{' '}
                 <div
-                  style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(170px,1fr))', gap: '10px' }}
+                  style={{
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(auto-fit,minmax(min(100%,170px),1fr))',
+                    gap: '10px',
+                  }}
                 >
                   {' '}
                   {list(v0.fr?.kpis).map((it1, i1) => {
@@ -1117,6 +1121,7 @@ function template(v0, self) {
                     <div style={{ minWidth: '560px' }}>
                       {' '}
                       <div
+                        data-r="m-row"
                         style={{
                           display: 'grid',
                           gridTemplateColumns: 'minmax(0,2fr) minmax(0,1.2fr) 90px 110px',
@@ -1138,6 +1143,7 @@ function template(v0, self) {
                         return (
                           <React.Fragment key={i1}>
                             <div
+                              data-r="m-row"
                               style={{
                                 display: 'grid',
                                 gridTemplateColumns: 'minmax(0,2fr) minmax(0,1.2fr) 90px 110px',
@@ -1191,7 +1197,11 @@ function template(v0, self) {
                   {' '}
                   <div style={{ fontSize: '13.5px', fontWeight: '500' }}>Related</div>{' '}
                   <div
-                    style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(240px,1fr))', gap: '10px' }}
+                    style={{
+                      display: 'grid',
+                      gridTemplateColumns: 'repeat(auto-fit,minmax(min(100%,240px),1fr))',
+                      gap: '10px',
+                    }}
                   >
                     {' '}
                     {list(v0.fr?.related).map((it1, i1) => {
@@ -1237,6 +1247,7 @@ function template(v0, self) {
         {v0.notFull ? (
           <>
             <div
+              data-r="m-pad"
               style={{
                 maxWidth: '1200px',
                 margin: '0 auto',
@@ -1545,7 +1556,11 @@ function template(v0, self) {
                 <>
                   {' '}
                   <div
-                    style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(300px,1fr))', gap: '12px' }}
+                    style={{
+                      display: 'grid',
+                      gridTemplateColumns: 'repeat(auto-fill,minmax(min(100%,300px),1fr))',
+                      gap: '12px',
+                    }}
                   >
                     {' '}
                     {list(v0.reports).map((it1, i1) => {
@@ -1822,6 +1837,7 @@ function template(v0, self) {
                               {' '}
                               <div
                                 onClick={v1.l?.toggle}
+                                data-r="m-row"
                                 style={{
                                   display: 'grid',
                                   gridTemplateColumns: 'minmax(0,2fr) minmax(0,1fr) 120px 110px 20px',
@@ -1909,7 +1925,7 @@ function template(v0, self) {
                                     style={{
                                       padding: '2px 16px 18px',
                                       display: 'grid',
-                                      gridTemplateColumns: 'repeat(auto-fit,minmax(160px,1fr))',
+                                      gridTemplateColumns: 'repeat(auto-fit,minmax(min(100%,160px),1fr))',
                                       gap: '1px',
                                       borderRadius: '10px',
                                     }}

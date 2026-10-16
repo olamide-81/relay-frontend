@@ -8,6 +8,18 @@
 <body>
 <x-dc>
 <helmet>
+<meta name="description" content="Find, compare and partner with 1,600 Providers across 140 countries.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Relay">
+<meta property="og:title" content="Relay — Every financial Provider. One directory.">
+<meta property="og:description" content="Find, compare and partner with 1,600 Providers across 140 countries.">
+<meta property="og:url" content="https://relay.gratebridge.com">
+<meta property="og:image" content="https://relay.gratebridge.com/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://relay.gratebridge.com/og-image.png">
+<meta name="theme-color" content="#0f1011">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script src="relay-data.js"></script>
@@ -18,12 +30,13 @@ a{color:#8a8f98;text-decoration:none;transition:color .12s}
 a:hover{color:#f7f8f8}
 input::placeholder{color:#62666d}
 </style>
+<link rel="stylesheet" href="relay-responsive.css">
 </helmet>
 <div style="position:relative;min-height:100vh;overflow-x:clip;font-family:Geist,system-ui,sans-serif;color:#f7f8f8;background:#0f1011">
   <div style="position:absolute;left:0;right:0;top:0;height:900px;pointer-events:none;background:radial-gradient(90% 60% at 50% 0%,#26282c 0%,#18191c 38%,#0f1011 80%)"></div>
   <dc-import name="Relay Site Nav" active="directory" hint-size="100%,64px" style="position:sticky;top:0;z-index:50"></dc-import>
 
-  <section data-screen-label="Directory hero" style="position:relative;max-width:1200px;margin:0 auto;padding:120px 24px 0">
+  <section data-screen-label="Directory hero" data-r="m-sec" style="position:relative;max-width:1200px;margin:0 auto;padding:120px 24px 0">
     <div style="font-family:'Geist Mono',monospace;font-size:12px;color:#62666d;margin-bottom:20px">Directory</div>
     <h1 style="margin:0;max-width:900px;font-weight:500;font-size:clamp(40px,6vw,72px);line-height:1.02;letter-spacing:-0.05em;text-wrap:balance">Search {{ total }} Providers. <span style="color:#8a8f98">Verified every week.</span></h1>
     <div style="margin-top:40px;max-width:720px;position:relative">
@@ -36,14 +49,14 @@ input::placeholder{color:#62666d}
   </section>
 
   <section data-screen-label="Directory results" style="position:relative;max-width:1200px;margin:0 auto;padding:48px 24px 0">
-    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px">
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,280px),1fr));gap:12px">
       <sc-for list="{{ rows }}" as="p" hint-placeholder-count="9">
         <div style="position:relative;padding:18px;border-radius:14px;background:#121315;box-shadow:0 0 0 1px rgba(255,255,255,.06);display:flex;flex-direction:column;gap:16px;transition:box-shadow .2s,transform .25s cubic-bezier(.2,.8,.2,1),background-color .2s;filter:{{ p.blur }};opacity:{{ p.op }}" style-hover="box-shadow:0 0 0 1px rgba(255,255,255,.14);transform:translateY(-2px);background:#141517">
           <div style="display:flex;align-items:center;gap:12px">
             <dc-import name="Relay App Icon" kind="{{ p.kind }}" size="36" hint-size="36px,36px"></dc-import>
             <div style="flex:1;min-width:0"><div style="font-size:14.5px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ p.name }}</div><div style="font-size:12.5px;color:#62666d;margin-top:2px">{{ p.cat }} · {{ p.hq }}</div></div>
           </div>
-          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding-top:14px;border-top:1px solid rgba(255,255,255,.06)">
+          <div data-r="s-g1" style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding-top:14px;border-top:1px solid rgba(255,255,255,.06)">
             <div><div style="font-size:11.5px;color:#62666d">Countries</div><div style="font-size:13.5px;font-weight:500;margin-top:3px">{{ p.countries }}</div></div>
             <div><div style="font-size:11.5px;color:#62666d">From</div><div style="font-size:13.5px;font-weight:500;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ p.priceShort }}</div></div>
             <div><div style="font-size:11.5px;color:#62666d">Licence</div><div style="font-family:'Geist Mono',monospace;font-size:12.5px;margin-top:4px">{{ p.regulator }}</div></div>
@@ -58,9 +71,9 @@ input::placeholder{color:#62666d}
     </div>
   </section>
 
-  <section data-screen-label="By region" style="position:relative;max-width:1200px;margin:0 auto;padding:140px 24px 0">
+  <section data-screen-label="By region" data-r="m-sec" style="position:relative;max-width:1200px;margin:0 auto;padding:140px 24px 0">
     <h2 style="margin:0;font-weight:500;font-size:clamp(30px,3.8vw,46px);line-height:1.05;letter-spacing:-0.04em">Every region. <span style="color:#8a8f98">Local partners included.</span></h2>
-    <div style="margin-top:40px;display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1px;border-radius:14px;overflow:hidden;background:rgba(255,255,255,.06);box-shadow:0 0 0 1px rgba(255,255,255,.06)">
+    <div style="margin-top:40px;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));gap:1px;border-radius:14px;overflow:hidden;background:rgba(255,255,255,.06);box-shadow:0 0 0 1px rgba(255,255,255,.06)">
       <sc-for list="{{ regions }}" as="r" hint-placeholder-count="8">
         <div style="padding:22px;background:#121315;transition:background-color .2s" style-hover="background:#16171a">
           <div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font-size:15px;font-weight:500">{{ r.name }}</span><span style="font-size:12.5px;color:#62666d;font-variant-numeric:tabular-nums">{{ r.count }}</span></div>

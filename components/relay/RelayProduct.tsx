@@ -180,6 +180,7 @@ function template(v0, self) {
         <RelaySiteNav active="product" __hostStyle={{ position: 'sticky', top: '0', zIndex: '50' }} />{' '}
         <section
           data-screen-label="Product hero"
+          data-r="m-sec"
           style={{ position: 'relative', maxWidth: '1200px', margin: '0 auto', padding: '120px 24px 0' }}
         >
           {' '}
@@ -245,6 +246,7 @@ function template(v0, self) {
               <section
                 id={v1.f?.id}
                 data-rv={v1.f?.id}
+                data-r="m-sec"
                 style={{
                   position: 'relative',
                   maxWidth: '1200px',
@@ -256,7 +258,7 @@ function template(v0, self) {
                 {' '}
                 <div
                   style={css(
-                    `display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:24px 64px;align-items:end;transition:opacity .9s,transform .9s cubic-bezier(.2,.8,.2,1);opacity:${v1.f?.op ?? ''};transform:${v1.f?.tf ?? ''}`,
+                    `display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:24px 64px;align-items:end;transition:opacity .9s,transform .9s cubic-bezier(.2,.8,.2,1);opacity:${v1.f?.op ?? ''};transform:${v1.f?.tf ?? ''}`,
                   )}
                 >
                   {' '}

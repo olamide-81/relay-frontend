@@ -20,7 +20,7 @@ const SRC = process.argv[2] ?? 'design/relay-handoff'
 const OUT = process.argv[3] ?? 'components/relay'
 
 /* Files that are references/boards, not product UI. */
-const SKIP = new Set(['Relay Feedback', 'Relay Category Identity v2'])
+const SKIP = new Set(['Relay Feedback', 'Relay Category Identity v2', 'Relay Mobile Preview'])
 
 const warnings = []
 const warn = (file, msg) => warnings.push(`${file}: ${msg}`)
@@ -385,7 +385,7 @@ function walkHelmet(node, ctx) {
     else if (c.nodeName === 'link' || c.nodeName === 'script') {
       const at = Object.fromEntries(c.attrs.map((a) => [a.name, a.value]))
       ctx.helmetOther.push(`${c.nodeName} ${at.src ?? at.href ?? ''}`)
-    } else if (c.nodeName !== '#text') warn(ctx.file, `helmet child <${c.nodeName}> ignored`)
+    } else if (c.nodeName !== '#text' && c.nodeName !== 'meta') warn(ctx.file, `helmet child <${c.nodeName}> ignored`)
   }
   return null
 }

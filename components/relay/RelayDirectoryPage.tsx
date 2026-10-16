@@ -135,6 +135,7 @@ function template(v0, self) {
         <RelaySiteNav active="directory" __hostStyle={{ position: 'sticky', top: '0', zIndex: '50' }} />{' '}
         <section
           data-screen-label="Directory hero"
+          data-r="m-sec"
           style={{ position: 'relative', maxWidth: '1200px', margin: '0 auto', padding: '120px 24px 0' }}
         >
           {' '}
@@ -221,7 +222,13 @@ function template(v0, self) {
           style={{ position: 'relative', maxWidth: '1200px', margin: '0 auto', padding: '48px 24px 0' }}
         >
           {' '}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(280px,1fr))', gap: '12px' }}>
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fill,minmax(min(100%,280px),1fr))',
+              gap: '12px',
+            }}
+          >
             {' '}
             {list(v0.rows).map((it1, i1) => {
               const v1 = { ...v0, p: it1, $index: i1 }
@@ -258,6 +265,7 @@ function template(v0, self) {
                       </div>{' '}
                     </div>{' '}
                     <div
+                      data-r="s-g1"
                       style={{
                         display: 'grid',
                         gridTemplateColumns: 'repeat(3,1fr)',
@@ -343,6 +351,7 @@ function template(v0, self) {
         </section>{' '}
         <section
           data-screen-label="By region"
+          data-r="m-sec"
           style={{ position: 'relative', maxWidth: '1200px', margin: '0 auto', padding: '140px 24px 0' }}
         >
           {' '}
@@ -362,7 +371,7 @@ function template(v0, self) {
             style={{
               marginTop: '40px',
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fill,minmax(260px,1fr))',
+              gridTemplateColumns: 'repeat(auto-fill,minmax(min(100%,260px),1fr))',
               gap: '1px',
               borderRadius: '14px',
               overflow: 'hidden',

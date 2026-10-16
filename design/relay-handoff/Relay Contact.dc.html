@@ -8,6 +8,18 @@
 <body>
 <x-dc>
 <helmet>
+<meta name="description" content="Find, compare and partner with 1,600 Providers across 140 countries.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Relay">
+<meta property="og:title" content="Relay — Every financial Provider. One directory.">
+<meta property="og:description" content="Find, compare and partner with 1,600 Providers across 140 countries.">
+<meta property="og:url" content="https://relay.gratebridge.com">
+<meta property="og:image" content="https://relay.gratebridge.com/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://relay.gratebridge.com/og-image.png">
+<meta name="theme-color" content="#0f1011">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -18,12 +30,13 @@ a:hover{color:#f7f8f8}
 input::placeholder,textarea::placeholder{color:#62666d}
 select option{background:#1c1d20;color:#f7f8f8}
 </style>
+<link rel="stylesheet" href="relay-responsive.css">
 </helmet>
 <div style="position:relative;min-height:100vh;overflow-x:clip;font-family:Geist,system-ui,sans-serif;color:#f7f8f8;background:#0f1011">
   <div style="position:absolute;left:0;right:0;top:0;height:900px;pointer-events:none;background:radial-gradient(90% 60% at 50% 0%,#26282c 0%,#18191c 38%,#0f1011 80%)"></div>
   <dc-import name="Relay Site Nav" active="contact" hint-size="100%,64px" style="position:sticky;top:0;z-index:50"></dc-import>
 
-  <section data-screen-label="Contact" style="position:relative;max-width:1200px;margin:0 auto;padding:120px 24px 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,400px),1fr));gap:56px 80px">
+  <section data-screen-label="Contact" data-r="m-sec" style="position:relative;max-width:1200px;margin:0 auto;padding:120px 24px 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,400px),1fr));gap:56px 80px">
     <div style="display:flex;flex-direction:column;gap:40px">
       <div>
         <div style="font-family:'Geist Mono',monospace;font-size:12px;color:#62666d;margin-bottom:20px">Contact</div>
@@ -39,14 +52,14 @@ select option{background:#1c1d20;color:#f7f8f8}
           </a>
         </sc-for>
       </div>
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px">
+      <div data-r="s-g1" style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px">
         <sc-for list="{{ offices }}" as="o" hint-placeholder-count="3"><div><div style="font-size:14px;font-weight:500">{{ o.city }}</div><div style="font-size:12.5px;color:#62666d;margin-top:4px;line-height:1.5">{{ o.addr }}</div></div></sc-for>
       </div>
     </div>
 
     <div style="position:relative;border-radius:20px;background:#121315;box-shadow:0 0 0 1px rgba(255,255,255,.07),0 40px 80px -40px rgba(0,0,0,.8);overflow:hidden">
       <div style="padding:28px;display:flex;flex-direction:column;gap:16px;transition:opacity .35s,transform .45s cubic-bezier(.2,.8,.2,1);opacity:{{ formOp }};transform:{{ formTf }};pointer-events:{{ formPe }}">
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div data-r="m-g1" style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
           <sc-for list="{{ top }}" as="f" hint-placeholder-count="2"><label style="display:flex;flex-direction:column;gap:6px"><span style="font-size:12.5px;color:#8a8f98">{{ f.label }}</span><input value="{{ f.value }}" onChange="{{ f.onChange }}" placeholder="{{ f.ph }}" style="height:40px;padding:0 12px;border:none;outline:none;border-radius:9px;background:rgba(255,255,255,.03);box-shadow:{{ f.ring }};color:#f7f8f8;font:14px Geist,system-ui,sans-serif;transition:box-shadow .15s" style-focus="box-shadow:inset 0 0 0 1px rgba(255,255,255,.3)"></label></sc-for>
         </div>
         <sc-for list="{{ rest }}" as="f" hint-placeholder-count="2"><label style="display:flex;flex-direction:column;gap:6px"><span style="font-size:12.5px;color:#8a8f98">{{ f.label }}</span><input value="{{ f.value }}" onChange="{{ f.onChange }}" placeholder="{{ f.ph }}" style="height:40px;padding:0 12px;border:none;outline:none;border-radius:9px;background:rgba(255,255,255,.03);box-shadow:{{ f.ring }};color:#f7f8f8;font:14px Geist,system-ui,sans-serif;transition:box-shadow .15s" style-focus="box-shadow:inset 0 0 0 1px rgba(255,255,255,.3)"></label></sc-for>

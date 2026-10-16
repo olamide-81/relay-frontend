@@ -93,6 +93,7 @@ function template(v0, self) {
         <RelaySiteNav __hostStyle={{ position: 'sticky', top: '0', zIndex: '50' }} />{' '}
         <section
           data-screen-label="Careers hero"
+          data-r="m-sec"
           style={{ position: 'relative', maxWidth: '1200px', margin: '0 auto', padding: '120px 24px 0' }}
         >
           {' '}
@@ -123,7 +124,7 @@ function template(v0, self) {
             style={{
               marginTop: '48px',
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit,minmax(200px,1fr))',
+              gridTemplateColumns: 'repeat(auto-fit,minmax(min(100%,200px),1fr))',
               gap: '1px',
               borderRadius: '16px',
               overflow: 'hidden',
@@ -149,6 +150,7 @@ function template(v0, self) {
         </section>{' '}
         <section
           data-screen-label="Open roles"
+          data-r="m-sec"
           style={{ position: 'relative', maxWidth: '1200px', margin: '0 auto', padding: '120px 24px 0' }}
         >
           {' '}
@@ -217,6 +219,7 @@ function template(v0, self) {
                   {' '}
                   <A
                     href={href('Relay%20Contact.dc.html')}
+                    data-r="m-row"
                     style={{
                       display: 'grid',
                       gridTemplateColumns: 'minmax(0,2fr) minmax(0,1fr) minmax(0,1fr) 20px',

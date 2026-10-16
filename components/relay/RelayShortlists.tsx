@@ -164,6 +164,7 @@ function template(v0, self) {
   return (
     <>
       <div
+        data-r="m-col"
         style={{
           position: 'relative',
           height: '100%',
@@ -175,6 +176,7 @@ function template(v0, self) {
       >
         {' '}
         <div
+          data-r="m-pane"
           style={{
             flex: '0 1 300px',
             minWidth: '240px',

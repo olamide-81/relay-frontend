@@ -8,6 +8,18 @@
 <body>
 <x-dc>
 <helmet>
+<meta name="description" content="Find, compare and partner with 1,600 Providers across 140 countries.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Relay">
+<meta property="og:title" content="Relay — Every financial Provider. One directory.">
+<meta property="og:description" content="Find, compare and partner with 1,600 Providers across 140 countries.">
+<meta property="og:url" content="https://relay.gratebridge.com">
+<meta property="og:image" content="https://relay.gratebridge.com/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://relay.gratebridge.com/og-image.png">
+<meta name="theme-color" content="#0f1011">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -16,21 +28,22 @@ html,body{margin:0;background:#0f1011;color:#f7f8f8;font-family:"Geist",system-u
 a{color:#8a8f98;text-decoration:none;transition:color .12s}
 a:hover{color:#f7f8f8}
 </style>
+<link rel="stylesheet" href="relay-responsive.css">
 </helmet>
 <div style="position:relative;min-height:100vh;overflow-x:clip;font-family:Geist,system-ui,sans-serif;color:#f7f8f8;background:#0f1011">
   <div style="position:absolute;left:0;right:0;top:0;height:900px;pointer-events:none;background:radial-gradient(90% 60% at 50% 0%,#26282c 0%,#18191c 38%,#0f1011 80%)"></div>
   <dc-import name="Relay Site Nav" hint-size="100%,64px" style="position:sticky;top:0;z-index:50"></dc-import>
 
-  <section data-screen-label="Careers hero" style="position:relative;max-width:1200px;margin:0 auto;padding:120px 24px 0">
+  <section data-screen-label="Careers hero" data-r="m-sec" style="position:relative;max-width:1200px;margin:0 auto;padding:120px 24px 0">
     <div style="font-family:'Geist Mono',monospace;font-size:12px;color:#62666d;margin-bottom:20px">Careers</div>
     <h1 style="margin:0;max-width:900px;font-weight:500;font-size:clamp(40px,6vw,72px);line-height:1.02;letter-spacing:-0.05em;text-wrap:balance">Map the world's <span style="color:#8a8f98">financial infrastructure with us.</span></h1>
     <p style="margin:28px 0 0;max-width:560px;font-size:18px;line-height:1.55;color:#8a8f98">A small, senior team across London, New York and Singapore. Remote-friendly across European and American time zones.</p>
-    <div style="margin-top:48px;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1px;border-radius:16px;overflow:hidden;background:rgba(255,255,255,.06);box-shadow:0 0 0 1px rgba(255,255,255,.06)">
+    <div style="margin-top:48px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:1px;border-radius:16px;overflow:hidden;background:rgba(255,255,255,.06);box-shadow:0 0 0 1px rgba(255,255,255,.06)">
       <sc-for list="{{ perks }}" as="p" hint-placeholder-count="4"><div style="padding:24px;background:#121315"><div style="font-size:15px;font-weight:500">{{ p.t }}</div><div style="font-size:13.5px;line-height:1.5;color:#8a8f98;margin-top:6px">{{ p.d }}</div></div></sc-for>
     </div>
   </section>
 
-  <section data-screen-label="Open roles" style="position:relative;max-width:1200px;margin:0 auto;padding:120px 24px 0">
+  <section data-screen-label="Open roles" data-r="m-sec" style="position:relative;max-width:1200px;margin:0 auto;padding:120px 24px 0">
     <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap">
       <h2 style="margin:0;font-weight:500;font-size:clamp(30px,3.8vw,46px);line-height:1.05;letter-spacing:-0.04em">Open roles <span style="color:#62666d;font-size:.6em">{{ count }}</span></h2>
       <div style="display:flex;gap:2px;padding:2px;border-radius:999px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.08)">
@@ -39,7 +52,7 @@ a:hover{color:#f7f8f8}
     </div>
     <div style="margin-top:28px;display:flex;flex-direction:column;border-top:1px solid rgba(255,255,255,.07)">
       <sc-for list="{{ roles }}" as="r" hint-placeholder-count="6">
-        <a href="Relay%20Contact.dc.html" style="display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr) minmax(0,1fr) 20px;align-items:center;gap:20px;padding:22px 4px;border-bottom:1px solid rgba(255,255,255,.07);color:#f7f8f8;transition:background-color .2s,padding .25s cubic-bezier(.2,.8,.2,1)" style-hover="background:rgba(255,255,255,.02);padding-left:12px;color:#f7f8f8">
+        <a href="Relay%20Contact.dc.html" data-r="m-row" style="display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr) minmax(0,1fr) 20px;align-items:center;gap:20px;padding:22px 4px;border-bottom:1px solid rgba(255,255,255,.07);color:#f7f8f8;transition:background-color .2s,padding .25s cubic-bezier(.2,.8,.2,1)" style-hover="background:rgba(255,255,255,.02);padding-left:12px;color:#f7f8f8">
           <span style="font-size:16px;font-weight:500">{{ r.title }}</span><span style="font-size:13.5px;color:#8a8f98">{{ r.team }}</span><span style="font-size:13.5px;color:#8a8f98">{{ r.loc }}</span>
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8a8f98" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
         </a>

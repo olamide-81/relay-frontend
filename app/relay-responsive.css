@@ -1,0 +1,36 @@
+/* Relay responsive layer, from design/relay-handoff/relay-responsive.css (see RESPONSIVE.md).
+   Elements opt in with data-r="token …" in the designs; the converter keeps those attributes,
+   so these rules apply exactly as in the prototypes. Keep in sync with the design file. */
+[data-r~="m-show"]{display:none!important}
+@media (max-width:1024px){
+  [data-r~="t-hide"]{display:none!important}
+  [data-r~="t-g1"]{grid-template-columns:minmax(0,1fr)!important}
+}
+@media (max-width:768px){
+  [data-r~="m-hide"]{display:none!important}
+  [data-r~="m-show"]{display:flex!important}
+  [data-r~="m-g1"]{grid-template-columns:minmax(0,1fr)!important}
+  [data-r~="m-g2"]{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  [data-r~="m-col"]{flex-direction:column!important;align-items:stretch!important}
+  [data-r~="m-wrap"]{flex-wrap:wrap!important}
+  [data-r~="m-pad"]{padding-left:16px!important;padding-right:16px!important;padding-top:20px!important}
+  [data-r~="m-sec"]{padding-top:72px!important}
+  [data-r~="m-full"]{width:100%!important;max-width:100%!important;flex-basis:auto!important}
+  [data-r~="m-flush"]{margin:0!important;border-radius:0!important;border-left:0!important;border-right:0!important}
+  [data-r~="m-row"]{min-width:720px}
+  :has(> [data-r~="m-row"]){overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+  [data-r~="m-drawer"]{position:fixed!important;top:0;bottom:0;left:0;z-index:80;transform:translateX(-105%);transition:transform .32s cubic-bezier(.2,.8,.2,1);box-shadow:24px 0 64px rgba(0,0,0,.6)}
+  [data-r~="m-drawer"][data-open="true"]{transform:none}
+  [data-r~="m-scrim"]{display:block!important}
+  [data-r~="m-sheet"]{left:12px!important;right:12px!important;width:auto!important;position:fixed!important;top:64px!important}
+  [data-r~="m-dvh"]{height:100dvh!important}
+  [data-r~="m-pane"]{flex:0 0 auto!important;width:100%!important;max-height:44vh;border-right:0!important;border-bottom:1px solid rgba(255,255,255,.06)}
+  [data-r~="m-hnav"]{flex:none!important;flex-direction:row!important;overflow-x:auto;scrollbar-width:none;padding:10px 12px!important;gap:2px!important;border-right:0!important;border-bottom:1px solid rgba(255,255,255,.06)}
+  [data-r~="m-hnav"]>div{flex-direction:row!important;flex:none}
+  [data-r~="m-hnav"]>div>div{display:none!important}
+  [data-r~="m-hnav"] span{white-space:nowrap}
+}
+@media (max-width:480px){
+  [data-r~="s-g1"]{grid-template-columns:minmax(0,1fr)!important}
+  [data-r~="s-hide"]{display:none!important}
+}

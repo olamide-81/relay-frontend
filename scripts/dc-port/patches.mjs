@@ -38,11 +38,11 @@ export default {
         "plan: this.props.plan ?? (/[?&]plan=pro/i.test(window.location.search) ? 'Pro' : 'Free')",
       ],
       [
-        'go(page, params = {}, key) { this.setState({ page, params, activeKey: key ?? page }); }',
-        `go(page, params = {}, key) { this.setState({ page, params, activeKey: key ?? page }); this.props.onRoute?.(page, params); }
+        'go(page, params = {}, key) { this.setState({ page, params, activeKey: key ?? page, navOpen: false }); }',
+        `go(page, params = {}, key) { this.setState({ page, params, activeKey: key ?? page, navOpen: false }); this.props.onRoute?.(page, params); }
   componentDidUpdate(prev) {
     const r = this.props.route;
-    if (r && r !== prev.route && (r.page !== this.state.page || !same(r.params, this.state.params))) this.setState({ page: r.page, params: r.params, activeKey: r.page });
+    if (r && r !== prev.route && (r.page !== this.state.page || !same(r.params, this.state.params))) this.setState({ page: r.page, params: r.params, activeKey: r.page, navOpen: false });
     if (this.props.plan && this.props.plan !== prev.plan) this.setState({ plan: this.props.plan });
   }`,
       ],
@@ -147,6 +147,25 @@ export default {
       [/href="#"([^>]*><span style="color:#f7f8f8;font-weight:500">New<\/span>Banks in the directory)/, 'href="Relay%20Category.dc.html?kind=bank"$1'],
       link('Read customer stories', 'Relay%20Customers.dc.html'),
     ],
+  },
+  // Mobile menu: close on link tap and Escape, and release the scroll lock when the page
+  // changes (client-side navigation unmounts the nav while the menu is open).
+  'Relay Site Nav': {
+    template: [['<sc-if value="{{ mOpen }}">\n    <div data-r="m-show" ', '<sc-if value="{{ mOpen }}">\n    <div data-r="m-show" onClick="{{ appMenuClick }}" ']],
+    logic: [
+      [
+        'componentWillUnmount() { window.removeEventListener(\'scroll\', this._s);',
+        `componentWillUnmount() { document.removeEventListener('keydown', this._appKey); if (this.state.m) document.documentElement.style.overflow = ''; window.removeEventListener('scroll', this._s);`,
+      ],
+    ],
+    vals: `function () {
+      const close = () => { document.documentElement.style.overflow = ''; this.setState({ m: false }); };
+      if (!this._appKey && typeof document !== 'undefined') {
+        this._appKey = (e) => { if (e.key === 'Escape' && this.state.m) close(); };
+        document.addEventListener('keydown', this._appKey);
+      }
+      return { appMenuClick: (e) => { if (e.target.closest && e.target.closest('a')) close(); } };
+    }`,
   },
   'Relay Site Footer': { template: [link('Start for free', SIGN_UP)] },
   'Relay Directory Page': { template: [link('Explore the full directory', SIGN_UP)] },

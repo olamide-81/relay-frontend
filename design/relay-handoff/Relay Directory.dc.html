@@ -18,9 +18,10 @@ a{color:#8a8f98;text-decoration:none}
 a:hover{color:#f7f8f8}
 input::placeholder{color:#62666d}
 </style>
+<link rel="stylesheet" href="relay-responsive.css">
 </helmet>
 <div style="position:relative;font-family:Geist,system-ui,sans-serif;color:#f7f8f8">
-<div style="max-width:1200px;margin:0 auto;padding:36px 40px 104px;display:flex;flex-direction:column;gap:20px">
+<div data-r="m-pad" style="max-width:1200px;margin:0 auto;padding:36px 40px 104px;display:flex;flex-direction:column;gap:20px">
   <div>
     <h1 style="margin:0;font-size:22px;font-weight:500;letter-spacing:-0.02em">Directory</h1>
     <div style="font-size:13.5px;color:#8a8f98;margin-top:6px">{{ subtitle }}</div>
@@ -56,11 +57,11 @@ input::placeholder{color:#62666d}
 
   <div style="border-radius:12px;box-shadow:0 0 0 1px rgba(255,255,255,.06);background:rgba(255,255,255,.012);overflow-x:auto">
     <div style="min-width:860px">
-      <div style="display:grid;grid-template-columns:36px minmax(0,2.2fr) minmax(0,1fr) minmax(0,1.2fr) 96px minmax(0,1.5fr) 44px;align-items:center;height:38px;padding:0 12px;border-bottom:1px solid rgba(255,255,255,.06);font-size:12px;color:#62666d">
+      <div data-r="m-row" style="display:grid;grid-template-columns:36px minmax(0,2.2fr) minmax(0,1fr) minmax(0,1.2fr) 96px minmax(0,1.5fr) 44px;align-items:center;height:38px;padding:0 12px;border-bottom:1px solid rgba(255,255,255,.06);font-size:12px;color:#62666d">
         <span></span><span>Provider</span><span>Category</span><span>Headquarters</span><span>Countries</span><span>Licence</span><span></span>
       </div>
       <sc-for list="{{ rows }}" as="p" hint-placeholder-count="10">
-        <div onClick="{{ p.open }}" style="display:grid;grid-template-columns:36px minmax(0,2.2fr) minmax(0,1fr) minmax(0,1.2fr) 96px minmax(0,1.5fr) 44px;align-items:center;min-height:54px;padding:0 12px;border-bottom:1px solid rgba(255,255,255,.04);cursor:pointer;transition:background-color .12s;background:{{ p.rowBg }}" style-hover="background:rgba(255,255,255,.025)">
+        <div onClick="{{ p.open }}" data-r="m-row" style="display:grid;grid-template-columns:36px minmax(0,2.2fr) minmax(0,1fr) minmax(0,1.2fr) 96px minmax(0,1.5fr) 44px;align-items:center;min-height:54px;padding:0 12px;border-bottom:1px solid rgba(255,255,255,.04);cursor:pointer;transition:background-color .12s;background:{{ p.rowBg }}" style-hover="background:rgba(255,255,255,.025)">
           <span onClick="{{ p.toggle }}" title="Select" style="width:16px;height:16px;border-radius:4px;display:grid;place-items:center;cursor:pointer;transition:background-color .12s,box-shadow .12s;background:{{ p.boxBg }};box-shadow:{{ p.boxRing }}"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#0f1011" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" style="transition:opacity .12s;opacity:{{ p.checkOp }}"><path d="M20 6 9 17l-5-5"></path></svg></span>
           <div style="display:flex;align-items:center;gap:12px;min-width:0">
             <dc-import name="Relay App Icon" kind="{{ p.kind }}" size="28" hint-size="28px,28px"></dc-import>
@@ -122,7 +123,7 @@ input::placeholder{color:#62666d}
       </div>
     </div>
     <p style="margin:0;font-size:13.5px;line-height:1.6;color:#b4b8bf;text-wrap:pretty">{{ cur.desc }}</p>
-    <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px">
+    <div data-r="m-g2" style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px">
       <sc-for list="{{ cur.stats }}" as="s" hint-placeholder-count="4"><div style="padding:12px 14px;border-radius:10px;background:rgba(255,255,255,.025);box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)"><div style="font-size:11.5px;color:#62666d">{{ s.k }}</div><div style="font-size:15px;font-weight:500;margin-top:4px;font-variant-numeric:tabular-nums">{{ s.v }}</div></div></sc-for>
     </div>
 
@@ -160,7 +161,7 @@ input::placeholder{color:#62666d}
       </div>
     </div>
 
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+    <div data-r="m-g1" style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
       <div style="display:flex;flex-direction:column;gap:8px"><div style="font-size:12px;font-weight:500;color:#8a8f98">Integration</div><sc-for list="{{ cur.api }}" as="a" hint-placeholder-count="3"><div style="display:flex;align-items:center;gap:8px;font-size:13px;color:#d4d6da"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#6fe3b4" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>{{ a }}</div></sc-for></div>
       <div style="display:flex;flex-direction:column;gap:8px"><div style="font-size:12px;font-weight:500;color:#8a8f98">Security</div><sc-for list="{{ cur.certs }}" as="a" hint-placeholder-count="3"><div style="display:flex;align-items:center;gap:8px;font-size:13px;color:#d4d6da"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#6fe3b4" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>{{ a }}</div></sc-for></div>
     </div>

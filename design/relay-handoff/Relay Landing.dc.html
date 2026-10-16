@@ -8,6 +8,18 @@
 <body>
 <x-dc>
 <helmet>
+<meta name="description" content="Find, compare and partner with 1,600 Providers across 140 countries.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Relay">
+<meta property="og:title" content="Relay — Every financial Provider. One directory.">
+<meta property="og:description" content="Find, compare and partner with 1,600 Providers across 140 countries.">
+<meta property="og:url" content="https://relay.gratebridge.com">
+<meta property="og:image" content="https://relay.gratebridge.com/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://relay.gratebridge.com/og-image.png">
+<meta name="theme-color" content="#0f1011">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -16,6 +28,7 @@ html,body{margin:0;background:#0f1011;color:#f7f8f8;font-family:"Geist",system-u
 a{color:#8a8f98;text-decoration:none;transition:color .12s}
 a:hover{color:#f7f8f8}
 </style>
+<link rel="stylesheet" href="relay-responsive.css">
 </helmet>
 <div style="position:relative;min-height:100vh;overflow-x:clip;font-family:Geist,system-ui,sans-serif;color:#f7f8f8;background:#0f1011">
 
@@ -24,7 +37,7 @@ a:hover{color:#f7f8f8}
 
   <dc-import name="Relay Site Nav" hint-size="100%,64px" style="position:sticky;top:0;z-index:50"></dc-import>
 
-  <section data-screen-label="Hero" style="position:relative;max-width:1200px;margin:0 auto;padding:128px 24px 0">
+  <section data-screen-label="Hero" data-r="m-sec" style="position:relative;max-width:1200px;margin:0 auto;padding:128px 24px 0">
     <h1 style="margin:0;max-width:960px;font-weight:500;font-size:clamp(44px,7vw,84px);line-height:1;letter-spacing:-0.05em;text-wrap:balance;transition:opacity .9s .15s,transform .9s .15s cubic-bezier(.2,.8,.2,1),filter .9s .15s;opacity:{{ ld.op }};transform:{{ ld.tf }};filter:{{ ld.blur }}">Every financial Provider. <span style="color:#8a8f98">One directory.</span></h1>
     <div style="margin-top:32px;display:flex;align-items:flex-end;justify-content:space-between;gap:24px 48px;flex-wrap:wrap">
       <div style="display:flex;flex-direction:column;gap:28px;max-width:560px">
@@ -49,8 +62,8 @@ a:hover{color:#f7f8f8}
     </div>
   </section>
 
-  <section data-screen-label="Who Relay is for" style="position:relative;max-width:1200px;margin:0 auto;padding:140px 24px 0">
-    <div data-rv="journeyHead" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:24px 64px;align-items:end;transition:opacity .9s,transform .9s cubic-bezier(.2,.8,.2,1);opacity:{{ rv.journeyHead.op }};transform:{{ rv.journeyHead.tf }}">
+  <section data-screen-label="Who Relay is for" data-r="m-sec" style="position:relative;max-width:1200px;margin:0 auto;padding:140px 24px 0">
+    <div data-rv="journeyHead" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:24px 64px;align-items:end;transition:opacity .9s,transform .9s cubic-bezier(.2,.8,.2,1);opacity:{{ rv.journeyHead.op }};transform:{{ rv.journeyHead.tf }}">
       <div>
         <div style="font-family:'Geist Mono',monospace;font-size:12px;color:#62666d;margin-bottom:18px">Who Relay is for</div>
         <h2 style="margin:0;font-weight:500;font-size:clamp(34px,4.4vw,52px);line-height:1.04;letter-spacing:-0.04em;text-wrap:balance">Your partner on the journey. <span style="color:#8a8f98">From first wire to global scale.</span></h2>
@@ -107,7 +120,7 @@ a:hover{color:#f7f8f8}
       <sc-for list="{{ panels }}" as="c" hint-placeholder-count="1">
         <div style="position:absolute;inset:0;pointer-events:none;opacity:{{ c.w }};background:radial-gradient(800px 560px at 74% 55%,rgba({{ c.rgb }},.14),rgba({{ c.rgb }},0) 70%)"></div>
       </sc-for>
-      <div style="position:relative;max-width:1200px;height:100%;margin:0 auto;padding:96px 24px 56px;display:grid;grid-template-columns:minmax(180px,220px) minmax(0,1fr) minmax(0,1fr);gap:48px;align-items:center">
+      <div data-r="m-g1 m-sec" style="position:relative;max-width:1200px;height:100%;margin:0 auto;padding:96px 24px 56px;display:grid;grid-template-columns:minmax(180px,220px) minmax(0,1fr) minmax(0,1fr);gap:48px;align-items:center">
         <div style="align-self:stretch;display:flex;flex-direction:column;justify-content:center;gap:4px">
           <div style="font-family:'Geist Mono',monospace;font-size:12px;color:#62666d;margin-bottom:10px">Categories</div>
           <sc-for list="{{ panels }}" as="c" hint-placeholder-count="6">
@@ -123,7 +136,7 @@ a:hover{color:#f7f8f8}
               <span style="display:block;width:fit-content;transform:rotate({{ c.rot }}) scale({{ c.sc }})"><dc-import name="Relay App Icon" kind="{{ c.kind }}" size="80" hint-size="80px,80px"></dc-import></span>
               <h3 style="margin:0;font-weight:500;font-size:clamp(36px,4.2vw,56px);letter-spacing:-0.04em;line-height:1">{{ c.label }}. <span style="color:#8a8f98">{{ c.tag }}</span></h3>
               <p style="margin:0;font-size:16.5px;line-height:1.55;color:#8a8f98;max-width:440px;text-wrap:pretty">{{ c.desc }}</p>
-              <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;padding-top:18px;border-top:1px solid rgba(255,255,255,.07);max-width:440px">
+              <div data-r="s-g1" style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;padding-top:18px;border-top:1px solid rgba(255,255,255,.07);max-width:440px">
                 <sc-for list="{{ c.stats }}" as="s" hint-placeholder-count="3"><div><div style="font-size:12px;color:#62666d">{{ s.k }}</div><div style="font-size:19px;font-weight:500;margin-top:4px;white-space:nowrap">{{ s.v }}</div></div></sc-for>
               </div>
             </div>
@@ -153,15 +166,15 @@ a:hover{color:#f7f8f8}
     </div>
   </section>
 
-  <section data-screen-label="How it works" style="position:relative;max-width:1200px;margin:0 auto;padding:160px 24px 0">
-    <div data-rv="howHead" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:24px 64px;align-items:end;transition:opacity .9s,transform .9s cubic-bezier(.2,.8,.2,1);opacity:{{ rv.howHead.op }};transform:{{ rv.howHead.tf }}">
+  <section data-screen-label="How it works" data-r="m-sec" style="position:relative;max-width:1200px;margin:0 auto;padding:160px 24px 0">
+    <div data-rv="howHead" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:24px 64px;align-items:end;transition:opacity .9s,transform .9s cubic-bezier(.2,.8,.2,1);opacity:{{ rv.howHead.op }};transform:{{ rv.howHead.tf }}">
       <div>
         <div style="font-family:'Geist Mono',monospace;font-size:12px;color:#62666d;margin-bottom:18px">How it works</div>
         <h2 style="margin:0;font-weight:500;font-size:clamp(34px,4.4vw,52px);line-height:1.04;letter-spacing:-0.04em;text-wrap:balance">Search. Compare. <span style="color:#8a8f98">Connect.</span></h2>
       </div>
       <p style="margin:0;font-size:16px;line-height:1.6;color:#8a8f98;max-width:440px;text-wrap:pretty">One workflow from a blank page to a signed partner, with the data and the introductions in the same place.</p>
     </div>
-    <div data-rv="how" style="margin-top:56px;display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px">
+    <div data-rv="how" style="margin-top:56px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:16px">
 
       <div style="border-radius:16px;background:#121315;box-shadow:0 0 0 1px rgba(255,255,255,.06);overflow:hidden;transition:opacity .8s,transform .8s cubic-bezier(.2,.8,.2,1),box-shadow .3s;opacity:{{ rv.how.op }};transform:{{ rv.how.tf }}" style-hover="box-shadow:0 0 0 1px rgba(255,255,255,.12)">
         <div style="height:260px;padding:24px;display:flex;flex-direction:column;gap:8px;background:radial-gradient(80% 80% at 50% 0%,rgba(255,255,255,.035),transparent 70%)">
@@ -233,7 +246,7 @@ a:hover{color:#f7f8f8}
         <h2 style="margin:0;font-weight:500;font-size:clamp(34px,4.4vw,52px);line-height:1.04;letter-spacing:-0.04em">Trusted by teams that move money.</h2>
         <a href="#" style="display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:500;color:#d4d6da;transition:color .15s,gap .2s" style-hover="color:#f7f8f8;gap:11px">Read customer stories<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
       </div>
-      <div style="margin-top:48px;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px">
+      <div style="margin-top:48px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:16px">
         <sc-for list="{{ quotes }}" as="q" hint-placeholder-count="3">
           <div data-rv="{{ q.key }}" style="position:relative;height:500px;border-radius:16px;overflow:hidden;background:{{ q.tone }};box-shadow:0 0 0 1px rgba(255,255,255,.06);transition:opacity .9s {{ q.delay }},transform .9s {{ q.delay }} cubic-bezier(.2,.8,.2,1);opacity:{{ q.op }};transform:{{ q.tf }}">
             <img src="{{ q.img }}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.1);mix-blend-mode:luminosity;opacity:.9;transition:transform 1.2s cubic-bezier(.2,.8,.2,1)" style-hover="transform:scale(1.04)">

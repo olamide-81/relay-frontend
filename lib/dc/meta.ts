@@ -5,8 +5,7 @@ import { buildMetadata } from '@/lib/seo'
 export const PAGE_META: Record<string, { title: string; description: string; noIndex?: boolean }> = {
   '/': {
     title: 'Relay — Every financial Provider. One directory.',
-    description:
-      'Relay maps 1,600 infrastructure partners across 140 countries so fintech teams can find, compare and partner in days, not quarters.',
+    description: 'Find, compare and partner with 1,600 Providers across 140 countries.',
   },
   '/product': {
     title: 'Product',

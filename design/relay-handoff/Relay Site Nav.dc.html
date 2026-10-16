@@ -16,15 +16,16 @@ html,body{margin:0;background:#0f1011;color:#f7f8f8;font-family:"Geist",system-u
 a{color:#8a8f98;text-decoration:none;transition:color .12s}
 a:hover{color:#f7f8f8}
 </style>
+<link rel="stylesheet" href="relay-responsive.css">
 </helmet>
 <header style="position:sticky;top:0;z-index:50;font-family:Geist,system-ui,sans-serif;transition:background-color .2s,box-shadow .2s,backdrop-filter .2s;background:{{ nav.bg }};box-shadow:{{ nav.line }};backdrop-filter:{{ nav.blur }};-webkit-backdrop-filter:{{ nav.blur }}">
-  <nav style="position:relative;max-width:1200px;margin:0 auto;height:64px;padding:0 24px;display:flex;align-items:center;gap:32px;transition:opacity .6s,transform .6s cubic-bezier(.2,.8,.2,1);opacity:{{ nav.op }};transform:{{ nav.tf }}">
+  <nav style="position:relative;max-width:1200px;margin:0 auto;height:64px;padding:0 clamp(16px,4vw,24px);display:flex;align-items:center;gap:clamp(12px,3vw,32px);transition:opacity .6s,transform .6s cubic-bezier(.2,.8,.2,1);opacity:{{ nav.op }};transform:{{ nav.tf }}">
     <a href="Relay%20Landing.dc.html" style="display:flex;align-items:center;gap:9px;color:#f7f8f8;flex:none">
       <img src="assets/relay-icon.png" alt="Relay" style="width:22px;height:22px;display:block;border-radius:5px">
       <span style="font-weight:500;font-size:16px;letter-spacing:-0.02em">Relay</span>
     </a>
     <span style="flex:1"></span>
-    <div style="display:flex;align-items:center;gap:2px;flex:none">
+    <div data-r="m-hide" style="display:flex;align-items:center;gap:2px;flex:none">
       <sc-for list="{{ links }}" as="l" hint-placeholder-count="6">
         <div onMouseEnter="{{ l.enter }}" onMouseLeave="{{ l.leave }}" style="position:static">
           <a href="{{ l.href }}" style="height:32px;padding:0 12px;display:inline-flex;align-items:center;border-radius:999px;font-size:13.5px;font-weight:500;white-space:nowrap;transition:background-color .15s,color .15s;color:{{ l.fg }};background:{{ l.bg }}" style-hover="color:#f7f8f8;background:rgba(255,255,255,.05)">{{ l.label }}</a>
@@ -55,12 +56,24 @@ a:hover{color:#f7f8f8}
         </div>
       </sc-for>
     </div>
-    <span style="width:1px;height:16px;background:rgba(255,255,255,.1);flex:none;margin:0 -8px"></span>
+    <span data-r="m-hide" style="width:1px;height:16px;background:rgba(255,255,255,.1);flex:none;margin:0 -8px"></span>
     <div style="display:flex;align-items:center;gap:8px;flex:none">
-      <a href="Relay%20Login.dc.html" style="height:32px;padding:0 12px;display:inline-flex;align-items:center;font-size:13.5px;font-weight:500;color:#d4d6da">Log in</a>
+      <a data-r="s-hide" href="Relay%20Login.dc.html" style="height:32px;padding:0 12px;display:inline-flex;align-items:center;font-size:13.5px;font-weight:500;color:#d4d6da">Log in</a>
       <a href="Relay%20Sign%20Up.dc.html" style="height:32px;padding:0 14px;display:inline-flex;align-items:center;border-radius:8px;font-size:13.5px;font-weight:500;color:#0f1011;background:#f7f8f8;transition:background-color .15s,transform .2s cubic-bezier(.2,.8,.2,1),box-shadow .2s" style-hover="background:#ffffff;color:#0f1011;transform:translateY(-1px);box-shadow:0 6px 20px -6px rgba(255,255,255,.35)">Sign up</a>
+      <span data-r="m-show" onClick="{{ toggleM }}" title="Menu" style="display:none;width:36px;height:36px;align-items:center;justify-content:center;border-radius:9px;cursor:pointer;color:#f7f8f8;box-shadow:inset 0 0 0 1px rgba(255,255,255,.1);margin-right:-4px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="{{ mIcon }}"></path></svg></span>
     </div>
   </nav>
+  <sc-if value="{{ mOpen }}">
+    <div data-r="m-show" style="display:none;position:fixed;top:64px;left:0;right:0;bottom:0;z-index:49;flex-direction:column;padding:8px 16px 32px;background:#0f1011;overflow-y:auto;box-shadow:0 -1px 0 rgba(255,255,255,.06)">
+      <sc-for list="{{ mLinks }}" as="l" hint-placeholder-count="6">
+        <a href="{{ l.href }}" style="display:flex;align-items:center;justify-content:space-between;height:56px;padding:0 4px;border-bottom:1px solid rgba(255,255,255,.06);font-size:17px;font-weight:500;letter-spacing:-0.01em;color:{{ l.fg }}">{{ l.label }}<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#62666d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"></path></svg></a>
+      </sc-for>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:24px">
+        <a href="Relay%20Login.dc.html" style="height:46px;display:flex;align-items:center;justify-content:center;border-radius:10px;font-size:15px;font-weight:500;color:#f7f8f8;box-shadow:inset 0 0 0 1px rgba(255,255,255,.12)">Log in</a>
+        <a href="Relay%20Sign%20Up.dc.html" style="height:46px;display:flex;align-items:center;justify-content:center;border-radius:10px;font-size:15px;font-weight:500;color:#0f1011;background:#f7f8f8" style-hover="color:#0f1011;background:#ffffff">Sign up</a>
+      </div>
+    </div>
+  </sc-if>
 </header>
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1200,&quot;height&quot;:420},&quot;active&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;&quot;,&quot;product&quot;,&quot;directory&quot;,&quot;intelligence&quot;,&quot;customers&quot;,&quot;pricing&quot;,&quot;contact&quot;],&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
@@ -69,7 +82,7 @@ const MENU = [['all', 'Directory', 'Search 1,600 Providers by rail, licence and 
 const SIDE = [['Integrations', P('Developers')], ['Changelog', P('Changelog')], ['API', P('Developers')], ['Security', P('Security')]];
 const LINKS = [['product', 'Product', P('Product')], ['directory', 'Directory', P('Directory Page')], ['intelligence', 'Intelligence', P('Intelligence Page')], ['customers', 'Customers', P('Customers')], ['pricing', 'Pricing', P('Pricing')], ['contact', 'Contact', P('Contact')]];
 class Component extends DCLogic {
-  state = { y: 0, menu: null, ready: false };
+  state = { y: 0, menu: null, ready: false, m: false };
   componentDidMount() {
     this._s = () => { const y = (document.scrollingElement || document.documentElement).scrollTop; if ((y > 8) !== (this.state.y > 8)) this.setState({ y }); };
     window.addEventListener('scroll', this._s, { passive: true }); this._s();
@@ -79,7 +92,10 @@ class Component extends DCLogic {
   renderVals() {
     const S = this.state, sc = S.y > 8, act = this.props.active;
     return {
-      nav: { bg: sc ? 'rgba(15,16,17,.72)' : 'transparent', line: sc ? '0 1px 0 rgba(255,255,255,.06)' : 'none', blur: sc ? 'blur(20px) saturate(150%)' : 'none', op: S.ready ? 1 : 0, tf: S.ready ? 'none' : 'translateY(-8px)' },
+      mOpen: S.m, toggleM: () => { const m = !S.m; document.documentElement.style.overflow = m ? 'hidden' : ''; this.setState({ m }); },
+      mIcon: S.m ? 'M6 6l12 12M18 6 6 18' : 'M4 8h16M4 16h16',
+      mLinks: LINKS.map(([key, label, href]) => ({ label, href, fg: act === key ? '#6fe3b4' : '#f7f8f8' })),
+      nav: { bg: S.m ? '#0f1011' : sc ? 'rgba(15,16,17,.72)' : 'transparent', line: sc || S.m ? '0 1px 0 rgba(255,255,255,.06)' : 'none', blur: S.m ? 'none' : sc ? 'blur(20px) saturate(150%)' : 'none', op: S.ready ? 1 : 0, tf: S.ready ? 'none' : 'translateY(-8px)' },
       side: SIDE.map(([label, href]) => ({ label, href })),
       links: LINKS.map(([key, label, href]) => { const m = key === 'product', open = S.menu === key, on = open || act === key; return {
         label, href, hasMenu: m, cols: m ? [MENU.slice(0, 2), MENU.slice(2)].map(c => c.map(([kind, l, desc, h]) => ({ kind, label: l, desc, href: h }))) : [],

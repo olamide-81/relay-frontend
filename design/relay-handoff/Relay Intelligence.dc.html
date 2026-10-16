@@ -17,6 +17,7 @@ html,body{margin:0;background:#161719;color:#f7f8f8;font-family:"Geist",system-u
 a{color:#8a8f98;text-decoration:none}
 a:hover{color:#f7f8f8}
 </style>
+<link rel="stylesheet" href="relay-responsive.css">
 </helmet>
 <div style="font-family:Geist,system-ui,sans-serif;color:#f7f8f8">
 <sc-if value="{{ isFull }}">
@@ -34,7 +35,7 @@ a:hover{color:#f7f8f8}
           <span style="height:32px;padding:0 14px;display:inline-flex;align-items:center;gap:6px;border-radius:8px;font-size:13px;font-weight:500;color:#0f1011;background:#f7f8f8;cursor:pointer" style-hover="background:#e3e5e8"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"></path></svg>Download PDF</span>
         </div>
       </header>
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,170px),1fr));gap:10px">
         <sc-for list="{{ fr.kpis }}" as="k" hint-placeholder-count="4"><div style="padding:16px;border-radius:12px;background:rgba(255,255,255,.015);box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)"><div style="font-size:12px;color:#62666d">{{ k.k }}</div><div style="font-size:24px;font-weight:500;letter-spacing:-0.025em;margin-top:6px;font-variant-numeric:tabular-nums">{{ k.v }}</div><div style="font-size:12px;margin-top:4px;color:{{ k.c }}">{{ k.d }}</div></div></sc-for>
       </div>
       <section style="padding:20px;border-radius:14px;background:rgba(255,255,255,.012);box-shadow:inset 0 0 0 1px rgba(255,255,255,.06);display:flex;flex-direction:column;gap:16px">
@@ -54,14 +55,14 @@ a:hover{color:#f7f8f8}
         <h2 style="margin:0;font-size:19px;font-weight:500;letter-spacing:-0.015em">Providers in this report</h2>
         <div style="border-radius:12px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.06);background:rgba(255,255,255,.012);overflow-x:auto">
           <div style="min-width:560px">
-            <div style="display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1.2fr) 90px 110px;align-items:center;height:38px;padding:0 16px;border-bottom:1px solid rgba(255,255,255,.06);font-size:12px;color:#62666d"><span>Provider</span><span>Headquarters</span><span>Score</span><span style="text-align:right">Change</span></div>
-            <sc-for list="{{ fr.providers }}" as="p" hint-placeholder-count="5"><div style="display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1.2fr) 90px 110px;align-items:center;min-height:50px;padding:0 16px;border-bottom:1px solid rgba(255,255,255,.04)"><span style="display:flex;align-items:center;gap:10px;min-width:0"><dc-import name="Relay App Icon" kind="{{ p.kind }}" size="24" hint-size="24px,24px"></dc-import><span style="font-size:13.5px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ p.name }}</span></span><span style="font-size:13px;color:#b4b8bf">{{ p.hq }}</span><span style="font-size:13px;font-variant-numeric:tabular-nums">{{ p.score }}</span><span style="font-size:12.5px;text-align:right;font-variant-numeric:tabular-nums;color:{{ p.c }}">{{ p.delta }}</span></div></sc-for>
+            <div data-r="m-row" style="display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1.2fr) 90px 110px;align-items:center;height:38px;padding:0 16px;border-bottom:1px solid rgba(255,255,255,.06);font-size:12px;color:#62666d"><span>Provider</span><span>Headquarters</span><span>Score</span><span style="text-align:right">Change</span></div>
+            <sc-for list="{{ fr.providers }}" as="p" hint-placeholder-count="5"><div data-r="m-row" style="display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1.2fr) 90px 110px;align-items:center;min-height:50px;padding:0 16px;border-bottom:1px solid rgba(255,255,255,.04)"><span style="display:flex;align-items:center;gap:10px;min-width:0"><dc-import name="Relay App Icon" kind="{{ p.kind }}" size="24" hint-size="24px,24px"></dc-import><span style="font-size:13.5px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ p.name }}</span></span><span style="font-size:13px;color:#b4b8bf">{{ p.hq }}</span><span style="font-size:13px;font-variant-numeric:tabular-nums">{{ p.score }}</span><span style="font-size:12.5px;text-align:right;font-variant-numeric:tabular-nums;color:{{ p.c }}">{{ p.delta }}</span></div></sc-for>
           </div>
         </div>
       </section>
       <section style="display:flex;flex-direction:column;gap:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,.06)">
         <div style="font-size:13.5px;font-weight:500">Related</div>
-        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:10px">
           <sc-for list="{{ fr.related }}" as="r" hint-placeholder-count="3"><div onClick="{{ r.open }}" style="padding:14px;border-radius:12px;display:flex;gap:12px;cursor:pointer;background:rgba(255,255,255,.012);box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)" style-hover="background:rgba(255,255,255,.03)"><dc-import name="Relay App Icon" kind="{{ r.kind }}" size="30" hint-size="30px,30px"></dc-import><div style="min-width:0"><div style="font-size:12px;color:#62666d">{{ r.tag }} · {{ r.scope }}</div><div style="font-size:13px;font-weight:500;margin-top:3px;text-wrap:pretty">{{ r.title }}</div></div></div></sc-for>
         </div>
       </section>
@@ -69,7 +70,7 @@ a:hover{color:#f7f8f8}
   </div>
 </sc-if>
 <sc-if value="{{ notFull }}" hint-placeholder-val="{{ true }}">
-<div style="max-width:1200px;margin:0 auto;padding:36px 40px 56px;display:flex;flex-direction:column;gap:20px">
+<div data-r="m-pad" style="max-width:1200px;margin:0 auto;padding:36px 40px 56px;display:flex;flex-direction:column;gap:20px">
   <div style="display:flex;align-items:flex-end;gap:16px;flex-wrap:wrap">
     <div style="flex:1 1 320px;min-width:0">
       <h1 style="margin:0;font-size:22px;font-weight:500;letter-spacing:-0.02em">Intelligence</h1>
@@ -120,7 +121,7 @@ a:hover{color:#f7f8f8}
   </sc-if>
 
   <sc-if value="{{ isReports }}">
-    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px">
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:12px">
       <sc-for list="{{ reports }}" as="r" hint-placeholder-count="4">
         <div onClick="{{ r.toggle }}" style="border-radius:12px;box-shadow:0 0 0 1px rgba(255,255,255,.06);background:rgba(255,255,255,.012);padding:16px;display:flex;flex-direction:column;gap:12px;cursor:pointer;transition:background-color .12s" style-hover="background:rgba(255,255,255,.025)">
           <div style="display:flex;align-items:center;gap:12px">
@@ -168,7 +169,7 @@ a:hover{color:#f7f8f8}
       <div style="border-radius:12px;box-shadow:0 0 0 1px rgba(255,255,255,.06);background:rgba(255,255,255,.012)">
         <sc-for list="{{ catalogue }}" as="l" hint-placeholder-count="8">
           <div style="border-bottom:1px solid rgba(255,255,255,.04)">
-            <div onClick="{{ l.toggle }}" style="display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr) 120px 110px 20px;gap:12px;align-items:center;min-height:54px;padding:0 16px;cursor:pointer" style-hover="background:rgba(255,255,255,.02)">
+            <div onClick="{{ l.toggle }}" data-r="m-row" style="display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr) 120px 110px 20px;gap:12px;align-items:center;min-height:54px;padding:0 16px;cursor:pointer" style-hover="background:rgba(255,255,255,.02)">
               <div style="min-width:0"><div style="display:flex;align-items:center;gap:8px"><span style="font-size:13.5px;font-weight:500">{{ l.name }}</span><sc-if value="{{ l.top }}"><span style="font-size:11px;font-weight:500;color:#6fe3b4;padding:1px 7px;border-radius:999px;background:rgba(111,227,180,.1)">Top</span></sc-if></div><div style="font-size:12px;color:#62666d;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ l.permits }}</div></div>
               <span style="font-size:13px;color:#b4b8bf">{{ l.jurisdiction }}</span>
               <span style="font-family:'Geist Mono',monospace;font-size:12px;color:#8a8f98">{{ l.reg }}</span>
@@ -177,7 +178,7 @@ a:hover{color:#f7f8f8}
             </div>
             <div style="display:grid;transition:grid-template-rows .24s cubic-bezier(.2,.8,.2,1),opacity .2s;grid-template-rows:{{ l.rows }};opacity:{{ l.op }}">
               <div style="min-height:0;overflow:hidden">
-                <div style="padding:2px 16px 18px;display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1px;border-radius:10px">
+                <div style="padding:2px 16px 18px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,160px),1fr));gap:1px;border-radius:10px">
                   <sc-for list="{{ l.facts }}" as="f" hint-placeholder-count="4"><div style="padding:10px 12px;border-radius:8px;background:rgba(255,255,255,.02);margin:3px"><div style="font-size:11.5px;color:#62666d">{{ f.k }}</div><div style="font-size:13px;margin-top:4px;color:#f7f8f8">{{ f.v }}</div></div></sc-for>
                 </div>
               </div>

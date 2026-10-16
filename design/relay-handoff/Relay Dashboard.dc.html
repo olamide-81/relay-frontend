@@ -11,6 +11,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script src="relay-data.js"></script>
+<link rel="stylesheet" href="relay-responsive.css">
 <style>
 *,*::before,*::after{box-sizing:border-box}
 html,body{margin:0;height:100%;background:#151618;color:#f7f8f8;font-family:"Geist",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
@@ -18,10 +19,13 @@ a{color:#8a8f98;text-decoration:none}
 a:hover{color:#f7f8f8}
 </style>
 </helmet>
-<div style="height:100vh;display:flex;background:#151618;overflow:hidden">
+<div data-r="m-dvh" style="height:100vh;display:flex;background:#151618;overflow:hidden">
+  <sc-if value="{{ navOpen }}"><div data-r="m-scrim" onClick="{{ closeNav }}" style="display:none;position:fixed;inset:0;z-index:79;background:rgba(0,0,0,.55);backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px)"></div></sc-if>
+  <div data-r="m-drawer" data-open="{{ navOpenStr }}" style="height:100%;flex:none;background:#151618">
   <dc-import name="Relay Sidebar" active="{{ activeKey }}" favorites="{{ favs }}" on-remove-fav="{{ removeFav }}" on-restore-favs="{{ restoreFavs }}" on-navigate="{{ onNavigate }}" hint-size="256px,100%" style="height:100%;flex:none"></dc-import>
-  <main style="flex:1;min-width:0;margin:8px 8px 8px 0;background:#161719;border:1px solid rgba(255,255,255,.055);box-shadow:inset 0 1px 0 rgba(255,255,255,.03),0 8px 24px rgba(0,0,0,.18);border-radius:12px;display:flex;flex-direction:column">
-    <dc-import name="Relay Topbar" title="{{ title }}" page="{{ page }}" starred="{{ starred }}" on-star="{{ onStar }}" on-navigate="{{ onNavigate }}" hint-size="100%,60px" style="flex:none;border-radius:12px 12px 0 0"></dc-import>
+  </div>
+  <main data-r="m-flush" style="flex:1;min-width:0;margin:8px 8px 8px 0;background:#161719;border:1px solid rgba(255,255,255,.055);box-shadow:inset 0 1px 0 rgba(255,255,255,.03),0 8px 24px rgba(0,0,0,.18);border-radius:12px;display:flex;flex-direction:column">
+    <dc-import name="Relay Topbar" title="{{ title }}" page="{{ page }}" starred="{{ starred }}" on-star="{{ onStar }}" on-navigate="{{ onNavigate }}" on-menu="{{ openNav }}" hint-size="100%,60px" style="flex:none;border-radius:12px 12px 0 0"></dc-import>
     <div style="flex:1;min-height:0;overflow-y:auto;scrollbar-width:thin;scrollbar-color:#2a2b2e transparent">
       <sc-if value="{{ is.overview }}" hint-placeholder-val="{{ true }}">
         <dc-import name="Relay Overview" hint-size="100%,900px"></dc-import>
@@ -84,7 +88,7 @@ const COMPARES = [
 const KIND = { compare: 'corridor', shortlists: 'shortlist', intelligence: 'benchmark' };
 const same = (a, b) => JSON.stringify(a ?? {}) === JSON.stringify(b ?? {});
 class Component extends DCLogic {
-  state = { page: 'overview', params: {}, activeKey: 'overview', favs: DEFAULT_FAVS, lists: LISTS, compares: COMPARES, modal: null, toasts: [], tn: 0, confirm: null, plan: /[?&]plan=pro/i.test(window.location.search) ? 'Pro' : 'Free', focusList: null, n: 10 };
+  state = { page: 'overview', params: {}, activeKey: 'overview', favs: DEFAULT_FAVS, lists: LISTS, compares: COMPARES, modal: null, toasts: [], tn: 0, confirm: null, plan: /[?&]plan=pro/i.test(window.location.search) ? 'Pro' : 'Free', focusList: null, n: 10, navOpen: false };
   flash(title, type = 'success', desc, extra) {
     const id = 't' + Date.now() + Math.random();
     this.setState(s => ({ toasts: [...s.toasts, { id, type, title, desc, ...extra }].slice(-3) }));
@@ -92,7 +96,7 @@ class Component extends DCLogic {
   }
   drop(id) { this.setState(s => ({ toasts: s.toasts.map(t => t.id === id ? { ...t, leaving: true } : t) })); setTimeout(() => this.setState(s => ({ toasts: s.toasts.filter(t => t.id !== id) })), 260); }
   ask(c) { this.setState({ confirm: c }); }
-  go(page, params = {}, key) { this.setState({ page, params, activeKey: key ?? page }); }
+  go(page, params = {}, key) { this.setState({ page, params, activeKey: key ?? page, navOpen: false }); }
   renderVals() {
     const S = this.state;
     const fav = S.favs.find(f => f.page === S.page && same(f.params, S.params));
@@ -137,7 +141,9 @@ class Component extends DCLogic {
       addItems: (id, ids) => { upd(id, l => ({ ...l, ids: [...new Set([...l.ids, ...ids])] })); this.flash(`${ids.length} Provider${ids.length === 1 ? '' : 's'} added`); },
       saveCompare: c => { this.setState(s => ({ compares: s.compares.some(x => x.id === c.id) ? s.compares.map(x => x.id === c.id ? c : x) : [c, ...s.compares], params: { ids: c.ids, savedId: c.id } })); this.flash('Comparison saved'); },
       deleteCompare: id => { const c = S.compares.find(x => x.id === id); this.ask({ title: 'Delete saved comparison?', body: 'It will be removed from Compare and from Favorites.', ok: 'Delete', item: c?.name, kind: c?.kind, meta: (c?.ids.length ?? 0) + ' Providers', run: () => { this.setState(s => ({ compares: s.compares.filter(x => x.id !== id), favs: s.favs.filter(f => f.params?.savedId !== id) })); this.flash('Comparison deleted', 'success'); } }); },
-      toasts: S.toasts
+      toasts: S.toasts,
+      navOpen: S.navOpen, navOpenStr: String(S.navOpen),
+      openNav: () => this.setState({ navOpen: true }), closeNav: () => this.setState({ navOpen: false })
     };
   }
 }

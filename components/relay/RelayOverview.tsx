@@ -249,6 +249,7 @@ function template(v0, self) {
   return (
     <>
       <div
+        data-r="m-pad"
         style={{
           maxWidth: '1200px',
           margin: '0 auto',
@@ -610,6 +611,7 @@ function template(v0, self) {
           </div>{' '}
         </div>{' '}
         <div
+          data-r="m-g2"
           style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(4,minmax(0,1fr))',
@@ -682,7 +684,13 @@ function template(v0, self) {
               </svg>
             </span>{' '}
           </div>{' '}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(184px,1fr))', gap: '10px' }}>
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fill,minmax(min(100%,184px),1fr))',
+              gap: '10px',
+            }}
+          >
             {' '}
             {list(v0.cats).map((it1, i1) => {
               const v1 = { ...v0, c: it1, $index: i1 }
@@ -731,6 +739,7 @@ function template(v0, self) {
                       <>
                         {' '}
                         <div
+                          data-r="m-g1"
                           style={{
                             display: 'grid',
                             gridTemplateColumns: '1fr 1fr',
@@ -803,7 +812,9 @@ function template(v0, self) {
             })}{' '}
           </div>{' '}
         </section>{' '}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(320px,1fr))', gap: '16px' }}>
+        <div
+          style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(min(100%,320px),1fr))', gap: '16px' }}
+        >
           {' '}
           <section style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
             {' '}

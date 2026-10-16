@@ -87,6 +87,7 @@ function template(v0, self) {
         <RelaySiteNav __hostStyle={{ position: 'sticky', top: '0', zIndex: '50' }} />{' '}
         <section
           data-screen-label="Security hero"
+          data-r="m-sec"
           style={{ position: 'relative', maxWidth: '1200px', margin: '0 auto', padding: '120px 24px 0' }}
         >
           {' '}
@@ -162,13 +163,14 @@ function template(v0, self) {
         </section>{' '}
         <section
           data-screen-label="Controls"
+          data-r="m-sec"
           style={{ position: 'relative', maxWidth: '1200px', margin: '0 auto', padding: '120px 24px 0' }}
         >
           {' '}
           <div
             style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit,minmax(280px,1fr))',
+              gridTemplateColumns: 'repeat(auto-fit,minmax(min(100%,280px),1fr))',
               gap: '1px',
               borderRadius: '16px',
               overflow: 'hidden',
@@ -203,6 +205,7 @@ function template(v0, self) {
         <section
           id="status"
           data-screen-label="Status"
+          data-r="m-sec"
           style={{
             position: 'relative',
             maxWidth: '1200px',

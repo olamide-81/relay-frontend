@@ -113,6 +113,7 @@ function template(v0, self) {
         <RelaySiteNav __hostStyle={{ position: 'sticky', top: '0', zIndex: '50' }} />{' '}
         <section
           data-screen-label="Developers"
+          data-r="m-sec"
           style={{
             position: 'relative',
             maxWidth: '1200px',
@@ -275,6 +276,7 @@ function template(v0, self) {
         </section>{' '}
         <section
           data-screen-label="Endpoints"
+          data-r="m-sec"
           style={{ position: 'relative', maxWidth: '1200px', margin: '0 auto', padding: '120px 24px 0' }}
         >
           {' '}
@@ -329,7 +331,7 @@ function template(v0, self) {
             style={{
               marginTop: '40px',
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit,minmax(240px,1fr))',
+              gridTemplateColumns: 'repeat(auto-fit,minmax(min(100%,240px),1fr))',
               gap: '12px',
             }}
           >

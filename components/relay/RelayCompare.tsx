@@ -212,6 +212,7 @@ function template(v0, self) {
     <>
       <div style={{ position: 'relative', fontFamily: 'Geist,system-ui,sans-serif', color: '#f7f8f8' }}>
         <div
+          data-r="m-pad"
           style={{
             maxWidth: '1200px',
             margin: '0 auto',
@@ -708,7 +709,11 @@ function template(v0, self) {
               <>
                 {' '}
                 <div
-                  style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(240px,1fr))', gap: '10px' }}
+                  style={{
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(auto-fill,minmax(min(100%,240px),1fr))',
+                    gap: '10px',
+                  }}
                 >
                   {' '}
                   {list(v0.saved).map((it1, i1) => {

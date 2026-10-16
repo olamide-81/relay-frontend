@@ -81,6 +81,7 @@ function template(v0, self) {
         <RelaySiteNav __hostStyle={{ position: 'sticky', top: '0', zIndex: '50' }} />{' '}
         <section
           data-screen-label="About hero"
+          data-r="m-sec"
           style={{ position: 'relative', maxWidth: '1200px', margin: '0 auto', padding: '120px 24px 0' }}
         >
           {' '}
@@ -107,7 +108,7 @@ function template(v0, self) {
             style={{
               marginTop: '56px',
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit,minmax(300px,1fr))',
+              gridTemplateColumns: 'repeat(auto-fit,minmax(min(100%,300px),1fr))',
               gap: '24px 64px',
               fontSize: '17px',
               lineHeight: '1.65',
@@ -129,6 +130,7 @@ function template(v0, self) {
         </section>{' '}
         <section
           data-screen-label="Principles"
+          data-r="m-sec"
           style={{ position: 'relative', maxWidth: '1200px', margin: '0 auto', padding: '140px 24px 0' }}
         >
           {' '}
@@ -147,7 +149,7 @@ function template(v0, self) {
             style={{
               marginTop: '40px',
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit,minmax(260px,1fr))',
+              gridTemplateColumns: 'repeat(auto-fit,minmax(min(100%,260px),1fr))',
               gap: '1px',
               borderRadius: '16px',
               overflow: 'hidden',
@@ -187,6 +189,7 @@ function template(v0, self) {
         </section>{' '}
         <section
           data-screen-label="Team"
+          data-r="m-sec"
           style={{ position: 'relative', maxWidth: '1200px', margin: '0 auto', padding: '140px 24px 0' }}
         >
           {' '}
@@ -243,7 +246,7 @@ function template(v0, self) {
             style={{
               marginTop: '32px',
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fill,minmax(220px,1fr))',
+              gridTemplateColumns: 'repeat(auto-fill,minmax(min(100%,220px),1fr))',
               gap: '16px',
             }}
           >
@@ -290,6 +293,7 @@ function template(v0, self) {
         </section>{' '}
         <section
           data-screen-label="Investors"
+          data-r="m-sec"
           style={{ position: 'relative', maxWidth: '1200px', margin: '0 auto', padding: '140px 24px 0' }}
         >
           {' '}
@@ -297,7 +301,7 @@ function template(v0, self) {
           <div
             style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fill,minmax(200px,1fr))',
+              gridTemplateColumns: 'repeat(auto-fill,minmax(min(100%,200px),1fr))',
               gap: '1px',
               borderRadius: '14px',
               overflow: 'hidden',

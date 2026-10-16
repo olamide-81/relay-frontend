@@ -126,6 +126,7 @@ class Component extends DCLogic {
     plan: this.props.plan ?? (/[?&]plan=pro/i.test(dcSearch()) ? 'Pro' : 'Free'),
     focusList: null,
     n: 10,
+    navOpen: false,
   }
   flash(title, type = 'success', desc, extra) {
     const id = 't' + Date.now() + Math.random()
@@ -140,13 +141,13 @@ class Component extends DCLogic {
     this.setState({ confirm: c })
   }
   go(page, params = {}, key) {
-    this.setState({ page, params, activeKey: key ?? page })
+    this.setState({ page, params, activeKey: key ?? page, navOpen: false })
     this.props.onRoute?.(page, params)
   }
   componentDidUpdate(prev) {
     const r = this.props.route
     if (r && r !== prev.route && (r.page !== this.state.page || !same(r.params, this.state.params)))
-      this.setState({ page: r.page, params: r.params, activeKey: r.page })
+      this.setState({ page: r.page, params: r.params, activeKey: r.page, navOpen: false })
     if (this.props.plan && this.props.plan !== prev.plan) this.setState({ plan: this.props.plan })
   }
   renderVals() {
@@ -295,6 +296,10 @@ class Component extends DCLogic {
         })
       },
       toasts: S.toasts,
+      navOpen: S.navOpen,
+      navOpenStr: String(S.navOpen),
+      openNav: () => this.setState({ navOpen: true }),
+      closeNav: () => this.setState({ navOpen: false }),
     }
   }
 }
@@ -302,17 +307,42 @@ class Component extends DCLogic {
 function template(v0, self) {
   return (
     <>
-      <div style={{ height: '100vh', display: 'flex', background: '#151618', overflow: 'hidden' }}>
+      <div data-r="m-dvh" style={{ height: '100vh', display: 'flex', background: '#151618', overflow: 'hidden' }}>
         {' '}
-        <RelaySidebar
-          active={v0.activeKey}
-          favorites={v0.favs}
-          onRemoveFav={v0.removeFav}
-          onRestoreFavs={v0.restoreFavs}
-          onNavigate={v0.onNavigate}
-          __hostStyle={{ height: '100%' }}
-        />{' '}
+        {v0.navOpen ? (
+          <>
+            <div
+              data-r="m-scrim"
+              onClick={v0.closeNav}
+              style={{
+                display: 'none',
+                position: 'fixed',
+                inset: '0',
+                zIndex: '79',
+                background: 'rgba(0,0,0,.55)',
+                backdropFilter: 'blur(2px)',
+                WebkitBackdropFilter: 'blur(2px)',
+              }}
+            />
+          </>
+        ) : null}{' '}
+        <div
+          data-r="m-drawer"
+          data-open={v0.navOpenStr}
+          style={{ height: '100%', flex: 'none', background: '#151618' }}
+        >
+          {' '}
+          <RelaySidebar
+            active={v0.activeKey}
+            favorites={v0.favs}
+            onRemoveFav={v0.removeFav}
+            onRestoreFavs={v0.restoreFavs}
+            onNavigate={v0.onNavigate}
+            __hostStyle={{ height: '100%' }}
+          />{' '}
+        </div>{' '}
         <main
+          data-r="m-flush"
           style={{
             flex: '1',
             minWidth: '0',
@@ -335,6 +365,7 @@ function template(v0, self) {
             starred={v0.starred}
             onStar={v0.onStar}
             onNavigate={v0.onNavigate}
+            onMenu={v0.openNav}
           />{' '}
           <div
             style={{
