@@ -1,6 +1,8 @@
 /* Relay design system base: fonts + generated interaction states. */
 @import '../components/relay/pseudo.css';
 @import './relay-responsive.css';
+@import './relay-app-mobile.css';
+@import './relay-waitlist.css';
 
 @font-face {
   font-family: 'Geist';

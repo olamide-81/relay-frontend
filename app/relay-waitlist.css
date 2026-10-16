@@ -1,0 +1,13 @@
+/* Relay Waitlist: keyboard focus for its chips, tiles and buttons, and the ≤480px grid (design/relay-handoff/WAITLIST.md). */
+[data-wl-opt]:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.55);
+  outline-offset: 2px;
+}
+@media (max-width: 480px) {
+  [data-wl='vol'] {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+  [data-wl='cat'] {
+    padding: 10px !important;
+  }
+}

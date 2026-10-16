@@ -622,5 +622,21 @@
     "imports": [
       "Relay App Icon"
     ]
+  },
+  {
+    "base": "Relay Waitlist",
+    "C": "RelayWaitlist",
+    "helmetCss": [
+      "*,*::before,*::after{box-sizing:border-box}\nhtml,body{margin:0;background:#0f1011;color:#f7f8f8;font-family:\"Geist\",system-ui,sans-serif;-webkit-font-smoothing:antialiased}\na{color:#8a8f98;text-decoration:none;transition:color .12s}\na:hover{color:#f7f8f8}\ninput::placeholder,textarea::placeholder{color:#62666d}"
+    ],
+    "helmetOther": [
+      "link https://fonts.googleapis.com",
+      "link https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap",
+      "link relay-responsive.css"
+    ],
+    "imports": [
+      "Relay Auth Art",
+      "Relay App Icon"
+    ]
   }
 ]

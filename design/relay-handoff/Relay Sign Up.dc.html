@@ -73,7 +73,7 @@ input::placeholder{color:#62666d}
 <script type="text/x-dc" data-dc-script>
 class Component extends DCLogic {
   state = { name: '', email: '', pw: '', agree: false, tried: false, busy: null, ready: false };
-  componentDidMount() { this._t = setTimeout(() => this.setState({ ready: true }), 60); }
+  componentDidMount() { if (!/[?&]open=1/.test(location.search)) { location.replace('Relay%20Waitlist.dc.html'); return; } this._t = setTimeout(() => this.setState({ ready: true }), 60); }
   componentWillUnmount() { clearTimeout(this._t); clearTimeout(this._g); }
   go(kind) { this.setState({ busy: kind }); this._g = setTimeout(() => { location.href = 'Relay%20Dashboard.dc.html'; }, 1000); }
   renderVals() {

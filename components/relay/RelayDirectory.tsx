@@ -32,9 +32,10 @@ import { RELAY } from '@/lib/dc/relay-data'
 import RelayAppIcon from './RelayAppIcon'
 
 import { wireDirectory, directoryVals } from '@/lib/dc/wiring'
+const narrow = () => typeof window !== 'undefined' && !!window.matchMedia?.('(max-width: 768px)').matches
 
 const EMPTY = { CAT: {}, TOTAL: 0, REGIONS: [], providers: [], byId: {}, fmt: String }
-const MAIN = ['All regions', 'Europe', 'North America', 'Asia-Pacific']
+const MAIN_ALL = ['All regions', 'Europe', 'North America', 'Asia-Pacific']
 const PER = 10
 class Component extends DCLogic {
   state = {
@@ -48,6 +49,10 @@ class Component extends DCLogic {
     open: null,
   }
   componentDidMount() {
+    this._appMq = window.matchMedia?.('(max-width: 768px)')
+    this._appMqFn = () => this.forceUpdate()
+    this._appMq?.addEventListener?.('change', this._appMqFn)
+    this.forceUpdate()
     if (!RELAY)
       this._i = setInterval(() => {
         if (RELAY) {
@@ -57,6 +62,7 @@ class Component extends DCLogic {
       }, 40)
   }
   componentWillUnmount() {
+    this._appMq?.removeEventListener?.('change', this._appMqFn)
     clearInterval(this._i)
   }
   renderVals() {
@@ -88,7 +94,8 @@ class Component extends DCLogic {
       }
     }
     const toggleSave = (id) => this.setState((st) => ({ saved: { ...st.saved, [id]: !st.saved[id] } }))
-    const extra = R.REGIONS.filter((r) => !MAIN.includes(r)),
+    const MAIN = narrow() ? MAIN_ALL.slice(0, 2) : MAIN_ALL,
+      extra = R.REGIONS.filter((r) => !MAIN.includes(r)),
       inMore = extra.includes(S.region)
     const c = R.byId[S.open] ?? R.providers[0] ?? {},
       dOn = !!S.open,

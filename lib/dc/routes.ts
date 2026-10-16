@@ -20,6 +20,7 @@ const SITE: Record<string, string> = {
   'Relay For Providers': '/for-providers',
   'Relay Login': '/signin',
   'Relay Sign Up': '/signup',
+  'Relay Waitlist': '/waitlist',
   'Relay Dashboard': '/dashboard',
   // Not a design file: the existing password-reset flow.
   'Relay Forgot Password': '/forgot-password',

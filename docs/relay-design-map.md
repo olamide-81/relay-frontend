@@ -46,7 +46,8 @@ Don't hand-edit files in `components/relay/`. Change the design or a patch, then
 | Relay Category `?kind=` | `/categories/[kind]` | RelayCategory |
 | Relay Legal `?doc=` | `/privacy`, `/terms`, `/cookies` | RelayLegal |
 | Relay Login | `/signin` | RelayLogin via `components/relay-app/AuthScreen` |
-| Relay Sign Up | `/signup` | RelaySignUp via `components/relay-app/AuthScreen` |
+| Relay Sign Up | `/signup` (invite links only before launch) | RelaySignUp via `components/relay-app/AuthScreen` |
+| Relay Waitlist | `/waitlist` | RelayWaitlist via `components/relay-app/WaitlistScreen` |
 | (no design; Login styling) | `/forgot-password`, `/reset-password`, `/auth/google/callback` | `components/relay-app/AuthFrame` |
 | Relay Site Nav / Footer / Cookies / Shot, Relay Auth Art, Relay App Icon | shared | imported by the pages above |
 
@@ -74,6 +75,21 @@ so deep links, refresh and Back/Forward work (`lib/dc/dashboard-route.ts`). Old 
 
 - `/reports`, `/reports/[slug]`, `/methodology` keep their previous design (`app/[locale]/(legacy)`, Tailwind).
 - Reference boards not ported: `Relay Feedback`, `Relay Category Identity v2`.
+
+## Pre-launch waitlist (`design/relay-handoff/WAITLIST.md`)
+
+`NEXT_PUBLIC_SIGNUP_OPEN` (default off, read in `lib/launch.ts`; set at build time):
+- **Off:** `/signup` answers 307 → `/waitlist` (middleware), except invite links (`/signup?invite=…`, with
+  `&email=` to prefill and lock the address). Every sign-up CTA (nav, landing, footer, pricing, Directory Page,
+  Developers, Login) points at the waitlist with the waitlist copy, and Google sign-up is hidden. Google log in stays.
+- **On (launch):** the same CTAs go back to `/signup` with the original copy. `/waitlist` stays live.
+
+Designs read the switch as `{{ launch.* }}` (patches use `cta()`), so a new export keeps it.
+
+The waitlist posts to relay-api `POST /api/waitlist` (body in `lib/api/waitlist.ts`, labels → enum values in
+`lib/waitlist.ts`, honeypot field `website`) and expects `{ status: 'created' | 'exists' }`. Log in shows the
+"still on the waitlist" notice when the API answers `{ code: 'WAITLISTED' }`. Analytics events
+(`waitlist_step_viewed`, `_step_completed`, `_submitted`, `_duplicate`) go through `lib/analytics.ts`.
 
 ## Content switches (no code changes needed)
 

@@ -10,6 +10,7 @@ import { AppBridge } from '@/lib/dc/app-bridge'
 import { routeFromUrl, urlFromRoute } from '@/lib/dc/dashboard-route'
 import { RELAY, resetRelay } from '@/lib/dc/relay-data'
 import { getReportEntries, getReportEntry } from '@/lib/reports'
+import LogoutOverlay from './LogoutOverlay'
 
 /** Intelligence › Reports rows, in the design's tuple shape: [type, kind, title, scope, meta, points, slug]. */
 const REAL_REPORTS = getReportEntries('app').map((e) => [
@@ -143,13 +144,18 @@ export default function DashboardApp() {
     [locale]
   )
 
+  const [loggingOut, setLoggingOut] = useState(false)
   const onLogout = useCallback(async () => {
+    if (loggingOut) return
+    setLoggingOut(true)
+    // Keep the loader up long enough to read, even when the API answers instantly.
+    const minShow = new Promise((r) => setTimeout(r, 700))
     try {
-      await logout()
+      await Promise.all([logout(), minShow])
     } finally {
       window.location.assign(`/${locale}/signin`)
     }
-  }, [locale])
+  }, [locale, loggingOut])
 
   const onUpgrade = useCallback(() => app?.checkout('yearly'), [app])
 
@@ -186,16 +192,19 @@ export default function DashboardApp() {
   }
 
   return (
-    <RelayDashboard
-      route={route}
-      initialRoute={route}
-      onRoute={onRoute}
-      plan={app.data.plan}
-      user={shellUser}
-      onLogout={onLogout}
-      onUpgradePlan={onUpgrade}
-      realReports={REAL_REPORTS}
-      app={app}
-    />
+    <>
+      {loggingOut ? <LogoutOverlay /> : null}
+      <RelayDashboard
+        route={route}
+        initialRoute={route}
+        onRoute={onRoute}
+        plan={app.data.plan}
+        user={shellUser}
+        onLogout={onLogout}
+        onUpgradePlan={onUpgrade}
+        realReports={REAL_REPORTS}
+        app={app}
+      />
+    </>
   )
 }

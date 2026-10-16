@@ -3,6 +3,7 @@ import createMiddleware from 'next-intl/middleware'
 import { routing } from './i18n/routing'
 import { isPageVisible, setPages } from './lib/site-pages'
 import { apiBaseUrl } from './lib/api/config'
+import { SIGNUP_OPEN } from './lib/launch'
 
 const intl = createMiddleware(routing)
 
@@ -26,6 +27,11 @@ export default async function middleware(req: NextRequest) {
   // Links from emails and Paystack carry no locale (/dashboard/…); next-intl redirects them to /en/…
   const first = req.nextUrl.pathname.split('/')[1]
   if (first && !(routing.locales as readonly string[]).includes(first)) return intl(req)
+  // Pre-launch: sign up is closed, so /signup goes to the waitlist (invite links still open it).
+  const [, locale, page] = req.nextUrl.pathname.split('/')
+  if (!SIGNUP_OPEN && page === 'signup' && !req.nextUrl.searchParams.has('invite')) {
+    return NextResponse.redirect(new URL(`/${locale}/waitlist${req.nextUrl.search}`, req.url), 307)
+  }
   await refreshPages()
   // Pages switched off in the admin (defaults: config/site-pages.json) answer 404 without being deleted.
   if (!isPageVisible(req.nextUrl.pathname)) {

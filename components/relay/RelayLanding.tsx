@@ -28,6 +28,7 @@ import {
   userAvatar,
   holeText,
 } from '@/lib/dc/runtime'
+import { LAUNCH } from '@/lib/launch'
 import RelaySiteNav from './RelaySiteNav'
 import RelayAppIcon from './RelayAppIcon'
 import RelaySiteFooter from './RelaySiteFooter'
@@ -520,7 +521,14 @@ class Component extends DCLogic {
       r = (k) => (S.seen[k] ? shown : hidden)
     const p = Math.min(1, S.y / 520),
       n = CATS.length
-    const pos2 = S.catP * (n - 1)
+    const pos2 = (() => {
+      const p = Math.max(0, Math.min(n - 1, S.catP * n - 0.5)),
+        k = Math.floor(p),
+        f = p - k
+      if (k >= n - 1) return n - 1
+      const t = f < 0.6 ? 0 : (f - 0.6) / 0.4
+      return k + t * t * (3 - 2 * t)
+    })()
     const done = S.typed >= QUERY.length,
       how = !!S.seen.how
     return {
@@ -643,7 +651,7 @@ class Component extends DCLogic {
           w: w.toFixed(3),
           pe: act ? 'auto' : 'none',
           ty: (-d * 90).toFixed(1) + 'px',
-          blur: (Math.min(1, ad * 1.6) * 6).toFixed(2) + 'px',
+          blur: (Math.max(0, Math.min(1, (ad - 0.12) * 1.6)) * 3).toFixed(2) + 'px',
           rot: (d * -24).toFixed(1) + 'deg',
           sc: (1 - e * 0.2).toFixed(3),
           vy: (-d * 160).toFixed(1) + 'px',
@@ -665,7 +673,7 @@ class Component extends DCLogic {
             const top =
               el.getBoundingClientRect().top + (document.scrollingElement || document.documentElement).scrollTop
             const span = el.offsetHeight - window.innerHeight
-            window.scrollTo({ top: top + span * (i / (n - 1)), behavior: 'smooth' })
+            window.scrollTo({ top: top + span * ((i + 0.8) / n), behavior: 'smooth' })
           },
         }
       }),
@@ -836,6 +844,7 @@ cmsBind('customers.quotes', QUOTES)
 cmsBind('customers.marquee', MARQUEE)
 
 function template(v0, self) {
+  v0 = { ...v0, launch: LAUNCH }
   return (
     <>
       <div
@@ -971,7 +980,7 @@ function template(v0, self) {
               >
                 {' '}
                 <A
-                  href={href('Relay%20Sign%20Up.dc.html')}
+                  href={href(v0.launch?.href)}
                   style={{
                     height: '42px',
                     padding: '0 20px',
@@ -986,7 +995,7 @@ function template(v0, self) {
                   }}
                   className={'dcp-1ix2wiq dcp-17pkxg3'}
                 >
-                  Start for free
+                  {hole(v0.launch?.startFree)}
                 </A>{' '}
                 <A
                   href={href('Relay%20Contact.dc.html')}

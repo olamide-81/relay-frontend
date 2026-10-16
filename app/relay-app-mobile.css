@@ -1,0 +1,26 @@
+/*
+ * App-side responsive fixes on top of the design's relay-responsive.css
+ * (that file stays an exact copy of the design). Breakpoint as in the design: 768px.
+ */
+@media (max-width: 768px) {
+  /* Inbox: one full-screen view at a time, scrolling with the page (no inner scroll box). */
+  [data-mview] {
+    height: auto !important;
+    min-height: 0 !important;
+  }
+  [data-mview] > [data-inbox] {
+    flex: none !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-height: none !important;
+    overflow: visible !important;
+    border-bottom: 0 !important;
+  }
+  [data-mview] > [data-inbox='list'] > div {
+    overflow: visible !important;
+  }
+  [data-mview='list'] > [data-inbox='detail'],
+  [data-mview='detail'] > [data-inbox='list'] {
+    display: none !important;
+  }
+}

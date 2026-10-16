@@ -28,6 +28,7 @@ import {
   userAvatar,
   holeText,
 } from '@/lib/dc/runtime'
+import { LAUNCH } from '@/lib/launch'
 
 const P = (n) => 'Relay%20' + n + '.dc.html'
 const C = (k) => P('Category') + '?kind=' + k
@@ -86,6 +87,7 @@ class Component extends DCLogic {
 }
 
 function template(v0, self) {
+  v0 = { ...v0, launch: LAUNCH }
   return (
     <>
       <footer
@@ -128,7 +130,7 @@ function template(v0, self) {
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
                 {' '}
                 <A
-                  href={href('Relay%20Sign%20Up.dc.html')}
+                  href={href(v0.launch?.href)}
                   style={{
                     height: '42px',
                     padding: '0 20px',
@@ -143,7 +145,7 @@ function template(v0, self) {
                   }}
                   className={'dcp-1ix2wiq'}
                 >
-                  Start for free
+                  {hole(v0.launch?.startFree)}
                 </A>{' '}
                 <A
                   href={href('Relay%20Contact.dc.html')}

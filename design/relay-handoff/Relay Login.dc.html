@@ -38,7 +38,7 @@ input::placeholder{color:#62666d}
   <div data-screen-label="Log in" style="position:relative;min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;padding:clamp(18px,4vw,28px) clamp(18px,4vw,32px);background:radial-gradient(80% 50% at 50% 0%,#1e1f22 0%,#0f1011 70%)">
     <div style="display:flex;align-items:center;justify-content:space-between">
       <a href="Relay%20Landing.dc.html" style="display:flex;align-items:center;gap:9px;color:#f7f8f8"><img src="assets/relay-icon.png" alt="Relay" style="width:22px;height:22px;display:block;border-radius:5px"><span style="font-weight:500;font-size:16px;letter-spacing:-0.02em">Relay</span><span data-r="s-hide" style="font-size:12.5px;color:#62666d">by Gratebridge</span></a>
-      <span style="font-size:13.5px;color:#8a8f98">New to Relay? <a href="Relay%20Sign%20Up.dc.html" style="color:#f7f8f8;font-weight:500">Sign up</a></span>
+      <span style="font-size:13.5px;color:#8a8f98">New to Relay? <a href="Relay%20Waitlist.dc.html" style="color:#f7f8f8;font-weight:500">Join the waitlist</a></span>
     </div>
     <div style="flex:1;display:flex;align-items:center;justify-content:center;padding:48px 0">
       <div style="width:100%;max-width:380px;display:flex;flex-direction:column;gap:22px;transition:opacity .7s,transform .7s cubic-bezier(.2,.8,.2,1);opacity:{{ ld.op }};transform:{{ ld.tf }}">
@@ -56,6 +56,7 @@ input::placeholder{color:#62666d}
           <span style="position:relative;display:block"><input type="{{ pwType }}" value="{{ pw }}" onChange="{{ onPw }}" placeholder="••••••••" style="width:100%;height:42px;padding:0 64px 0 12px;border:none;outline:none;border-radius:10px;background:rgba(255,255,255,.03);box-shadow:{{ pwRing }};color:#f7f8f8;font:14.5px Geist,system-ui,sans-serif;transition:box-shadow .15s" style-focus="box-shadow:inset 0 0 0 1px rgba(255,255,255,.3)"><span onClick="{{ togglePw }}" style="position:absolute;right:10px;top:11px;font-size:12.5px;color:#8a8f98;cursor:pointer" style-hover="color:#f7f8f8">{{ pwToggle }}</span></span>
         </label>
         <sc-if value="{{ hasErr }}"><div style="font-size:13px;color:#ff7b7b">{{ err }}</div></sc-if>
+        <sc-if value="{{ waitlisted }}"><div style="display:flex;gap:10px;padding:12px 14px;border-radius:10px;background:rgba(143,184,255,.07);box-shadow:inset 0 0 0 1px rgba(143,184,255,.25)"><span style="width:6px;height:6px;border-radius:50%;background:#8fb8ff;flex:none;margin-top:7px"></span><span style="font-size:13px;line-height:1.55;color:#d4d6da"><span style="color:#f7f8f8;font-weight:500">You’re still on the waitlist.</span> We’ll email {{ email }} as soon as your invite is ready. <a href="Relay%20Waitlist.dc.html" style="color:#8fb8ff">Update your answers</a></span></div></sc-if>
         <span onClick="{{ submit }}" style="height:44px;display:flex;align-items:center;justify-content:center;border-radius:10px;font-size:14.5px;font-weight:500;color:#0f1011;cursor:pointer;transition:background-color .15s,transform .2s,box-shadow .2s;background:{{ btnBg }}" style-hover="transform:translateY(-1px);box-shadow:0 10px 30px -8px rgba(255,255,255,.3)">{{ btnLabel }}</span>
         <div style="font-size:12.5px;color:#62666d;text-align:center">Use SSO? <a href="#" style="color:#d4d6da">Log in with SAML</a></div>
       </div>
@@ -66,8 +67,8 @@ input::placeholder{color:#62666d}
 </x-dc>
 <script type="text/x-dc" data-dc-script>
 class Component extends DCLogic {
-  state = { email: '', pw: '', show: false, tried: false, busy: null, ready: false };
-  componentDidMount() { this._t = setTimeout(() => this.setState({ ready: true }), 60); }
+  state = { email: '', pw: '', show: false, tried: false, busy: null, ready: false, waitlisted: false };
+  componentDidMount() { this._t = setTimeout(() => this.setState({ ready: true }), 60); if (/[?&]state=waitlisted/.test(location.search)) this.setState({ email: 'pending@northwind.io', pw: 'password1', waitlisted: true }); }
   componentWillUnmount() { clearTimeout(this._t); clearTimeout(this._g); }
   go(kind) { this.setState({ busy: kind }); this._g = setTimeout(() => { location.href = 'Relay%20Dashboard.dc.html?plan=pro'; }, 900); }
   renderVals() {
@@ -75,11 +76,12 @@ class Component extends DCLogic {
     const bad = c => S.tried && !c ? 'inset 0 0 0 1px rgba(255,123,123,.6)' : 'inset 0 0 0 1px rgba(255,255,255,.1)';
     return {
       ld: { op: S.ready ? 1 : 0, tf: S.ready ? 'none' : 'translateY(14px)' },
-      email: S.email, onEmail: e => this.setState({ email: e.target.value }), emailRing: bad(eOk),
+      email: S.email, onEmail: e => this.setState({ email: e.target.value, waitlisted: false }), emailRing: bad(eOk),
       pw: S.pw, onPw: e => this.setState({ pw: e.target.value }), pwRing: bad(pOk), pwType: S.show ? 'text' : 'password', pwToggle: S.show ? 'Hide' : 'Show', togglePw: () => this.setState(s => ({ show: !s.show })),
       hasErr: S.tried && !(eOk && pOk), err: !eOk ? 'Enter a valid work email.' : 'Password must be at least 8 characters.',
       btnLabel: S.busy === 'email' ? 'Logging in…' : 'Log in', btnBg: S.busy === 'email' ? '#d4d6da' : '#f7f8f8',
-      submit: () => { if (S.busy) return; if (!(eOk && pOk)) return this.setState({ tried: true }); this.go('email'); },
+      submit: () => { if (S.busy) return; if (!(eOk && pOk)) return this.setState({ tried: true, waitlisted: false }); if (/^pending@/i.test(S.email)) { this.setState({ busy: 'email' }); this._g = setTimeout(() => this.setState({ busy: null, waitlisted: true }), 800); return; } this.go('email'); },
+      waitlisted: S.waitlisted,
       googleLabel: S.busy === 'google' ? 'Connecting to Google…' : 'Continue with Google', google: () => !S.busy && this.go('google')
     };
   }
