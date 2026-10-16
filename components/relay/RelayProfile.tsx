@@ -31,6 +31,7 @@ import {
 import RelayAppIcon from './RelayAppIcon'
 import RelayConfirm from './RelayConfirm'
 
+import { wireProfile, profileVals } from '@/lib/dc/wiring'
 const withUser = (init, u) => (u ? { ...init, name: u.name || init.name, email: u.email || init.email } : init)
 
 const INIT = {
@@ -118,14 +119,19 @@ class Component extends DCLogic {
 
 {
   const designVals = Component.prototype.renderVals
-  const appVals = function () {
-    return { avatar: userAvatar(this.props.user, 'https://randomuser.me/api/portraits/women/44.jpg') }
+  const appVals = function (v) {
+    return {
+      avatar: userAvatar(this.props.user, 'https://randomuser.me/api/portraits/women/44.jpg'),
+      ...profileVals.call(this, v),
+    }
   }
   Component.prototype.renderVals = function () {
     const v = designVals.call(this)
     return { ...v, ...appVals.call(this, v) }
   }
 }
+
+Component = wireProfile(Component)
 
 function template(v0, self) {
   return (

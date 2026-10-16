@@ -31,6 +31,8 @@ import {
 import RelayAppIcon from './RelayAppIcon'
 import RelayConfirm from './RelayConfirm'
 
+import { wireSettings, settingsVals } from '@/lib/dc/wiring'
+
 const SECTIONS = {
   general: ['General', 'Appearance and defaults for your account.'],
   notifications: ['Notifications', 'Choose what Relay tells you about, and where.'],
@@ -444,14 +446,22 @@ class Component extends DCLogic {
 
 {
   const designVals = Component.prototype.renderVals
-  const appVals = function () {
-    return { appChangePassword: () => dcNavigate('Relay%20Forgot%20Password.dc.html') }
+  const appVals = function (v) {
+    return {
+      appChangePassword: () => dcNavigate('Relay%20Forgot%20Password.dc.html'),
+      appPlanName: 'Free',
+      appPlanNote: 'Upgrade to Relay Pro for unlimited compares, intros and market signals.',
+      appPwNote: 'Last changed 3 months ago',
+      ...settingsVals.call(this, v),
+    }
   }
   Component.prototype.renderVals = function () {
     const v = designVals.call(this)
     return { ...v, ...appVals.call(this, v) }
   }
 }
+
+Component = wireSettings(Component)
 
 function template(v0, self) {
   return (
@@ -899,9 +909,7 @@ function template(v0, self) {
                     {' '}
                     <div style={{ flex: '1' }}>
                       <div style={{ fontSize: '13.5px' }}>Password</div>
-                      <div style={{ fontSize: '12.5px', color: '#62666d', marginTop: '2px' }}>
-                        Last changed 3 months ago
-                      </div>
+                      <div style={{ fontSize: '12.5px', color: '#62666d', marginTop: '2px' }}>{hole(v0.appPwNote)}</div>
                     </div>{' '}
                     <span
                       onClick={v0.appChangePassword}
@@ -1207,11 +1215,9 @@ function template(v0, self) {
                       {' '}
                       <div style={{ fontSize: '12px', color: '#62666d' }}>Current plan</div>{' '}
                       <div style={{ fontSize: '18px', fontWeight: '500', marginTop: '4px', letterSpacing: '-0.01em' }}>
-                        Free
+                        {hole(v0.appPlanName)}
                       </div>{' '}
-                      <div style={{ fontSize: '13px', color: '#8a8f98', marginTop: '4px' }}>
-                        Upgrade to Relay Pro for unlimited compares, intros and market signals.
-                      </div>{' '}
+                      <div style={{ fontSize: '13px', color: '#8a8f98', marginTop: '4px' }}>{hole(v0.appPlanNote)}</div>{' '}
                     </div>{' '}
                     <div style={{ display: 'flex', paddingLeft: '6px' }}>
                       {' '}

@@ -31,6 +31,8 @@ import {
 import { RELAY } from '@/lib/dc/relay-data'
 import RelayAppIcon from './RelayAppIcon'
 
+import { wireCompare, compareVals } from '@/lib/dc/wiring'
+
 const EMPTY = { CAT: {}, providers: [], byId: {} }
 const ROWS = [
   ['Pricing from', (p) => p.price, null],
@@ -206,6 +208,19 @@ class Component extends DCLogic {
     }
   }
 }
+
+{
+  const designVals = Component.prototype.renderVals
+  const appVals = function (v) {
+    return compareVals.call(this, v)
+  }
+  Component.prototype.renderVals = function () {
+    const v = designVals.call(this)
+    return { ...v, ...appVals.call(this, v) }
+  }
+}
+
+Component = wireCompare(Component)
 
 function template(v0, self) {
   return (

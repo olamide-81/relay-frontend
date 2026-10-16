@@ -9,6 +9,8 @@ import JsonLd from '@/components/JsonLd'
 import { buildMetadata } from '@/lib/seo'
 import { SITE_DESCRIPTION, SITE_KEYWORDS, SITE_TITLE } from '@/lib/dc/meta'
 import { organizationJsonLd, websiteJsonLd } from '@/lib/jsonld'
+import { loadSiteContent } from '@/lib/site-content.server'
+import { applySiteContent } from '@/lib/site-content'
 
 type Props = {
   children: React.ReactNode
@@ -58,13 +60,16 @@ export default async function LocaleLayout({ children, params }: Props) {
   }
 
   setRequestLocale(locale)
-  const messages = await getMessages()
+  const [messages, content] = await Promise.all([getMessages(), loadSiteContent()])
+  applySiteContent(content)
 
   return (
     <>
       <JsonLd data={[organizationJsonLd(), websiteJsonLd(locale)]} />
       <NextIntlClientProvider messages={messages}>
-        <DCProvider locale={locale}>{children}</DCProvider>
+        <DCProvider locale={locale} content={content}>
+          {children}
+        </DCProvider>
       </NextIntlClientProvider>
     </>
   )

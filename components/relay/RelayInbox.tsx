@@ -31,6 +31,8 @@ import {
 import { RELAY } from '@/lib/dc/relay-data'
 import RelayAppIcon from './RelayAppIcon'
 
+import { wireInbox, inboxVals } from '@/lib/dc/wiring'
+
 const MSGS = [
   {
     id: 1,
@@ -148,17 +150,23 @@ const MSGS = [
   },
 ]
 class Component extends DCLogic {
-  state = { tab: 'all', sel: 1, unread: Object.fromEntries(MSGS.map((m) => [m.id, m.unread])) }
+  state = {
+    tab: 'all',
+    sel: 1,
+    unread: Object.fromEntries((this.props.app?.data.inbox ?? MSGS).map((m) => [m.id, m.unread])),
+  }
   componentDidMount() {
-    this.read(1)
+    if (this.state.sel != null) this.read(this.state.sel)
   }
   read(id) {
     this.setState((s) => ({ sel: id, unread: { ...s.unread, [id]: false } }))
   }
   renderVals() {
     const S = this.state
-    const unreadCount = MSGS.filter((m) => S.unread[m.id]).length
-    const list = MSGS.filter((m) => S.tab === 'all' || (S.tab === 'unread' ? S.unread[m.id] : m.kind !== 'all'))
+    const unreadCount = (this.props.app?.data.inbox ?? MSGS).filter((m) => S.unread[m.id]).length
+    const list = (this.props.app?.data.inbox ?? MSGS).filter(
+      (m) => S.tab === 'all' || (S.tab === 'unread' ? S.unread[m.id] : m.kind !== 'all'),
+    )
     const groups = ['Today', 'Earlier']
       .map((day) => ({
         label: day,
@@ -179,7 +187,7 @@ class Component extends DCLogic {
           }),
       }))
       .filter((g) => g.items.length)
-    const sel = MSGS.find((m) => m.id === S.sel)
+    const sel = (this.props.app?.data.inbox ?? MSGS).find((m) => m.id === S.sel)
     const tab = (key, label, count) => ({
       label,
       count,
@@ -189,13 +197,14 @@ class Component extends DCLogic {
     })
     return {
       tabs: [
-        tab('all', 'All', MSGS.length),
+        tab('all', 'All', (this.props.app?.data.inbox ?? MSGS).length),
         tab('unread', 'Unread', unreadCount),
-        tab('providers', 'Providers', MSGS.filter((m) => m.kind !== 'all').length),
+        tab('providers', 'Providers', (this.props.app?.data.inbox ?? MSGS).filter((m) => m.kind !== 'all').length),
       ],
       groups,
       listEmpty: groups.length === 0,
-      markAll: () => this.setState({ unread: Object.fromEntries(MSGS.map((m) => [m.id, false])) }),
+      markAll: () =>
+        this.setState({ unread: Object.fromEntries((this.props.app?.data.inbox ?? MSGS).map((m) => [m.id, false])) }),
       hasSel: !!sel,
       noSel: !sel,
       sel: sel ? { ...sel, hasFacts: true, facts: sel.facts.map(([k, v]) => ({ k, v })) } : { facts: [] },
@@ -213,6 +222,7 @@ class Component extends DCLogic {
         const p = RELAY.providers.find((x) => x.name === v.sel?.from)
         if (p) this.props.onOpenProvider?.(p.id, 'inbox')
       },
+      ...inboxVals.call(this, v),
     }
   }
   Component.prototype.renderVals = function () {
@@ -220,6 +230,8 @@ class Component extends DCLogic {
     return { ...v, ...appVals.call(this, v) }
   }
 }
+
+Component = wireInbox(Component)
 
 function template(v0, self) {
   return (
@@ -525,6 +537,7 @@ function template(v0, self) {
                 <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
                   {' '}
                   <span
+                    onClick={v0.appPrimary}
                     style={{
                       height: '32px',
                       padding: '0 14px',

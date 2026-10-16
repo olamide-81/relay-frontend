@@ -1,8 +1,17 @@
 import config from '@/config/site-pages.json'
 import { routing } from '@/i18n/routing'
 
-/** Page visibility switches from config/site-pages.json. */
-const PAGES = config.pages as Record<string, boolean>
+/**
+ * Page visibility switches. Defaults come from config/site-pages.json; the live
+ * values are managed in the admin panel (Content › Pages) and applied with setPages().
+ */
+const PAGES: Record<string, boolean> = { ...(config.pages as Record<string, boolean>) }
+
+export function setPages(pages: Record<string, boolean> | null | undefined) {
+  if (!pages) return
+  for (const k of Object.keys(PAGES)) delete PAGES[k]
+  Object.assign(PAGES, config.pages, pages)
+}
 
 const LOCALE_RE = new RegExp(`^/(${routing.locales.join('|')})(?=/|$)`)
 

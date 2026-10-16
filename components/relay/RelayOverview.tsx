@@ -30,6 +30,8 @@ import {
 } from '@/lib/dc/runtime'
 import RelayAppIcon from './RelayAppIcon'
 
+import { overviewVals } from '@/lib/dc/wiring'
+
 class Component extends DCLogic {
   state = { banner: this.props.plan ? this.props.plan !== 'Pro' : !/[?&]plan=pro/i.test(dcSearch()) }
   componentDidUpdate(prev) {
@@ -229,7 +231,7 @@ class Component extends DCLogic {
 
 {
   const designVals = Component.prototype.renderVals
-  const appVals = function () {
+  const appVals = function (v) {
     const nav = (k, p) => () => this.props.onNavigate?.(k, p)
     return {
       appNewShortlist: () => this.props.onCreateList?.(),
@@ -237,6 +239,7 @@ class Component extends DCLogic {
       appUpgrade: () => this.props.onUpgrade?.(),
       appComparePlans: nav('settings', { section: 'billing' }),
       appDirectory: nav('directory'),
+      ...overviewVals.call(this, v),
     }
   }
   Component.prototype.renderVals = function () {
@@ -509,7 +512,11 @@ function template(v0, self) {
                       >
                         Compare plans
                       </span>{' '}
-                      <span style={{ fontSize: '12.5px', color: '#62666d' }}>From $49 / month</span>{' '}
+                      <span style={{ fontSize: '12.5px', color: '#62666d' }}>
+                        {'From '}
+                        {hole(v0.appFromPrice)}
+                        {' / month'}
+                      </span>{' '}
                     </div>{' '}
                   </div>{' '}
                 </div>{' '}

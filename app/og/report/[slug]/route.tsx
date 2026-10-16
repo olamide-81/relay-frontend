@@ -2,6 +2,7 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { ImageResponse } from 'next/og'
 import { getReportEntry, KIND_ACCENT } from '@/lib/reports'
+import { syncSiteContent } from '@/lib/site-content.server'
 
 /** 1200×630 social card for a public report, in the style of the site's og-image. */
 export const runtime = 'nodejs'
@@ -14,6 +15,7 @@ const GEIST_500 = () => fs.readFileSync(path.join(process.cwd(), 'assets', 'font
 export async function GET(req: Request, { params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
   const locale = new URL(req.url).searchParams.get('locale') ?? 'en'
+  await syncSiteContent()
   const entry = getReportEntry(slug, 'site', locale)
   if (!entry) return new Response('Not found', { status: 404 })
   const r = entry.report

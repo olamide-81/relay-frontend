@@ -34,6 +34,8 @@ import RelaySiteShot from './RelaySiteShot'
 import RelaySiteFooter from './RelaySiteFooter'
 import RelaySiteCookies from './RelaySiteCookies'
 
+import { cmsBind } from '@/lib/site-content'
+
 const T = {
   New: ['#6fe3b4', 'rgba(111,227,180,.1)'],
   Improved: ['#8fb8ff', 'rgba(143,184,255,.1)'],
@@ -108,6 +110,8 @@ class Component extends DCLogic {
     }
   }
 }
+
+cmsBind('changelog.entries', E)
 
 function template(v0, self) {
   return (

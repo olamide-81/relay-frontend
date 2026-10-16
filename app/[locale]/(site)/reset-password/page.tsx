@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useParams } from 'next/navigation'
 import { useTranslations } from 'next-intl'
 import { A } from '@/lib/dc/runtime'
+import { resetPassword } from '@/lib/api/auth'
 import { AuthButton, AuthError, AuthFrame, AuthInput, AuthNote, AuthReveal, AuthStyles } from '@/components/relay-app/AuthFrame'
 
 export default function ResetPasswordPage() {
@@ -20,12 +21,14 @@ export default function ResetPasswordPage() {
     if (busy) return
     if (pw.length < 8) return setError(t('errorShort'))
     if (pw !== confirm) return setError(t('errorMismatch'))
+    const token = new URLSearchParams(window.location.search).get('token')
+    if (!token) return setError('This reset link is invalid or has expired. Request a new one.')
     setError('')
     setBusy(true)
-    setTimeout(() => {
-      setBusy(false)
-      setDone(true)
-    }, 900)
+    resetPassword(token, pw)
+      .then(() => setDone(true))
+      .catch((e) => setError(e instanceof Error ? e.message : 'Something went wrong. Try again.'))
+      .finally(() => setBusy(false))
   }
 
   if (done)
