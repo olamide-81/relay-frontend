@@ -1,10 +1,12 @@
 import { getReportEntries } from '@/lib/reports'
 import { absoluteUrl } from '@/lib/seo'
+import { syncSiteContent } from '@/lib/site-content.server'
 
 /** RSS feed of public Relay Research reports (config/reports.json). */
 const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
 
-export function GET() {
+export async function GET() {
+  await syncSiteContent()
   const items = getReportEntries('site', 'en')
     .sort((a, b) => b.report.publishedAt.localeCompare(a.report.publishedAt))
     .map((e) => {

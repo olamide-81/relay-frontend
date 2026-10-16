@@ -31,6 +31,8 @@ import {
 import { RELAY } from '@/lib/dc/relay-data'
 import RelayAppIcon from './RelayAppIcon'
 
+import { cmsBind } from '@/lib/site-content'
+
 const ACC = {
   collections: '#6fe3b4',
   payouts: '#d6ee4e',
@@ -756,6 +758,12 @@ class Component extends DCLogic {
     return { ...v, ...appVals.call(this, v) }
   }
 }
+
+cmsBind('intelligence.signals', SIG)
+cmsBind('intelligence.news', NEWS)
+cmsBind('intelligence.benchmarks', BENCH)
+cmsBind('intelligence.licenceCatalog', CAT)
+cmsBind('intelligence.licenceChanges', LIC)
 
 function template(v0, self) {
   return (

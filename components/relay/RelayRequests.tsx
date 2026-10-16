@@ -32,6 +32,8 @@ import { RELAY } from '@/lib/dc/relay-data'
 import RelayAppIcon from './RelayAppIcon'
 import RelayConfirm from './RelayConfirm'
 
+import { wireRequests, requestsVals } from '@/lib/dc/wiring'
+
 const EMPTY = { CAT: {}, providers: [], byId: {}, TOTAL: 0, REGIONS: [], fmt: String }
 const ST = {
   sent: ['Sent', '#8fb8ff'],
@@ -345,14 +347,16 @@ class Component extends DCLogic {
 
 {
   const designVals = Component.prototype.renderVals
-  const appVals = function () {
-    return { appOpenInbox: () => this.props.onNavigate?.('inbox') }
+  const appVals = function (v) {
+    return { appOpenInbox: () => this.props.onNavigate?.('inbox'), ...requestsVals.call(this, v) }
   }
   Component.prototype.renderVals = function () {
     const v = designVals.call(this)
     return { ...v, ...appVals.call(this, v) }
   }
 }
+
+Component = wireRequests(Component)
 
 function template(v0, self) {
   return (

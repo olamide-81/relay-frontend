@@ -48,6 +48,7 @@ import RelayConfirm from './RelayConfirm'
 import RelayToast from './RelayToast'
 
 import { getReportEntry } from '@/lib/reports'
+import { wireDashboard, dashboardVals } from '@/lib/dc/wiring'
 
 const TITLES = {
   provider: 'Provider',
@@ -314,6 +315,7 @@ class Component extends DCLogic {
     return {
       appOpenReport: (slug) => this.go('report', { slug }, 'intelligence'),
       ...(rep ? { title: rep.cardTitle, activeKey: 'intelligence', page: 'intelligence' } : {}),
+      ...dashboardVals.call(this, v),
     }
   }
   Component.prototype.renderVals = function () {
@@ -321,6 +323,8 @@ class Component extends DCLogic {
     return { ...v, ...appVals.call(this, v) }
   }
 }
+
+Component = wireDashboard(Component)
 
 function template(v0, self) {
   return (
@@ -351,6 +355,8 @@ function template(v0, self) {
         >
           {' '}
           <RelaySidebar
+            app={v0.app}
+            inboxUnread={v0.appInboxUnread}
             active={v0.activeKey}
             favorites={v0.favs}
             onRemoveFav={v0.removeFav}
@@ -375,6 +381,7 @@ function template(v0, self) {
         >
           {' '}
           <RelayTopbar
+            app={v0.app}
             plan={v0.plan}
             user={v0.user}
             onLogout={v0.onLogout}
@@ -399,6 +406,7 @@ function template(v0, self) {
               <>
                 {' '}
                 <RelayOverview
+                  app={v0.app}
                   plan={v0.plan}
                   user={v0.user}
                   onNavigate={v0.onNavigate}
@@ -410,13 +418,19 @@ function template(v0, self) {
             {v0.is?.inbox ? (
               <>
                 {' '}
-                <RelayInbox onOpenProvider={v0.openProvider} __hostStyle={{ height: '100%' }} />{' '}
+                <RelayInbox
+                  app={v0.app}
+                  onNavigate={v0.onNavigate}
+                  onOpenProvider={v0.openProvider}
+                  __hostStyle={{ height: '100%' }}
+                />{' '}
               </>
             ) : null}{' '}
             {v0.is?.compare ? (
               <>
                 {' '}
                 <RelayCompare
+                  app={v0.app}
                   ids={v0.params?.ids}
                   savedId={v0.params?.savedId}
                   saved={v0.compares}
@@ -430,6 +444,7 @@ function template(v0, self) {
               <>
                 {' '}
                 <RelayDirectory
+                  app={v0.app}
                   onOpenProvider={v0.openProvider}
                   onNavigate={v0.onNavigate}
                   onCompare={v0.onCompare}
@@ -441,13 +456,14 @@ function template(v0, self) {
             {v0.is?.providers ? (
               <>
                 {' '}
-                <RelayProviders onNavigate={v0.onNavigate} onOpenProvider={v0.openProvider} />{' '}
+                <RelayProviders app={v0.app} onNavigate={v0.onNavigate} onOpenProvider={v0.openProvider} />{' '}
               </>
             ) : null}{' '}
             {v0.is?.shortlists ? (
               <>
                 {' '}
                 <RelayShortlists
+                  app={v0.app}
                   lists={v0.lists}
                   initial={v0.params?.initial}
                   focus={v0.focusList}
@@ -466,6 +482,7 @@ function template(v0, self) {
               <>
                 {' '}
                 <RelayProvider
+                  app={v0.app}
                   pid={v0.params?.id}
                   from={v0.params?.from}
                   onNavigate={v0.onNavigate}
@@ -479,13 +496,19 @@ function template(v0, self) {
             {v0.is?.requests ? (
               <>
                 {' '}
-                <RelayRequests onNavigate={v0.onNavigate} provider={v0.params?.provider} onToast={v0.onToast} />{' '}
+                <RelayRequests
+                  app={v0.app}
+                  onNavigate={v0.onNavigate}
+                  provider={v0.params?.provider}
+                  onToast={v0.onToast}
+                />{' '}
               </>
             ) : null}{' '}
             {v0.is?.intelligence ? (
               <>
                 {' '}
                 <RelayIntelligence
+                  app={v0.app}
                   realReports={v0.realReports}
                   onOpenReport={v0.appOpenReport}
                   tab={v0.params?.tab}
@@ -506,13 +529,14 @@ function template(v0, self) {
             {v0.is?.profile ? (
               <>
                 {' '}
-                <RelayProfile user={v0.user} onToast={v0.onToast} />{' '}
+                <RelayProfile app={v0.app} user={v0.user} onToast={v0.onToast} />{' '}
               </>
             ) : null}{' '}
             {v0.is?.settings ? (
               <>
                 {' '}
                 <RelaySettings
+                  app={v0.app}
                   user={v0.user}
                   onToast={v0.onToast}
                   section={v0.params?.section}
@@ -526,6 +550,7 @@ function template(v0, self) {
           </div>{' '}
         </main>{' '}
         <RelayModals
+          app={v0.app}
           modal={v0.modal}
           lists={v0.lists}
           onClose={v0.closeModal}

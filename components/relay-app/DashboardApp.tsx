@@ -4,10 +4,11 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useParams, usePathname, useSearchParams } from 'next/navigation'
 import RelayDashboard from '@/components/relay/RelayDashboard'
 import { useSession } from '@/hooks/useSession'
-import { activateSubscription, getMe, logout } from '@/lib/api/auth'
-import { isSubscribed } from '@/lib/session'
+import { clearInvite, getMe, logout, pendingInvite, restoreSession } from '@/lib/api/auth'
+import { appApi } from '@/lib/api/app'
+import { AppBridge } from '@/lib/dc/app-bridge'
 import { routeFromUrl, urlFromRoute } from '@/lib/dc/dashboard-route'
-import { RELAY } from '@/lib/dc/relay-data'
+import { RELAY, resetRelay } from '@/lib/dc/relay-data'
 import { getReportEntries, getReportEntry } from '@/lib/reports'
 
 /** Intelligence › Reports rows, in the design's tuple shape: [type, kind, title, scope, meta, points, slug]. */
@@ -34,9 +35,42 @@ const PAGE_TITLES: Record<string, string> = {
   settings: 'Settings',
 }
 
+/** Paystack sends the buyer back to /dashboard/settings?section=billing&verify=1&reference=… */
+function takePaymentReference() {
+  const url = new URL(window.location.href)
+  const reference = url.searchParams.get('reference') || url.searchParams.get('trxref')
+  if (!url.searchParams.has('verify') && !reference) return null
+  for (const k of ['verify', 'reference', 'trxref']) url.searchParams.delete(k)
+  window.history.replaceState(null, '', url.pathname + url.search)
+  return reference
+}
+
+/** Everything the signed-in workspace needs before the shell renders. */
+async function loadWorkspace(locale: string) {
+  const invite = pendingInvite()
+  const notes: Array<[string, 'success' | 'info' | 'error', string?]> = []
+  if (invite) {
+    await appApi
+      .acceptInvite(invite)
+      .then(() => notes.push(['You joined the workspace', 'success']))
+      .catch((e) => notes.push([e instanceof Error ? e.message : 'This invite could not be used.', 'error']))
+    clearInvite()
+  }
+  const reference = takePaymentReference()
+  if (reference) {
+    await appApi
+      .verifyCheckout(reference)
+      .then(() => notes.push(['Welcome to Relay Pro', 'success', 'The full directory is now unlocked.']))
+      .catch((e) => notes.push([e instanceof Error ? e.message : 'We could not confirm the payment.', 'error']))
+  }
+  const app = new AppBridge(await appApi.bootstrap(), locale)
+  notes.forEach(([t, type, desc]) => app.toast(t, type, desc))
+  return app
+}
+
 /**
  * The signed-in product. Wraps the ported dashboard shell with the real
- * session (gate, user, plan), URL routing and the subscription API.
+ * session (gate, user), URL routing and the workspace API (lib/dc/app-bridge).
  */
 export default function DashboardApp() {
   const { locale } = useParams<{ locale: string }>()
@@ -45,11 +79,17 @@ export default function DashboardApp() {
   const search = useSearchParams()
   const { user, ready, refresh } = useSession()
   const [checked, setChecked] = useState(false)
+  const [app, setApp] = useState<AppBridge | null>(null)
+  const [failed, setFailed] = useState(false)
+  const [, setVersion] = useState(0)
 
   useEffect(() => {
     if (!ready) return
     if (!user) {
-      window.location.replace(`/${locale}/signin`)
+      restoreSession().then((restored) => {
+        if (restored) refresh()
+        else window.location.replace(`/${locale}/signin`)
+      })
       return
     }
     setChecked(true)
@@ -58,6 +98,26 @@ export default function DashboardApp() {
       .catch(() => {})
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ready, user?.id])
+
+  const load = useCallback(() => {
+    setFailed(false)
+    loadWorkspace(locale)
+      .then(setApp)
+      .catch(() => setFailed(true))
+  }, [locale])
+
+  useEffect(() => {
+    if (checked) load()
+  }, [checked, load])
+
+  useEffect(() => {
+    if (!app) return
+    const off = app.subscribe(() => setVersion((n) => n + 1))
+    return () => {
+      off()
+      resetRelay()
+    }
+  }, [app])
 
   const route = useMemo(() => {
     const slug = pathname.split('/').filter(Boolean).slice(2) // drop locale + "dashboard"
@@ -73,7 +133,7 @@ export default function DashboardApp() {
           ? getReportEntry(String(route.params.slug), 'app')?.cardTitle ?? 'Report'
           : PAGE_TITLES[route.page] ?? 'Overview'
     document.title = `${name} | Relay`
-  }, [route])
+  }, [route, app])
 
   const onRoute = useCallback(
     (page: string, params: Record<string, unknown>) => {
@@ -91,24 +151,37 @@ export default function DashboardApp() {
     }
   }, [locale])
 
-  const onUpgrade = useCallback(async () => {
-    try {
-      await activateSubscription('pro')
-      refresh()
-    } catch {
-      // The shell already shows the upgraded state; the API sync retries on next load.
-    }
-  }, [refresh])
+  const onUpgrade = useCallback(() => app?.checkout('yearly'), [app])
 
-  if (!checked || !user) return null
+  if (failed)
+    return (
+      <div
+        style={{
+          minHeight: '100vh',
+          display: 'grid',
+          placeItems: 'center',
+          background: '#0f1011',
+          color: '#8a8f98',
+          font: '14px Geist,system-ui,sans-serif',
+        }}
+      >
+        <div style={{ textAlign: 'center' }}>
+          <div style={{ color: '#f7f8f8', fontSize: '15px', marginBottom: '6px' }}>Relay couldn’t load your workspace.</div>
+          <span onClick={load} style={{ color: '#6fe3b4', cursor: 'pointer' }}>
+            Try again
+          </span>
+        </div>
+      </div>
+    )
 
-  const plan = isSubscribed(user) || /[?&]plan=pro/i.test(window.location.search) ? 'Pro' : 'Free'
+  if (!checked || !user || !app) return null
+
   const shellUser = {
-    name: user.fullName || user.email,
-    firstName: user.firstName || user.fullName?.split(' ')[0] || '',
+    name: app.data.user.name || user.fullName || user.email,
+    firstName: app.data.user.firstName || user.firstName || '',
     email: user.email,
-    initials: user.initials,
-    avatarUrl: user.avatarUrl ?? null,
+    initials: app.data.user.initials || user.initials,
+    avatarUrl: app.data.user.avatarUrl ?? user.avatarUrl ?? null,
     company: user.company,
   }
 
@@ -117,11 +190,12 @@ export default function DashboardApp() {
       route={route}
       initialRoute={route}
       onRoute={onRoute}
-      plan={plan}
+      plan={app.data.plan}
       user={shellUser}
       onLogout={onLogout}
       onUpgradePlan={onUpgrade}
       realReports={REAL_REPORTS}
+      app={app}
     />
   )
 }

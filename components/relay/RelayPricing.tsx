@@ -33,6 +33,8 @@ import RelayAppIcon from './RelayAppIcon'
 import RelaySiteFooter from './RelaySiteFooter'
 import RelaySiteCookies from './RelaySiteCookies'
 
+import { PRICE } from '@/lib/site-content'
+
 const Y = '✓',
   N = '—'
 const TABLE = [
@@ -133,17 +135,17 @@ class Component extends DCLogic {
       plans: [
         plan(
           'Free',
-          '€0',
+          PRICE.free,
           'forever',
           'For founders exploring their first partners.',
           'Start for free',
           ['Directory preview', '5 compares a month', '3 intro requests a month', 'Weekly market digest'],
           false,
-          '#',
+          'Relay%20Sign%20Up.dc.html',
         ),
         plan(
           'Pro',
-          yr ? '€39' : '€49',
+          yr ? PRICE.yearly : PRICE.monthly,
           'per seat / month',
           'For teams actively choosing and switching Providers.',
           'Upgrade to Pro',
@@ -155,7 +157,7 @@ class Component extends DCLogic {
             'Unlimited seats',
           ],
           true,
-          '#',
+          'Relay%20Sign%20Up.dc.html',
         ),
         plan(
           'Enterprise',
@@ -195,6 +197,17 @@ class Component extends DCLogic {
         }
       }),
     }
+  }
+}
+
+{
+  const designVals = Component.prototype.renderVals
+  const appVals = function () {
+    return { appSave: PRICE.savePct }
+  }
+  Component.prototype.renderVals = function () {
+    const v = designVals.call(this)
+    return { ...v, ...appVals.call(this, v) }
   }
 }
 
@@ -291,7 +304,7 @@ function template(v0, self) {
                       {hole(v1.c?.label)}
                       {v1.c?.save ? (
                         <>
-                          <span style={{ fontSize: '11.5px', color: '#6fe3b4' }}>−20%</span>
+                          <span style={{ fontSize: '11.5px', color: '#6fe3b4' }}>−{hole(v1.appSave)}%</span>
                         </>
                       ) : null}
                     </span>

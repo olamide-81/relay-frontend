@@ -31,6 +31,8 @@ import {
 import { RELAY } from '@/lib/dc/relay-data'
 import RelayAppIcon from './RelayAppIcon'
 
+import { PRICE } from '@/lib/site-content'
+
 const EMPTY = { CAT: {}, providers: [], byId: {}, TOTAL: 0, fmt: String }
 const OFF = { op: 0, pe: 'none', tf: 'translate(-50%,-48%) scale(.98)' },
   ON = { op: 1, pe: 'auto', tf: 'translate(-50%,-50%) scale(1)' }
@@ -164,6 +166,17 @@ class Component extends DCLogic {
       ].map(([kind, x, y, s, r]) => ({ kind, x, y, s, r })),
       upgradeNow: () => this.props.onUpgradeConfirm?.(),
     }
+  }
+}
+
+{
+  const designVals = Component.prototype.renderVals
+  const appVals = function () {
+    return { appPrice: PRICE.yearly }
+  }
+  Component.prototype.renderVals = function () {
+    const v = designVals.call(this)
+    return { ...v, ...appVals.call(this, v) }
   }
 }
 
@@ -567,7 +580,7 @@ function template(v0, self) {
               })}{' '}
             </div>{' '}
             <div style={{ display: 'flex', alignItems: 'baseline', gap: '6px', marginTop: '4px' }}>
-              <span style={{ fontSize: '26px', fontWeight: '500', letterSpacing: '-0.03em' }}>€39</span>
+              <span style={{ fontSize: '26px', fontWeight: '500', letterSpacing: '-0.03em' }}>{hole(v0.appPrice)}</span>
               <span style={{ fontSize: '12.5px', color: '#8a8f98' }}>Per seat / month, billed yearly</span>
             </div>{' '}
             <div style={{ display: 'flex', gap: '8px' }}>

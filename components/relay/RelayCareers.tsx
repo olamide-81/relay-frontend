@@ -32,6 +32,8 @@ import RelaySiteNav from './RelaySiteNav'
 import RelaySiteFooter from './RelaySiteFooter'
 import RelaySiteCookies from './RelaySiteCookies'
 
+import { cmsBind } from '@/lib/site-content'
+
 const ROLES = [
   ['Senior Product Engineer', 'Engineering', 'London or remote'],
   ['Data Engineer, Provider Graph', 'Engineering', 'London'],
@@ -64,6 +66,8 @@ class Component extends DCLogic {
     }
   }
 }
+
+cmsBind('careers.roles', ROLES)
 
 function template(v0, self) {
   return (

@@ -30,6 +30,8 @@ import {
 } from '@/lib/dc/runtime'
 import RelayAppIcon from './RelayAppIcon'
 
+import { wireProviders, providersVals, pipelineRows } from '@/lib/dc/wiring'
+
 const CAT = { collections: 'Collections', payouts: 'Payouts', fx: 'FX', cards: 'Cards', kyc: 'KYC' }
 const STAGE = {
   live: ['Live', '#6fe3b4'],
@@ -97,10 +99,15 @@ const ROWS = [
   code: 'PRV-' + (1040 + i * 7),
 }))
 class Component extends DCLogic {
-  state = { tab: 'all', open: null, stages: Object.fromEntries(ROWS.map((r) => [r.id, r.stage])), removed: [] }
+  state = {
+    tab: 'all',
+    open: null,
+    stages: Object.fromEntries((this.props.app ? pipelineRows(this.props.app) : ROWS).map((r) => [r.id, r.stage])),
+    removed: [],
+  }
   renderVals() {
     const S = this.state
-    const all = ROWS.filter((r) => !S.removed.includes(r.id))
+    const all = (this.props.app ? pipelineRows(this.props.app) : ROWS).filter((r) => !S.removed.includes(r.id))
     const list = all.filter((r) => S.tab === 'all' || S.stages[r.id] === S.tab)
     const tab = (k, l) => ({
       label: l,
@@ -109,7 +116,9 @@ class Component extends DCLogic {
       fg: S.tab === k ? '#f7f8f8' : '#8a8f98',
       line: S.tab === k ? 1 : 0,
     })
-    const c = ROWS.find((r) => r.id === S.open) ?? ROWS[0],
+    const c =
+        (this.props.app ? pipelineRows(this.props.app) : ROWS).find((r) => r.id === S.open) ??
+        (this.props.app ? pipelineRows(this.props.app) : ROWS)[0],
       on = !!S.open
     return {
       tabs: [
@@ -166,6 +175,19 @@ class Component extends DCLogic {
     }
   }
 }
+
+{
+  const designVals = Component.prototype.renderVals
+  const appVals = function (v) {
+    return providersVals.call(this, v)
+  }
+  Component.prototype.renderVals = function () {
+    const v = designVals.call(this)
+    return { ...v, ...appVals.call(this, v) }
+  }
+}
+
+Component = wireProviders(Component)
 
 function template(v0, self) {
   return (

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { AuthFrame, AuthError, AuthNote, AuthStyles } from '@/components/relay-app/AuthFrame'
-import { completeGoogleLogin } from '@/lib/api/auth'
+import { completeGoogleLogin, TwoFactorRequired } from '@/lib/api/auth'
 import { ApiError } from '@/lib/api/simulate'
 import { Link, useRouter } from '@/i18n/navigation'
 
@@ -40,6 +40,7 @@ export default function GoogleCallbackPage() {
       .catch((err) => {
         completing.delete(ticket)
         if (cancelled) return
+        if (err instanceof TwoFactorRequired) return router.replace('/two-factor')
         setError(err instanceof ApiError ? err.message : 'Google sign-in failed. Try again.')
       })
 

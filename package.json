@@ -11,7 +11,8 @@
     "tokens:deep": "node scripts/harmonic-extract/deep-metrics.mjs",
     "tokens:theme": "node scripts/harmonic-extract/generate-theme.mjs",
     "tokens:verify": "node scripts/harmonic-extract/verify-diff.mjs",
-    "design:port": "node scripts/dc-port/convert.mjs"
+    "design:port": "node scripts/dc-port/convert.mjs",
+    "design:content": "node scripts/dc-port/extract-content.mjs"
   },
   "dependencies": {
     "clsx": "^2.1.1",

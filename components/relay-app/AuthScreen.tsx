@@ -4,7 +4,14 @@ import { useEffect, useState } from 'react'
 import { useParams } from 'next/navigation'
 import RelayLogin from '@/components/relay/RelayLogin'
 import RelaySignUp from '@/components/relay/RelaySignUp'
-import { googleAuthErrorMessage, login, loginWithGoogle, register } from '@/lib/api/auth'
+import {
+  googleAuthErrorMessage,
+  login,
+  loginWithGoogle,
+  register,
+  rememberInvite,
+  TwoFactorRequired,
+} from '@/lib/api/auth'
 
 type Fields = { name?: string; email: string; password: string }
 
@@ -20,15 +27,25 @@ export default function AuthScreen({ mode }: { mode: 'signin' | 'signup' }) {
   const [error, setError] = useState<string | undefined>()
 
   useEffect(() => {
-    const code = new URLSearchParams(window.location.search).get('error')
+    const params = new URLSearchParams(window.location.search)
+    const code = params.get('error')
     if (code) setError(googleAuthErrorMessage[code] ?? 'Google sign-in failed. Try again.')
+    rememberInvite(params.get('invite'))
   }, [])
 
   const onAuth = async (kind: 'email' | 'google', f: Fields) => {
     setError(undefined)
-    if (kind === 'google') await loginWithGoogle(locale, mode)
-    else if (mode === 'signin') await login({ email: f.email, password: f.password })
-    else await register({ fullName: f.name ?? '', email: f.email, password: f.password, company: companyFromEmail(f.email) })
+    try {
+      if (kind === 'google') await loginWithGoogle(locale, mode)
+      else if (mode === 'signin') await login({ email: f.email, password: f.password })
+      else await register({ fullName: f.name ?? '', email: f.email, password: f.password, company: companyFromEmail(f.email) })
+    } catch (err) {
+      if (err instanceof TwoFactorRequired) {
+        window.location.assign(`/${locale}/two-factor`)
+        return new Promise<never>(() => {})
+      }
+      throw err
+    }
     window.location.assign(`/${locale}/dashboard`)
   }
 

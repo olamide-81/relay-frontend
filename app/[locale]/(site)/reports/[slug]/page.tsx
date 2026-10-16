@@ -12,11 +12,13 @@ import { breadcrumbJsonLd, reportArticleJsonLd } from '@/lib/jsonld'
 import { getReportEntries, getReportEntry } from '@/lib/reports'
 import { reportLabels, reportView } from '@/lib/report-page'
 import type { DataReport } from '@/data/reports'
+import { syncSiteContent } from '@/lib/site-content.server'
 
 type Props = { params: Promise<{ locale: string; slug: string }> }
 
 /** Public reports only (config/reports.json), in every language they're written in. */
-export function generateStaticParams() {
+export async function generateStaticParams() {
+  await syncSiteContent()
   return routing.locales.flatMap((locale) => getReportEntries('site', locale).map((r) => ({ locale, slug: r.slug })))
 }
 
@@ -37,6 +39,7 @@ const ogImage = (slug: string, locale: string) => `/og/report/${slug}?locale=${l
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale, slug } = await params
+  await syncSiteContent()
   const entry = getReportEntry(slug, 'site', locale)
   if (!entry) return {}
   const r = entry.report
@@ -57,6 +60,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function Page({ params }: Props) {
   const { locale, slug } = await params
   setRequestLocale(locale)
+  await syncSiteContent()
   const entry = getReportEntry(slug, 'site', locale)
   if (!entry) notFound()
   const r = entry.report

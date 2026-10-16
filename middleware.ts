@@ -1,12 +1,33 @@
 import { NextResponse, type NextRequest } from 'next/server'
 import createMiddleware from 'next-intl/middleware'
 import { routing } from './i18n/routing'
-import { isPageVisible } from './lib/site-pages'
+import { isPageVisible, setPages } from './lib/site-pages'
+import { apiBaseUrl } from './lib/api/config'
 
 const intl = createMiddleware(routing)
 
-export default function middleware(req: NextRequest) {
-  // Pages switched off in config/site-pages.json answer 404 without being deleted.
+/** Page switches from the admin panel, refreshed at most once a minute per instance. */
+let pagesAt = 0
+let pagesLoading: Promise<void> | null = null
+function refreshPages() {
+  if (Date.now() - pagesAt < 60_000) return Promise.resolve()
+  pagesLoading ??= fetch(`${apiBaseUrl}/api/site/content/pages`, { signal: AbortSignal.timeout(1500) })
+    .then((r) => (r.ok ? r.json() : null))
+    .then((v: { pages?: Record<string, boolean> } | null) => setPages(v?.pages))
+    .catch(() => {})
+    .finally(() => {
+      pagesAt = Date.now()
+      pagesLoading = null
+    })
+  return pagesLoading
+}
+
+export default async function middleware(req: NextRequest) {
+  // Links from emails and Paystack carry no locale (/dashboard/…); next-intl redirects them to /en/…
+  const first = req.nextUrl.pathname.split('/')[1]
+  if (first && !(routing.locales as readonly string[]).includes(first)) return intl(req)
+  await refreshPages()
+  // Pages switched off in the admin (defaults: config/site-pages.json) answer 404 without being deleted.
   if (!isPageVisible(req.nextUrl.pathname)) {
     const locale = req.nextUrl.pathname.split('/')[1] || routing.defaultLocale
     return NextResponse.rewrite(new URL(`/${locale}/__hidden`, req.url), { status: 404 })
@@ -16,5 +37,5 @@ export default function middleware(req: NextRequest) {
 
 export const config = {
   // Must be a static string for Next.js. Keep in sync with i18n/routing locales.
-  matcher: ['/', '/(en|fr|es|zh|ja|ko|id)/:path*'],
+  matcher: ['/', '/(en|fr|es|zh|ja|ko|id)/:path*', '/((?!api|_next|_vercel|og|.*\\..*).*)'],
 }

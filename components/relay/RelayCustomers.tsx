@@ -33,6 +33,8 @@ import RelayAppIcon from './RelayAppIcon'
 import RelaySiteFooter from './RelaySiteFooter'
 import RelaySiteCookies from './RelaySiteCookies'
 
+import { cmsBind } from '@/lib/site-content'
+
 const STORIES = [
   [
     'KITELINE',
@@ -132,6 +134,9 @@ class Component extends DCLogic {
     }
   }
 }
+
+cmsBind('customers.stories', STORIES)
+cmsBind('customers.logos', LOGOS)
 
 function template(v0, self) {
   return (

@@ -33,6 +33,8 @@ import RelayAppIcon from './RelayAppIcon'
 import RelaySiteFooter from './RelaySiteFooter'
 import RelaySiteCookies from './RelaySiteCookies'
 
+import { cmsBind } from '@/lib/site-content'
+
 const MENU = {
   Product: [
     ['all', 'Directory', 'Search 1,600 Providers by rail, licence and region'],
@@ -829,6 +831,9 @@ class Component extends DCLogic {
     }
   }
 }
+
+cmsBind('customers.quotes', QUOTES)
+cmsBind('customers.marquee', MARQUEE)
 
 function template(v0, self) {
   return (
