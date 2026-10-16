@@ -34,6 +34,8 @@ import RelayAppIcon from './RelayAppIcon'
 import RelaySiteFooter from './RelaySiteFooter'
 import RelaySiteCookies from './RelaySiteCookies'
 
+import { LAUNCH } from '@/lib/launch'
+
 const EMPTY = { CAT: {}, providers: [], REGIONS: [], TOTAL: 0, fmt: String }
 const REG = {
   Europe: 612,
@@ -92,7 +94,7 @@ class Component extends DCLogic {
           op: i >= 9 ? 0.6 : 1,
         })),
       moreLabel: list.length
-        ? `Showing ${Math.min(9, list.length)} of ${S.cat === 'all' && !q ? R.fmt(R.TOTAL) : list.length} matching Providers. Sign up free to see them all.`
+        ? `Showing ${Math.min(9, list.length)} of ${S.cat === 'all' && !q ? R.fmt(R.TOTAL) : list.length} matching Providers. ${LAUNCH.seeAll}`
         : 'No Providers match that search yet.',
       regions: Object.entries(REG).map(([name, count]) => {
         const ps = R.providers.filter((p) => p.region === name)
@@ -108,6 +110,7 @@ class Component extends DCLogic {
 }
 
 function template(v0, self) {
+  v0 = { ...v0, launch: LAUNCH }
   return (
     <>
       <div
@@ -330,7 +333,7 @@ function template(v0, self) {
             {' '}
             <div style={{ fontSize: '15px', color: '#b4b8bf' }}>{hole(v0.moreLabel)}</div>{' '}
             <A
-              href={href('Relay%20Sign%20Up.dc.html')}
+              href={href(v0.launch?.href)}
               style={{
                 height: '42px',
                 padding: '0 20px',

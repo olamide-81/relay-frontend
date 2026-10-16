@@ -34,6 +34,7 @@ import RelaySiteFooter from './RelaySiteFooter'
 import RelaySiteCookies from './RelaySiteCookies'
 
 import { PRICE } from '@/lib/site-content'
+import { LAUNCH } from '@/lib/launch'
 
 const Y = '✓',
   N = '—'
@@ -138,10 +139,10 @@ class Component extends DCLogic {
           PRICE.free,
           'forever',
           'For founders exploring their first partners.',
-          'Start for free',
+          LAUNCH.startFree,
           ['Directory preview', '5 compares a month', '3 intro requests a month', 'Weekly market digest'],
           false,
-          'Relay%20Sign%20Up.dc.html',
+          LAUNCH.href,
         ),
         plan(
           'Pro',
@@ -157,7 +158,7 @@ class Component extends DCLogic {
             'Unlimited seats',
           ],
           true,
-          'Relay%20Sign%20Up.dc.html',
+          LAUNCH.href,
         ),
         plan(
           'Enterprise',

@@ -28,19 +28,22 @@ import {
   userAvatar,
   holeText,
 } from '@/lib/dc/runtime'
+import { LAUNCH } from '@/lib/launch'
 import RelayAuthArt from './RelayAuthArt'
 
 class Component extends DCLogic {
-  state = { email: '', pw: '', show: false, tried: false, busy: null, ready: false }
+  state = { email: '', pw: '', show: false, tried: false, busy: null, ready: false, waitlisted: false }
   componentDidMount() {
     this._t = setTimeout(() => this.setState({ ready: true }), 60)
+    if (!this.props.onAuth && /[?&]state=waitlisted/.test(dcSearch()))
+      this.setState({ email: 'pending@northwind.io', pw: 'password1', waitlisted: true })
   }
   componentWillUnmount() {
     clearTimeout(this._t)
     clearTimeout(this._g)
   }
   go(kind) {
-    this.setState({ busy: kind, apiErr: null })
+    this.setState({ busy: kind, apiErr: null, waitlisted: false })
     if (!this.props.onAuth) {
       this._g = setTimeout(() => {
         dcNavigate('Relay%20Dashboard.dc.html?plan=pro')
@@ -48,7 +51,9 @@ class Component extends DCLogic {
       return
     }
     Promise.resolve(this.props.onAuth(kind, { email: this.state.email, password: this.state.pw })).catch((e) =>
-      this.setState({ busy: null, apiErr: (e && e.message) || 'Something went wrong. Try again.' }),
+      e && e.code === 'WAITLISTED'
+        ? this.setState({ busy: null, waitlisted: true })
+        : this.setState({ busy: null, apiErr: (e && e.message) || 'Something went wrong. Try again.' }),
     )
   }
   renderVals() {
@@ -59,7 +64,7 @@ class Component extends DCLogic {
     return {
       ld: { op: S.ready ? 1 : 0, tf: S.ready ? 'none' : 'translateY(14px)' },
       email: S.email,
-      onEmail: (e) => this.setState({ email: e.target.value }),
+      onEmail: (e) => this.setState({ email: e.target.value, waitlisted: false, apiErr: null }),
       emailRing: bad(eOk),
       pw: S.pw,
       onPw: (e) => this.setState({ pw: e.target.value }),
@@ -69,7 +74,7 @@ class Component extends DCLogic {
       togglePw: () => this.setState((s) => ({ show: !s.show })),
       hasErr: S.tried && !(eOk && pOk),
       err: !eOk ? 'Enter a valid work email.' : 'Password must be at least 8 characters.',
-      showErr: !!(this.props.error || S.apiErr) || (S.tried && !(eOk && pOk)),
+      showErr: !S.waitlisted && (!!(this.props.error || S.apiErr) || (S.tried && !(eOk && pOk))),
       errText:
         S.apiErr ||
         (S.tried && !(eOk && pOk)
@@ -81,9 +86,15 @@ class Component extends DCLogic {
       btnBg: S.busy === 'email' ? '#d4d6da' : '#f7f8f8',
       submit: () => {
         if (S.busy) return
-        if (!(eOk && pOk)) return this.setState({ tried: true })
+        if (!(eOk && pOk)) return this.setState({ tried: true, waitlisted: false })
+        if (!this.props.onAuth && /^pending@/i.test(S.email)) {
+          this.setState({ busy: 'email' })
+          this._g = setTimeout(() => this.setState({ busy: null, waitlisted: true }), 800)
+          return
+        }
         this.go('email')
       },
+      waitlisted: S.waitlisted,
       googleLabel: S.busy === 'google' ? 'Connecting to Google…' : 'Continue with Google',
       google: () => !S.busy && this.go('google'),
     }
@@ -91,6 +102,7 @@ class Component extends DCLogic {
 }
 
 function template(v0, self) {
+  v0 = { ...v0, launch: LAUNCH }
   return (
     <>
       <div
@@ -142,8 +154,8 @@ function template(v0, self) {
             </A>{' '}
             <span style={{ fontSize: '13.5px', color: '#8a8f98' }}>
               {'New to Relay? '}
-              <A href={href('Relay%20Sign%20Up.dc.html')} style={{ color: '#f7f8f8', fontWeight: '500' }}>
-                Sign up
+              <A href={href(v0.launch?.href)} style={{ color: '#f7f8f8', fontWeight: '500' }}>
+                {hole(v0.launch?.loginCta)}
               </A>
             </span>{' '}
           </div>{' '}
@@ -262,6 +274,41 @@ function template(v0, self) {
               {v0.showErr ? (
                 <>
                   <div style={{ fontSize: '13px', color: '#ff7b7b' }}>{hole(v0.errText)}</div>
+                </>
+              ) : null}{' '}
+              {v0.waitlisted ? (
+                <>
+                  <div
+                    role="status"
+                    style={{
+                      display: 'flex',
+                      gap: '10px',
+                      padding: '12px 14px',
+                      borderRadius: '10px',
+                      background: 'rgba(143,184,255,.07)',
+                      boxShadow: 'inset 0 0 0 1px rgba(143,184,255,.25)',
+                    }}
+                  >
+                    <span
+                      style={{
+                        width: '6px',
+                        height: '6px',
+                        borderRadius: '50%',
+                        background: '#8fb8ff',
+                        flex: 'none',
+                        marginTop: '7px',
+                      }}
+                    />
+                    <span style={{ fontSize: '13px', lineHeight: '1.55', color: '#d4d6da' }}>
+                      <span style={{ color: '#f7f8f8', fontWeight: '500' }}>You’re still on the waitlist.</span>
+                      {' We’ll email '}
+                      {hole(v0.email)}
+                      {' as soon as your invite is ready. '}
+                      <A href={href('Relay%20Waitlist.dc.html')} style={{ color: '#8fb8ff' }}>
+                        Update your answers
+                      </A>
+                    </span>
+                  </div>
                 </>
               ) : null}{' '}
               <span

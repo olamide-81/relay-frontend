@@ -6,6 +6,7 @@ import { CATEGORY_META } from '@/lib/dc/meta'
 import { isPageVisible } from '@/lib/site-pages'
 import { getReportEntries } from '@/lib/reports'
 import { syncSiteContent } from '@/lib/site-content.server'
+import { SIGNUP_OPEN } from '@/lib/launch'
 
 /** Redesigned pages are English-only: one URL each, under /en. */
 const SITE_PAGES: [path: string, priority: number, freq: 'weekly' | 'monthly'][] = [
@@ -23,7 +24,7 @@ const SITE_PAGES: [path: string, priority: number, freq: 'weekly' | 'monthly'][]
   ['/about', 0.6, 'monthly'],
   ['/careers', 0.5, 'monthly'],
   ['/contact', 0.5, 'monthly'],
-  ['/signup', 0.5, 'monthly'],
+  [SIGNUP_OPEN ? '/signup' : '/waitlist', 0.5, 'monthly'],
   ['/privacy', 0.3, 'monthly'],
   ['/terms', 0.3, 'monthly'],
   ['/cookies', 0.3, 'monthly'],

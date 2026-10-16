@@ -107,6 +107,10 @@ export const PAGE_META: Record<string, PageMeta> = {
     title: 'Sign up — Create your Relay workspace',
     description: 'Create a free Relay workspace. Free forever for small teams. No card required.',
   },
+  '/waitlist': {
+    title: 'Join the waitlist',
+    description: 'Relay is opening to teams in waves. Join the waitlist for early access to 1,600 Providers across 140 countries.',
+  },
   '/forgot-password': { title: 'Reset your password', description: 'Reset your Relay password.', noIndex: true },
   '/reset-password': { title: 'Choose a new password', description: 'Choose a new Relay password.', noIndex: true },
 }

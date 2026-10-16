@@ -21,6 +21,7 @@
     "/cookies": true,
     "/methodology": true,
     "/signin": true,
-    "/signup": true
+    "/signup": true,
+    "/waitlist": true
   }
 }

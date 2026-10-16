@@ -1,27 +1,7 @@
 'use client'
 
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useId,
-  useRef,
-  useState,
-  type FormEvent,
-  type ReactNode,
-} from 'react'
-import {
-  AnimatePresence,
-  motion,
-  useDragControls,
-  useReducedMotion,
-  type PanInfo,
-} from 'framer-motion'
-import { useTranslations, useLocale } from 'next-intl'
-import { joinWaitlist, type WaitlistRole } from '@/lib/api/waitlist'
-import { ApiError } from '@/lib/api/simulate'
-import './waitlist.css'
+import { createContext, useCallback, useContext, type ReactNode } from 'react'
+import { useLocale } from 'next-intl'
 
 type WaitlistContextValue = {
   open: boolean
@@ -31,8 +11,6 @@ type WaitlistContextValue = {
 
 const WaitlistContext = createContext<WaitlistContextValue | null>(null)
 
-const SHEET_SPRING = { type: 'spring' as const, stiffness: 300, damping: 30 }
-
 export function useWaitlist() {
   const ctx = useContext(WaitlistContext)
   if (!ctx) {
@@ -41,228 +19,13 @@ export function useWaitlist() {
   return ctx
 }
 
+/** The legacy pages' "Join waitlist" buttons now open the /waitlist flow. */
 export function WaitlistProvider({ children }: { children: ReactNode }) {
-  const [open, setOpen] = useState(false)
-  const openWaitlist = useCallback(() => setOpen(true), [])
-  const closeWaitlist = useCallback(() => setOpen(false), [])
-
-  return (
-    <WaitlistContext.Provider value={{ open, openWaitlist, closeWaitlist }}>
-      {children}
-      <AnimatePresence>
-        {open ? <WaitlistModal key="waitlist" /> : null}
-      </AnimatePresence>
-    </WaitlistContext.Provider>
-  )
-}
-
-const ROLES = ['founder', 'engineer', 'productManager', 'other'] as const
-
-function WaitlistModal() {
-  const t = useTranslations('waitlist')
   const locale = useLocale()
-  const { closeWaitlist } = useWaitlist()
-  const titleId = useId()
-  const panelRef = useRef<HTMLDivElement>(null)
-  const firstFieldRef = useRef<HTMLInputElement>(null)
-  const [submitted, setSubmitted] = useState(false)
-  const [submitting, setSubmitting] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-  const [role, setRole] = useState<(typeof ROLES)[number] | ''>('')
-  const reduceMotion = useReducedMotion()
-  const dragControls = useDragControls()
-  const [canDrag, setCanDrag] = useState(false)
-
-  useEffect(() => {
-    const prev = document.body.style.overflow
-    document.body.style.overflow = 'hidden'
-    const tId = window.setTimeout(() => firstFieldRef.current?.focus(), 40)
-
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') closeWaitlist()
-    }
-    window.addEventListener('keydown', onKey)
-
-    return () => {
-      document.body.style.overflow = prev
-      window.clearTimeout(tId)
-      window.removeEventListener('keydown', onKey)
-    }
-  }, [closeWaitlist])
-
-  async function onSubmit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault()
-    if (submitting) return
-    setError(null)
-    setSubmitting(true)
-    const form = new FormData(e.currentTarget)
-    const fullName = String(form.get('fullName') ?? '').trim()
-    const email = String(form.get('email') ?? '').trim()
-    const company = String(form.get('company') ?? '').trim()
-    const picked = (form.get('role') as WaitlistRole | null) || (role as WaitlistRole | '')
-    try {
-      if (!picked) throw new ApiError(400, t('error'))
-      await joinWaitlist({
-        fullName,
-        email,
-        role: picked,
-        company,
-        locale,
-        source: 'landing',
-      })
-      setSubmitted(true)
-    } catch (err) {
-      setError(err instanceof ApiError ? err.message : t('error'))
-    } finally {
-      setSubmitting(false)
-    }
-  }
-
-  function handleDragEnd(_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) {
-    if (info.velocity.y > 500 || info.offset.y > 120) {
-      closeWaitlist()
-    }
-  }
+  const openWaitlist = useCallback(() => window.location.assign(`/${locale}/waitlist`), [locale])
+  const closeWaitlist = useCallback(() => {}, [])
 
   return (
-    <motion.div
-      className="wl"
-      role="presentation"
-      initial={false}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.28, ease: 'easeOut' }}
-    >
-      <button
-        type="button"
-        className="wl-backdrop"
-        aria-label={t('close')}
-        onClick={closeWaitlist}
-      />
-      <motion.div
-        ref={panelRef}
-        className="wl-sheet"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby={titleId}
-        initial={reduceMotion ? { opacity: 0 } : { y: '100%' }}
-        animate={reduceMotion ? { opacity: 1 } : { y: 0 }}
-        exit={reduceMotion ? { opacity: 0 } : { y: '100%' }}
-        transition={reduceMotion ? { duration: 0.15 } : SHEET_SPRING}
-        onAnimationComplete={() => {
-          if (!reduceMotion) setCanDrag(true)
-        }}
-        drag={canDrag ? 'y' : false}
-        dragControls={dragControls}
-        dragListener={false}
-        dragConstraints={{ top: 0, bottom: 0 }}
-        dragElastic={{ top: 0, bottom: 0.4 }}
-        dragMomentum={false}
-        dragTransition={{ bounceStiffness: 300, bounceDamping: 30 }}
-        onDragEnd={handleDragEnd}
-      >
-        <div
-          className="wl-grab"
-          onPointerDown={(event) => {
-            if (!canDrag) return
-            dragControls.start(event)
-          }}
-        >
-          <div className="wl-handle" aria-hidden />
-        </div>
-        <button type="button" className="wl-close" onClick={closeWaitlist} aria-label={t('close')}>
-          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden>
-            <path
-              d="M4.5 4.5l9 9M13.5 4.5l-9 9"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-            />
-          </svg>
-        </button>
-
-        <div className="wl-inner">
-          {submitted ? (
-            <div className="wl-success">
-              <h2 id={titleId} className="wl-title">
-                {t('successTitle')}
-              </h2>
-              <p className="wl-lede">{t('successLede')}</p>
-              <button type="button" className="wl-submit" onClick={closeWaitlist}>
-                {t('done')}
-              </button>
-            </div>
-          ) : (
-            <>
-              <header className="wl-header">
-                <h2 id={titleId} className="wl-title">
-                  {t('title')}
-                </h2>
-                <p className="wl-lede">{t('lede')}</p>
-              </header>
-
-              <form className="wl-form" onSubmit={onSubmit}>
-                <label className="wl-field">
-                  <span>{t('fullName')}</span>
-                  <input
-                    ref={firstFieldRef}
-                    name="fullName"
-                    type="text"
-                    autoComplete="name"
-                    required
-                    placeholder={t('fullNamePlaceholder')}
-                  />
-                </label>
-
-                <label className="wl-field">
-                  <span>{t('email')}</span>
-                  <input
-                    name="email"
-                    type="email"
-                    autoComplete="email"
-                    required
-                    placeholder={t('emailPlaceholder')}
-                  />
-                </label>
-
-                <label className="wl-field">
-                  <span>{t('role')}</span>
-                  <select
-                    name="role"
-                    required
-                    value={role}
-                    onChange={(e) => setRole(e.target.value as (typeof ROLES)[number] | '')}
-                  >
-                    <option value="" disabled>
-                      {t('rolePlaceholder')}
-                    </option>
-                    {ROLES.map((key) => (
-                      <option key={key} value={key}>
-                        {t(`roles.${key}`)}
-                      </option>
-                    ))}
-                  </select>
-                </label>
-
-                <label className="wl-field">
-                  <span>{t('company')}</span>
-                  <input
-                    name="company"
-                    type="text"
-                    autoComplete="organization"
-                    required
-                    placeholder={t('companyPlaceholder')}
-                  />
-                </label>
-
-                {error ? <p className="wl-error">{error}</p> : null}
-                <button type="submit" className="wl-submit" disabled={submitting}>
-                  {submitting ? t('submitting') : t('submit')}
-                </button>
-              </form>
-            </>
-          )}
-        </div>
-      </motion.div>
-    </motion.div>
+    <WaitlistContext.Provider value={{ open: false, openWaitlist, closeWaitlist }}>{children}</WaitlistContext.Provider>
   )
 }

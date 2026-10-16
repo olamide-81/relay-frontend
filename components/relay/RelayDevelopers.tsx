@@ -28,6 +28,7 @@ import {
   userAvatar,
   holeText,
 } from '@/lib/dc/runtime'
+import { LAUNCH } from '@/lib/launch'
 import RelaySiteNav from './RelaySiteNav'
 import RelaySiteFooter from './RelaySiteFooter'
 import RelaySiteCookies from './RelaySiteCookies'
@@ -86,6 +87,7 @@ class Component extends DCLogic {
 }
 
 function template(v0, self) {
+  v0 = { ...v0, launch: LAUNCH }
   return (
     <>
       <div
@@ -173,7 +175,7 @@ function template(v0, self) {
                 Read the docs
               </A>{' '}
               <A
-                href={href('Relay%20Sign%20Up.dc.html')}
+                href={href(v0.launch?.href)}
                 style={{
                   height: '42px',
                   padding: '0 18px',

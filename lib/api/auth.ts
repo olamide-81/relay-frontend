@@ -179,6 +179,10 @@ export async function login(input: LoginInput): Promise<Session> {
   if (input.password.length < 8) {
     throw new ApiError(401, 'Invalid credentials')
   }
+  // Simulated waitlist entry that hasn't been approved (the live API answers { code: 'WAITLISTED' }).
+  if (/^pending@/.test(email)) {
+    throw new ApiError(403, 'You’re still on the waitlist.', 'WAITLISTED')
+  }
 
   const existing = getSession()
   if (existing?.user.email === email) {

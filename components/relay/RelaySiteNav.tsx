@@ -28,6 +28,7 @@ import {
   userAvatar,
   holeText,
 } from '@/lib/dc/runtime'
+import { LAUNCH } from '@/lib/launch'
 import RelayAppIcon from './RelayAppIcon'
 
 const P = (n) => 'Relay%20' + n + '.dc.html'
@@ -147,6 +148,7 @@ class Component extends DCLogic {
 }
 
 function template(v0, self) {
+  v0 = { ...v0, launch: LAUNCH }
   return (
     <>
       <header
@@ -363,7 +365,7 @@ function template(v0, self) {
               Log in
             </A>{' '}
             <A
-              href={href('Relay%20Sign%20Up.dc.html')}
+              href={href(v0.launch?.href)}
               style={{
                 height: '32px',
                 padding: '0 14px',
@@ -378,7 +380,7 @@ function template(v0, self) {
               }}
               className={'dcp-hmre6s'}
             >
-              Sign up
+              {hole(v0.launch?.navCta)}
             </A>{' '}
             <span
               data-r="m-show"
@@ -480,7 +482,7 @@ function template(v0, self) {
                   Log in
                 </A>{' '}
                 <A
-                  href={href('Relay%20Sign%20Up.dc.html')}
+                  href={href(v0.launch?.href)}
                   style={{
                     height: '46px',
                     display: 'flex',
@@ -494,7 +496,7 @@ function template(v0, self) {
                   }}
                   className={'dcp-1b7r7rq'}
                 >
-                  Sign up
+                  {hole(v0.launch?.navCta)}
                 </A>{' '}
               </div>{' '}
             </div>{' '}

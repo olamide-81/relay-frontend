@@ -547,6 +547,8 @@ async function convertFile(fp) {
   const imports = [...ctx.imports].map((s) => JSON.parse(s)).filter(([n]) => n !== C)
   const logic = transformLogic(js, base)
   const usesRelay = /\bRELAY\b/.test(logic)
+  // `{{ launch.* }}` in a (patched) template reads the pre-launch switch (lib/launch.ts).
+  const usesLaunch = /\{\{\s*launch\./.test(template)
 
   const src = `// @ts-nocheck
 /* eslint-disable */
@@ -560,11 +562,12 @@ async function convertFile(fp) {
 
 import React from 'react'
 import { DCLogic, defineDC, hole, css, sty, list, hostStyle, href, frameSrc, asset, dv, A, dcNavigate, dcSearch, userName, userAvatar, holeText } from '@/lib/dc/runtime'
-${usesRelay ? "import { RELAY } from '@/lib/dc/relay-data'\n" : ''}${imports.map(([n]) => `import ${n} from './${n}'`).join('\n')}
+${usesRelay ? "import { RELAY } from '@/lib/dc/relay-data'\n" : ''}${usesLaunch && !/\bLAUNCH\b/.test(logic) ? "import { LAUNCH } from '@/lib/launch'\n" : ''}${imports.map(([n]) => `import ${n} from './${n}'`).join('\n')}
 
 ${logic.trim()}
 
 function template(v0, self) {
+  ${usesLaunch ? 'v0 = { ...v0, launch: LAUNCH }' : ''}
   return (<>${kids.join('')}</>)
 }
 

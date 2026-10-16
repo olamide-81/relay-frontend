@@ -28,6 +28,7 @@ import {
   userAvatar,
   holeText,
 } from '@/lib/dc/runtime'
+import { LAUNCH } from '@/lib/launch'
 import RelaySiteNav from './RelaySiteNav'
 import RelayAppIcon from './RelayAppIcon'
 import RelaySiteFooter from './RelaySiteFooter'
@@ -843,6 +844,7 @@ cmsBind('customers.quotes', QUOTES)
 cmsBind('customers.marquee', MARQUEE)
 
 function template(v0, self) {
+  v0 = { ...v0, launch: LAUNCH }
   return (
     <>
       <div
@@ -978,7 +980,7 @@ function template(v0, self) {
               >
                 {' '}
                 <A
-                  href={href('Relay%20Sign%20Up.dc.html')}
+                  href={href(v0.launch?.href)}
                   style={{
                     height: '42px',
                     padding: '0 20px',
@@ -993,7 +995,7 @@ function template(v0, self) {
                   }}
                   className={'dcp-1ix2wiq dcp-17pkxg3'}
                 >
-                  Start for free
+                  {hole(v0.launch?.startFree)}
                 </A>{' '}
                 <A
                   href={href('Relay%20Contact.dc.html')}
