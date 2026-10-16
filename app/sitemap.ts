@@ -1,9 +1,10 @@
 import type { MetadataRoute } from 'next'
-import { getAllReportSlugs } from '@/data/reports'
 import { routing } from '@/i18n/routing'
 import { languageAlternates, localizedPath } from '@/lib/seo'
 import { SITE_URL } from '@/lib/site'
 import { CATEGORY_META } from '@/lib/dc/meta'
+import { isPageVisible } from '@/lib/site-pages'
+import { getReportEntries } from '@/lib/reports'
 
 /** Redesigned pages are English-only: one URL each, under /en. */
 const SITE_PAGES: [path: string, priority: number, freq: 'weekly' | 'monthly'][] = [
@@ -28,23 +29,29 @@ const SITE_PAGES: [path: string, priority: number, freq: 'weekly' | 'monthly'][]
 ]
 
 /** Research pages are translated, so they keep every locale with hreflang. */
-const TRANSLATED = ['/reports', '/methodology'] as const
+const TRANSLATED = ['/methodology'] as const
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date()
-  const entries: MetadataRoute.Sitemap = SITE_PAGES.map(([path, priority, changeFrequency]) => ({
+  const entries: MetadataRoute.Sitemap = SITE_PAGES.filter(([path]) => isPageVisible(path || '/')).map(([path, priority, changeFrequency]) => ({
     url: `${SITE_URL}${localizedPath(routing.defaultLocale, path || '/')}`,
     lastModified: now,
     changeFrequency,
     priority,
   }))
 
-  const translated = [...TRANSLATED, ...getAllReportSlugs().map((slug) => `/reports/${slug}`)]
+  // Public reports only (config/reports.json).
+  const reportEntries = isPageVisible('/reports') ? getReportEntries('site') : []
+  const reports = reportEntries.map((r) => `/reports/${r.slug}`)
+  const modified = Object.fromEntries(
+    reportEntries.map((r) => [`/reports/${r.slug}`, new Date(r.report.updatedAt ?? r.report.publishedAt)]),
+  )
+  const translated = [...TRANSLATED, ...reports].filter((p) => isPageVisible(p))
   for (const locale of routing.locales) {
     for (const path of translated) {
       entries.push({
         url: `${SITE_URL}${localizedPath(locale, path)}`,
-        lastModified: now,
+        lastModified: modified[path] ?? now,
         changeFrequency: 'weekly',
         priority: path.startsWith('/reports/') ? 0.8 : 0.7,
         alternates: { languages: languageAlternates(path) },

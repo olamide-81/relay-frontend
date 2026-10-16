@@ -40,11 +40,14 @@ import RelayShortlists from './RelayShortlists'
 import RelayProvider from './RelayProvider'
 import RelayRequests from './RelayRequests'
 import RelayIntelligence from './RelayIntelligence'
+import RelayReportReader from './RelayReportReader'
 import RelayProfile from './RelayProfile'
 import RelaySettings from './RelaySettings'
 import RelayModals from './RelayModals'
 import RelayConfirm from './RelayConfirm'
 import RelayToast from './RelayToast'
+
+import { getReportEntry } from '@/lib/reports'
 
 const TITLES = {
   provider: 'Provider',
@@ -304,6 +307,21 @@ class Component extends DCLogic {
   }
 }
 
+{
+  const designVals = Component.prototype.renderVals
+  const appVals = function (v) {
+    const rep = this.state.page === 'report' ? getReportEntry(this.state.params.slug, 'app') : null
+    return {
+      appOpenReport: (slug) => this.go('report', { slug }, 'intelligence'),
+      ...(rep ? { title: rep.cardTitle, activeKey: 'intelligence', page: 'intelligence' } : {}),
+    }
+  }
+  Component.prototype.renderVals = function () {
+    const v = designVals.call(this)
+    return { ...v, ...appVals.call(this, v) }
+  }
+}
+
 function template(v0, self) {
   return (
     <>
@@ -467,7 +485,22 @@ function template(v0, self) {
             {v0.is?.intelligence ? (
               <>
                 {' '}
-                <RelayIntelligence tab={v0.params?.tab} report={v0.params?.report} />{' '}
+                <RelayIntelligence
+                  realReports={v0.realReports}
+                  onOpenReport={v0.appOpenReport}
+                  tab={v0.params?.tab}
+                  report={v0.params?.report}
+                />{' '}
+              </>
+            ) : null}{' '}
+            {v0.is?.report ? (
+              <>
+                {' '}
+                <RelayReportReader
+                  slug={v0.params?.slug}
+                  onNavigate={v0.onNavigate}
+                  onOpenReport={v0.appOpenReport}
+                />{' '}
               </>
             ) : null}{' '}
             {v0.is?.profile ? (

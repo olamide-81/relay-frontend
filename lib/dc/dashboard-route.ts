@@ -7,7 +7,7 @@ export type DashRoute = { page: string; params: Record<string, unknown> }
 
 export const DASH_PAGES = [
   'overview', 'inbox', 'compare', 'directory', 'providers', 'shortlists',
-  'requests', 'intelligence', 'profile', 'settings', 'provider',
+  'requests', 'intelligence', 'profile', 'settings', 'provider', 'report',
 ] as const
 
 /** Routes from the previous dashboard, kept working. */

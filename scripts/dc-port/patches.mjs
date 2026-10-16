@@ -28,6 +28,14 @@ const SIGN_UP = 'Relay%20Sign%20Up.dc.html'
 
 export default {
   'Relay Dashboard': {
+    prelude: "import { getReportEntry } from '@/lib/reports'",
+    vals: `function (v) {
+      const rep = this.state.page === 'report' ? getReportEntry(this.state.params.slug, 'app') : null;
+      return {
+        appOpenReport: (slug) => this.go('report', { slug }, 'intelligence'),
+        ...(rep ? { title: rep.cardTitle, activeKey: 'intelligence', page: 'intelligence' } : {}),
+      };
+    }`,
     logic: [
       [
         "state = { page: 'overview', params: {}, activeKey: 'overview',",
@@ -58,6 +66,12 @@ export default {
         '<dc-import name="Relay Overview" plan="{{ plan }}" user="{{ user }}" on-navigate="{{ onNavigate }}" on-create-list="{{ createList }}" on-upgrade="{{ openUpgrade }}" ',
       ],
       ['<dc-import name="Relay Inbox" ', '<dc-import name="Relay Inbox" on-open-provider="{{ openProvider }}" '],
+      // Real Relay Research reports (config/reports.json) in Intelligence › Reports, read in-app on a "report" page.
+      ['<dc-import name="Relay Intelligence" ', '<dc-import name="Relay Intelligence" real-reports="{{ realReports }}" on-open-report="{{ appOpenReport }}" '],
+      [
+        '\n      <sc-if value="{{ is.profile }}">',
+        '\n      <sc-if value="{{ is.report }}">\n        <dc-import name="Relay Report Reader" slug="{{ params.slug }}" on-navigate="{{ onNavigate }}" on-open-report="{{ appOpenReport }}"></dc-import>\n      </sc-if>\n      <sc-if value="{{ is.profile }}">',
+      ],
       ['<dc-import name="Relay Requests" ', '<dc-import name="Relay Requests" on-navigate="{{ onNavigate }}" '],
       ['<dc-import name="Relay Profile" ', '<dc-import name="Relay Profile" user="{{ user }}" '],
       ['<dc-import name="Relay Settings" ', '<dc-import name="Relay Settings" user="{{ user }}" '],
@@ -135,10 +149,6 @@ export default {
     vals: "function () { return { appOpenInbox: () => this.props.onNavigate?.('inbox') } }",
   },
 
-  'Relay Intelligence': {
-    template: [click('Download PDF', 'appPrint')],
-    vals: "function () { return { appPrint: () => window.print() } }",
-  },
 
   'Relay Landing': {
     // The hero preview iframe is in the server HTML, so it can finish loading before
@@ -175,6 +185,32 @@ export default {
       return { appMenuClick: (e) => { if (e.target.closest && e.target.closest('a')) close(); } };
     }`,
   },
+  // Latest reports: real Relay Research reports (config/reports.json, public only), each linking to its page.
+  'Relay Intelligence': {
+    template: [click('Download PDF', 'appPrint')],
+    vals: "function () { return { appPrint: () => window.print() } }",
+    logic: [
+      ['reps = REPORTS.filter(r => inScope(r[3]))', 'reps = (this.props.realReports ?? REPORTS).filter(r => inScope(r[3]))'],
+      [
+        'full: e => { e.stopPropagation(); this.openFull({ tag: type,',
+        'full: e => { e.stopPropagation(); if (reps[i][6]) return this.props.onOpenReport?.(reps[i][6]); this.openFull({ tag: type,',
+      ],
+    ],
+  },
+
+  'Relay Intelligence Page': {
+    template: [
+      ['<section data-screen-label="Latest reports" ', '<section id="latest-reports" data-screen-label="Latest reports" '],
+      ['<a href="#" data-r="m-row" ', '<a href="{{ r.href }}" data-r="m-row" '],
+    ],
+    logic: [
+      [
+        'reports: REPORTS.filter(r => inS(r[5])).map(([kind, title, desc, type, date]) => ({ kind, title, desc, type, date }))',
+        'reports: (this.props.reports ?? REPORTS.map(([kind, title, desc, type, date, scope]) => ({ kind, title, desc, type, date, scope, href: \'#\' }))).filter(r => inS(r.scope))',
+      ],
+    ],
+  },
+
   'Relay Site Footer': { template: [link('Start for free', SIGN_UP)] },
   'Relay Directory Page': { template: [link('Explore the full directory', SIGN_UP)] },
   'Relay Developers': { template: [link('Get an API key', SIGN_UP)] },

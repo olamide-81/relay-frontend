@@ -247,3 +247,39 @@ export function researchIndexJsonLd(
     },
   }
 }
+
+/** Article markup for a Relay Research report page (news/article rich results). */
+export function reportArticleJsonLd(input: {
+  locale: string
+  path: string
+  headline: string
+  description: string
+  images: string[]
+  datePublished: string
+  dateModified?: string
+  keywords: string[]
+  section: string
+  wordCount: number
+}) {
+  const url = absoluteUrl(input.path)
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    '@id': `${url}#article`,
+    url,
+    // Google shows at most 110 characters of a headline.
+    headline: input.headline.length > 110 ? input.headline.slice(0, 107).trimEnd() + '…' : input.headline,
+    description: input.description,
+    image: input.images.map((i) => absoluteUrl(i)),
+    datePublished: input.datePublished,
+    dateModified: input.dateModified ?? input.datePublished,
+    author: { '@type': 'Organization', name: 'Relay Research', url: absoluteUrl('/en/intelligence') },
+    publisher: { '@id': `${SITE_URL}/#organization` },
+    mainEntityOfPage: { '@type': 'WebPage', '@id': url },
+    isAccessibleForFree: true,
+    inLanguage: input.locale,
+    articleSection: input.section,
+    keywords: input.keywords.join(', '),
+    wordCount: input.wordCount,
+  }
+}

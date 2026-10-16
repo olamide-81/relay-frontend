@@ -124,13 +124,10 @@ class Component extends DCLogic {
         bg: S.scope === s ? 'rgba(255,255,255,.08)' : 'transparent',
         fg: S.scope === s ? '#f7f8f8' : '#8a8f98',
       })),
-      reports: REPORTS.filter((r) => inS(r[5])).map(([kind, title, desc, type, date]) => ({
-        kind,
-        title,
-        desc,
-        type,
-        date,
-      })),
+      reports: (
+        this.props.reports ??
+        REPORTS.map(([kind, title, desc, type, date, scope]) => ({ kind, title, desc, type, date, scope, href: '#' }))
+      ).filter((r) => inS(r.scope)),
     }
   }
 }
@@ -273,6 +270,7 @@ function template(v0, self) {
           </div>{' '}
         </section>{' '}
         <section
+          id="latest-reports"
           data-screen-label="Latest reports"
           data-r="m-sec"
           style={{ position: 'relative', maxWidth: '1200px', margin: '0 auto', padding: '140px 24px 0' }}
@@ -341,7 +339,7 @@ function template(v0, self) {
                 <React.Fragment key={i1}>
                   {' '}
                   <A
-                    href={href('#')}
+                    href={href(v1.r?.href)}
                     data-r="m-row"
                     style={{
                       display: 'grid',

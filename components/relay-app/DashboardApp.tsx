@@ -8,6 +8,18 @@ import { activateSubscription, getMe, logout } from '@/lib/api/auth'
 import { isSubscribed } from '@/lib/session'
 import { routeFromUrl, urlFromRoute } from '@/lib/dc/dashboard-route'
 import { RELAY } from '@/lib/dc/relay-data'
+import { getReportEntries, getReportEntry } from '@/lib/reports'
+
+/** Intelligence › Reports rows, in the design's tuple shape: [type, kind, title, scope, meta, points, slug]. */
+const REAL_REPORTS = getReportEntries('app').map((e) => [
+  e.type,
+  e.kind,
+  e.cardTitle,
+  e.scope,
+  `${e.report.readMinutes} min read · ${e.date}${e.visibility === 'private' ? ' · Private' : ''}`,
+  (e.report.keyTakeaways ?? e.report.implications).slice(0, 3),
+  e.slug,
+])
 
 const PAGE_TITLES: Record<string, string> = {
   overview: 'Overview',
@@ -57,7 +69,9 @@ export default function DashboardApp() {
     const name =
       route.page === 'provider'
         ? (RELAY.byId as Record<string, { name: string }>)[String(route.params.id)]?.name ?? 'Provider'
-        : PAGE_TITLES[route.page] ?? 'Overview'
+        : route.page === 'report'
+          ? getReportEntry(String(route.params.slug), 'app')?.cardTitle ?? 'Report'
+          : PAGE_TITLES[route.page] ?? 'Overview'
     document.title = `${name} | Relay`
   }, [route])
 
@@ -107,6 +121,7 @@ export default function DashboardApp() {
       user={shellUser}
       onLogout={onLogout}
       onUpgradePlan={onUpgrade}
+      realReports={REAL_REPORTS}
     />
   )
 }

@@ -599,7 +599,7 @@ class Component extends DCLogic {
     }
     const sig = SIG.filter((s) => inScope(s[3])),
       news = NEWS.filter((s) => inScope(s[3])),
-      reps = REPORTS.filter((r) => inScope(r[3])),
+      reps = (this.props.realReports ?? REPORTS).filter((r) => inScope(r[3])),
       bench = BENCH.filter((b) => inScope(b[5])),
       cat = CAT.filter((c) => inScope(c[3]))
     const topN = [...CAT]
@@ -684,6 +684,7 @@ class Component extends DCLogic {
         ...exp('r' + i),
         full: (e) => {
           e.stopPropagation()
+          if (reps[i][6]) return this.props.onOpenReport?.(reps[i][6])
           this.openFull({
             tag: type,
             kind,
