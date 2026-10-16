@@ -141,6 +141,14 @@ export default {
   },
 
   'Relay Landing': {
+    // The hero preview iframe is in the server HTML, so it can finish loading before
+    // React attaches onLoad; start the readiness check on mount as well.
+    logic: [
+      [
+        'this._t5 = setTimeout(() => this.setState({ dash: true }), 6000);',
+        'this._t5 = setTimeout(() => this.setState({ dash: true }), 6000); this.renderVals().dashLoaded();',
+      ],
+    ],
     template: [
       link('Start for free', SIGN_UP),
       link('Talk to sales', 'Relay%20Contact.dc.html'),

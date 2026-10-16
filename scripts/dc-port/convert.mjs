@@ -20,7 +20,7 @@ const SRC = process.argv[2] ?? 'design/relay-handoff'
 const OUT = process.argv[3] ?? 'components/relay'
 
 /* Files that are references/boards, not product UI. */
-const SKIP = new Set(['Relay Feedback', 'Relay Category Identity v2', 'Relay Mobile Preview'])
+const SKIP = new Set(['Relay Feedback', 'Relay Category Identity v2', 'Relay Mobile Preview', 'Relay Social Preview'])
 
 const warnings = []
 const warn = (file, msg) => warnings.push(`${file}: ${msg}`)
