@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { setRequestLocale } from 'next-intl/server'
 import RelayCustomers from '@/components/relay/RelayCustomers'
 import { pageMetadata } from '@/lib/dc/meta'
+import PageJsonLd from '@/components/relay-app/PageJsonLd'
 
 type Props = { params: Promise<{ locale: string }> }
 
@@ -13,5 +14,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function Page({ params }: Props) {
   const { locale } = await params
   setRequestLocale(locale)
-  return <RelayCustomers />
+  return (
+    <>
+      <PageJsonLd path="/customers" />
+      <RelayCustomers />
+    </>
+  )
 }

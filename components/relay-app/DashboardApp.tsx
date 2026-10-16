@@ -7,6 +7,20 @@ import { useSession } from '@/hooks/useSession'
 import { activateSubscription, getMe, logout } from '@/lib/api/auth'
 import { isSubscribed } from '@/lib/session'
 import { routeFromUrl, urlFromRoute } from '@/lib/dc/dashboard-route'
+import { RELAY } from '@/lib/dc/relay-data'
+
+const PAGE_TITLES: Record<string, string> = {
+  overview: 'Overview',
+  inbox: 'Inbox',
+  compare: 'Compare',
+  directory: 'Directory',
+  providers: 'Providers',
+  shortlists: 'Shortlists',
+  requests: 'Requests',
+  intelligence: 'Intelligence',
+  profile: 'Profile',
+  settings: 'Settings',
+}
 
 /**
  * The signed-in product. Wraps the ported dashboard shell with the real
@@ -37,6 +51,15 @@ export default function DashboardApp() {
     const slug = pathname.split('/').filter(Boolean).slice(2) // drop locale + "dashboard"
     return routeFromUrl(slug, new URLSearchParams(search.toString()))
   }, [pathname, search])
+
+  // Browser tab title follows the screen, e.g. "Directory | Relay".
+  useEffect(() => {
+    const name =
+      route.page === 'provider'
+        ? (RELAY.byId as Record<string, { name: string }>)[String(route.params.id)]?.name ?? 'Provider'
+        : PAGE_TITLES[route.page] ?? 'Overview'
+    document.title = `${name} | Relay`
+  }, [route])
 
   const onRoute = useCallback(
     (page: string, params: Record<string, unknown>) => {

@@ -6,7 +6,7 @@ export const SITE_URL =
     : 'https://relay.gratebridge.com')
 
 export const SITE_NAME = 'Relay'
-export const SITE_LEGAL_NAME = 'GrateBridge Labs'
+export const SITE_LEGAL_NAME = 'Gratebridge Labs'
 export const SITE_SUPPORT_EMAIL = 'support@relay.gratebridge.com'
 export const SITE_TWITTER = '@gratebridgelabs'
 

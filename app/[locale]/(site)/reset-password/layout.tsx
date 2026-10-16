@@ -1,29 +1,13 @@
 import type { Metadata } from 'next'
-import { getTranslations } from 'next-intl/server'
-import { buildMetadata } from '@/lib/seo'
+import { pageMetadata } from '@/lib/dc/meta'
 
-type Props = {
-  children: React.ReactNode
-  params: Promise<{ locale: string }>
-}
+type Props = { children: React.ReactNode; params: Promise<{ locale: string }> }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params
-  const t = await getTranslations({ locale, namespace: 'auth.resetPassword' })
-
-  return buildMetadata({
-    locale,
-    title: t('metadata.title'),
-    description: t('metadata.description'),
-    path: '/reset-password',
-    noIndex: true,
-  })
+  return pageMetadata(locale, '/reset-password')
 }
 
-export default function ResetPasswordLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function Layout({ children }: { children: React.ReactNode }) {
   return children
 }
