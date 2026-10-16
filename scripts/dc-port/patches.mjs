@@ -137,10 +137,31 @@ export default {
     prelude: `const withUser = (init, u) => u ? { ...init, name: u.name || init.name, email: u.email || init.email } : init;`,
   },
 
+  // Phones: list and message become two full-screen views (tap a message to open it, "Inbox"
+  // to go back) so there's one scroll instead of a 44vh list scrolling inside the page.
+  // Layout rules live in app/relay-app-mobile.css (data-mview / data-inbox).
   'Relay Inbox': {
-    template: [click('View provider', 'appViewProvider')],
+    template: [
+      click('View provider', 'appViewProvider'),
+      ['<div data-r="m-col" style="height:100%;min-height:560px;display:flex;', '<div data-r="m-col" data-mview="{{ appMView }}" style="height:100%;min-height:560px;display:flex;'],
+      ['<div data-r="m-pane" style="flex:0 1 380px;', '<div data-r="m-pane" data-inbox="list" style="flex:0 1 380px;'],
+      [
+        '<div style="flex:1 1 360px;min-width:320px;overflow-y:auto">',
+        '<div data-inbox="detail" style="flex:1 1 360px;min-width:320px;overflow-y:auto">\n    <span data-r="m-show" onClick="{{ appBack }}" style="display:none;width:fit-content;align-items:center;gap:6px;height:32px;margin:14px 0 -12px 12px;padding:0 10px 0 6px;border-radius:7px;font-size:13px;font-weight:500;color:#8a8f98;cursor:pointer" style-hover="color:#f7f8f8;background:rgba(255,255,255,.04)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"></path></svg>Inbox</span>',
+      ],
+    ],
+    logic: [
+      [
+        'open: () => this.read(m.id),',
+        "open: () => { this.read(m.id); this.setState({ appDetail: true }); if (window.matchMedia?.('(max-width: 768px)').matches) document.querySelector('main [style*=\"overflow-y\"]')?.scrollTo({ top: 0 }); },",
+      ],
+    ],
     vals: `function (v) {
-      return { appViewProvider: () => { const p = RELAY.providers.find(x => x.name === v.sel?.from); if (p) this.props.onOpenProvider?.(p.id, 'inbox'); } };
+      return {
+        appViewProvider: () => { const p = RELAY.providers.find(x => x.name === v.sel?.from); if (p) this.props.onOpenProvider?.(p.id, 'inbox'); },
+        appMView: this.state.appDetail ? 'detail' : 'list',
+        appBack: () => this.setState({ appDetail: false }),
+      };
     }`,
   },
 
@@ -151,9 +172,18 @@ export default {
 
 
   'Relay Landing': {
+    // Categories: each category gets an equal "hold" where it's fully sharp (first 60% of its
+    // scroll step), then moves to the next; the last one holds like the others instead of only
+    // resolving at the final pixel. Max blur is halved and starts later.
     // The hero preview iframe is in the server HTML, so it can finish loading before
     // React attaches onLoad; start the readiness check on mount as well.
     logic: [
+      [
+        'const pos2 = S.catP * (n - 1);',
+        `const pos2 = (() => { const p = Math.max(0, Math.min(n - 1, S.catP * n - 0.5)), k = Math.floor(p), f = p - k; if (k >= n - 1) return n - 1; const t = f < 0.6 ? 0 : (f - 0.6) / 0.4; return k + t * t * (3 - 2 * t); })();`,
+      ],
+      ["blur: (Math.min(1, ad * 1.6) * 6).toFixed(2) + 'px'", "blur: (Math.max(0, Math.min(1, (ad - 0.12) * 1.6)) * 3).toFixed(2) + 'px'"],
+      ['top: top + span * (i / (n - 1))', 'top: top + span * ((i + 0.8) / n)'],
       [
         'this._t5 = setTimeout(() => this.setState({ dash: true }), 6000);',
         'this._t5 = setTimeout(() => this.setState({ dash: true }), 6000); this.renderVals().dashLoaded();',
@@ -186,6 +216,22 @@ export default {
     }`,
   },
   // Latest reports: real Relay Research reports (config/reports.json, public only), each linking to its page.
+  // Phones: the region tabs (413px) were wider than the screen, so the whole panel slid
+  // sideways while scrolling. At <=768px only "All regions" and "Europe" stay as tabs;
+  // North America and Asia-Pacific move into More with the other regions.
+  'Relay Directory': {
+    prelude: "const narrow = () => typeof window !== 'undefined' && !!window.matchMedia?.('(max-width: 768px)').matches;",
+    logic: [
+      ["const MAIN = ['All regions', 'Europe', 'North America', 'Asia-Pacific']", "const MAIN_ALL = ['All regions', 'Europe', 'North America', 'Asia-Pacific']"],
+      ['const extra = R.REGIONS.filter(r => !MAIN.includes(r))', 'const MAIN = narrow() ? MAIN_ALL.slice(0, 2) : MAIN_ALL, extra = R.REGIONS.filter(r => !MAIN.includes(r))'],
+      [
+        'componentDidMount() { ',
+        "componentDidMount() { this._appMq = window.matchMedia?.('(max-width: 768px)'); this._appMqFn = () => this.forceUpdate(); this._appMq?.addEventListener?.('change', this._appMqFn); this.forceUpdate(); ",
+      ],
+      ['componentWillUnmount() { ', "componentWillUnmount() { this._appMq?.removeEventListener?.('change', this._appMqFn); "],
+    ],
+  },
+
   'Relay Intelligence': {
     template: [click('Download PDF', 'appPrint')],
     vals: "function () { return { appPrint: () => window.print() } }",

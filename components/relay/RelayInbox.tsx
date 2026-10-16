@@ -169,7 +169,12 @@ class Component extends DCLogic {
               un = S.unread[m.id]
             return {
               ...m,
-              open: () => this.read(m.id),
+              open: () => {
+                this.read(m.id)
+                this.setState({ appDetail: true })
+                if (window.matchMedia?.('(max-width: 768px)').matches)
+                  document.querySelector('main [style*="overflow-y"]')?.scrollTo({ top: 0 })
+              },
               bg: on ? 'rgba(255,255,255,.05)' : 'transparent',
               weight: un ? 600 : 500,
               titleFg: un ? '#f7f8f8' : '#d4d6da',
@@ -213,6 +218,8 @@ class Component extends DCLogic {
         const p = RELAY.providers.find((x) => x.name === v.sel?.from)
         if (p) this.props.onOpenProvider?.(p.id, 'inbox')
       },
+      appMView: this.state.appDetail ? 'detail' : 'list',
+      appBack: () => this.setState({ appDetail: false }),
     }
   }
   Component.prototype.renderVals = function () {
@@ -226,6 +233,7 @@ function template(v0, self) {
     <>
       <div
         data-r="m-col"
+        data-mview={v0.appMView}
         style={{
           height: '100%',
           minHeight: '560px',
@@ -237,6 +245,7 @@ function template(v0, self) {
         {' '}
         <div
           data-r="m-pane"
+          data-inbox="list"
           style={{
             flex: '0 1 380px',
             minWidth: '260px',
@@ -397,8 +406,41 @@ function template(v0, self) {
             ) : null}{' '}
           </div>{' '}
         </div>{' '}
-        <div style={{ flex: '1 1 360px', minWidth: '320px', overflowY: 'auto' }}>
+        <div data-inbox="detail" style={{ flex: '1 1 360px', minWidth: '320px', overflowY: 'auto' }}>
           {' '}
+          <span
+            data-r="m-show"
+            onClick={v0.appBack}
+            style={{
+              display: 'none',
+              width: 'fit-content',
+              alignItems: 'center',
+              gap: '6px',
+              height: '32px',
+              margin: '14px 0 -12px 12px',
+              padding: '0 10px 0 6px',
+              borderRadius: '7px',
+              fontSize: '13px',
+              fontWeight: '500',
+              color: '#8a8f98',
+              cursor: 'pointer',
+            }}
+            className={'dcp-ue7xvq'}
+          >
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="m15 18-6-6 6-6" />
+            </svg>
+            Inbox
+          </span>{' '}
           {v0.hasSel ? (
             <>
               {' '}
