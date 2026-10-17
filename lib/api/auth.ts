@@ -295,6 +295,7 @@ export const googleAuthErrorMessage: Record<string, string> = {
   google_not_configured: 'Google sign-in is not configured on the API.',
   google_no_account: 'No Relay account for this Google login yet.',
   access_denied: 'Google sign-in was cancelled.',
+  SIGNUP_CLOSED: 'Sign up is closed. Join the waitlist.',
 }
 
 /** GET /api/auth/me */

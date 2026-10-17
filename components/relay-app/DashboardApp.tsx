@@ -1,14 +1,15 @@
 'use client'
 
-import { useCallback, useEffect, useMemo, useState } from 'react'
-import { useParams, usePathname, useSearchParams } from 'next/navigation'
+import { useCallback, useEffect, useMemo, useState, type ReactNode } from 'react'
+import { useParams, usePathname } from 'next/navigation'
 import RelayDashboard from '@/components/relay/RelayDashboard'
 import { useSession } from '@/hooks/useSession'
 import { clearInvite, getMe, logout, pendingInvite, restoreSession } from '@/lib/api/auth'
 import { appApi } from '@/lib/api/app'
 import { AppBridge } from '@/lib/dc/app-bridge'
+import { enableBusyButtons } from '@/lib/dc/busy'
 import { routeFromUrl, urlFromRoute } from '@/lib/dc/dashboard-route'
-import { RELAY, resetRelay } from '@/lib/dc/relay-data'
+import { hydrateRelay, RELAY, resetRelay } from '@/lib/dc/relay-data'
 import { getReportEntries, getReportEntry } from '@/lib/reports'
 import LogoutOverlay from './LogoutOverlay'
 
@@ -46,6 +47,26 @@ function takePaymentReference() {
   return reference
 }
 
+/** Keep the workspace if the shell remounts so the next paint is not empty. */
+let cached: { locale: string; app: AppBridge } | null = null
+
+function frame(children?: ReactNode) {
+  return (
+    <div
+      style={{
+        minHeight: '100vh',
+        display: 'grid',
+        placeItems: 'center',
+        background: '#151618',
+        color: '#8a8f98',
+        font: '14px Geist,system-ui,sans-serif',
+      }}
+    >
+      {children}
+    </div>
+  )
+}
+
 /** Everything the signed-in workspace needs before the shell renders. */
 async function loadWorkspace(locale: string) {
   const invite = pendingInvite()
@@ -66,6 +87,7 @@ async function loadWorkspace(locale: string) {
   }
   const app = new AppBridge(await appApi.bootstrap(), locale)
   notes.forEach(([t, type, desc]) => app.toast(t, type, desc))
+  cached = { locale, app }
   return app
 }
 
@@ -75,12 +97,13 @@ async function loadWorkspace(locale: string) {
  */
 export default function DashboardApp() {
   const { locale } = useParams<{ locale: string }>()
-  // usePathname/useSearchParams follow history.pushState (useParams does not).
+  // usePathname follows history.pushState (useParams does not). Search is
+  // read from the window so this tree never suspends on navigation.
   const pathname = usePathname()
-  const search = useSearchParams()
+  const [search, setSearch] = useState(() => (typeof window === 'undefined' ? '' : window.location.search))
   const { user, ready, refresh } = useSession()
   const [checked, setChecked] = useState(false)
-  const [app, setApp] = useState<AppBridge | null>(null)
+  const [app, setApp] = useState<AppBridge | null>(() => (cached?.locale === locale ? cached.app : null))
   const [failed, setFailed] = useState(false)
   const [, setVersion] = useState(0)
 
@@ -104,25 +127,38 @@ export default function DashboardApp() {
     setFailed(false)
     loadWorkspace(locale)
       .then(setApp)
-      .catch(() => setFailed(true))
+      .catch(() => {
+        if (!cached) setFailed(true)
+      })
   }, [locale])
 
   useEffect(() => {
     if (checked) load()
   }, [checked, load])
 
+  useEffect(() => enableBusyButtons(), [])
+
+  useEffect(() => {
+    const sync = () => setSearch(window.location.search)
+    sync()
+    window.addEventListener('popstate', sync)
+    return () => window.removeEventListener('popstate', sync)
+  }, [pathname])
+
   useEffect(() => {
     if (!app) return
+    hydrateRelay(app.data.catalog)
     const off = app.subscribe(() => setVersion((n) => n + 1))
     return () => {
       off()
-      resetRelay()
+      if (cached?.app !== app) resetRelay()
     }
   }, [app])
 
   const route = useMemo(() => {
     const slug = pathname.split('/').filter(Boolean).slice(2) // drop locale + "dashboard"
-    return routeFromUrl(slug, new URLSearchParams(search.toString()))
+    const qs = search.startsWith('?') ? search.slice(1) : search
+    return routeFromUrl(slug, new URLSearchParams(qs))
   }, [pathname, search])
 
   // Browser tab title follows the screen, e.g. "Directory | Relay".
@@ -139,7 +175,10 @@ export default function DashboardApp() {
   const onRoute = useCallback(
     (page: string, params: Record<string, unknown>) => {
       const next = urlFromRoute(locale, page, params)
-      if (next !== window.location.pathname + window.location.search) window.history.pushState(null, '', next)
+      if (next !== window.location.pathname + window.location.search) {
+        window.history.pushState(null, '', next)
+        setSearch(window.location.search)
+      }
     },
     [locale]
   )
@@ -148,6 +187,7 @@ export default function DashboardApp() {
   const onLogout = useCallback(async () => {
     if (loggingOut) return
     setLoggingOut(true)
+    cached = null
     // Keep the loader up long enough to read, even when the API answers instantly.
     const minShow = new Promise((r) => setTimeout(r, 700))
     try {
@@ -160,27 +200,16 @@ export default function DashboardApp() {
   const onUpgrade = useCallback(() => app?.checkout('yearly'), [app])
 
   if (failed)
-    return (
-      <div
-        style={{
-          minHeight: '100vh',
-          display: 'grid',
-          placeItems: 'center',
-          background: '#0f1011',
-          color: '#8a8f98',
-          font: '14px Geist,system-ui,sans-serif',
-        }}
-      >
-        <div style={{ textAlign: 'center' }}>
-          <div style={{ color: '#f7f8f8', fontSize: '15px', marginBottom: '6px' }}>Relay couldn’t load your workspace.</div>
-          <span onClick={load} style={{ color: '#6fe3b4', cursor: 'pointer' }}>
-            Try again
-          </span>
-        </div>
+    return frame(
+      <div style={{ textAlign: 'center' }}>
+        <div style={{ color: '#f7f8f8', fontSize: '15px', marginBottom: '6px' }}>Relay couldn’t load your workspace.</div>
+        <span onClick={load} style={{ color: '#6fe3b4', cursor: 'pointer' }}>
+          Try again
+        </span>
       </div>
     )
 
-  if (!checked || !user || !app) return null
+  if (!checked || !user || !app) return frame()
 
   const shellUser = {
     name: app.data.user.name || user.fullName || user.email,

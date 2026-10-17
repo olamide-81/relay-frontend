@@ -78,6 +78,9 @@ export default {
         '<dc-import name="Relay Overview" plan="{{ plan }}" user="{{ user }}" on-navigate="{{ onNavigate }}" on-create-list="{{ createList }}" on-upgrade="{{ openUpgrade }}" ',
       ],
       ['<dc-import name="Relay Inbox" ', '<dc-import name="Relay Inbox" on-open-provider="{{ openProvider }}" '],
+      ['<dc-import name="Relay Compare" ', '<dc-import name="Relay Compare" on-navigate="{{ onNavigate }}" '],
+      // Top bar search → Directory filtered by the query.
+      ['<dc-import name="Relay Directory" ', '<dc-import name="Relay Directory" query="{{ params.q }}" query-key="{{ params.t }}" '],
       // Real Relay Research reports (config/reports.json) in Intelligence › Reports, read in-app on a "report" page.
       ['<dc-import name="Relay Intelligence" ', '<dc-import name="Relay Intelligence" real-reports="{{ realReports }}" on-open-report="{{ appOpenReport }}" '],
       [
@@ -108,6 +111,26 @@ export default {
       ],
       [/<span (style="[^"]*" style-hover="[^"]*">\{\{ n\.action \}\})/, '<span onClick="{{ n.appAction }}" $1'],
       [/<span (style="[^"]*">Dismiss<\/span>)/, '<span onClick="{{ n.appDismiss }}" $1'],
+      // Search results under the search field, in the style of the Topbar's other menus.
+      [
+        '<label data-r="m-hide" style="display:flex;align-items:center;gap:10px;flex:0 1 380px;width:380px;min-width:140px;height:34px;',
+        '<div data-r="m-hide" style="position:relative;flex:0 1 380px;width:380px;min-width:140px"><label style="display:flex;align-items:center;gap:10px;width:100%;height:34px;',
+      ],
+      ['onBlur="{{ onBlur }}" placeholder="Search Providers…"', 'onBlur="{{ onBlur }}" onKeyDown="{{ appSearchKey }}" placeholder="Search Providers…"'],
+      [
+        'opacity:{{ kbdOp }}">⌘K</span>\n    </label>',
+        `opacity:{{ kbdOp }}">⌘K</span>
+    </label>
+    <sc-if value="{{ appSearchOpen }}">
+      <div style="position:absolute;top:40px;left:0;right:0;max-height:380px;overflow-y:auto;padding:4px;background:rgba(32,33,37,.78);backdrop-filter:blur(18px) saturate(140%);-webkit-backdrop-filter:blur(18px) saturate(140%);border:1px solid rgba(255,255,255,.08);border-radius:10px;box-shadow:0 12px 32px rgba(0,0,0,.5),0 2px 6px rgba(0,0,0,.3)">
+        <sc-for list="{{ appResults }}" as="r">
+          <sc-if value="{{ r.head }}"><div style="padding:8px 8px 4px;font-size:11px;font-weight:500;color:#62666d">{{ r.label }}</div></sc-if>
+          <sc-if value="{{ r.item }}"><div onMouseDown="{{ r.run }}" onMouseEnter="{{ r.hover }}" style="display:flex;align-items:center;gap:8px;height:34px;padding:0 8px;border-radius:6px;cursor:pointer;font-size:13px;color:{{ r.fg }};background:{{ r.bg }}"><dc-import name="Relay App Icon" kind="{{ r.kind }}" size="20" hint-size="20px,20px"></dc-import><span style="flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ r.label }}</span><span style="font-size:11.5px;color:#62666d;white-space:nowrap">{{ r.meta }}</span></div></sc-if>
+        </sc-for>
+      </div>
+    </sc-if>
+    </div>`,
+      ],
     ],
     logic: [
       [
@@ -119,8 +142,8 @@ export default {
       // Bell notifications come from the API when signed in.
       [/(?<!const )\bNOTES\b/g, '(this.props.app?.data.notifications ?? NOTES)'],
     ],
-    prelude: "import { wireTopbar, topbarVals } from '@/lib/dc/wiring'",
-    vals: 'function (v) { return topbarVals.call(this, v) }',
+    prelude: "import { wireTopbar, topbarVals, searchVals } from '@/lib/dc/wiring'",
+    vals: 'function (v) { return { ...searchVals.call(this, v), ...topbarVals.call(this, v) } }',
     after: 'Component = wireTopbar(Component)',
   },
 
@@ -134,6 +157,36 @@ export default {
       click('Compare plans', 'appComparePlans'),
       click('View directory', 'appDirectory'),
       [/(<span) (style="font-size:12\.5px;font-weight:500;color:\{\{ c\.accent \}\}">Unlock →<\/span>)/, '$1 onClick="{{ appUpgrade }}" $2'],
+      // Real catalog numbers (the design's are the website's demo figures).
+      ['>1,600 Providers across 140 countries · Scored', '>{{ appTotal }} Providers across {{ appCountries }} countries · Scored'],
+      ['>1,595 more Providers across 140 countries.<', '>{{ appMore }} more Providers across {{ appCountries }} countries.<'],
+      ['font-weight:500">5</span> of 1,600 visible on Free<', 'font-weight:500">{{ appVisible }}</span> of {{ appTotal }} visible on Free<'],
+      ['<span style="width:2%;min-width:6px;', '<span style="width:{{ appVisiblePct }};min-width:6px;'],
+      ['color:#f7f8f8">1,000+</div>', 'color:#f7f8f8">{{ appTotal }}</div>'],
+      // Shortlists card: the workspace's shortlists, as rows styled like the Activity feed.
+      ['font-weight:500">Shortlists</span><span style="font-size:12px;color:#62666d">0</span>', 'font-weight:500">Shortlists</span><span style="font-size:12px;color:#62666d">{{ appListCount }}</span>'],
+      [
+        '<div style="flex:1;min-height:260px;border-radius:12px;box-shadow:0 0 0 1px rgba(255,255,255,.06);background:rgba(255,255,255,.012);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:32px;text-align:center">',
+        '<sc-if value="{{ appNoLists }}"><div style="flex:1;min-height:260px;border-radius:12px;box-shadow:0 0 0 1px rgba(255,255,255,.06);background:rgba(255,255,255,.012);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:32px;text-align:center">',
+      ],
+      [
+        'New shortlist</span>\n      </div>\n    </section>',
+        `New shortlist</span>
+      </div></sc-if>
+      <sc-if value="{{ appHasLists }}">
+      <div style="flex:1;min-height:260px;border-radius:12px;box-shadow:0 0 0 1px rgba(255,255,255,.06);background:rgba(255,255,255,.012);padding:8px 0;display:flex;flex-direction:column;justify-content:flex-start">
+        <sc-for list="{{ appLists }}" as="l">
+          <div onClick="{{ l.open }}" style="display:flex;align-items:center;gap:12px;padding:9px 16px;cursor:pointer;transition:background-color .12s" style-hover="background:rgba(255,255,255,.025)">
+            <dc-import name="Relay App Icon" kind="{{ l.kind }}" size="26" hint-size="26px,26px"></dc-import>
+            <div style="flex:1;min-width:0;font-size:13px;color:#8a8f98;white-space:nowrap;overflow:hidden;text-overflow:ellipsis"><span style="color:#f7f8f8;font-weight:500">{{ l.name }}</span> {{ l.note }}</div>
+            <span style="font-size:12px;color:#62666d;font-variant-numeric:tabular-nums;flex:none">{{ l.count }}</span>
+          </div>
+        </sc-for>
+      </div>
+      </sc-if>
+    </section>`,
+      ],
+      ['padding:8px 0;display:flex;flex-direction:column;justify-content:center">', 'padding:8px 0;display:flex;flex-direction:column;justify-content:flex-start">'],
     ],
     prelude: "import { overviewVals } from '@/lib/dc/wiring'",
     vals: `function (v) {
@@ -154,16 +207,25 @@ export default {
   },
 
   'Relay Profile': {
-    template: [['src="https://randomuser.me/api/portraits/women/44.jpg"', 'src="{{ avatar }}"']],
+    template: [
+      ['src="https://randomuser.me/api/portraits/women/44.jpg"', 'src="{{ avatar }}"'],
+      ['<option value="{{ o }}">{{ o }}</option>', '<option value="{{ o.v }}">{{ o.l }}</option>'],
+    ],
     logic: [
       [
         'state = { saved: INIT, draft: INIT, flash: false, ask: false };',
         `state = { saved: withUser(INIT, this.props.user), draft: withUser(INIT, this.props.user), flash: false, ask: false };`,
       ],
+      [
+        "isSelect: k === 'timezone', isText: k !== 'timezone', options: TZ,",
+        "isSelect: k === 'timezone' || k === 'title', isText: k !== 'timezone' && k !== 'title', options: k === 'title' ? roleOptions(S.draft.title) : TZ.map(o => ({ v: o, l: o })),",
+      ],
     ],
     vals: "function (v) { return { avatar: userAvatar(this.props.user, 'https://randomuser.me/api/portraits/women/44.jpg'), ...profileVals.call(this, v) } }",
     prelude: `import { wireProfile, profileVals } from '@/lib/dc/wiring'
-const withUser = (init, u) => u ? { ...init, name: u.name || init.name, email: u.email || init.email } : init;`,
+const withUser = (init, u) => u ? { ...init, name: u.name || init.name, email: u.email || init.email } : init;
+const ROLES = ['Founder / CEO', 'CTO', 'CFO', 'Head of payments', 'Payments manager', 'Product manager', 'Engineering lead', 'Software engineer', 'Finance & treasury', 'Operations', 'Compliance & risk', 'Partnerships', 'Other'];
+const roleOptions = (cur) => [...(!cur ? [{ v: '', l: 'Select a role' }] : ROLES.includes(cur) ? [] : [{ v: cur, l: cur }]), ...ROLES.map(o => ({ v: o, l: o }))];`,
     after: 'Component = wireProfile(Component)',
   },
 
@@ -228,16 +290,24 @@ const withUser = (init, u) => u ? { ...init, name: u.name || init.name, email: u
   'Relay Directory': {
     prelude: "import { wireDirectory, directoryVals } from '@/lib/dc/wiring'\nconst narrow = () => typeof window !== 'undefined' && !!window.matchMedia?.('(max-width: 768px)').matches;",
     logic: [
+      ['Providers across 140 countries, verified', 'Providers across ${R.fmt(this.props.app?.data.catalog.countries ?? 140)} countries, verified'],
+      ["state = { q: '',", "state = { q: this.props.query ?? '',"],
       ["const MAIN = ['All regions', 'Europe', 'North America', 'Asia-Pacific']", "const MAIN_ALL = ['All regions', 'Europe', 'North America', 'Asia-Pacific']"],
       ['const extra = R.REGIONS.filter(r => !MAIN.includes(r))', 'const MAIN = narrow() ? MAIN_ALL.slice(0, 2) : MAIN_ALL, extra = R.REGIONS.filter(r => !MAIN.includes(r))'],
       [
-        'componentDidMount() { ',
-        "componentDidMount() { this._appMq = window.matchMedia?.('(max-width: 768px)'); this._appMqFn = () => this.forceUpdate(); this._appMq?.addEventListener?.('change', this._appMqFn); this.forceUpdate(); ",
+        'componentDidMount() { if (!window.RELAY)',
+        "componentDidUpdate(prev) { if (this.props.queryKey !== prev.queryKey && this.props.query != null) this.setState({ q: this.props.query, page: 0, cat: 'all', region: 'All regions' }); }\n  componentDidMount() { this._appMq = window.matchMedia?.('(max-width: 768px)'); this._appMqFn = () => this.forceUpdate(); this._appMq?.addEventListener?.('change', this._appMqFn); this.forceUpdate(); if (!window.RELAY)",
       ],
       ['componentWillUnmount() { ', "componentWillUnmount() { this._appMq?.removeEventListener?.('change', this._appMqFn); "],
     ],
     vals: 'function (v) { return directoryVals.call(this, v) }',
     after: 'Component = wireDirectory(Component)',
+  },
+
+  'Relay Provider': {
+    template: [['>Indicative list pricing collected by Relay. Final terms depend on volume and risk review.<', '>{{ appPricingNote }}<']],
+    prelude: "import { providerVals } from '@/lib/dc/wiring'",
+    vals: 'function (v) { return providerVals.call(this, v) }',
   },
 
   'Relay Modals': {
@@ -340,7 +410,7 @@ const withUser = (init, u) => u ? { ...init, name: u.name || init.name, email: u
       "cmsBind('intelligence.news', NEWS)",
       "cmsBind('intelligence.benchmarks', BENCH)",
       "cmsBind('intelligence.licenceCatalog', CAT)",
-      "cmsBind('intelligence.licenceChanges', LIC)",
+      "cmsBind('intelligence.licenceChanges', LIC, ([provider, kind, licence, reg, st, region]) => ({ provider, kind, licence, reg, st: LST[String(st).toLowerCase()] ? String(st).toLowerCase() : 'pending', region }))",
     ].join('\n'),
     template: [click('Download PDF', 'appPrint')],
     vals: "function () { return { appPrint: () => window.print() } }",
@@ -421,8 +491,15 @@ const withUser = (init, u) => u ? { ...init, name: u.name || init.name, email: u
         `hasErr: S.tried && !(eOk && pOk), err: !eOk ? 'Enter a valid work email.' : 'Password must be at least 8 characters.',
       showErr: !S.waitlisted && (!!(this.props.error || S.apiErr) || (S.tried && !(eOk && pOk))), errText: S.apiErr || (S.tried && !(eOk && pOk) ? (!eOk ? 'Enter a valid work email.' : 'Password must be at least 8 characters.') : this.props.error),`,
       ],
-      // The design's demo states (?state=waitlisted, pending@… emails) only run without the API.
-      ["if (/[?&]state=waitlisted/.test(location.search))", 'if (!this.props.onAuth && /[?&]state=waitlisted/.test(location.search))'],
+      // Demo ?state=waitlisted only without the API. Live Google waitlist lands on ?error=WAITLISTED.
+      [
+        "if (/[?&]state=waitlisted/.test(location.search)) this.setState({ email: 'pending@northwind.io', pw: 'password1', waitlisted: true });",
+        `if (!this.props.onAuth && /[?&]state=waitlisted/.test(location.search)) this.setState({ email: 'pending@northwind.io', pw: 'password1', waitlisted: true });
+    else if (this.props.onAuth && /[?&]error=WAITLISTED/.test(location.search)) {
+      const em = new URLSearchParams(location.search).get('email');
+      this.setState({ waitlisted: true, ...(em ? { email: em } : {}) });
+    }`,
+      ],
       ['if (/^pending@/i.test(S.email)) {', 'if (!this.props.onAuth && /^pending@/i.test(S.email)) {'],
       ['onEmail: e => this.setState({ email: e.target.value, waitlisted: false })', 'onEmail: e => this.setState({ email: e.target.value, waitlisted: false, apiErr: null })'],
     ],

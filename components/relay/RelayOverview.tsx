@@ -277,7 +277,10 @@ function template(v0, self) {
               {hole(v0.firstName)}
             </h1>{' '}
             <div style={{ marginTop: '6px', fontSize: '13.5px', color: '#8a8f98' }}>
-              1,600 Providers across 140 countries · Scored with your weighting
+              {hole(v0.appTotal)}
+              {' Providers across '}
+              {hole(v0.appCountries)}
+              {' countries · Scored with your weighting'}
             </div>{' '}
           </div>{' '}
           <div style={{ display: 'flex', gap: '8px', flex: 'none' }}>
@@ -440,7 +443,12 @@ function template(v0, self) {
                       }}
                     >
                       {'Unlock the full directory. '}
-                      <span style={{ color: '#8a8f98' }}>1,595 more Providers across 140 countries.</span>
+                      <span style={{ color: '#8a8f98' }}>
+                        {hole(v0.appMore)}
+                        {' more Providers across '}
+                        {hole(v0.appCountries)}
+                        {' countries.'}
+                      </span>
                     </div>{' '}
                     <div>
                       {' '}
@@ -454,7 +462,11 @@ function template(v0, self) {
                           background: 'rgba(255,255,255,.06)',
                         }}
                       >
-                        <span style={{ width: '2%', minWidth: '6px', background: '#f7f8f8', borderRadius: '999px' }} />
+                        <span
+                          style={css(
+                            `width:${v0.appVisiblePct ?? ''};min-width:6px;background:#f7f8f8;border-radius:999px`,
+                          )}
+                        />
                       </div>{' '}
                       <div
                         style={{
@@ -467,8 +479,10 @@ function template(v0, self) {
                         }}
                       >
                         <span>
-                          <span style={{ color: '#f7f8f8', fontWeight: '500' }}>5</span>
-                          {' of 1,600 visible on Free'}
+                          <span style={{ color: '#f7f8f8', fontWeight: '500' }}>{hole(v0.appVisible)}</span>
+                          {' of '}
+                          {hole(v0.appTotal)}
+                          {' visible on Free'}
                         </span>
                         <span>Unlimited compares on Pro</span>
                       </div>{' '}
@@ -606,7 +620,7 @@ function template(v0, self) {
                         color: '#f7f8f8',
                       }}
                     >
-                      1,000+
+                      {hole(v0.appTotal)}
                     </div>{' '}
                     <div style={{ fontSize: '12.5px', fontWeight: '500', color: '#b4b8bf', marginTop: '6px' }}>
                       Providers worldwide
@@ -827,87 +841,158 @@ function template(v0, self) {
             {' '}
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '0 2px', height: '20px' }}>
               <span style={{ fontSize: '13.5px', fontWeight: '500' }}>Shortlists</span>
-              <span style={{ fontSize: '12px', color: '#62666d' }}>0</span>
+              <span style={{ fontSize: '12px', color: '#62666d' }}>{hole(v0.appListCount)}</span>
             </div>{' '}
-            <div
-              style={{
-                flex: '1',
-                minHeight: '260px',
-                borderRadius: '12px',
-                boxShadow: '0 0 0 1px rgba(255,255,255,.06)',
-                background: 'rgba(255,255,255,.012)',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '8px',
-                padding: '32px',
-                textAlign: 'center',
-              }}
-            >
-              {' '}
-              <span
-                style={{
-                  width: '36px',
-                  height: '36px',
-                  borderRadius: '10px',
-                  display: 'grid',
-                  placeItems: 'center',
-                  color: '#8a8f98',
-                  background: 'rgba(255,255,255,.04)',
-                  boxShadow: 'inset 0 0 0 1px rgba(255,255,255,.06)',
-                }}
-              >
-                <svg
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.75"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
+            {v0.appNoLists ? (
+              <>
+                <div
+                  style={{
+                    flex: '1',
+                    minHeight: '260px',
+                    borderRadius: '12px',
+                    boxShadow: '0 0 0 1px rgba(255,255,255,.06)',
+                    background: 'rgba(255,255,255,.012)',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '8px',
+                    padding: '32px',
+                    textAlign: 'center',
+                  }}
                 >
-                  <path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z" />
-                </svg>
-              </span>{' '}
-              <div style={{ fontSize: '13.5px', fontWeight: '500', marginTop: '6px' }}>No shortlists yet</div>{' '}
-              <div style={{ fontSize: '12.5px', color: '#8a8f98', maxWidth: '250px', lineHeight: '1.5' }}>
-                Group the providers you're evaluating and compare them side by side.
-              </div>{' '}
-              <span
-                onClick={v0.appNewShortlist}
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '6px',
-                  height: '28px',
-                  padding: '0 10px',
-                  marginTop: '8px',
-                  borderRadius: '7px',
-                  fontSize: '12.5px',
-                  fontWeight: '500',
-                  color: '#d4d6da',
-                  cursor: 'pointer',
-                  boxShadow: 'inset 0 0 0 1px rgba(255,255,255,.09)',
-                }}
-                className={'dcp-1io545i'}
-              >
-                <svg
-                  width="12"
-                  height="12"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2.25"
-                  strokeLinecap="round"
+                  {' '}
+                  <span
+                    style={{
+                      width: '36px',
+                      height: '36px',
+                      borderRadius: '10px',
+                      display: 'grid',
+                      placeItems: 'center',
+                      color: '#8a8f98',
+                      background: 'rgba(255,255,255,.04)',
+                      boxShadow: 'inset 0 0 0 1px rgba(255,255,255,.06)',
+                    }}
+                  >
+                    <svg
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.75"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z" />
+                    </svg>
+                  </span>{' '}
+                  <div style={{ fontSize: '13.5px', fontWeight: '500', marginTop: '6px' }}>No shortlists yet</div>{' '}
+                  <div style={{ fontSize: '12.5px', color: '#8a8f98', maxWidth: '250px', lineHeight: '1.5' }}>
+                    Group the providers you're evaluating and compare them side by side.
+                  </div>{' '}
+                  <span
+                    onClick={v0.appNewShortlist}
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '6px',
+                      height: '28px',
+                      padding: '0 10px',
+                      marginTop: '8px',
+                      borderRadius: '7px',
+                      fontSize: '12.5px',
+                      fontWeight: '500',
+                      color: '#d4d6da',
+                      cursor: 'pointer',
+                      boxShadow: 'inset 0 0 0 1px rgba(255,255,255,.09)',
+                    }}
+                    className={'dcp-1io545i'}
+                  >
+                    <svg
+                      width="12"
+                      height="12"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2.25"
+                      strokeLinecap="round"
+                    >
+                      <path d="M5 12h14" />
+                      <path d="M12 5v14" />
+                    </svg>
+                    New shortlist
+                  </span>{' '}
+                </div>
+              </>
+            ) : null}{' '}
+            {v0.appHasLists ? (
+              <>
+                {' '}
+                <div
+                  style={{
+                    flex: '1',
+                    minHeight: '260px',
+                    borderRadius: '12px',
+                    boxShadow: '0 0 0 1px rgba(255,255,255,.06)',
+                    background: 'rgba(255,255,255,.012)',
+                    padding: '8px 0',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'flex-start',
+                  }}
                 >
-                  <path d="M5 12h14" />
-                  <path d="M12 5v14" />
-                </svg>
-                New shortlist
-              </span>{' '}
-            </div>{' '}
+                  {' '}
+                  {list(v0.appLists).map((it1, i1) => {
+                    const v1 = { ...v0, l: it1, $index: i1 }
+                    return (
+                      <React.Fragment key={i1}>
+                        {' '}
+                        <div
+                          onClick={v1.l?.open}
+                          style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '12px',
+                            padding: '9px 16px',
+                            cursor: 'pointer',
+                            transition: 'background-color .12s',
+                          }}
+                          className={'dcp-1l2gqo9'}
+                        >
+                          {' '}
+                          <RelayAppIcon kind={v1.l?.kind} size="26" />{' '}
+                          <div
+                            style={{
+                              flex: '1',
+                              minWidth: '0',
+                              fontSize: '13px',
+                              color: '#8a8f98',
+                              whiteSpace: 'nowrap',
+                              overflow: 'hidden',
+                              textOverflow: 'ellipsis',
+                            }}
+                          >
+                            <span style={{ color: '#f7f8f8', fontWeight: '500' }}>{hole(v1.l?.name)}</span>{' '}
+                            {hole(v1.l?.note)}
+                          </div>{' '}
+                          <span
+                            style={{
+                              fontSize: '12px',
+                              color: '#62666d',
+                              fontVariantNumeric: 'tabular-nums',
+                              flex: 'none',
+                            }}
+                          >
+                            {hole(v1.l?.count)}
+                          </span>{' '}
+                        </div>{' '}
+                      </React.Fragment>
+                    )
+                  })}{' '}
+                </div>{' '}
+              </>
+            ) : null}{' '}
           </section>{' '}
           <section style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
             {' '}
@@ -940,7 +1025,7 @@ function template(v0, self) {
                 padding: '8px 0',
                 display: 'flex',
                 flexDirection: 'column',
-                justifyContent: 'center',
+                justifyContent: 'flex-start',
               }}
             >
               {' '}

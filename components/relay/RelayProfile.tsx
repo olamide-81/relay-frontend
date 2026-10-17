@@ -33,6 +33,25 @@ import RelayConfirm from './RelayConfirm'
 
 import { wireProfile, profileVals } from '@/lib/dc/wiring'
 const withUser = (init, u) => (u ? { ...init, name: u.name || init.name, email: u.email || init.email } : init)
+const ROLES = [
+  'Founder / CEO',
+  'CTO',
+  'CFO',
+  'Head of payments',
+  'Payments manager',
+  'Product manager',
+  'Engineering lead',
+  'Software engineer',
+  'Finance & treasury',
+  'Operations',
+  'Compliance & risk',
+  'Partnerships',
+  'Other',
+]
+const roleOptions = (cur) => [
+  ...(!cur ? [{ v: '', l: 'Select a role' }] : ROLES.includes(cur) ? [] : [{ v: cur, l: cur }]),
+  ...ROLES.map((o) => ({ v: o, l: o })),
+]
 
 const INIT = {
   name: 'Sarah Mitchell',
@@ -88,9 +107,9 @@ class Component extends DCLogic {
       fields: LABELS.map(([k, label]) => ({
         label,
         value: S.draft[k],
-        isSelect: k === 'timezone',
-        isText: k !== 'timezone',
-        options: TZ,
+        isSelect: k === 'timezone' || k === 'title',
+        isText: k !== 'timezone' && k !== 'title',
+        options: k === 'title' ? roleOptions(S.draft.title) : TZ.map((o) => ({ v: o, l: o })),
         onChange: (e) => {
           const v = e.target.value
           this.setState((s) => ({ draft: { ...s.draft, [k]: v } }))
@@ -293,7 +312,7 @@ function template(v0, self) {
                             const v2 = { ...v1, o: it2, $index: i2 }
                             return (
                               <React.Fragment key={i2}>
-                                <option value={dv(v2.o, '')}>{holeText(v2.o)}</option>
+                                <option value={dv(v2.o?.v, '')}>{holeText(v2.o?.l)}</option>
                               </React.Fragment>
                             )
                           })}

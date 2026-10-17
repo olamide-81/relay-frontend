@@ -42,19 +42,30 @@ export type WaitlistAnswers = {
   hp?: string
 }
 
+function volumeOf(v: string): WaitlistVolume | undefined {
+  return VOLUME[v] ?? VOLUME[v.replace(/-/g, '–')] ?? VOLUME[v.replace(/–/g, '-')]
+}
+
 export function waitlistPayload(a: WaitlistAnswers, locale: string): WaitlistInput {
   const q = new URLSearchParams(window.location.search)
   const utm: Record<string, string> = {}
   for (const [k, v] of q) if (k.startsWith('utm_') && v) utm[k] = v.slice(0, 200)
   const notes = a.notes.trim().slice(0, 500)
+  const role = ROLE[a.role]
+  const monthlyVolume = volumeOf(a.volume)
+  const primaryCategory = a.category as WaitlistCategory
+  const goals = a.goals.map((g) => GOAL[g]).filter(Boolean) as WaitlistGoal[]
+  if (!role || !monthlyVolume || !primaryCategory || !goals.length) {
+    throw new Error('Please complete every step before joining.')
+  }
   return {
     fullName: a.name.trim(),
     email: a.email.trim().toLowerCase(),
     company: a.company.trim(),
-    role: ROLE[a.role],
-    monthlyVolume: VOLUME[a.volume],
-    primaryCategory: a.category as WaitlistCategory,
-    goals: a.goals.map((g) => GOAL[g]),
+    role,
+    monthlyVolume,
+    primaryCategory,
+    goals,
     ...(notes ? { notes } : {}),
     consent: true,
     website: a.hp ?? '',
@@ -69,6 +80,6 @@ export function waitlistPayload(a: WaitlistAnswers, locale: string): WaitlistInp
 
 /** Analytics props for a submission (no personal data). */
 export function waitlistEventProps(a: WaitlistAnswers) {
-  return { role: ROLE[a.role], monthlyVolume: VOLUME[a.volume], primaryCategory: a.category, goals: a.goals.map((g) => GOAL[g]) }
+  return { role: ROLE[a.role], monthlyVolume: volumeOf(a.volume), primaryCategory: a.category, goals: a.goals.map((g) => GOAL[g]) }
 }
 

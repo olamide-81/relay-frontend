@@ -31,6 +31,8 @@ import {
 import { RELAY } from '@/lib/dc/relay-data'
 import RelayAppIcon from './RelayAppIcon'
 
+import { providerVals } from '@/lib/dc/wiring'
+
 const RC = {
   Europe: ['United Kingdom', 'Germany', 'France', 'Netherlands', 'Ireland', 'Spain', 'Italy', 'Poland'],
   'North America': ['United States', 'Canada', 'Mexico'],
@@ -222,6 +224,17 @@ class Component extends DCLogic {
             .map((x) => x.id),
         ]),
     }
+  }
+}
+
+{
+  const designVals = Component.prototype.renderVals
+  const appVals = function (v) {
+    return providerVals.call(this, v)
+  }
+  Component.prototype.renderVals = function () {
+    const v = designVals.call(this)
+    return { ...v, ...appVals.call(this, v) }
   }
 }
 
@@ -593,9 +606,7 @@ function template(v0, self) {
                 )
               })}{' '}
             </div>{' '}
-            <div style={{ fontSize: '12px', color: '#62666d' }}>
-              Indicative list pricing collected by Relay. Final terms depend on volume and risk review.
-            </div>{' '}
+            <div style={{ fontSize: '12px', color: '#62666d' }}>{hole(v0.appPricingNote)}</div>{' '}
           </section>{' '}
           <section
             ref={v0.refs?.coverage}

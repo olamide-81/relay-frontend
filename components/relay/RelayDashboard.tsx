@@ -431,6 +431,7 @@ function template(v0, self) {
                 {' '}
                 <RelayCompare
                   app={v0.app}
+                  onNavigate={v0.onNavigate}
                   ids={v0.params?.ids}
                   savedId={v0.params?.savedId}
                   saved={v0.compares}
@@ -445,6 +446,8 @@ function template(v0, self) {
                 {' '}
                 <RelayDirectory
                   app={v0.app}
+                  query={v0.params?.q}
+                  queryKey={v0.params?.t}
                   onOpenProvider={v0.openProvider}
                   onNavigate={v0.onNavigate}
                   onCompare={v0.onCompare}

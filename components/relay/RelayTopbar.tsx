@@ -30,7 +30,7 @@ import {
 } from '@/lib/dc/runtime'
 import RelayAppIcon from './RelayAppIcon'
 
-import { wireTopbar, topbarVals } from '@/lib/dc/wiring'
+import { wireTopbar, topbarVals, searchVals } from '@/lib/dc/wiring'
 
 const NOTES = [
   {
@@ -276,7 +276,7 @@ class Component extends DCLogic {
 {
   const designVals = Component.prototype.renderVals
   const appVals = function (v) {
-    return topbarVals.call(this, v)
+    return { ...searchVals.call(this, v), ...topbarVals.call(this, v) }
   }
   Component.prototype.renderVals = function () {
     const v = designVals.call(this)
@@ -731,54 +731,124 @@ function template(v0, self) {
               <path d="m20.5 20.5-4.2-4.2" />
             </svg>
           </span>{' '}
-          <label
-            data-r="m-hide"
-            style={css(
-              `display:flex;align-items:center;gap:10px;flex:0 1 380px;width:380px;min-width:140px;height:34px;padding:0 8px 0 12px;border-radius:9px;cursor:text;transition:background-color .15s,box-shadow .15s;background:${v0.searchBg ?? ''};box-shadow:${v0.searchSh ?? ''}`,
-            )}
-          >
-            {' '}
-            <svg
-              width="14"
-              height="14"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="#8a8f98"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              style={{ flex: 'none' }}
-            >
-              <circle cx="11" cy="11" r="7.5" />
-              <path d="m20.5 20.5-4.2-4.2" />
-            </svg>{' '}
-            <input
-              ref={v0.searchRef}
-              value={dv(v0.query, '')}
-              onChange={v0.onQuery}
-              onFocus={v0.onFocus}
-              onBlur={v0.onBlur}
-              placeholder="Search Providers…"
-              style={{
-                flex: '1',
-                minWidth: '0',
-                height: '100%',
-                border: '0',
-                outline: '0',
-                background: 'transparent',
-                color: '#f7f8f8',
-                font: 'inherit',
-                fontSize: '13px',
-              }}
-            />{' '}
-            <span
+          <div data-r="m-hide" style={{ position: 'relative', flex: '0 1 380px', width: '380px', minWidth: '140px' }}>
+            <label
               style={css(
-                `font-family:'Geist Mono',monospace;font-size:10.5px;color:#62666d;padding:1px 5px;border-radius:4px;box-shadow:inset 0 0 0 1px #2a2b2e;transition:opacity .15s;opacity:${v0.kbdOp ?? ''}`,
+                `display:flex;align-items:center;gap:10px;width:100%;height:34px;padding:0 8px 0 12px;border-radius:9px;cursor:text;transition:background-color .15s,box-shadow .15s;background:${v0.searchBg ?? ''};box-shadow:${v0.searchSh ?? ''}`,
               )}
             >
-              ⌘K
-            </span>{' '}
-          </label>{' '}
+              {' '}
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#8a8f98"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                style={{ flex: 'none' }}
+              >
+                <circle cx="11" cy="11" r="7.5" />
+                <path d="m20.5 20.5-4.2-4.2" />
+              </svg>{' '}
+              <input
+                ref={v0.searchRef}
+                value={dv(v0.query, '')}
+                onChange={v0.onQuery}
+                onFocus={v0.onFocus}
+                onBlur={v0.onBlur}
+                onKeyDown={v0.appSearchKey}
+                placeholder="Search Providers…"
+                style={{
+                  flex: '1',
+                  minWidth: '0',
+                  height: '100%',
+                  border: '0',
+                  outline: '0',
+                  background: 'transparent',
+                  color: '#f7f8f8',
+                  font: 'inherit',
+                  fontSize: '13px',
+                }}
+              />{' '}
+              <span
+                style={css(
+                  `font-family:'Geist Mono',monospace;font-size:10.5px;color:#62666d;padding:1px 5px;border-radius:4px;box-shadow:inset 0 0 0 1px #2a2b2e;transition:opacity .15s;opacity:${v0.kbdOp ?? ''}`,
+                )}
+              >
+                ⌘K
+              </span>{' '}
+            </label>{' '}
+            {v0.appSearchOpen ? (
+              <>
+                {' '}
+                <div
+                  style={{
+                    position: 'absolute',
+                    top: '40px',
+                    left: '0',
+                    right: '0',
+                    maxHeight: '380px',
+                    overflowY: 'auto',
+                    padding: '4px',
+                    background: 'rgba(32,33,37,.78)',
+                    backdropFilter: 'blur(18px) saturate(140%)',
+                    WebkitBackdropFilter: 'blur(18px) saturate(140%)',
+                    border: '1px solid rgba(255,255,255,.08)',
+                    borderRadius: '10px',
+                    boxShadow: '0 12px 32px rgba(0,0,0,.5),0 2px 6px rgba(0,0,0,.3)',
+                  }}
+                >
+                  {' '}
+                  {list(v0.appResults).map((it1, i1) => {
+                    const v1 = { ...v0, r: it1, $index: i1 }
+                    return (
+                      <React.Fragment key={i1}>
+                        {' '}
+                        {v1.r?.head ? (
+                          <>
+                            <div
+                              style={{ padding: '8px 8px 4px', fontSize: '11px', fontWeight: '500', color: '#62666d' }}
+                            >
+                              {hole(v1.r?.label)}
+                            </div>
+                          </>
+                        ) : null}{' '}
+                        {v1.r?.item ? (
+                          <>
+                            <div
+                              onMouseDown={v1.r?.run}
+                              onMouseEnter={v1.r?.hover}
+                              style={css(
+                                `display:flex;align-items:center;gap:8px;height:34px;padding:0 8px;border-radius:6px;cursor:pointer;font-size:13px;color:${v1.r?.fg ?? ''};background:${v1.r?.bg ?? ''}`,
+                              )}
+                            >
+                              <RelayAppIcon kind={v1.r?.kind} size="20" />
+                              <span
+                                style={{
+                                  flex: '1',
+                                  minWidth: '0',
+                                  whiteSpace: 'nowrap',
+                                  overflow: 'hidden',
+                                  textOverflow: 'ellipsis',
+                                }}
+                              >
+                                {hole(v1.r?.label)}
+                              </span>
+                              <span style={{ fontSize: '11.5px', color: '#62666d', whiteSpace: 'nowrap' }}>
+                                {hole(v1.r?.meta)}
+                              </span>
+                            </div>
+                          </>
+                        ) : null}{' '}
+                      </React.Fragment>
+                    )
+                  })}{' '}
+                </div>{' '}
+              </>
+            ) : null}{' '}
+          </div>{' '}
           <div style={{ position: 'relative' }}>
             {' '}
             <span

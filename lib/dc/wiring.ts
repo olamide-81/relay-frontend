@@ -96,6 +96,7 @@ function defaultFavs(app: AppBridge) {
 }
 
 function saveFavs(this: any, app: AppBridge) {
+  app.data.favorites = this.state.favs
   app.later('favs', 400, () => appApi.setFavorites(this.state.favs).catch((e) => app.fail(e)))
 }
 
@@ -225,6 +226,86 @@ export function wireTopbar(C: any) {
       ids.forEach((id) => appApi.readNotifications(id).catch(() => {}))
     },
   })
+}
+
+const SEARCH_PAGES: Array<[string, string, string]> = [
+  ['overview', 'Overview', 'all'],
+  ['directory', 'Directory', 'globe'],
+  ['providers', 'Providers', 'wallet'],
+  ['shortlists', 'Shortlists', 'all'],
+  ['compare', 'Compare', 'chart'],
+  ['requests', 'Requests', 'api'],
+  ['inbox', 'Inbox', 'all'],
+  ['intelligence', 'Intelligence', 'chart'],
+  ['profile', 'Profile', 'all'],
+  ['settings', 'Settings', 'all'],
+]
+
+/** Top bar search: matching Providers and dashboard pages; Enter opens the highlighted one or the Directory. */
+export function searchVals(this: any) {
+  const S = this.state
+  const q = String(S.query ?? '').trim().toLowerCase()
+  const nav = (page: string, params?: any) => {
+    this.setState({ query: '', hi: 0 })
+    this.searchRef.current?.blur()
+    this.props.onNavigate?.(page, params)
+  }
+  const toDirectory = () => nav('directory', { q: S.query.trim(), t: Date.now() })
+  if (!q) return { appSearchOpen: false, appResults: [], appSearchKey: () => {} }
+
+  const rank = (s: string) => (s.startsWith(q) ? 0 : s.split(/\s+/).some((w) => w.startsWith(q)) ? 1 : s.includes(q) ? 2 : 9)
+  const providers = (RELAY.providers as any[])
+    .map((p) => ({ p, r: Math.min(rank(p.name.toLowerCase()), rank(`${p.cat} ${p.hq} ${p.region}`.toLowerCase()) + 3) }))
+    .filter((x) => x.r < 9)
+    .sort((a, b) => a.r - b.r || b.p.score - a.p.score)
+    .slice(0, 6)
+    .map(({ p }) => ({ label: p.name, meta: `${p.cat} · ${p.hq}`, kind: p.kind, go: () => nav('provider', { id: p.id, from: 'directory' }) }))
+  const pages = SEARCH_PAGES.filter(([, label]) => label.toLowerCase().includes(q)).map(([key, label, kind]) => ({
+    label,
+    meta: 'Page',
+    kind,
+    go: () => nav(key),
+  }))
+  const all = { label: `Search the directory for “${S.query.trim()}”`, meta: 'Enter', kind: 'globe', go: toDirectory }
+  const items = [...providers, ...pages, all]
+  const hi = Math.min(S.hi ?? 0, items.length - 1)
+  const row = (it: any, i: number) => ({
+    ...it,
+    item: true,
+    run: (e: any) => {
+      e?.preventDefault?.()
+      it.go()
+    },
+    hover: () => i !== hi && this.setState({ hi: i }),
+    bg: i === hi ? '#2a2b2e' : 'transparent',
+    fg: i === hi ? '#f7f8f8' : '#d4d6da',
+  })
+  const results: any[] = []
+  providers.forEach((it, i) => {
+    if (i === 0) results.push({ head: true, label: 'Providers' })
+    results.push(row(it, i))
+  })
+  pages.forEach((it, i) => {
+    if (i === 0) results.push({ head: true, label: 'Pages' })
+    results.push(row(it, providers.length + i))
+  })
+  if (results.length) results.push({ head: true, label: '' })
+  results.push(row(all, items.length - 1))
+  return {
+    appSearchOpen: Boolean(S.focus) || (typeof document !== 'undefined' && document.activeElement === this.searchRef.current),
+    appResults: results,
+    appSearchKey: (e: any) => {
+      if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+        e.preventDefault()
+        const step = e.key === 'ArrowDown' ? 1 : -1
+        this.setState({ hi: (hi + step + items.length) % items.length })
+      } else if (e.key === 'Enter') {
+        e.preventDefault()
+        items[hi].go()
+      }
+    },
+    onQuery: (e: any) => this.setState({ query: e.target.value, hi: 0 }),
+  }
 }
 
 export function topbarVals(this: any, v: any) {
@@ -505,19 +586,9 @@ export function compareVals(this: any, v: any) {
     picked: v.picked.map((p: any) => ({
       ...p,
       request: () => {
-        if (this.state.requested[p.id] || app.blockIntro(1)) return
-        this.setState((s: any) => ({ requested: { ...s.requested, [p.id]: true } }))
-        appApi
-          .createRequests({ pids: [p.id], type: 'Intro' })
-          .then(({ requests, usage }) => {
-            app.data.usage = usage
-            app.data.requests = [...requests, ...app.data.requests]
-            app.toast('Intro requested', 'success', 'Replies will land in your Inbox.')
-          })
-          .catch((e) => {
-            this.setState((s: any) => ({ requested: { ...s.requested, [p.id]: false } }))
-            app.fail(e)
-          })
+        if (this.state.requested[p.id]) return this.props.onNavigate?.('requests')
+        if (app.blockIntro(1)) return
+        this.props.onNavigate?.('requests', { provider: p.id })
       },
     })),
   }
@@ -560,10 +631,45 @@ export function directoryVals(this: any, v: any) {
 
 /* ======================= Overview ======================= */
 
+const OVERVIEW_DEMO = {
+  appTotal: '1,600',
+  appCountries: '140',
+  appMore: '1,595',
+  appVisible: '5',
+  appVisiblePct: '2%',
+  appListCount: '0',
+  appNoLists: true,
+  appHasLists: false,
+  appLists: [],
+}
+
 export function overviewVals(this: any, v: any) {
   const app: AppBridge | undefined = this.props.app
-  if (!app) return { appFromPrice: PRICE.monthly }
+  if (!app) return { appFromPrice: PRICE.monthly, ...OVERVIEW_DEMO }
   const d = app.data
+  const total = RELAY.TOTAL
+  const visible = app.pro ? total : Math.min(total, RELAY.providers.length)
+  const countries = d.catalog.countries ?? 0
+  const regions = d.catalog.regionsCovered ?? 0
+  const added = d.catalog.addedThisMonth ?? 0
+  const lists = d.shortlists.map((l: any) => ({
+    name: l.name,
+    note: l.note || (l.kind && RELAY.CAT[l.kind] ? RELAY.CAT[l.kind].label : ''),
+    kind: l.kind && RELAY.CAT[l.kind] ? l.kind : 'all',
+    count: `${l.ids.length} Provider${l.ids.length === 1 ? '' : 's'}`,
+    open: () => this.props.onNavigate?.('shortlists', { initial: l.id }),
+  }))
+  const numbers = {
+    appTotal: fmtN(total),
+    appCountries: fmtN(countries),
+    appMore: fmtN(Math.max(0, total - visible)),
+    appVisible: fmtN(visible),
+    appVisiblePct: total ? `${Math.round((visible / total) * 100)}%` : '0%',
+    appListCount: String(lists.length),
+    appNoLists: lists.length === 0,
+    appHasLists: lists.length > 0,
+    appLists: lists,
+  }
   const open = d.requests.filter((r) => r.status === 'sent' || r.status === 'opened' || r.status === 'draft').length
   const replied = d.requests.filter((r) => r.status === 'replied').length
   const shortlisted = new Set(d.shortlists.flatMap((l) => l.ids)).size
@@ -575,17 +681,25 @@ export function overviewVals(this: any, v: any) {
   ].slice(0, 5)
   return {
     appFromPrice: PRICE.monthly,
+    ...numbers,
     stats: [
-      { ...v.stats[0], value: fmtN(RELAY.TOTAL) },
-      { ...v.stats[1], value: fmtN(d.catalog.countries ?? 140) },
+      { ...v.stats[0], value: fmtN(total), note: `+${fmtN(added)} this month` },
+      { ...v.stats[1], value: fmtN(countries), note: `${regions} region${regions === 1 ? '' : 's'}` },
       { label: 'Open requests', value: String(open), note: open ? `${replied} replied` : replied ? `${replied} replied` : 'None in flight' },
       { label: 'Shortlisted', value: String(shortlisted), note: d.shortlists.length ? `${d.shortlists.length} shortlist${d.shortlists.length === 1 ? '' : 's'}` : 'None yet' },
     ],
     cats: v.cats.map((c: any) => {
       const n = avail(c.key)
+      const ps = RELAY.providers.filter((p: any) => p.kind === c.key)
+      const cheapest = ps.filter((p: any) => p.pn > 0).sort((a: any, b: any) => a.pn - b.pn)[0]
+      const settles: string[] = ps.map((p: any) => p.settle).filter((s: string) => s && s !== '—')
+      const freq = (s: string) => settles.filter((x) => x === s).length
+      const settle = [...settles].sort((a, b) => freq(b) - freq(a))[0]
       return {
         ...c,
-        count: n ? fmtN(n) : '0',
+        from: cheapest?.price ?? (ps[0]?.price || '—'),
+        settle: settle ?? '—',
+        count: fmtN(n || locked(c.key)),
         locked: fmtN(locked(c.key)),
         has: n > 0,
         empty: n === 0,
@@ -595,6 +709,85 @@ export function overviewVals(this: any, v: any) {
     }),
     orbit: v.orbit.map((o: any) => ({ ...o, locked: fmtN(locked(o.key)) })),
     activity: feed.length ? feed : [{ kind: 'all', who: 'Relay', what: 'is ready. Request your first intro to get started', when: 'now' }],
+  }
+}
+
+/* ======================= Provider page ======================= */
+
+const DOCS = ['', 'Basic', 'Fair', 'Good', 'Very good', 'Excellent']
+const OK_BAR = 'rgba(111,227,180,.55)'
+const PRICING_NOTE = 'Indicative list pricing collected by Relay. Final terms depend on volume and risk review.'
+
+/** The Provider page from admin-managed data (profile) instead of the design's seeded figures. */
+export function providerVals(this: any, v: any) {
+  const app: AppBridge | undefined = this.props.app
+  const p: any = RELAY.byId[this.props.pid]
+  if (!app || !p || !v.p?.id) return { appPricingNote: PRICING_NOTE }
+  const pr = p.profile ?? {}
+  const dash = (x: unknown) => (x == null || x === '' ? '—' : String(x))
+  const tiers = pr.tiers?.length
+    ? pr.tiers
+    : [{ name: 'Standard', volume: 'All volumes', price: p.price, monthlyMin: p.minimumCommitment }]
+  const incidents = new Map<number, boolean>((pr.incidents ?? []).map((i: any) => [i.day, Boolean(i.major)]))
+  const bars = Array.from({ length: 90 }, (_, i) => {
+    const day = 89 - i
+    return incidents.has(day) ? (incidents.get(day) ? '#ff7b7b' : '#f2c14e') : OK_BAR
+  })
+  const inc = incidents.size
+  const tpl = v.tiers ?? []
+  const priced = /\d/.test(p.price)
+  return {
+    kpis: (v.kpis ?? []).map((k: any) => {
+      if (k.k === 'Pricing from' && !priced) return { ...k, v: '—', n: p.price || 'On request' }
+      if (k.k === 'Currencies' && !p.currencies) return { ...k, n: p.kind === 'kyc' ? 'Not applicable' : 'Not listed yet' }
+      if (k.k === 'Settlement' && (!p.settle || p.settle === '—')) return { ...k, v: '—', n: 'Not listed yet' }
+      return k
+    }),
+    appPricingNote: pr.pricingNote || PRICING_NOTE,
+    tiers: tiers.map((t: any, i: number) => {
+      const look = tpl[tiers.length === 1 ? 1 : Math.min(i, tpl.length - 1)] ?? {}
+      return {
+        name: t.name,
+        vol: dash(t.volume),
+        price: dash(t.price),
+        bg: look.bg,
+        ring: look.ring,
+        lines: [
+          { k: 'Setup fee', v: dash(t.setupFee) },
+          { k: 'Monthly minimum', v: dash(t.monthlyMin) },
+          { k: 'Support', v: dash(t.support) },
+        ],
+      }
+    }),
+    reach: (p.reach ?? []).map((r: any) => ({ region: r.region, w: (r.pct ?? 0) + '%', countries: r.countries ?? [] })),
+    ops: [
+      { k: 'Onboarding', v: dash(pr.ops?.onboarding) },
+      { k: 'Customer types', v: dash(pr.ops?.customerTypes) },
+      { k: 'Data residency', v: dash(pr.ops?.dataResidency) },
+      { k: 'Support hours', v: dash(pr.ops?.supportHours) },
+    ],
+    licences: (p.licences ?? []).map((l: any) => ({ ...l, since: dash(l.since), dot: l.status === 'Active' ? '#6fe3b4' : '#f2c14e' })),
+    assurance: [
+      ...(pr.assurance?.length ? pr.assurance : (p.certs ?? []).map((name: string) => ({ name }))).map((a: any) => ({
+        k: a.name,
+        v: a.note || 'Certified',
+        c: '#6fe3b4',
+        tint: 'rgba(111,227,180,.1)',
+        icon: 'M20 6 9 17l-5-5',
+      })),
+      ...(pr.sanctions
+        ? [{ k: 'Sanctions screening', v: pr.sanctions, c: '#8fb8ff', tint: 'rgba(143,184,255,.1)', icon: 'M20 6 9 17l-5-5' }]
+        : []),
+    ],
+    integ: [
+      { k: 'API', v: dash(p.apiText) },
+      { k: 'SDKs', v: pr.integration?.sdks || (p.sdks?.length ? p.sdks.join(' · ') : '—') },
+      { k: 'Sandbox', v: pr.integration?.sandbox || (p.api?.includes('Sandbox') ? 'Self-serve' : 'On request') },
+      { k: 'Webhooks', v: pr.integration?.webhooks || (p.api?.includes('Webhooks') ? 'Available' : 'Polling only') },
+      { k: 'Docs', v: pr.integration?.docs || DOCS[p.docsQuality ?? 0] || '—' },
+    ],
+    bars,
+    incidents: inc ? inc + ' incident' + (inc > 1 ? 's' : '') : 'No incidents',
   }
 }
 

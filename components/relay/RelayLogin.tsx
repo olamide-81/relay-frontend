@@ -37,6 +37,10 @@ class Component extends DCLogic {
     this._t = setTimeout(() => this.setState({ ready: true }), 60)
     if (!this.props.onAuth && /[?&]state=waitlisted/.test(dcSearch()))
       this.setState({ email: 'pending@northwind.io', pw: 'password1', waitlisted: true })
+    else if (this.props.onAuth && /[?&]error=WAITLISTED/.test(dcSearch())) {
+      const em = new URLSearchParams(dcSearch()).get('email')
+      this.setState({ waitlisted: true, ...(em ? { email: em } : {}) })
+    }
   }
   componentWillUnmount() {
     clearTimeout(this._t)

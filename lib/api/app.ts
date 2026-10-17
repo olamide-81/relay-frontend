@@ -117,6 +117,8 @@ export type Catalog = {
   available: number
   locked: number
   countries?: number
+  regionsCovered?: number
+  addedThisMonth?: number
 }
 
 export type Bootstrap = {

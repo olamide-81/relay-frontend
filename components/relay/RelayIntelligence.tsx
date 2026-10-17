@@ -763,7 +763,14 @@ cmsBind('intelligence.signals', SIG)
 cmsBind('intelligence.news', NEWS)
 cmsBind('intelligence.benchmarks', BENCH)
 cmsBind('intelligence.licenceCatalog', CAT)
-cmsBind('intelligence.licenceChanges', LIC)
+cmsBind('intelligence.licenceChanges', LIC, ([provider, kind, licence, reg, st, region]) => ({
+  provider,
+  kind,
+  licence,
+  reg,
+  st: LST[String(st).toLowerCase()] ? String(st).toLowerCase() : 'pending',
+  region,
+}))
 
 function template(v0, self) {
   return (

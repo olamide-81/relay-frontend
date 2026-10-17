@@ -1,6 +1,7 @@
 import { getSession, setSession } from '../session'
 import { apiBaseUrl } from './config'
 import { ApiError } from './simulate'
+import { trackBusy } from '../dc/busy'
 
 type Json = Record<string, unknown> | unknown[] | null
 
@@ -45,7 +46,11 @@ export function refreshAccessToken(): Promise<string | null> {
 
 const NO_REFRESH = /^\/api\/auth\/(login|register|refresh|logout|google)/
 
-export async function apiRequest<T>(path: string, init: RequestInit = {}, retried = false): Promise<T> {
+export function apiRequest<T>(path: string, init: RequestInit = {}): Promise<T> {
+  return trackBusy(send<T>(path, init, false))
+}
+
+async function send<T>(path: string, init: RequestInit, retried: boolean): Promise<T> {
   const session = getSession()
   const headers = new Headers(init.headers)
   if (!headers.has('Content-Type') && init.body) {
@@ -62,7 +67,7 @@ export async function apiRequest<T>(path: string, init: RequestInit = {}, retrie
   })
   if (res.status === 401 && !retried && session && !NO_REFRESH.test(path)) {
     const token = await refreshAccessToken()
-    if (token) return apiRequest<T>(path, init, true)
+    if (token) return send<T>(path, init, true)
   }
   const body = await parseBody(res)
   if (!res.ok) {

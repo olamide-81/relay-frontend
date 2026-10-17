@@ -29,7 +29,8 @@ export default function AuthScreen({ mode }: { mode: 'signin' | 'signup' }) {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
     const code = params.get('error')
-    if (code) setError(googleAuthErrorMessage[code] ?? 'Google sign-in failed. Try again.')
+    // WAITLISTED is the login notice (Relay Login reads the query), not a red error.
+    if (code && code !== 'WAITLISTED') setError(googleAuthErrorMessage[code] ?? 'Google sign-in failed. Try again.')
     rememberInvite(params.get('invite'))
   }, [])
 

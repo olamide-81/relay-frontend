@@ -22,29 +22,34 @@ export type SiteContent = {
 /** Pro prices shown across the site and app (USD; charged in NGN at checkout). */
 export const PRICE = { free: '$0', monthly: '$49', yearly: '$39', savePct: 20 }
 
-const bound = new Map<string, any[]>()
+type Binding = { target: any; row?: (row: any) => any }
+
+const bound = new Map<string, Binding[]>()
 let current: SiteContent | null = null
 
 function at(c: SiteContent | null, path: string) {
   return path.split('.').reduce<any>((o, k) => (o == null ? o : o[k]), c)
 }
 
-function replaceInPlace(target: any, value: any) {
+function replaceInPlace({ target, row }: Binding, value: any) {
   if (Array.isArray(target) && Array.isArray(value)) {
-    target.splice(0, target.length, ...value)
+    target.splice(0, target.length, ...(row ? value.map(row) : value))
   } else if (target && typeof target === 'object' && value && typeof value === 'object') {
     for (const k of Object.keys(target)) delete target[k]
     Object.assign(target, value)
   }
 }
 
-/** Called from a design component's module: `cmsBind('changelog.entries', E)`. */
-export function cmsBind<T>(path: string, target: T): T {
+/**
+ * Called from a design component's module: `cmsBind('changelog.entries', E)`.
+ * Content rows are stored as tuples; pass `row` when the design keeps them as objects.
+ */
+export function cmsBind<T>(path: string, target: T, row?: (row: any) => any): T {
   if (!bound.has(path)) bound.set(path, [])
   const list = bound.get(path)!
-  if (!list.includes(target)) list.push(target)
+  if (!list.some((b) => b.target === target)) list.push({ target, row })
   const value = at(current, path)
-  if (value != null) replaceInPlace(target, value)
+  if (value != null) replaceInPlace({ target, row }, value)
   return target
 }
 
@@ -59,8 +64,8 @@ export function applySiteContent(c: SiteContent | null | undefined) {
     if (c.pricing.yearlyLabel) PRICE.yearly = c.pricing.yearlyLabel
     if (c.pricing.savePct != null) PRICE.savePct = c.pricing.savePct
   }
-  for (const [path, targets] of bound) {
+  for (const [path, bindings] of bound) {
     const value = at(c, path)
-    if (value != null) targets.forEach((t) => replaceInPlace(t, value))
+    if (value != null) bindings.forEach((b) => replaceInPlace(b, value))
   }
 }

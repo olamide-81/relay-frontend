@@ -39,7 +39,7 @@ const MAIN_ALL = ['All regions', 'Europe', 'North America', 'Asia-Pacific']
 const PER = 10
 class Component extends DCLogic {
   state = {
-    q: '',
+    q: this.props.query ?? '',
     cat: this.props.category ?? 'all',
     region: 'All regions',
     sel: [],
@@ -47,6 +47,10 @@ class Component extends DCLogic {
     page: 0,
     more: false,
     open: null,
+  }
+  componentDidUpdate(prev) {
+    if (this.props.queryKey !== prev.queryKey && this.props.query != null)
+      this.setState({ q: this.props.query, page: 0, cat: 'all', region: 'All regions' })
   }
   componentDidMount() {
     this._appMq = window.matchMedia?.('(max-width: 768px)')
@@ -105,7 +109,7 @@ class Component extends DCLogic {
       fn()
     }
     return {
-      subtitle: `${R.fmt(R.TOTAL)} Providers across 140 countries, verified and updated weekly.`,
+      subtitle: `${R.fmt(R.TOTAL)} Providers across ${R.fmt(this.props.app?.data.catalog.countries ?? 140)} countries, verified and updated weekly.`,
       q: S.q,
       onQ: (e) => this.setState({ q: e.target.value, page: 0 }),
       regions: MAIN.map((r) => ({
