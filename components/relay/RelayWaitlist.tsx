@@ -328,11 +328,7 @@ class Component extends DCLogic {
         fg: st === 'next' ? '#8a8f98' : '#f7f8f8',
         rail: i === 2 ? 'transparent' : 'rgba(255,255,255,.1)',
       })),
-      edit: () => {
-        this.setState({ done: null, step: 0, shown: true })
-        track('waitlist_step_viewed', { step: 1 })
-        this.focusTitle()
-      },
+      edit: () => this.setState({ done: null, step: 0, shown: true }),
     }
   }
 }
@@ -1222,29 +1218,6 @@ function template(v0, self) {
                       >
                         Back to Relay
                       </A>{' '}
-                      <span
-                        onClick={v0.edit}
-                        role="button"
-                        tabIndex="0"
-                        aria-disabled={v0.appA11y?.busy}
-                        onKeyDown={v0.appA11y?.btnKey}
-                        data-wl-opt=""
-                        style={{
-                          height: '44px',
-                          padding: '0 16px',
-                          display: 'flex',
-                          alignItems: 'center',
-                          borderRadius: '10px',
-                          fontSize: '14.5px',
-                          fontWeight: '500',
-                          color: '#d4d6da',
-                          cursor: 'pointer',
-                          boxShadow: 'inset 0 0 0 1px rgba(255,255,255,.12)',
-                        }}
-                        className={'dcp-1m22wbr'}
-                      >
-                        Edit answers
-                      </span>{' '}
                     </div>{' '}
                   </div>{' '}
                 </>

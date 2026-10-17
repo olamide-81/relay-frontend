@@ -563,7 +563,7 @@ const roleOptions = (cur) => [...(!cur ? [{ v: '', l: 'Select a role' }] : ROLES
         '<sc-if value="{{ hasErr }}"><div style="',
         '<input name="website" tabindex="-1" autocomplete="off" aria-hidden="true" value="{{ appHpVal }}" onChange="{{ appHp }}" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0"><sc-if value="{{ hasErr }}"><div id="wl-err" role="alert" style="',
       ],
-      ...['back', 'next', 'edit'].map((h) => [`<span onClick="{{ ${h} }}"`, `<span onClick="{{ ${h} }}" role="button" tabindex="0" aria-disabled="{{ appA11y.busy }}" onKeyDown="{{ appA11y.btnKey }}" data-wl-opt`]),
+      ...['back', 'next'].map((h) => [`<span onClick="{{ ${h} }}"`, `<span onClick="{{ ${h} }}" role="button" tabindex="0" aria-disabled="{{ appA11y.busy }}" onKeyDown="{{ appA11y.btnKey }}" data-wl-opt`]),
     ],
     logic: [
       // Demo states (?state=step2 …) only without the API.
@@ -592,7 +592,6 @@ const roleOptions = (cur) => [...(!cur ? [{ v: '', l: 'Select a role' }] : ROLES
   focusTitle() { requestAnimationFrame(() => document.querySelector('[data-wl-title]')?.focus({ preventScroll: true })); }
   move(to) {`,
       ],
-      ['edit: () => this.setState({ done: null, step: 0, shown: true })', "edit: () => { this.setState({ done: null, step: 0, shown: true }); track('waitlist_step_viewed', { step: 1 }); this.focusTitle(); }"],
     ],
     vals: `function (v) {
       const S = this.state, msg = S.apiErr || v.err || null;
