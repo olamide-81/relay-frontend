@@ -151,8 +151,8 @@ function template(v0, self) {
             <p
               style={{ margin: '24px 0 0', maxWidth: '460px', fontSize: '17px', lineHeight: '1.55', color: '#8a8f98' }}
             >
-              Query 1,600 Providers, their licences, coverage and pricing from your own tools. Subscribe to webhooks
-              when anything changes.
+              Query Providers across every region we cover, their licences, coverage and pricing from your own tools.
+              Subscribe to webhooks when anything changes.
             </p>{' '}
             <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', marginTop: '32px' }}>
               {' '}

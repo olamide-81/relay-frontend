@@ -157,12 +157,22 @@ export default {
       click('Compare plans', 'appComparePlans'),
       click('View directory', 'appDirectory'),
       [/(<span) (style="font-size:12\.5px;font-weight:500;color:\{\{ c\.accent \}\}">Unlock →<\/span>)/, '$1 onClick="{{ appUpgrade }}" $2'],
-      // Real catalog numbers (the design's are the website's demo figures).
-      ['>1,600 Providers across 140 countries · Scored', '>{{ appTotal }} Providers across {{ appCountries }} countries · Scored'],
-      ['>1,595 more Providers across 140 countries.<', '>{{ appMore }} more Providers across {{ appCountries }} countries.<'],
-      ['font-weight:500">5</span> of 1,600 visible on Free<', 'font-weight:500">{{ appVisible }}</span> of {{ appTotal }} visible on Free<'],
+      // Live catalog totals in-app; marketing copy stays region-first (no country-count claims).
+      [
+        '>Providers across every region we cover · Scored',
+        '>{{ appTotal }} Providers across North America, Europe, Asia, LATAM, Africa and beyond · Scored',
+      ],
+      [
+        '>More Providers across every region we cover.<',
+        '>{{ appMore }} more Providers across every region we cover.<',
+      ],
+      [
+        'font-weight:500">Preview</span> on Free<',
+        'font-weight:500">{{ appVisible }}</span> of {{ appTotal }} visible on Free<',
+      ],
       ['<span style="width:2%;min-width:6px;', '<span style="width:{{ appVisiblePct }};min-width:6px;'],
-      ['color:#f7f8f8">1,000+</div>', 'color:#f7f8f8">{{ appTotal }}</div>'],
+      ['color:#f7f8f8">Global</div>', 'color:#f7f8f8">{{ appTotal }}</div>'],
+      ['Multi-region coverage</div>', 'Providers in the directory</div>'],
       // Shortlists card: the workspace's shortlists, as rows styled like the Activity feed.
       ['font-weight:500">Shortlists</span><span style="font-size:12px;color:#62666d">0</span>', 'font-weight:500">Shortlists</span><span style="font-size:12px;color:#62666d">{{ appListCount }}</span>'],
       [
@@ -290,7 +300,6 @@ const roleOptions = (cur) => [...(!cur ? [{ v: '', l: 'Select a role' }] : ROLES
   'Relay Directory': {
     prelude: "import { wireDirectory, directoryVals } from '@/lib/dc/wiring'\nconst narrow = () => typeof window !== 'undefined' && !!window.matchMedia?.('(max-width: 768px)').matches;",
     logic: [
-      ['Providers across 140 countries, verified', 'Providers across ${R.fmt(this.props.app?.data.catalog.countries ?? 140)} countries, verified'],
       ["state = { q: '',", "state = { q: this.props.query ?? '',"],
       ["const MAIN = ['All regions', 'Europe', 'North America', 'Asia-Pacific']", "const MAIN_ALL = ['All regions', 'Europe', 'North America', 'Asia-Pacific']"],
       ['const extra = R.REGIONS.filter(r => !MAIN.includes(r))', 'const MAIN = narrow() ? MAIN_ALL.slice(0, 2) : MAIN_ALL, extra = R.REGIONS.filter(r => !MAIN.includes(r))'],
@@ -440,7 +449,12 @@ const roleOptions = (cur) => [...(!cur ? [{ v: '', l: 'Select a role' }] : ROLES
   'Relay Directory Page': {
     template: [cta('Explore the full directory')],
     prelude: "import { LAUNCH } from '@/lib/launch'",
-    logic: [['matching Providers. Sign up free to see them all.`', 'matching Providers. ${LAUNCH.seeAll}`']],
+    logic: [
+      [
+        'matching Providers. Sign up free to see the full directory.`',
+        'matching Providers. ${LAUNCH.seeAll}`',
+      ],
+    ],
   },
   'Relay Developers': { template: [cta('Get an API key')] },
   'Relay Security': { template: [link('security@relay.gratebridge.com', 'mailto:security@relay.gratebridge.com')] },

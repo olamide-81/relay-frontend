@@ -42,9 +42,9 @@ const TABLE = [
   [
     'Directory',
     [
-      ['Provider profiles', ['Preview', 'All 1,600', 'All 1,600']],
+      ['Provider profiles', ['Preview', 'Full directory', 'Full directory']],
       ['Search and filters', [Y, Y, Y]],
-      ['Regions', ['3', 'All 8', 'All 8']],
+      ['Regions', ['Core markets', 'All regions', 'All regions']],
       ['Bookmarks', ['10', 'Unlimited', 'Unlimited']],
     ],
   ],
@@ -151,7 +151,7 @@ class Component extends DCLogic {
           'For teams actively choosing and switching Providers.',
           'Upgrade to Pro',
           [
-            'All 1,600 Providers',
+            'Full directory across every region',
             'Unlimited compares and intros',
             'Reports, benchmarks and signals',
             'Licence watch',

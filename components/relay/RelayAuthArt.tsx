@@ -167,8 +167,8 @@ function template(v0, self) {
             <span style={{ color: '#f7f8f8' }}>fintech.</span>
           </div>{' '}
           <p style={{ margin: '0', maxWidth: '460px', fontSize: '14px', lineHeight: '1.6', color: '#8a8f98' }}>
-            Search, compare and connect with banks, payment and identity Providers across 140 countries, all in one
-            place.
+            Search, compare and connect with banks, payment and identity Providers across North America, Europe, Asia,
+            LATAM, Africa and beyond — all in one place.
           </p>{' '}
         </div>
       </div>

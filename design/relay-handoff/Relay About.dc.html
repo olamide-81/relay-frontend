@@ -8,11 +8,11 @@
 <body>
 <x-dc>
 <helmet>
-<meta name="description" content="Find, compare and partner with 1,600 Providers across 140 countries.">
+<meta name="description" content="Find, compare and partner with financial Providers across North America, Europe, Asia, LATAM, Africa and beyond.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Relay">
 <meta property="og:title" content="Relay — Every financial Provider. One directory.">
-<meta property="og:description" content="Find, compare and partner with 1,600 Providers across 140 countries.">
+<meta property="og:description" content="Find, compare and partner with financial Providers across North America, Europe, Asia, LATAM, Africa and beyond.">
 <meta property="og:url" content="https://relay.gratebridge.com">
 <meta property="og:image" content="https://relay.gratebridge.com/og-image.png">
 <meta property="og:image:width" content="1200">
@@ -39,7 +39,7 @@ a:hover{color:#f7f8f8}
     <h1 style="margin:0;max-width:1000px;font-weight:500;font-size:clamp(40px,6vw,72px);line-height:1.04;letter-spacing:-0.05em;text-wrap:balance">Financial infrastructure is the most important market <span style="color:#8a8f98">nobody could see.</span></h1>
     <div style="margin-top:56px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:24px 64px;font-size:17px;line-height:1.65;color:#b4b8bf">
       <p style="margin:0">Every fintech is built on partners: a bank that holds the money, a Provider that moves it, another that verifies who it belongs to. Choosing them used to mean months of cold emails, outdated spreadsheets and sales calls.</p>
-      <p style="margin:0">Gratebridge Labs started Relay in 2024 to make that market legible. Today we map 1,600 infrastructure partners across 140 countries, verified every week, and help teams at every stage find the right ones faster.</p>
+      <p style="margin:0">Gratebridge Labs started Relay in 2024 to make that market legible. Today we map infrastructure partners across North America, Europe, Asia, LATAM, Africa and beyond, verified every week, and help teams at every stage find the right ones faster.</p>
     </div>
   </section>
 
@@ -50,7 +50,7 @@ a:hover{color:#f7f8f8}
     </div>
   </section>
 
-  <section data-screen-label="Team" data-r="m-sec" style="position:relative;max-width:1200px;margin:0 auto;padding:140px 24px 0">
+  <section data-screen-label="Team" aria-hidden="true" style="display:none;position:relative;max-width:1200px;margin:0 auto;padding:140px 24px 0">
     <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap">
       <h2 style="margin:0;font-weight:500;font-size:clamp(30px,3.8vw,46px);line-height:1.05;letter-spacing:-0.04em">The team</h2>
       <a href="Relay%20Careers.dc.html" style="display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:500;color:#d4d6da;transition:color .15s,gap .2s" style-hover="color:#f7f8f8;gap:11px">We're hiring<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
@@ -65,7 +65,7 @@ a:hover{color:#f7f8f8}
     </div>
   </section>
 
-  <section data-screen-label="Investors" data-r="m-sec" style="position:relative;max-width:1200px;margin:0 auto;padding:140px 24px 0">
+  <section data-screen-label="Investors" aria-hidden="true" style="display:none;position:relative;max-width:1200px;margin:0 auto;padding:140px 24px 0">
     <div style="font-size:13.5px;color:#8a8f98;margin-bottom:24px">Backed by</div>
     <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,200px),1fr));gap:1px;border-radius:14px;overflow:hidden;background:rgba(255,255,255,.06);box-shadow:0 0 0 1px rgba(255,255,255,.06)">
       <sc-for list="{{ investors }}" as="i" hint-placeholder-count="4"><div style="height:96px;display:grid;place-items:center;background:#121315;font-size:17px;font-weight:500;color:#8a8f98;letter-spacing:-0.01em">{{ i }}</div></sc-for>
@@ -81,7 +81,7 @@ const U = id => `https://images.unsplash.com/photo-${id}?w=600&q=80&auto=format&
 class Component extends DCLogic {
   renderVals() {
     return {
-      principles: [['Neutral by design', 'Providers can’t pay for placement. Rankings come from data, never sponsorship.'], ['Verified, not scraped', 'Every profile is checked weekly against registers and the Provider itself.'], ['Built for operators', 'We design for the people who actually run payments, treasury and compliance.'], ['Global from day one', 'Partners in 140 countries, because fintech doesn’t stop at a border.']].map(([t, d], i) => ({ n: String(i + 1).padStart(2, '0'), t, d })),
+      principles: [['Neutral by design', 'Providers can’t pay for placement. Rankings come from data, never sponsorship.'], ['Verified, not scraped', 'Every profile is checked weekly against registers and the Provider itself.'], ['Built for operators', 'We design for the people who actually run payments, treasury and compliance.'], ['Global from day one', 'Coverage across North America, Europe, Asia, LATAM, Africa and beyond — because fintech doesn’t stop at a border.']].map(([t, d], i) => ({ n: String(i + 1).padStart(2, '0'), t, d })),
       team: [['Sarah Mitchell', 'Co-founder & CEO', '1494790108377-be9c29b29330'], ['James Carter', 'Co-founder & CTO', '1500648767791-00dcc994a43e'], ['Amara Lewis', 'Head of Research', '1438761681033-6461ffad8d80'], ['Daniel Kim', 'Head of Design', '1507003211169-0a1dd7228f2d']].map(([name, role, id]) => ({ name, role, img: U(id) })),
       investors: ['Northstar Ventures', 'Field Capital', 'Meridian Partners', 'Atlas Seed']
     };

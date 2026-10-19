@@ -63,8 +63,8 @@ class Component extends DCLogic {
       bannerMb: this.state.banner ? '0px' : '-28px',
       dismiss: () => this.setState({ banner: false }),
       stats: [
-        { label: 'Providers worldwide', value: '1,600', note: '+38 this month' },
-        { label: 'Countries', value: '140', note: '8 regions' },
+        { label: 'Providers', value: 'Live', note: 'Multi-region' },
+        { label: 'Regions', value: 'Global', note: 'NA · EU · AS · LATAM · AF' },
         { label: 'Open requests', value: '0', note: 'None in flight' },
         { label: 'Shortlisted', value: '0', note: 'None yet' },
       ],
@@ -278,9 +278,7 @@ function template(v0, self) {
             </h1>{' '}
             <div style={{ marginTop: '6px', fontSize: '13.5px', color: '#8a8f98' }}>
               {hole(v0.appTotal)}
-              {' Providers across '}
-              {hole(v0.appCountries)}
-              {' countries · Scored with your weighting'}
+              {' Providers across North America, Europe, Asia, LATAM, Africa and beyond · Scored with your weighting'}
             </div>{' '}
           </div>{' '}
           <div style={{ display: 'flex', gap: '8px', flex: 'none' }}>
@@ -445,9 +443,7 @@ function template(v0, self) {
                       {'Unlock the full directory. '}
                       <span style={{ color: '#8a8f98' }}>
                         {hole(v0.appMore)}
-                        {' more Providers across '}
-                        {hole(v0.appCountries)}
-                        {' countries.'}
+                        {' more Providers across every region we cover.'}
                       </span>
                     </div>{' '}
                     <div>
@@ -623,7 +619,7 @@ function template(v0, self) {
                       {hole(v0.appTotal)}
                     </div>{' '}
                     <div style={{ fontSize: '12.5px', fontWeight: '500', color: '#b4b8bf', marginTop: '6px' }}>
-                      Providers worldwide
+                      Providers in the directory
                     </div>{' '}
                   </div>{' '}
                 </div>{' '}

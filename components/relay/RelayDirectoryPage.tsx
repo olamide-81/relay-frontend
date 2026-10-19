@@ -81,10 +81,10 @@ class Component extends DCLogic {
     })
     const kinds = Object.keys(R.CAT)
     return {
-      total: R.fmt(R.TOTAL),
+      total: 'Live',
       q: S.q,
       onQ: (e) => this.setState({ q: e.target.value }),
-      cats: [chip('all', 'All', R.fmt(R.TOTAL)), ...kinds.map((k) => chip(k, R.CAT[k].label, R.fmt(R.CAT[k].count)))],
+      cats: [chip('all', 'All', 'Live'), ...kinds.map((k) => chip(k, R.CAT[k].label, ''))],
       rows: list
         .slice(0, 12)
         .map((p, i) => ({
@@ -94,16 +94,16 @@ class Component extends DCLogic {
           op: i >= 9 ? 0.6 : 1,
         })),
       moreLabel: list.length
-        ? `Showing ${Math.min(9, list.length)} of ${S.cat === 'all' && !q ? R.fmt(R.TOTAL) : list.length} matching Providers. ${LAUNCH.seeAll}`
+        ? `Showing ${Math.min(9, list.length)} matching Providers. ${LAUNCH.seeAll}`
         : 'No Providers match that search yet.',
-      regions: Object.entries(REG).map(([name, count]) => {
+      regions: Object.entries(REG).map(([name]) => {
         const ps = R.providers.filter((p) => p.region === name)
         const mix = kinds.map((k) => ({ c: R.CAT[k].accent, f: Math.max(1, ps.filter((p) => p.kind === k).length) }))
         const top = ps
           .slice(0, 3)
           .map((p) => p.name)
           .join(', ')
-        return { name, count: count + ' Providers', mix, top }
+        return { name, count: 'Multi-region', mix, top }
       }),
     }
   }
@@ -158,9 +158,7 @@ function template(v0, self) {
               textWrap: 'balance',
             }}
           >
-            {'Search '}
-            {hole(v0.total)}
-            {' Providers. '}
+            {'Search Providers across every region. '}
             <span style={{ color: '#8a8f98' }}>Verified every week.</span>
           </h1>{' '}
           <div style={{ marginTop: '40px', maxWidth: '720px', position: 'relative' }}>

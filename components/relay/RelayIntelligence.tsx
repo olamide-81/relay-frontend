@@ -165,7 +165,7 @@ const NEWS = [
     'Cross-border payout volumes up 18% year on year',
     'Global',
     'Oct 10',
-    'Relay data across 1,600 Providers shows sustained growth in B2B payouts, led by Asia-Pacific corridors.',
+    'Relay data across the directory shows sustained growth in B2B payouts, led by Asia-Pacific corridors.',
     ['APAC corridors grew fastest', 'Median fees fell 6 bp'],
     'Read briefing',
     'Relay Research',

@@ -109,7 +109,7 @@ class Component extends DCLogic {
       fn()
     }
     return {
-      subtitle: `${R.fmt(R.TOTAL)} Providers across ${R.fmt(this.props.app?.data.catalog.countries ?? 140)} countries, verified and updated weekly.`,
+      subtitle: `Providers across North America, Europe, Asia, LATAM, Africa and beyond, verified and updated weekly.`,
       q: S.q,
       onQ: (e) => this.setState({ q: e.target.value, page: 0 }),
       regions: MAIN.map((r) => ({
@@ -131,14 +131,11 @@ class Component extends DCLogic {
       },
       moreRegions: extra.map((r) => ({
         label: r,
-        count: R.providers.filter((p) => p.region === r).length,
+        count: '',
         fg: S.region === r ? '#f7f8f8' : '#d4d6da',
         pick: () => this.setState({ region: r, page: 0, more: false }),
       })),
-      cats: [
-        chip('all', 'All', R.fmt(R.TOTAL)),
-        ...Object.entries(R.CAT).map(([k, v]) => chip(k, v.label, R.fmt(v.count))),
-      ],
+      cats: [chip('all', 'All', 'Live'), ...Object.entries(R.CAT).map(([k, v]) => chip(k, v.label, ''))],
       rows: slice.map((p) => {
         const s = S.sel.includes(p.id),
           on2 = !!S.saved[p.id]
@@ -162,7 +159,7 @@ class Component extends DCLogic {
       }),
       empty: list.length === 0,
       notEmpty: list.length > 0,
-      shownLabel: `Showing ${page * PER + 1}–${Math.min(list.length, page * PER + PER)} of ${list.length} · Free plan previews ${R.providers.length} of ${R.fmt(R.TOTAL)}`,
+      shownLabel: `Showing ${page * PER + 1}–${Math.min(list.length, page * PER + PER)} of ${list.length} · Free plan: limited preview`,
       pages: Array.from({ length: pages }, (_, i) => ({
         label: String(i + 1),
         go: () => this.setState({ page: i }),

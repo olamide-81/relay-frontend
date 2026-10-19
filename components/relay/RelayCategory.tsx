@@ -43,10 +43,10 @@ const C = {
     'collections',
     'Acceptance, invoicing and receivables. Partners that get you paid in any currency, on any rail.',
     [
-      ['Providers', '214'],
-      ['Countries', '128'],
-      ['Local methods', '86'],
-      ['From', '0.2%'],
+      ['Coverage', 'Multi-region'],
+      ['Rails', 'SEPA · ACH · cards'],
+      ['Focus', 'Acceptance'],
+      ['From', 'List pricing'],
     ],
     [
       ['Local payment methods', 'Coverage of the methods your customers actually use, not just cards.'],
@@ -62,10 +62,10 @@ const C = {
     'payouts',
     'Pay suppliers, sellers and contractors in local currency, wherever they bank.',
     [
-      ['Providers', '268'],
-      ['Corridors', '1,240'],
-      ['Instant rails', '34'],
-      ['From', '0.3%'],
+      ['Coverage', 'Multi-region'],
+      ['Rails', 'Local · SWIFT'],
+      ['Focus', 'B2B payouts'],
+      ['Settles', 'Same day+'],
     ],
     [
       ['Corridor coverage', 'Local rails in the countries you pay into.'],
@@ -81,10 +81,10 @@ const C = {
     'FX',
     'Convert and hold currencies with transparent spreads, forwards and rate locks.',
     [
-      ['Providers', '183'],
-      ['Currencies', '142'],
-      ['Best spread', '0.09%'],
-      ['Forwards', '12 mo'],
+      ['Coverage', 'Multi-region'],
+      ['Pairs', 'Major FX'],
+      ['Focus', 'Spreads · forwards'],
+      ['Settlement', 'Local'],
     ],
     [
       ['Spread transparency', 'Quoted against mid-market, not a hidden margin.'],
@@ -100,10 +100,10 @@ const C = {
     'card issuing',
     'Issue virtual and physical cards with spend controls and real-time authorisation.',
     [
-      ['Providers', '247'],
-      ['Networks', '4'],
-      ['Go-live', '2 wks'],
-      ['From', '€0.20'],
+      ['Coverage', 'Multi-region'],
+      ['Networks', 'Visa · MC'],
+      ['Focus', 'Virtual · physical'],
+      ['Go-live', 'Weeks'],
     ],
     [
       ['BIN sponsorship', 'Who holds the licence and how fast you can launch.'],
@@ -119,10 +119,10 @@ const C = {
     'KYC',
     'Verify people and businesses with documents, biometrics and ongoing sanctions screening.',
     [
-      ['Providers', '372'],
-      ['Countries', '190'],
-      ['Median check', '3.8s'],
-      ['From', '$0.30'],
+      ['Coverage', 'Multi-region'],
+      ['Checks', 'ID · KYB · AML'],
+      ['Focus', 'Onboarding'],
+      ['Speed', 'Seconds'],
     ],
     [
       ['Document coverage', 'ID types supported in each market you serve.'],
@@ -138,10 +138,10 @@ const C = {
     'banking',
     'Sponsor, partner and safeguarding banks for regulated fintech programmes.',
     [
-      ['Banks', '316'],
-      ['Regions', '8'],
-      ['Account opening', '10 days'],
-      ['From', '€80/mo'],
+      ['Coverage', 'Multi-region'],
+      ['Type', 'Sponsor · BaaS'],
+      ['Safeguarding', 'Supported'],
+      ['Opening', 'Days'],
     ],
     [
       ['Fintech appetite', 'Whether the bank actively sponsors programmes like yours.'],
@@ -185,6 +185,7 @@ class Component extends DCLogic {
         desc,
         accent: R.CAT[k]?.accent ?? '#fff',
         count: R.CAT[k]?.count ?? '',
+        browseLabel: 'Browse ' + label + ' Providers',
         stats: stats.map(([k2, v]) => ({ k: k2, v })),
         look: look.map(([t, d], i) => ({ n: String(i + 1).padStart(2, '0'), t, d })),
       },
@@ -279,9 +280,7 @@ function template(v0, self) {
                 }}
                 className={'dcp-1ix2wiq'}
               >
-                {'Browse '}
-                {hole(v0.c?.count)}
-                {' Providers'}
+                {hole(v0.c?.browseLabel)}
               </A>{' '}
               <A
                 href={href('Relay%20Contact.dc.html')}

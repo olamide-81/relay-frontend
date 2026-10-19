@@ -40,7 +40,10 @@ class Component extends DCLogic {
         ['Neutral by design', 'Providers can’t pay for placement. Rankings come from data, never sponsorship.'],
         ['Verified, not scraped', 'Every profile is checked weekly against registers and the Provider itself.'],
         ['Built for operators', 'We design for the people who actually run payments, treasury and compliance.'],
-        ['Global from day one', 'Partners in 140 countries, because fintech doesn’t stop at a border.'],
+        [
+          'Global from day one',
+          'Coverage across North America, Europe, Asia, LATAM, Africa and beyond — because fintech doesn’t stop at a border.',
+        ],
       ].map(([t, d], i) => ({ n: String(i + 1).padStart(2, '0'), t, d })),
       team: [
         ['Sarah Mitchell', 'Co-founder & CEO', '1494790108377-be9c29b29330'],
@@ -122,9 +125,9 @@ function template(v0, self) {
               sales calls.
             </p>{' '}
             <p style={{ margin: '0' }}>
-              Gratebridge Labs started Relay in 2024 to make that market legible. Today we map 1,600 infrastructure
-              partners across 140 countries, verified every week, and help teams at every stage find the right ones
-              faster.
+              Gratebridge Labs started Relay in 2024 to make that market legible. Today we map infrastructure partners
+              across North America, Europe, Asia, LATAM, Africa and beyond, verified every week, and help teams at every
+              stage find the right ones faster.
             </p>{' '}
           </div>{' '}
         </section>{' '}
@@ -189,8 +192,14 @@ function template(v0, self) {
         </section>{' '}
         <section
           data-screen-label="Team"
-          data-r="m-sec"
-          style={{ position: 'relative', maxWidth: '1200px', margin: '0 auto', padding: '140px 24px 0' }}
+          aria-hidden="true"
+          style={{
+            display: 'none',
+            position: 'relative',
+            maxWidth: '1200px',
+            margin: '0 auto',
+            padding: '140px 24px 0',
+          }}
         >
           {' '}
           <div
@@ -293,8 +302,14 @@ function template(v0, self) {
         </section>{' '}
         <section
           data-screen-label="Investors"
-          data-r="m-sec"
-          style={{ position: 'relative', maxWidth: '1200px', margin: '0 auto', padding: '140px 24px 0' }}
+          aria-hidden="true"
+          style={{
+            display: 'none',
+            position: 'relative',
+            maxWidth: '1200px',
+            margin: '0 auto',
+            padding: '140px 24px 0',
+          }}
         >
           {' '}
           <div style={{ fontSize: '13.5px', color: '#8a8f98', marginBottom: '24px' }}>Backed by</div>{' '}

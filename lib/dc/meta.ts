@@ -9,7 +9,8 @@ import { buildMetadata } from '@/lib/seo'
 type PageMeta = { title: string; description: string; keywords?: string[]; noIndex?: boolean; breadcrumb?: string }
 
 export const SITE_TITLE = 'Relay — Every financial Provider. One directory.'
-export const SITE_DESCRIPTION = 'Find, compare and partner with 1,600 Providers across 140 countries.'
+export const SITE_DESCRIPTION =
+  'Find, compare and partner with financial Providers across North America, Europe, Asia, LATAM, Africa and beyond.'
 
 export const SITE_KEYWORDS = [
   'fintech provider directory',
@@ -31,11 +32,11 @@ export const PAGE_META: Record<string, PageMeta> = {
   '/product': {
     title: 'Product — Search, compare and partner with Providers',
     description:
-      'One workspace for choosing financial partners: search 1,600 Providers, compare real commercials, rank options with your team and request intros.',
+      'One workspace for choosing financial partners: search Providers across every region we cover, compare real commercials, rank options with your team and request intros.',
     breadcrumb: 'Product',
   },
   '/directory': {
-    title: 'Directory — 1,600 fintech Providers, verified weekly',
+    title: 'Directory — Fintech Providers across every region, verified weekly',
     description:
       'Search Collections, Payouts, FX, Cards, KYC and Banking Providers by rail, licence, region and price. Every profile is verified every week.',
     keywords: ['fintech provider directory', 'payment providers list', 'sponsor bank directory', 'KYC vendor directory'],
@@ -90,7 +91,7 @@ export const PAGE_META: Record<string, PageMeta> = {
   '/developers': {
     title: 'Developers — The Provider graph, as an API',
     description:
-      'Query 1,600 Providers, their licences, coverage and pricing from your own tools, and subscribe to webhooks when anything changes.',
+      'Query Providers across every region we cover, their licences, coverage and pricing from your own tools, and subscribe to webhooks when anything changes.',
     breadcrumb: 'Developers',
   },
   '/for-providers': {
@@ -109,7 +110,8 @@ export const PAGE_META: Record<string, PageMeta> = {
   },
   '/waitlist': {
     title: 'Join the waitlist',
-    description: 'Relay is opening to teams in waves. Join the waitlist for early access to 1,600 Providers across 140 countries.',
+    description:
+      'Relay is opening to teams in waves. Join the waitlist for early access to Providers across North America, Europe, Asia, LATAM, Africa and beyond.',
   },
   '/forgot-password': { title: 'Reset your password', description: 'Reset your Relay password.', noIndex: true },
   '/reset-password': { title: 'Choose a new password', description: 'Choose a new Relay password.', noIndex: true },
@@ -119,38 +121,44 @@ export const CATEGORY_META: Record<string, { label: string; tag: string; title: 
   collections: {
     label: 'Collections',
     tag: 'Money in.',
-    title: 'Collections Providers — Compare 214 worldwide',
-    description: 'Compare 214 Collections Providers for acceptance, invoicing and receivables on SEPA, ACH and cards, with pricing, licences and coverage.',
+    title: 'Collections Providers — Compare across every region',
+    description:
+      'Compare Collections Providers for acceptance, invoicing and receivables on SEPA, ACH and cards, with pricing, licences and multi-region coverage.',
   },
   payouts: {
     label: 'Payouts',
     tag: 'Money out.',
-    title: 'Payout Providers — Compare 268 worldwide',
-    description: 'Compare 268 Payout Providers for paying suppliers, sellers and contractors in local currency, with pricing, settlement times and coverage.',
+    title: 'Payout Providers — Compare across every region',
+    description:
+      'Compare Payout Providers for paying suppliers, sellers and contractors in local currency, with pricing, settlement times and multi-region coverage.',
   },
   fx: {
     label: 'FX',
     tag: 'Every currency.',
-    title: 'FX Providers — Compare 183 on real spreads',
-    description: 'Compare 183 FX Providers on spreads, forwards and rate locks across 38 currencies, with licences and coverage for each.',
+    title: 'FX Providers — Compare on real spreads',
+    description:
+      'Compare FX Providers on spreads, forwards and rate locks across major currencies, with licences and multi-region coverage for each.',
   },
   cards: {
     label: 'Cards',
     tag: 'Spend anywhere.',
-    title: 'Card issuing Providers — Compare 247 worldwide',
-    description: 'Compare 247 card issuing Providers for virtual and physical Visa and Mastercard programmes, with spend controls, pricing and go-live times.',
+    title: 'Card issuing Providers — Compare across every region',
+    description:
+      'Compare card issuing Providers for virtual and physical Visa and Mastercard programmes, with spend controls, pricing and go-live times.',
   },
   kyc: {
     label: 'KYC',
     tag: 'Know who you serve.',
-    title: 'KYC Providers — Compare 372 identity platforms',
-    description: 'Compare 372 KYC and KYB Providers for document checks, biometrics and sanctions screening across 190 countries, with pricing and pass rates.',
+    title: 'KYC Providers — Compare identity platforms',
+    description:
+      'Compare KYC and KYB Providers for document checks, biometrics and sanctions screening across North America, Europe, Asia, LATAM, Africa and beyond.',
   },
   bank: {
     label: 'Banks',
     tag: 'The regulated core.',
-    title: 'Sponsor & partner banks — Compare 316 for fintech',
-    description: 'Compare 316 sponsor, partner and safeguarding banks for regulated fintech programmes, with licences, virtual IBANs and onboarding times.',
+    title: 'Sponsor & partner banks — Compare for fintech',
+    description:
+      'Compare sponsor, partner and safeguarding banks for regulated fintech programmes, with licences, virtual IBANs and onboarding times.',
   },
 }
 

@@ -44,7 +44,7 @@ const F = [
     'Relay%20Directory.dc.html',
     680,
     [
-      '1,600 Providers across six categories and 140 countries',
+      'Providers across North America, Europe, Asia, LATAM, Africa and beyond',
       'Filter by rail, licence, region, pricing and settlement',
       'Full profiles with coverage, licences and security posture',
     ],

@@ -38,7 +38,7 @@ import { cmsBind } from '@/lib/site-content'
 
 const MENU = {
   Product: [
-    ['all', 'Directory', 'Search 1,600 Providers by rail, licence and region'],
+    ['all', 'Directory', 'Search Providers by rail, licence and region'],
     ['fx', 'Compare', 'Line up Providers side by side on real commercials'],
     ['collections', 'Shortlists', 'Rank and share Providers with your team'],
     ['kyc', 'Intelligence', 'Signals, reports and licence watch'],
@@ -56,7 +56,7 @@ const CATS = [
     code: 'REL-01 · MINT',
     desc: 'Acceptance, invoicing and receivables. Partners that get you paid in any currency, on any rail.',
     stats: [
-      ['Providers', '214'],
+      ['Coverage', 'Multi-region'],
       ['Rails', 'SEPA · ACH'],
       ['From', '0.2%'],
     ],
@@ -79,7 +79,7 @@ const CATS = [
     code: 'REL-02 · LIME',
     desc: 'Pay suppliers, sellers and contractors in local currency, wherever they bank.',
     stats: [
-      ['Providers', '268'],
+      ['Coverage', 'Multi-region'],
       ['Rails', 'SWIFT · RTP'],
       ['Settles', 'Instant'],
     ],
@@ -102,9 +102,9 @@ const CATS = [
     code: 'REL-03 · SKY',
     desc: 'Convert and hold currencies with transparent spreads, forwards and rate locks.',
     stats: [
-      ['Providers', '183'],
-      ['Currencies', '38'],
-      ['Spread', '0.12%'],
+      ['Coverage', 'Multi-region'],
+      ['Pairs', 'Major FX'],
+      ['Spread', 'Transparent'],
     ],
     nTitle: 'Converted',
     nAmt: '€50,000',
@@ -114,7 +114,7 @@ const CATS = [
     cardK: 'Volume converted',
     cardV: '$1.82M',
     cardD: '−4 bp',
-    cardF: '38 currencies',
+    cardF: 'Major currencies',
   },
   {
     kind: 'cards',
@@ -125,9 +125,9 @@ const CATS = [
     code: 'REL-04 · LILAC',
     desc: 'Issue virtual and physical cards with spend controls and real-time authorisation.',
     stats: [
-      ['Providers', '247'],
+      ['Coverage', 'Multi-region'],
       ['Networks', 'Visa · MC'],
-      ['Go-live', '2 weeks'],
+      ['Go-live', 'Weeks'],
     ],
     nTitle: 'Card issued',
     nAmt: 'Visa ••4821',
@@ -137,7 +137,7 @@ const CATS = [
     cardK: 'Card spend this week',
     cardV: '$86,410.22',
     cardD: '+12%',
-    cardF: '214 active cards',
+    cardF: 'Active cards',
   },
   {
     kind: 'kyc',
@@ -148,9 +148,9 @@ const CATS = [
     code: 'REL-05 · PEACH',
     desc: 'Verify people and businesses with documents, biometrics and ongoing sanctions screening.',
     stats: [
-      ['Providers', '372'],
-      ['Countries', '190'],
-      ['Median', '3.8s'],
+      ['Coverage', 'Multi-region'],
+      ['Checks', 'ID · KYB'],
+      ['Median', 'Seconds'],
     ],
     nTitle: 'Identity verified',
     nAmt: 'Clara Jensen',
@@ -158,9 +158,9 @@ const CATS = [
     n1: 'Hartmann GmbH · KYB passed',
     n2: 'Liam Ortega · Driving licence',
     cardK: 'Verified today',
-    cardV: '4,912',
-    cardD: '98.6% pass',
-    cardF: '61 manual reviews',
+    cardV: 'Live',
+    cardD: 'High pass',
+    cardF: 'Manual reviews',
   },
   {
     kind: 'bank',
@@ -171,9 +171,9 @@ const CATS = [
     code: 'REL-06 · ROSE',
     desc: 'Sponsor, partner and safeguarding banks for regulated fintech programmes.',
     stats: [
-      ['Banks', '316'],
-      ['Regions', '8'],
-      ['Opening', '10 days'],
+      ['Coverage', 'Multi-region'],
+      ['Focus', 'Sponsor · BaaS'],
+      ['Opening', 'Days'],
     ],
     nTitle: 'Account opened',
     nAmt: 'DE89 ••3000',
@@ -183,7 +183,7 @@ const CATS = [
     cardK: 'Safeguarded balance',
     cardV: '€12.4M',
     cardD: '+6%',
-    cardF: '64 virtual IBANs',
+    cardF: 'Virtual IBANs',
   },
 ]
 const BARS = [28, 40, 34, 52, 46, 63, 58, 72, 66, 84, 78, 100]
@@ -240,14 +240,12 @@ const QUOTES = [
   ],
 ]
 const MARQUEE = [
-  ['1,600', 'Providers verified', 'all'],
-  ['316', 'Banks worldwide', 'bank'],
-  ['140', 'Countries covered', 'payouts'],
-  ['38', 'Currencies benchmarked', 'fx'],
-  ['40+', 'Regulators tracked', 'kyc'],
-  ['247', 'Card issuers', 'cards'],
-  ['Weekly', 'Data refresh', 'collections'],
-  ['5 days', 'Median time to intro', 'all'],
+  ['NA', 'North America', 'all'],
+  ['EU', 'Europe', 'fx'],
+  ['AS', 'Asia', 'collections'],
+  ['LATAM', 'Latin America', 'payouts'],
+  ['AF', 'Africa', 'bank'],
+  ['+', 'And beyond', 'cards'],
 ]
 const FOOTER = [
   ['Product', ['Directory', 'Compare', 'Shortlists', 'Intelligence', 'Requests']],
@@ -256,7 +254,7 @@ const FOOTER = [
   ['Resources', ['Changelog', 'API docs', 'Security', 'For Providers']],
 ]
 const SEARCH = [
-  ['kyc', 'Kestrel Identity', 'Estonia · 190 countries'],
+  ['kyc', 'Kestrel Identity', 'Estonia · Multi-region'],
   ['kyc', 'Orbis Verify', 'Singapore · MAS'],
   ['kyc', 'Veritas ID', 'Germany · BaFin'],
 ]
@@ -970,8 +968,8 @@ function template(v0, self) {
                   `margin:0;font-size:clamp(16px,1.6vw,19px);line-height:1.55;color:#8a8f98;text-wrap:pretty;transition:opacity .9s .3s,transform .9s .3s cubic-bezier(.2,.8,.2,1);opacity:${v0.ld?.op ?? ''};transform:${v0.ld?.tf ?? ''}`,
                 )}
               >
-                Relay maps 1,600 infrastructure partners across 140 countries so fintech teams can find, compare and
-                partner in days, not quarters.
+                Relay maps infrastructure partners across North America, Europe, Asia, LATAM, Africa and beyond so
+                fintech teams can find, compare and partner in days, not quarters.
               </p>{' '}
               <div
                 style={css(
@@ -1925,7 +1923,7 @@ function template(v0, self) {
                 {' '}
                 <div style={{ fontSize: '16px', fontWeight: '500' }}>Search the whole market</div>{' '}
                 <div style={{ fontSize: '14px', lineHeight: '1.55', color: '#8a8f98', marginTop: '6px' }}>
-                  Filter 1,600 Providers by rail, licence, region and price.
+                  Filter Providers by rail, licence, region and price across every market we cover.
                 </div>{' '}
               </div>{' '}
             </div>{' '}
@@ -2156,7 +2154,11 @@ function template(v0, self) {
             </div>{' '}
           </div>{' '}
         </section>{' '}
-        <section data-screen-label="Customers" style={{ position: 'relative', padding: '160px 0 0' }}>
+        <section
+          data-screen-label="Customers"
+          aria-hidden="true"
+          style={{ display: 'none', position: 'relative', padding: '160px 0 0' }}
+        >
           {' '}
           <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 24px' }}>
             {' '}

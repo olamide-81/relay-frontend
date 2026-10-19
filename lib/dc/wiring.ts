@@ -623,7 +623,7 @@ export function directoryVals(this: any, v: any) {
   if (!app) return {}
   return app.pro
     ? {
-        shownLabel: String(v.shownLabel).replace(/ · Free plan previews .*$/, ''),
+        shownLabel: String(v.shownLabel).replace(/ · Free plan: limited preview$/, ''),
         upgrade: () => this.props.onNavigate?.('settings', { section: 'billing' }),
       }
     : {}
@@ -632,10 +632,10 @@ export function directoryVals(this: any, v: any) {
 /* ======================= Overview ======================= */
 
 const OVERVIEW_DEMO = {
-  appTotal: '1,600',
-  appCountries: '140',
-  appMore: '1,595',
-  appVisible: '5',
+  appTotal: 'Live',
+  appCountries: '—',
+  appMore: 'More',
+  appVisible: 'Preview',
   appVisiblePct: '2%',
   appListCount: '0',
   appNoLists: true,

@@ -8,11 +8,11 @@
 <body>
 <x-dc>
 <helmet>
-<meta name="description" content="Find, compare and partner with 1,600 Providers across 140 countries.">
+<meta name="description" content="Find, compare and partner with financial Providers across North America, Europe, Asia, LATAM, Africa and beyond.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Relay">
 <meta property="og:title" content="Relay — Every financial Provider. One directory.">
-<meta property="og:description" content="Find, compare and partner with 1,600 Providers across 140 countries.">
+<meta property="og:description" content="Find, compare and partner with financial Providers across North America, Europe, Asia, LATAM, Africa and beyond.">
 <meta property="og:url" content="https://relay.gratebridge.com">
 <meta property="og:image" content="https://relay.gratebridge.com/og-image.png">
 <meta property="og:image:width" content="1200">
@@ -96,7 +96,7 @@ a:hover{color:#f7f8f8}
 <script type="text/x-dc" data-dc-script>
 const Y = '✓', N = '—';
 const TABLE = [
-  ['Directory', [['Provider profiles', ['Preview', 'All 1,600', 'All 1,600']], ['Search and filters', [Y, Y, Y]], ['Regions', ['3', 'All 8', 'All 8']], ['Bookmarks', ['10', 'Unlimited', 'Unlimited']]]],
+  ['Directory', [['Provider profiles', ['Preview', 'Full directory', 'Full directory']], ['Search and filters', [Y, Y, Y]], ['Regions', ['Core markets', 'All regions', 'All regions']], ['Bookmarks', ['10', 'Unlimited', 'Unlimited']]]],
   ['Workflow', [['Compares per month', ['5', 'Unlimited', 'Unlimited']], ['Saved comparisons', [N, Y, Y]], ['Shortlists', ['1', 'Unlimited', 'Unlimited']], ['Intro requests', ['3 / month', 'Unlimited', 'Unlimited']], ['Multi-Provider RFPs', [N, N, Y]]]],
   ['Intelligence', [['Signals', ['Weekly digest', 'Real time', 'Real time']], ['Reports and benchmarks', [N, Y, Y]], ['Licence watch', [N, '25 watches', 'Unlimited']]]],
   ['Workspace', [['Seats', ['Up to 5', 'Unlimited', 'Unlimited']], ['API access', [N, 'Standard', 'Volume']], ['SSO and audit log', [N, N, Y]], ['Dedicated analyst', [N, N, Y]]]]
@@ -120,7 +120,7 @@ class Component extends DCLogic {
       cycles: [['Yearly', true], ['Monthly', false]].map(([label, v]) => ({ label, save: v, pick: () => this.setState({ yearly: v }), bg: yr === v ? 'rgba(255,255,255,.1)' : 'transparent', fg: yr === v ? '#f7f8f8' : '#8a8f98' })),
       plans: [
         plan('Free', '€0', 'forever', 'For founders exploring their first partners.', 'Start for free', ['Directory preview', '5 compares a month', '3 intro requests a month', 'Weekly market digest'], false, '#'),
-        plan('Pro', yr ? '€39' : '€49', 'per seat / month', 'For teams actively choosing and switching Providers.', 'Upgrade to Pro', ['All 1,600 Providers', 'Unlimited compares and intros', 'Reports, benchmarks and signals', 'Licence watch', 'Unlimited seats'], true, '#'),
+        plan('Pro', yr ? '€39' : '€49', 'per seat / month', 'For teams actively choosing and switching Providers.', 'Upgrade to Pro', ['Full directory across every region', 'Unlimited compares and intros', 'Reports, benchmarks and signals', 'Licence watch', 'Unlimited seats'], true, '#'),
         plan('Enterprise', 'Custom', 'billed annually', 'For procurement and compliance at scale.', 'Talk to sales', ['Everything in Pro', 'Multi-Provider RFPs', 'SSO, SCIM and audit log', 'API at volume', 'Dedicated analyst'], false, 'Relay%20Contact.dc.html')
       ],
       orbit: [['collections', '20px', '90px', 30, '-8deg'], ['payouts', '78px', '54px', 26, '6deg'], ['fx', '132px', '92px', 30, '-4deg'], ['cards', '176px', '40px', 24, '10deg'], ['kyc', '58px', '132px', 26, '4deg'], ['bank', '122px', '138px', 28, '-6deg']].map(([kind, x, y, s, r]) => ({ kind, x, y, s, r })),

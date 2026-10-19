@@ -24,7 +24,7 @@ export function organizationJsonLd() {
     image: absoluteUrl('/og-image.png'),
     email: SITE_SUPPORT_EMAIL,
     description:
-      'Relay is the directory of financial infrastructure Providers: 1,600 collections, payouts, FX, cards, KYC and banking partners across 140 countries, with tools to compare them and request introductions.',
+      'Relay is the directory of financial infrastructure Providers: collections, payouts, FX, cards, KYC and banking partners across North America, Europe, Asia, LATAM, Africa and beyond, with tools to compare them and request introductions.',
     address: {
       '@type': 'PostalAddress',
       streetAddress: '1021 E Lincolnway Suite #7415',
@@ -72,7 +72,8 @@ export function websiteJsonLd(locale: string) {
     url: absoluteUrl(`/${locale}`),
     name: SITE_NAME,
     alternateName: 'Relay by Gratebridge',
-    description: 'Every financial Provider. One directory. Find, compare and partner with 1,600 Providers across 140 countries.',
+    description:
+      'Every financial Provider. One directory. Find, compare and partner with financial Providers across North America, Europe, Asia, LATAM, Africa and beyond.',
     publisher: { '@id': `${SITE_URL}/#organization` },
     inLanguage: 'en',
   }
@@ -91,7 +92,7 @@ export function softwareApplicationJsonLd() {
     url: absoluteUrl('/en'),
     image: absoluteUrl('/og-image.png'),
     description:
-      'Search 1,600 financial infrastructure Providers by rail, licence, region and price, compare them side by side, build shortlists with your team and request introductions.',
+      'Search financial infrastructure Providers by rail, licence, region and price across North America, Europe, Asia, LATAM, Africa and beyond, compare them side by side, build shortlists with your team and request introductions.',
     publisher: { '@id': `${SITE_URL}/#organization` },
     offers: [
       { '@type': 'Offer', name: 'Free', price: '0', priceCurrency: 'EUR', url: absoluteUrl('/en/pricing') },

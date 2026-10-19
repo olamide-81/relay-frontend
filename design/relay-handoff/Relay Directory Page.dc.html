@@ -8,11 +8,11 @@
 <body>
 <x-dc>
 <helmet>
-<meta name="description" content="Find, compare and partner with 1,600 Providers across 140 countries.">
+<meta name="description" content="Find, compare and partner with financial Providers across North America, Europe, Asia, LATAM, Africa and beyond.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Relay">
 <meta property="og:title" content="Relay — Every financial Provider. One directory.">
-<meta property="og:description" content="Find, compare and partner with 1,600 Providers across 140 countries.">
+<meta property="og:description" content="Find, compare and partner with financial Providers across North America, Europe, Asia, LATAM, Africa and beyond.">
 <meta property="og:url" content="https://relay.gratebridge.com">
 <meta property="og:image" content="https://relay.gratebridge.com/og-image.png">
 <meta property="og:image:width" content="1200">
@@ -38,7 +38,7 @@ input::placeholder{color:#62666d}
 
   <section data-screen-label="Directory hero" data-r="m-sec" style="position:relative;max-width:1200px;margin:0 auto;padding:120px 24px 0">
     <div style="font-family:'Geist Mono',monospace;font-size:12px;color:#62666d;margin-bottom:20px">Directory</div>
-    <h1 style="margin:0;max-width:900px;font-weight:500;font-size:clamp(40px,6vw,72px);line-height:1.02;letter-spacing:-0.05em;text-wrap:balance">Search {{ total }} Providers. <span style="color:#8a8f98">Verified every week.</span></h1>
+    <h1 style="margin:0;max-width:900px;font-weight:500;font-size:clamp(40px,6vw,72px);line-height:1.02;letter-spacing:-0.05em;text-wrap:balance">Search Providers across every region. <span style="color:#8a8f98">Verified every week.</span></h1>
     <div style="margin-top:40px;max-width:720px;position:relative">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8a8f98" stroke-width="2" stroke-linecap="round" style="position:absolute;left:18px;top:17px"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>
       <input value="{{ q }}" onChange="{{ onQ }}" placeholder="Try “sponsor bank in Germany” or “SEPA Instant payouts”" style="width:100%;height:52px;padding:0 18px 0 48px;border:none;outline:none;border-radius:14px;background:rgba(255,255,255,.04);box-shadow:inset 0 0 0 1px rgba(255,255,255,.1),0 20px 50px -20px rgba(0,0,0,.6);color:#f7f8f8;font:15px Geist,system-ui,sans-serif;transition:box-shadow .15s" style-focus="box-shadow:inset 0 0 0 1px rgba(255,255,255,.28),0 20px 50px -20px rgba(0,0,0,.6)">
@@ -103,11 +103,11 @@ class Component extends DCLogic {
     const chip = (k, label, count) => ({ kind: k, label, count, pick: () => this.setState({ cat: k }), bg: S.cat === k ? 'rgba(255,255,255,.07)' : 'transparent', fg: S.cat === k ? '#f7f8f8' : '#8a8f98', ring: S.cat === k ? 'inset 0 0 0 1px rgba(255,255,255,.14)' : 'inset 0 0 0 1px rgba(255,255,255,.07)' });
     const kinds = Object.keys(R.CAT);
     return {
-      total: R.fmt(R.TOTAL), q: S.q, onQ: e => this.setState({ q: e.target.value }),
-      cats: [chip('all', 'All', R.fmt(R.TOTAL)), ...kinds.map(k => chip(k, R.CAT[k].label, R.fmt(R.CAT[k].count)))],
+      total: 'Live', q: S.q, onQ: e => this.setState({ q: e.target.value }),
+      cats: [chip('all', 'All', 'Live'), ...kinds.map(k => chip(k, R.CAT[k].label, ''))],
       rows: list.slice(0, 12).map((p, i) => ({ ...p, priceShort: p.price.split(' ')[0], blur: i >= 9 ? 'blur(3px)' : 'none', op: i >= 9 ? .6 : 1 })),
-      moreLabel: list.length ? `Showing ${Math.min(9, list.length)} of ${S.cat === 'all' && !q ? R.fmt(R.TOTAL) : list.length} matching Providers. Sign up free to see them all.` : 'No Providers match that search yet.',
-      regions: Object.entries(REG).map(([name, count]) => { const ps = R.providers.filter(p => p.region === name); const mix = kinds.map(k => ({ c: R.CAT[k].accent, f: Math.max(1, ps.filter(p => p.kind === k).length) })); const top = ps.slice(0, 3).map(p => p.name).join(', '); return { name, count: count + ' Providers', mix, top }; })
+      moreLabel: list.length ? `Showing ${Math.min(9, list.length)} matching Providers. Sign up free to see the full directory.` : 'No Providers match that search yet.',
+      regions: Object.entries(REG).map(([name]) => { const ps = R.providers.filter(p => p.region === name); const mix = kinds.map(k => ({ c: R.CAT[k].accent, f: Math.max(1, ps.filter(p => p.kind === k).length) })); const top = ps.slice(0, 3).map(p => p.name).join(', '); return { name, count: 'Multi-region', mix, top }; })
     };
   }
 }

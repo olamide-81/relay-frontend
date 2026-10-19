@@ -23,7 +23,7 @@ a:hover{color:#f7f8f8}
   <div style="display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap">
     <div style="flex:1 1 320px;min-width:0">
       <h1 style="margin:0;font-weight:500;font-size:22px;letter-spacing:-0.02em;line-height:1.2">{{ greeting }}, Sarah</h1>
-      <div style="margin-top:6px;font-size:13.5px;color:#8a8f98">1,600 Providers across 140 countries · Scored with your weighting</div>
+      <div style="margin-top:6px;font-size:13.5px;color:#8a8f98">Providers across every region we cover · Scored with your weighting</div>
     </div>
     <div style="display:flex;gap:8px;flex:none">
     <span style="display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 12px;border-radius:8px;font-size:13px;font-weight:500;color:#d4d6da;cursor:pointer;box-shadow:inset 0 0 0 1px rgba(255,255,255,.09);transition:background-color .12s" style-hover="background:rgba(255,255,255,.04);color:#f7f8f8"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg>New shortlist</span>
@@ -40,10 +40,10 @@ a:hover{color:#f7f8f8}
             <dc-import name="Relay App Icon" kind="pro" size="44" hint-size="44px,44px"></dc-import>
             <div style="min-width:0;display:flex;flex-direction:column;gap:14px">
               <div style="display:flex;align-items:center;gap:8px"><span style="font-size:12px;font-weight:500;color:#d4d6da;padding:2px 8px;border-radius:999px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.12)">Relay Pro</span><span style="font-size:12px;color:#8a8f98">You're on Free</span></div>
-              <div style="font-size:20px;font-weight:500;letter-spacing:-0.025em;line-height:1.25;text-wrap:balance;max-width:460px">Unlock the full directory. <span style="color:#8a8f98">1,595 more Providers across 140 countries.</span></div>
+              <div style="font-size:20px;font-weight:500;letter-spacing:-0.025em;line-height:1.25;text-wrap:balance;max-width:460px">Unlock the full directory. <span style="color:#8a8f98">More Providers across every region we cover.</span></div>
               <div>
                 <div style="display:flex;height:6px;max-width:420px;border-radius:999px;overflow:hidden;background:rgba(255,255,255,.06)"><span style="width:2%;min-width:6px;background:#f7f8f8;border-radius:999px"></span></div>
-                <div style="display:flex;justify-content:space-between;max-width:420px;margin-top:8px;font-size:12px;color:#8a8f98"><span><span style="color:#f7f8f8;font-weight:500">5</span> of 1,600 visible on Free</span><span>Unlimited compares on Pro</span></div>
+                <div style="display:flex;justify-content:space-between;max-width:420px;margin-top:8px;font-size:12px;color:#8a8f98"><span><span style="color:#f7f8f8;font-weight:500">Preview</span> on Free</span><span>Unlimited compares on Pro</span></div>
               </div>
               <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
                 <span style="height:32px;padding:0 14px;display:inline-flex;align-items:center;border-radius:8px;font-size:13px;font-weight:500;color:#0f1011;background:#f7f8f8;cursor:pointer;transition:background-color .12s" style-hover="background:#e3e5e8">Upgrade to Pro</span>
@@ -64,8 +64,8 @@ a:hover{color:#f7f8f8}
             </sc-for>
             <div style="position:absolute;z-index:1;left:calc(58% - 110px);bottom:-70px;width:220px;height:150px;border-radius:50%;background:radial-gradient(closest-side,#18191b 55%,rgba(24,25,27,.85) 75%,rgba(24,25,27,0) 100%)"></div>
             <div style="position:absolute;z-index:2;left:58%;bottom:18px;transform:translateX(-50%);text-align:center;white-space:nowrap">
-              <div style="font-size:28px;font-weight:600;letter-spacing:-0.035em;line-height:1;font-variant-numeric:tabular-nums;color:#f7f8f8">1,000+</div>
-              <div style="font-size:12.5px;font-weight:500;color:#b4b8bf;margin-top:6px">Providers worldwide</div>
+              <div style="font-size:28px;font-weight:600;letter-spacing:-0.035em;line-height:1;font-variant-numeric:tabular-nums;color:#f7f8f8">Global</div>
+              <div style="font-size:12.5px;font-weight:500;color:#b4b8bf;margin-top:6px">Multi-region coverage</div>
             </div>
           </div>
         </div>
@@ -158,8 +158,8 @@ class Component extends DCLogic {
       bannerRows: this.state.banner ? '1fr' : '0fr', bannerOp: this.state.banner ? 1 : 0, bannerMb: this.state.banner ? '0px' : '-28px',
       dismiss: () => this.setState({ banner: false }),
       stats: [
-        { label: 'Providers worldwide', value: '1,600', note: '+38 this month' },
-        { label: 'Countries', value: '140', note: '8 regions' },
+        { label: 'Providers', value: 'Live', note: 'Multi-region' },
+        { label: 'Regions', value: 'Global', note: 'NA · EU · AS · LATAM · AF' },
         { label: 'Open requests', value: '0', note: 'None in flight' },
         { label: 'Shortlisted', value: '0', note: 'None yet' },
       ],

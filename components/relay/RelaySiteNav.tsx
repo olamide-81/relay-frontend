@@ -33,7 +33,7 @@ import RelayAppIcon from './RelayAppIcon'
 
 const P = (n) => 'Relay%20' + n + '.dc.html'
 const MENU = [
-  ['all', 'Directory', 'Search 1,600 Providers by rail, licence and region', P('Directory Page')],
+  ['all', 'Directory', 'Search Providers by rail, licence and region', P('Directory Page')],
   ['fx', 'Compare', 'Line up Providers side by side on real commercials', P('Product') + '#compare'],
   ['collections', 'Shortlists', 'Rank and share Providers with your team', P('Product') + '#shortlists'],
   ['kyc', 'Intelligence', 'Signals, reports and licence watch', P('Intelligence Page')],
