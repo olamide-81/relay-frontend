@@ -80,7 +80,7 @@ export const PAGE_META: Record<string, PageMeta> = {
   },
   '/changelog': {
     title: "Changelog — What's new in Relay",
-    description: 'New features, improvements and fixes in Relay, including Banks in the directory and saved comparisons.',
+    description: 'New features, improvements and fixes in Relay — the redesigned directory, waitlist invitations, Relay Research reports and multi-region coverage.',
     breadcrumb: 'Changelog',
   },
   '/security': {
