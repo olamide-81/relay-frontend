@@ -59,6 +59,58 @@ export type RequestRow = {
   followUps: number
 }
 
+export type SourcingStatus = 'submitted' | 'sourcing' | 'ready' | 'intro' | 'closed'
+export type SourcingCategory = 'bank' | 'payouts' | 'collections' | 'fx' | 'cards' | 'kyc'
+
+/** An off-Directory Provider the Relay Sourcing team proposes. */
+export type SourcingOption = {
+  id: string
+  kind: SourcingCategory
+  name: string
+  /** 'London · Correspondent bank' */
+  where: string
+  fit: string[]
+  watch?: string
+  /** '6 to 8 weeks' */
+  onboard: string
+}
+
+/** A Sourcing request, in the Relay Sourcing design's row shape (dates/updated are display labels). */
+export type SourcingRow = {
+  code: string
+  cat: SourcingCategory
+  cap: string
+  title: string
+  markets: string[]
+  ccys: string[]
+  volume: string
+  timeline: string
+  must: string[]
+  notes: string
+  status: SourcingStatus
+  updated: string
+  /** One label per completed step: sent, sourcing, options shared, intros requested. */
+  dates: string[]
+  repliedBy?: string
+  relayNote?: string
+  options?: SourcingOption[]
+  picked?: string[]
+  /** Options the user hasn't opened yet (the "N new" pill). */
+  unseen?: number
+}
+
+export type SourcingInput = {
+  category: SourcingCategory
+  need: string
+  title: string
+  markets: string[]
+  currencies: string[]
+  volume: string
+  goLive: string
+  mustHaves: string[]
+  notes: string
+}
+
 export type InboxRow = {
   id: string
   day: string
@@ -134,6 +186,8 @@ export type Bootstrap = {
   shortlists: Shortlist[]
   compares: Compare[]
   requests: RequestRow[]
+  /** Newest first. Optional until relay-api ships Sourcing. */
+  sourcing?: SourcingRow[]
   inbox: InboxRow[]
   notifications: NoteRow[]
   pipeline: PipelineRow[]
@@ -174,6 +228,15 @@ export const appApi = {
   followUp: (code: string) => api.post<RequestRow>(`/api/app/requests/${enc(code)}/follow-up`),
   closeRequest: (code: string) => api.post<RequestRow>(`/api/app/requests/${enc(code)}/close`),
   deleteDraft: (code: string) => api.delete(`/api/app/requests/${enc(code)}`),
+
+  createSourcing: (b: SourcingInput) => api.post<SourcingRow>('/api/app/sourcing', b),
+  withdrawSourcing: (code: string) => api.post<SourcingRow>(`/api/app/sourcing/${enc(code)}/withdraw`),
+  /** Request intros to the picked options; relay-api also creates the matching Provider intro requests. */
+  pickSourcing: (code: string, optionIds: string[]) =>
+    api.post<{ sourcing: SourcingRow; requests: RequestRow[]; usage: Usage }>(`/api/app/sourcing/${enc(code)}/intros`, { optionIds }),
+  /** "None of these fit": back to sourcing. */
+  noneFitSourcing: (code: string) => api.post<SourcingRow>(`/api/app/sourcing/${enc(code)}/none-fit`),
+  seenSourcing: (code: string) => api.post<SourcingRow>(`/api/app/sourcing/${enc(code)}/seen`),
 
   readInbox: (id: string, unread = false) => api.post(`/api/app/inbox/${enc(id)}/read`, { unread }),
   readNotifications: (id: string) => api.post(`/api/app/notifications/${enc(id)}/read`),

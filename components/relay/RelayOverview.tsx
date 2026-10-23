@@ -30,7 +30,7 @@ import {
 } from '@/lib/dc/runtime'
 import RelayAppIcon from './RelayAppIcon'
 
-import { overviewVals } from '@/lib/dc/wiring'
+import { overviewVals, sourcingCardRows } from '@/lib/dc/wiring'
 
 class Component extends DCLogic {
   state = { banner: this.props.plan ? this.props.plan !== 'Pro' : !/[?&]plan=pro/i.test(dcSearch()) }
@@ -56,6 +56,8 @@ class Component extends DCLogic {
       glow: `radial-gradient(120% 90% at 0% 0%, rgba(${rgb},.09), rgba(255,255,255,.012) 60%)`,
     })
     return {
+      askSource: () => this.props.onNavigate?.('requests', { view: 'sourcing', compose: true }),
+      openSourcing: () => this.props.onNavigate?.('requests', { view: 'sourcing' }),
       greeting: h < 12 ? 'Good morning' : h < 18 ? 'Good afternoon' : 'Good evening',
       firstName: this.props.user?.firstName || 'Sarah',
       bannerRows: this.state.banner ? '1fr' : '0fr',
@@ -233,7 +235,10 @@ class Component extends DCLogic {
   const designVals = Component.prototype.renderVals
   const appVals = function (v) {
     const nav = (k, p) => () => this.props.onNavigate?.(k, p)
+    const appSrc = sourcingCardRows(this.props.app, (p) => this.props.onNavigate?.('requests', p))
     return {
+      appSrc,
+      appSrcEmpty: appSrc.length === 0,
       appNewShortlist: () => this.props.onCreateList?.(),
       appRequestIntro: nav('requests'),
       appUpgrade: () => this.props.onUpgrade?.(),
@@ -666,6 +671,167 @@ function template(v0, self) {
               </React.Fragment>
             )
           })}{' '}
+        </div>{' '}
+        <div
+          data-r="m-g1"
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'minmax(0,1fr) minmax(0,1.5fr)',
+            borderRadius: '12px',
+            overflow: 'hidden',
+            boxShadow: '0 0 0 1px rgba(255,255,255,.06)',
+            background: 'rgba(255,255,255,.012)',
+          }}
+        >
+          {' '}
+          <div
+            style={{
+              padding: '18px 20px',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '10px',
+              borderRight: '1px solid rgba(255,255,255,.05)',
+            }}
+          >
+            {' '}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <span style={{ fontSize: '13.5px', fontWeight: '500' }}>Sourcing</span>
+              <span
+                style={{
+                  fontSize: '11px',
+                  fontWeight: '500',
+                  padding: '1px 6px',
+                  borderRadius: '5px',
+                  color: '#0f1011',
+                  background: '#6fe3b4',
+                }}
+              >
+                New
+              </span>
+            </div>{' '}
+            <div style={{ fontSize: '13px', lineHeight: '1.5', color: '#8a8f98', textWrap: 'pretty' }}>
+              Can’t find the Provider you need? Tell Relay and we’ll come back with vetted options from outside the
+              Directory.
+            </div>{' '}
+            <span
+              onClick={v0.askSource}
+              style={{
+                alignSelf: 'flex-start',
+                marginTop: '2px',
+                height: '30px',
+                padding: '0 12px',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px',
+                borderRadius: '7px',
+                fontSize: '12.5px',
+                fontWeight: '500',
+                color: '#d4d6da',
+                cursor: 'pointer',
+                boxShadow: 'inset 0 0 0 1px rgba(255,255,255,.1)',
+              }}
+              className={'dcp-1m22wbr'}
+            >
+              <svg
+                width="13"
+                height="13"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.2"
+                strokeLinecap="round"
+              >
+                <path d="M12 5v14M5 12h14" />
+              </svg>
+              Request sourcing
+            </span>{' '}
+          </div>{' '}
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            {' '}
+            {list(v0.appSrc).map((it1, i1) => {
+              const v1 = { ...v0, r: it1, $index: i1 }
+              return (
+                <React.Fragment key={i1}>
+                  {' '}
+                  <div
+                    onClick={v1.r?.open}
+                    style={css(
+                      `display:flex;align-items:center;gap:12px;padding:14px 20px;border-bottom:${v1.r?.line ?? ''};cursor:pointer`,
+                    )}
+                    className={'dcp-1l2gqo9'}
+                  >
+                    {' '}
+                    <RelayAppIcon kind={v1.r?.kind} size="26" />{' '}
+                    <div style={{ flex: '1', minWidth: '0' }}>
+                      <div
+                        style={{
+                          fontSize: '13px',
+                          fontWeight: '500',
+                          whiteSpace: 'nowrap',
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                        }}
+                      >
+                        {hole(v1.r?.title)}
+                      </div>
+                      <div style={{ fontSize: '12px', color: '#62666d', marginTop: '2px' }}>
+                        <span style={{ fontFamily: "'Geist Mono',monospace" }}>{hole(v1.r?.code)}</span>
+                        {' · '}
+                        {hole(v1.r?.markets)}
+                      </div>
+                    </div>{' '}
+                    <span
+                      style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '7px',
+                        fontSize: '12.5px',
+                        color: '#d4d6da',
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
+                      <span style={css(`width:7px;height:7px;border-radius:50%;background:${v1.r?.dot ?? ''}`)} />
+                      {hole(v1.r?.status)}
+                      {v1.r?.hasBadge ? (
+                        <>
+                          <span
+                            style={{
+                              fontSize: '11px',
+                              fontWeight: '500',
+                              padding: '1px 6px',
+                              borderRadius: '5px',
+                              color: '#0f1011',
+                              background: '#6fe3b4',
+                            }}
+                          >
+                            {hole(v1.r?.badge)}
+                          </span>
+                        </>
+                      ) : null}
+                    </span>{' '}
+                  </div>{' '}
+                </React.Fragment>
+              )
+            })}{' '}
+            {v0.appSrcEmpty ? (
+              <>
+                <div
+                  style={{
+                    flex: '1',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    padding: '18px 20px',
+                  }}
+                >
+                  <div style={{ fontSize: '13px', fontWeight: '500' }}>Nothing here yet</div>
+                  <div style={{ fontSize: '12.5px', color: '#62666d', marginTop: '4px' }}>
+                    Sourcing requests you send to Relay are tracked here.
+                  </div>
+                </div>
+              </>
+            ) : null}{' '}
+          </div>{' '}
         </div>{' '}
         <section style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
           {' '}

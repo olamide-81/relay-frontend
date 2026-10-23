@@ -24,3 +24,16 @@
     display: none !important;
   }
 }
+
+/* Sourcing: an expanded request stays the width of the visible table and pinned to its left edge,
+   while the 760px header row keeps scrolling sideways. */
+@media (max-width: 768px) {
+  [data-src='table'] {
+    container-type: inline-size;
+  }
+  [data-src='detail'] {
+    position: sticky;
+    left: 0;
+    width: 100cqw;
+  }
+}

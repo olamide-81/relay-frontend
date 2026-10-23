@@ -28,7 +28,7 @@ a:hover{color:#f7f8f8}
     <dc-import name="Relay Topbar" title="{{ title }}" page="{{ page }}" starred="{{ starred }}" on-star="{{ onStar }}" on-navigate="{{ onNavigate }}" on-menu="{{ openNav }}" hint-size="100%,60px" style="flex:none;border-radius:12px 12px 0 0"></dc-import>
     <div style="flex:1;min-height:0;overflow-y:auto;scrollbar-width:thin;scrollbar-color:#2a2b2e transparent">
       <sc-if value="{{ is.overview }}" hint-placeholder-val="{{ true }}">
-        <dc-import name="Relay Overview" hint-size="100%,900px"></dc-import>
+        <dc-import name="Relay Overview" on-navigate="{{ onNavigate }}" hint-size="100%,900px"></dc-import>
       </sc-if>
       <sc-if value="{{ is.inbox }}">
         <dc-import name="Relay Inbox" hint-size="100%,100%" style="height:100%"></dc-import>
@@ -49,7 +49,7 @@ a:hover{color:#f7f8f8}
         <dc-import name="Relay Provider" pid="{{ params.id }}" from="{{ params.from }}" on-navigate="{{ onNavigate }}" on-compare="{{ onCompare }}" on-add-to-shortlist="{{ addToShortlist }}" on-upgrade="{{ openUpgrade }}" plan="{{ plan }}" hint-size="100%,1200px"></dc-import>
       </sc-if>
       <sc-if value="{{ is.requests }}">
-        <dc-import name="Relay Requests" provider="{{ params.provider }}" on-toast="{{ onToast }}" hint-size="100%,700px"></dc-import>
+        <dc-import name="Relay Requests" provider="{{ params.provider }}" view="{{ params.view }}" compose="{{ params.compose }}" on-toast="{{ onToast }}" hint-size="100%,700px"></dc-import>
       </sc-if>
       <sc-if value="{{ is.intelligence }}">
         <dc-import name="Relay Intelligence" tab="{{ params.tab }}" report="{{ params.report }}" hint-size="100%,700px"></dc-import>
@@ -95,6 +95,7 @@ class Component extends DCLogic {
     if (type !== 'error') setTimeout(() => this.drop(id), 4200);
   }
   drop(id) { this.setState(s => ({ toasts: s.toasts.map(t => t.id === id ? { ...t, leaving: true } : t) })); setTimeout(() => this.setState(s => ({ toasts: s.toasts.filter(t => t.id !== id) })), 260); }
+  componentDidMount() { window.__relayGo = (p, params, key) => this.go(p, params || {}, key); }
   ask(c) { this.setState({ confirm: c }); }
   go(page, params = {}, key) { this.setState({ page, params, activeKey: key ?? page, navOpen: false }); }
   renderVals() {

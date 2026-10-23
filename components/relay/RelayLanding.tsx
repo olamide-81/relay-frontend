@@ -619,6 +619,7 @@ class Component extends DCLogic {
         how: r('how'),
         trustHead: r('trustHead'),
         cta: r('cta'),
+        src: r('src'),
       },
       stages: STAGES.map(([n2, who, title, body, points], i) => {
         const on = !!S.seen.journey
@@ -2150,6 +2151,390 @@ function template(v0, self) {
                 <div style={{ fontSize: '14px', lineHeight: '1.55', color: '#8a8f98', marginTop: '6px' }}>
                   Send one request to many Providers. Replies land in your inbox.
                 </div>{' '}
+              </div>{' '}
+            </div>{' '}
+          </div>{' '}
+        </section>{' '}
+        <section
+          data-screen-label="Sourcing"
+          data-r="m-sec"
+          style={{ position: 'relative', maxWidth: '1200px', margin: '0 auto', padding: '160px 24px 0' }}
+        >
+          {' '}
+          <div
+            data-rv="src"
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit,minmax(min(100%,420px),1fr))',
+              gap: '48px 64px',
+              alignItems: 'center',
+            }}
+          >
+            {' '}
+            <div
+              style={css(
+                `display:flex;flex-direction:column;gap:22px;transition:opacity .9s,transform .9s cubic-bezier(.2,.8,.2,1);opacity:${v0.rv?.src?.op ?? ''};transform:${v0.rv?.src?.tf ?? ''}`,
+              )}
+            >
+              {' '}
+              <div style={{ fontFamily: "'Geist Mono',monospace", fontSize: '12px', color: '#62666d' }}>
+                Sourcing
+              </div>{' '}
+              <h2
+                style={{
+                  margin: '0',
+                  fontWeight: '500',
+                  fontSize: 'clamp(34px,4.4vw,52px)',
+                  lineHeight: '1.04',
+                  letterSpacing: '-0.04em',
+                  textWrap: 'balance',
+                }}
+              >
+                {'Not in the Directory? '}
+                <span style={{ color: '#8a8f98' }}>We’ll find it.</span>
+              </h2>{' '}
+              <p
+                style={{
+                  margin: '0',
+                  fontSize: '16px',
+                  lineHeight: '1.6',
+                  color: '#8a8f98',
+                  maxWidth: '460px',
+                  textWrap: 'pretty',
+                }}
+              >
+                Tell Relay what you need, from a SWIFT correspondent bank to KYB in a new market. Our team searches its
+                wider network of vetted Providers and comes back with options. You pick who to meet.
+              </p>{' '}
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  borderTop: '1px solid rgba(255,255,255,.06)',
+                  maxWidth: '460px',
+                }}
+              >
+                {' '}
+                <div
+                  style={{
+                    display: 'flex',
+                    gap: '16px',
+                    padding: '14px 0',
+                    borderBottom: '1px solid rgba(255,255,255,.06)',
+                  }}
+                >
+                  <span
+                    style={{
+                      fontFamily: "'Geist Mono',monospace",
+                      fontSize: '12px',
+                      color: '#62666d',
+                      marginTop: '2px',
+                    }}
+                  >
+                    01
+                  </span>
+                  <span style={{ fontSize: '14px', color: '#d4d6da' }}>
+                    Describe the need: category, markets, currencies, volume
+                  </span>
+                </div>{' '}
+                <div
+                  style={{
+                    display: 'flex',
+                    gap: '16px',
+                    padding: '14px 0',
+                    borderBottom: '1px solid rgba(255,255,255,.06)',
+                  }}
+                >
+                  <span
+                    style={{
+                      fontFamily: "'Geist Mono',monospace",
+                      fontSize: '12px',
+                      color: '#62666d',
+                      marginTop: '2px',
+                    }}
+                  >
+                    02
+                  </span>
+                  <span style={{ fontSize: '14px', color: '#d4d6da' }}>
+                    Relay shares vetted options, with why each one fits
+                  </span>
+                </div>{' '}
+                <div
+                  style={{
+                    display: 'flex',
+                    gap: '16px',
+                    padding: '14px 0',
+                    borderBottom: '1px solid rgba(255,255,255,.06)',
+                  }}
+                >
+                  <span
+                    style={{
+                      fontFamily: "'Geist Mono',monospace",
+                      fontSize: '12px',
+                      color: '#62666d',
+                      marginTop: '2px',
+                    }}
+                  >
+                    03
+                  </span>
+                  <span style={{ fontSize: '14px', color: '#d4d6da' }}>
+                    Pick the ones you like and get a warm intro
+                  </span>
+                </div>{' '}
+              </div>{' '}
+            </div>{' '}
+            <div
+              style={{
+                borderRadius: '16px',
+                background: '#121315',
+                boxShadow: '0 0 0 1px rgba(255,255,255,.06)',
+                overflow: 'hidden',
+              }}
+            >
+              {' '}
+              <div
+                style={{
+                  padding: '22px 22px 18px',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '14px',
+                  background: 'radial-gradient(80% 60% at 80% 0%,rgba(255,143,177,.07),transparent 70%)',
+                }}
+              >
+                {' '}
+                <div
+                  style={css(
+                    `display:flex;align-items:center;gap:10px;transition:opacity .6s .2s,transform .6s .2s cubic-bezier(.2,.8,.2,1);opacity:${v0.rv?.src?.op ?? ''};transform:${v0.rv?.src?.tf ?? ''}`,
+                  )}
+                >
+                  {' '}
+                  <span style={{ fontFamily: "'Geist Mono',monospace", fontSize: '12px', color: '#62666d' }}>
+                    SRC-014
+                  </span>{' '}
+                  <span
+                    style={{
+                      flex: '1',
+                      minWidth: '0',
+                      fontSize: '14px',
+                      fontWeight: '500',
+                      whiteSpace: 'nowrap',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                    }}
+                  >
+                    SWIFT correspondent bank for USD and EUR
+                  </span>{' '}
+                  <span
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '6px',
+                      fontSize: '12px',
+                      color: '#d4d6da',
+                      whiteSpace: 'nowrap',
+                    }}
+                  >
+                    <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#6fe3b4' }} />
+                    Options ready
+                  </span>{' '}
+                </div>{' '}
+                <div
+                  style={css(
+                    `display:flex;gap:6px;flex-wrap:wrap;transition:opacity .6s .3s;opacity:${v0.rv?.src?.op ?? ''}`,
+                  )}
+                >
+                  {' '}
+                  <span
+                    style={{
+                      height: '24px',
+                      padding: '0 9px',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      borderRadius: '6px',
+                      fontSize: '12px',
+                      color: '#8a8f98',
+                      boxShadow: 'inset 0 0 0 1px rgba(255,255,255,.09)',
+                    }}
+                  >
+                    United Kingdom
+                  </span>{' '}
+                  <span
+                    style={{
+                      height: '24px',
+                      padding: '0 9px',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      borderRadius: '6px',
+                      fontSize: '12px',
+                      color: '#8a8f98',
+                      boxShadow: 'inset 0 0 0 1px rgba(255,255,255,.09)',
+                    }}
+                  >
+                    European Union
+                  </span>{' '}
+                  <span
+                    style={{
+                      height: '24px',
+                      padding: '0 9px',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      borderRadius: '6px',
+                      fontFamily: "'Geist Mono',monospace",
+                      fontSize: '11.5px',
+                      color: '#8a8f98',
+                      boxShadow: 'inset 0 0 0 1px rgba(255,255,255,.09)',
+                    }}
+                  >
+                    USD EUR GBP
+                  </span>{' '}
+                </div>{' '}
+                <div
+                  style={css(
+                    `display:flex;gap:12px;align-items:flex-start;padding:12px 14px;border-radius:11px;background:rgba(255,255,255,.025);transition:opacity .6s .45s,transform .6s .45s cubic-bezier(.2,.8,.2,1);opacity:${v0.rv?.src?.op ?? ''};transform:${v0.rv?.src?.tf ?? ''}`,
+                  )}
+                >
+                  {' '}
+                  <img
+                    src={asset('assets/relay-icon.png')}
+                    alt=""
+                    style={{ width: '24px', height: '24px', borderRadius: '6px', flex: 'none' }}
+                  />{' '}
+                  <span style={{ fontSize: '13px', lineHeight: '1.5', color: '#b4b8bf', textWrap: 'pretty' }}>
+                    Three banks that onboard EMIs for USD and EUR correspondent flows. All confirmed appetite for your
+                    profile.
+                  </span>{' '}
+                </div>{' '}
+                <div
+                  style={css(
+                    `display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:11px;background:rgba(111,227,180,.05);box-shadow:inset 0 0 0 1px rgba(111,227,180,.4);transition:opacity .6s 0.6s,transform .6s 0.6s cubic-bezier(.2,.8,.2,1);opacity:${v0.rv?.src?.op ?? ''};transform:${v0.rv?.src?.tf ?? ''}`,
+                  )}
+                >
+                  {' '}
+                  <RelayAppIcon kind="bank" size="30" />{' '}
+                  <div style={{ flex: '1', minWidth: '0' }}>
+                    <div style={{ fontSize: '13.5px', fontWeight: '500' }}>Harbourline Bank</div>
+                    <div style={{ fontSize: '12px', color: '#62666d', marginTop: '1px' }}>
+                      London · Correspondent bank
+                    </div>
+                  </div>{' '}
+                  <span style={{ fontSize: '12px', color: '#8a8f98', whiteSpace: 'nowrap' }}>6 to 8 weeks</span>{' '}
+                  <span
+                    style={{
+                      width: '18px',
+                      height: '18px',
+                      borderRadius: '5px',
+                      display: 'grid',
+                      placeItems: 'center',
+                      flex: 'none',
+                      background: '#6fe3b4',
+                    }}
+                  >
+                    <svg
+                      width="11"
+                      height="11"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="#0f1011"
+                      strokeWidth="3.4"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M20 6 9 17l-5-5" />
+                    </svg>
+                  </span>{' '}
+                </div>{' '}
+                <div
+                  style={css(
+                    `display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:11px;background:rgba(255,255,255,.02);box-shadow:inset 0 0 0 1px rgba(255,255,255,.06);transition:opacity .6s 0.72s,transform .6s 0.72s cubic-bezier(.2,.8,.2,1);opacity:${v0.rv?.src?.op ?? ''};transform:${v0.rv?.src?.tf ?? ''}`,
+                  )}
+                >
+                  {' '}
+                  <RelayAppIcon kind="bank" size="30" />{' '}
+                  <div style={{ flex: '1', minWidth: '0' }}>
+                    <div style={{ fontSize: '13.5px', fontWeight: '500' }}>Vantor Trust</div>
+                    <div style={{ fontSize: '12px', color: '#62666d', marginTop: '1px' }}>
+                      Zurich · Private and correspondent
+                    </div>
+                  </div>{' '}
+                  <span style={{ fontSize: '12px', color: '#8a8f98', whiteSpace: 'nowrap' }}>8 to 10 weeks</span>{' '}
+                  <span
+                    style={{
+                      width: '18px',
+                      height: '18px',
+                      borderRadius: '5px',
+                      display: 'grid',
+                      placeItems: 'center',
+                      flex: 'none',
+                      boxShadow: 'inset 0 0 0 1.5px rgba(255,255,255,.2)',
+                    }}
+                  />{' '}
+                </div>{' '}
+                <div
+                  style={css(
+                    `display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:11px;background:rgba(111,227,180,.05);box-shadow:inset 0 0 0 1px rgba(111,227,180,.4);transition:opacity .6s 0.84s,transform .6s 0.84s cubic-bezier(.2,.8,.2,1);opacity:${v0.rv?.src?.op ?? ''};transform:${v0.rv?.src?.tf ?? ''}`,
+                  )}
+                >
+                  {' '}
+                  <RelayAppIcon kind="bank" size="30" />{' '}
+                  <div style={{ flex: '1', minWidth: '0' }}>
+                    <div style={{ fontSize: '13.5px', fontWeight: '500' }}>Calder Bay Bank</div>
+                    <div style={{ fontSize: '12px', color: '#62666d', marginTop: '1px' }}>
+                      Dublin · EU licensed bank
+                    </div>
+                  </div>{' '}
+                  <span style={{ fontSize: '12px', color: '#8a8f98', whiteSpace: 'nowrap' }}>5 to 7 weeks</span>{' '}
+                  <span
+                    style={{
+                      width: '18px',
+                      height: '18px',
+                      borderRadius: '5px',
+                      display: 'grid',
+                      placeItems: 'center',
+                      flex: 'none',
+                      background: '#6fe3b4',
+                    }}
+                  >
+                    <svg
+                      width="11"
+                      height="11"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="#0f1011"
+                      strokeWidth="3.4"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M20 6 9 17l-5-5" />
+                    </svg>
+                  </span>{' '}
+                </div>{' '}
+              </div>{' '}
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '10px',
+                  padding: '14px 22px',
+                  borderTop: '1px solid rgba(255,255,255,.06)',
+                }}
+              >
+                {' '}
+                <span style={{ flex: '1', fontSize: '12.5px', color: '#8a8f98' }}>2 selected</span>{' '}
+                <span
+                  style={{
+                    height: '30px',
+                    padding: '0 12px',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    borderRadius: '7px',
+                    fontSize: '12.5px',
+                    fontWeight: '500',
+                    color: '#0f1011',
+                    background: '#f7f8f8',
+                  }}
+                >
+                  Request 2 intros
+                </span>{' '}
               </div>{' '}
             </div>{' '}
           </div>{' '}
