@@ -869,7 +869,17 @@ export function providerVals(this: any, v: any) {
   const inc = incidents.size
   const tpl = v.tiers ?? []
   const priced = /\d/.test(p.price)
+  const trust = p.trust
   return {
+    scoreLabel: trust ? 'Relay Trust Score' : v.scoreLabel || 'Relay score',
+    scoreNote: trust
+      ? `Tier ${trust.tier} · ${trust.confidence} confidence`
+      : v.scoreNote,
+    hasTrust: Boolean(trust),
+    hasRedFlag: Boolean(trust?.hasRedFlag),
+    redFlag: trust?.redFlag || '',
+    trustMeta: trust ? `${trust.status} · out of 100` : '',
+    trustPillars: trust?.pillars || [],
     kpis: (v.kpis ?? []).map((k: any) => {
       if (k.k === 'Pricing from' && !priced) return { ...k, v: '—', n: p.price || 'On request' }
       if (k.k === 'Currencies' && !p.currencies) return { ...k, n: p.kind === 'kyc' ? 'Not applicable' : 'Not listed yet' }

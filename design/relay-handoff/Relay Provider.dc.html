@@ -38,14 +38,32 @@ a:hover{color:#f7f8f8}
           </div>
         </div>
       </div>
-      <div style="flex:0 0 240px;padding:18px;border-radius:14px;background:rgba(255,255,255,.02);box-shadow:inset 0 0 0 1px rgba(255,255,255,.07);display:flex;align-items:center;gap:16px">
+      <div style="flex:0 0 260px;padding:18px;border-radius:14px;background:rgba(255,255,255,.02);box-shadow:inset 0 0 0 1px rgba(255,255,255,.07);display:flex;align-items:center;gap:16px">
         <div style="position:relative;width:76px;height:76px;flex:none">
           <svg width="76" height="76" viewBox="0 0 76 76"><circle cx="38" cy="38" r="32" fill="none" stroke="rgba(255,255,255,.07)" stroke-width="6"></circle><circle cx="38" cy="38" r="32" fill="none" stroke="{{ p.accent }}" stroke-width="6" stroke-linecap="round" stroke-dasharray="{{ ring }}" transform="rotate(-90 38 38)"></circle></svg>
           <span style="position:absolute;inset:0;display:grid;place-items:center;font-size:20px;font-weight:500;font-variant-numeric:tabular-nums">{{ p.score }}</span>
         </div>
-        <div><div style="font-size:13px;font-weight:500">Relay score</div><div style="font-size:12px;color:#62666d;margin-top:3px;line-height:1.45">{{ scoreNote }}</div></div>
+        <div><div style="font-size:13px;font-weight:500">{{ scoreLabel }}</div><div style="font-size:12px;color:#62666d;margin-top:3px;line-height:1.45">{{ scoreNote }}</div></div>
       </div>
     </div>
+
+    <sc-if value="{{ hasTrust }}">
+      <div style="padding:16px 18px;border-radius:14px;background:rgba(255,255,255,.02);box-shadow:inset 0 0 0 1px rgba(255,255,255,.07);display:flex;flex-direction:column;gap:14px">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
+          <div style="font-size:13px;font-weight:500">Trust breakdown</div>
+          <div style="font-size:12px;color:#8a8f98">{{ trustMeta }}</div>
+        </div>
+        <sc-if value="{{ hasRedFlag }}"><div style="padding:10px 12px;border-radius:10px;background:rgba(255,123,123,.08);box-shadow:inset 0 0 0 1px rgba(255,123,123,.22);font-size:12.5px;line-height:1.5;color:#ffb4b4">{{ redFlag }}</div></sc-if>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px">
+          <sc-for list="{{ trustPillars }}" as="tp" hint-placeholder-count="7">
+            <div style="display:flex;flex-direction:column;gap:6px">
+              <div style="display:flex;justify-content:space-between;gap:8px;font-size:12px"><span style="color:#8a8f98">{{ tp.label }}</span><span style="color:#d4d6da;font-variant-numeric:tabular-nums">{{ tp.value }}/{{ tp.max }}</span></div>
+              <div style="height:4px;border-radius:999px;background:rgba(255,255,255,.06);overflow:hidden"><span style="display:block;height:100%;width:{{ tp.pct }}%;background:{{ p.accent }};border-radius:999px"></span></div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </sc-if>
 
     <div style="position:sticky;top:0;z-index:5;display:flex;gap:4px;padding:8px 0;margin:0 -4px;background:linear-gradient(#161719 70%,rgba(22,23,25,0));overflow-x:auto;scrollbar-width:none">
       <sc-for list="{{ nav }}" as="n" hint-placeholder-count="6"><span onClick="{{ n.go }}" style="height:30px;padding:0 12px;display:inline-flex;align-items:center;border-radius:8px;font-size:13px;font-weight:500;white-space:nowrap;cursor:pointer;transition:background-color .12s,color .12s;background:{{ n.bg }};color:{{ n.fg }}" style-hover="color:#f7f8f8">{{ n.label }}</span></sc-for>
@@ -149,7 +167,15 @@ class Component extends DCLogic {
       p: { ...p, glow: `radial-gradient(60% 100% at 0% 0%,rgba(${rgb},.09),transparent 70%)` },
       backLabel: from === 'providers' ? 'Providers' : 'Directory', back: () => this.props.onNavigate?.(from === 'providers' ? 'providers' : 'directory'),
       ring: `${(p.score / 100 * 201).toFixed(1)} 201`,
-      scoreNote: p.score >= 85 ? 'Top 10% in ' + p.cat : p.score >= 75 ? 'Above median for ' + p.cat : 'Around median for ' + p.cat,
+      scoreLabel: p.hasTrust ? 'Relay Trust Score' : 'Relay score',
+      scoreNote: p.hasTrust
+        ? `Tier ${p.trust.tier} · ${p.trust.confidence} confidence`
+        : p.score >= 85 ? 'Top 10% in ' + p.cat : p.score >= 75 ? 'Above median for ' + p.cat : 'Around median for ' + p.cat,
+      hasTrust: !!p.hasTrust,
+      hasRedFlag: !!p.trust?.hasRedFlag,
+      redFlag: p.trust?.redFlag || '',
+      trustMeta: p.hasTrust ? `${p.trust.status} · out of 100` : '',
+      trustPillars: p.trust?.pillars || [],
       nav: SECTIONS.map(([k, label]) => ({ label, go: () => this.go(k), bg: this.state.sec === k ? 'rgba(255,255,255,.07)' : 'transparent', fg: this.state.sec === k ? '#f7f8f8' : '#8a8f98' })),
       kpis: [
         { k: 'Countries', v: p.countries, n: p.reach.length + ' regions' },

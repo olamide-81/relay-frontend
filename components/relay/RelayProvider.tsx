@@ -130,12 +130,19 @@ class Component extends DCLogic {
       backLabel: from === 'providers' ? 'Providers' : 'Directory',
       back: () => this.props.onNavigate?.(from === 'providers' ? 'providers' : 'directory'),
       ring: `${((p.score / 100) * 201).toFixed(1)} 201`,
-      scoreNote:
-        p.score >= 85
+      scoreLabel: p.hasTrust ? 'Relay Trust Score' : 'Relay score',
+      scoreNote: p.hasTrust
+        ? `Tier ${p.trust.tier} · ${p.trust.confidence} confidence`
+        : p.score >= 85
           ? 'Top 10% in ' + p.cat
           : p.score >= 75
             ? 'Above median for ' + p.cat
             : 'Around median for ' + p.cat,
+      hasTrust: !!p.hasTrust,
+      hasRedFlag: !!p.trust?.hasRedFlag,
+      redFlag: p.trust?.redFlag || '',
+      trustMeta: p.hasTrust ? `${p.trust.status} · out of 100` : '',
+      trustPillars: p.trust?.pillars || [],
       nav: SECTIONS.map(([k, label]) => ({
         label,
         go: () => this.go(k),
@@ -429,7 +436,7 @@ function template(v0, self) {
             </div>{' '}
             <div
               style={{
-                flex: '0 0 240px',
+                flex: '0 0 260px',
                 padding: '18px',
                 borderRadius: '14px',
                 background: 'rgba(255,255,255,.02)',
@@ -471,13 +478,99 @@ function template(v0, self) {
                 </span>{' '}
               </div>{' '}
               <div>
-                <div style={{ fontSize: '13px', fontWeight: '500' }}>Relay score</div>
+                <div style={{ fontSize: '13px', fontWeight: '500' }}>{hole(v0.scoreLabel)}</div>
                 <div style={{ fontSize: '12px', color: '#62666d', marginTop: '3px', lineHeight: '1.45' }}>
                   {hole(v0.scoreNote)}
                 </div>
               </div>{' '}
             </div>{' '}
           </div>{' '}
+          {v0.hasTrust ? (
+            <>
+              {' '}
+              <div
+                style={{
+                  padding: '16px 18px',
+                  borderRadius: '14px',
+                  background: 'rgba(255,255,255,.02)',
+                  boxShadow: 'inset 0 0 0 1px rgba(255,255,255,.07)',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '14px',
+                }}
+              >
+                {' '}
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    gap: '12px',
+                    flexWrap: 'wrap',
+                  }}
+                >
+                  {' '}
+                  <div style={{ fontSize: '13px', fontWeight: '500' }}>Trust breakdown</div>{' '}
+                  <div style={{ fontSize: '12px', color: '#8a8f98' }}>{hole(v0.trustMeta)}</div>{' '}
+                </div>{' '}
+                {v0.hasRedFlag ? (
+                  <>
+                    <div
+                      style={{
+                        padding: '10px 12px',
+                        borderRadius: '10px',
+                        background: 'rgba(255,123,123,.08)',
+                        boxShadow: 'inset 0 0 0 1px rgba(255,123,123,.22)',
+                        fontSize: '12.5px',
+                        lineHeight: '1.5',
+                        color: '#ffb4b4',
+                      }}
+                    >
+                      {hole(v0.redFlag)}
+                    </div>
+                  </>
+                ) : null}{' '}
+                <div
+                  style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(160px,1fr))', gap: '10px' }}
+                >
+                  {' '}
+                  {list(v0.trustPillars).map((it1, i1) => {
+                    const v1 = { ...v0, tp: it1, $index: i1 }
+                    return (
+                      <React.Fragment key={i1}>
+                        {' '}
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                          {' '}
+                          <div
+                            style={{ display: 'flex', justifyContent: 'space-between', gap: '8px', fontSize: '12px' }}
+                          >
+                            <span style={{ color: '#8a8f98' }}>{hole(v1.tp?.label)}</span>
+                            <span style={{ color: '#d4d6da', fontVariantNumeric: 'tabular-nums' }}>
+                              {hole(v1.tp?.value)}/{hole(v1.tp?.max)}
+                            </span>
+                          </div>{' '}
+                          <div
+                            style={{
+                              height: '4px',
+                              borderRadius: '999px',
+                              background: 'rgba(255,255,255,.06)',
+                              overflow: 'hidden',
+                            }}
+                          >
+                            <span
+                              style={css(
+                                `display:block;height:100%;width:${v1.tp?.pct ?? ''}%;background:${v1.p?.accent ?? ''};border-radius:999px`,
+                              )}
+                            />
+                          </div>{' '}
+                        </div>{' '}
+                      </React.Fragment>
+                    )
+                  })}{' '}
+                </div>{' '}
+              </div>{' '}
+            </>
+          ) : null}{' '}
           <div
             style={{
               position: 'sticky',
