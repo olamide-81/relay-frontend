@@ -58,6 +58,7 @@ Don't hand-edit files in `components/relay/`. Change the design or a patch, then
 | Relay Dashboard (shell: Sidebar, Topbar, Modals, Toast, Confirm) | `/dashboard/[[...slug]]` via `components/relay-app/DashboardApp` |
 | Relay Overview | `/dashboard` |
 | Relay Inbox / Compare / Directory / Providers / Shortlists / Requests / Intelligence / Profile / Settings | `/dashboard/<page>` |
+| Relay Sourcing (inside Requests, To Providers / Sourcing switch) | `/dashboard/requests?view=sourcing` (`&compose=true` opens the form) |
 | Relay Provider | `/dashboard/provider?id=…&from=…` |
 | Any dashboard screen, standalone with demo data | `/preview/<screen>` (used by the site's product shots; noindex) |
 
@@ -75,6 +76,12 @@ so deep links, refresh and Back/Forward work (`lib/dc/dashboard-route.ts`). Old 
 
 - `/reports`, `/reports/[slug]`, `/methodology` keep their previous design (`app/[locale]/(legacy)`, Tailwind).
 - Reference boards not ported: `Relay Feedback`, `Relay Category Identity v2`.
+
+## Sourcing
+
+Spec: `design/relay-handoff/SOURCING.md`. API contract for relay-api: `docs/sourcing-api.md`. Entry points: Requests
+header and the link under Provider requests, the Directory empty state, and the Overview card (its two latest
+requests). The landing page has a static Sourcing section after How it works.
 
 ## Pre-launch waitlist (`design/relay-handoff/WAITLIST.md`)
 

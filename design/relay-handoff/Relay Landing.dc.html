@@ -265,6 +265,61 @@ a:hover{color:#f7f8f8}
     </div>
   </section>
 
+  <section data-screen-label="Sourcing" data-r="m-sec" style="position:relative;max-width:1200px;margin:0 auto;padding:160px 24px 0">
+    <div data-rv="src" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:48px 64px;align-items:center">
+      <div style="display:flex;flex-direction:column;gap:22px;transition:opacity .9s,transform .9s cubic-bezier(.2,.8,.2,1);opacity:{{ rv.src.op }};transform:{{ rv.src.tf }}">
+        <div style="font-family:'Geist Mono',monospace;font-size:12px;color:#62666d">Sourcing</div>
+        <h2 style="margin:0;font-weight:500;font-size:clamp(34px,4.4vw,52px);line-height:1.04;letter-spacing:-0.04em;text-wrap:balance">Not in the Directory? <span style="color:#8a8f98">We’ll find it.</span></h2>
+        <p style="margin:0;font-size:16px;line-height:1.6;color:#8a8f98;max-width:460px;text-wrap:pretty">Tell Relay what you need, from a SWIFT correspondent bank to KYB in a new market. Our team searches its wider network of vetted Providers and comes back with options. You pick who to meet.</p>
+        <div style="display:flex;flex-direction:column;border-top:1px solid rgba(255,255,255,.06);max-width:460px">
+          <div style="display:flex;gap:16px;padding:14px 0;border-bottom:1px solid rgba(255,255,255,.06)"><span style="font-family:'Geist Mono',monospace;font-size:12px;color:#62666d;margin-top:2px">01</span><span style="font-size:14px;color:#d4d6da">Describe the need: category, markets, currencies, volume</span></div>
+          <div style="display:flex;gap:16px;padding:14px 0;border-bottom:1px solid rgba(255,255,255,.06)"><span style="font-family:'Geist Mono',monospace;font-size:12px;color:#62666d;margin-top:2px">02</span><span style="font-size:14px;color:#d4d6da">Relay shares vetted options, with why each one fits</span></div>
+          <div style="display:flex;gap:16px;padding:14px 0;border-bottom:1px solid rgba(255,255,255,.06)"><span style="font-family:'Geist Mono',monospace;font-size:12px;color:#62666d;margin-top:2px">03</span><span style="font-size:14px;color:#d4d6da">Pick the ones you like and get a warm intro</span></div>
+        </div>
+      </div>
+      <div style="border-radius:16px;background:#121315;box-shadow:0 0 0 1px rgba(255,255,255,.06);overflow:hidden">
+        <div style="padding:22px 22px 18px;display:flex;flex-direction:column;gap:14px;background:radial-gradient(80% 60% at 80% 0%,rgba(255,143,177,.07),transparent 70%)">
+          <div style="display:flex;align-items:center;gap:10px;transition:opacity .6s .2s,transform .6s .2s cubic-bezier(.2,.8,.2,1);opacity:{{ rv.src.op }};transform:{{ rv.src.tf }}">
+            <span style="font-family:'Geist Mono',monospace;font-size:12px;color:#62666d">SRC-014</span>
+            <span style="flex:1;min-width:0;font-size:14px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">SWIFT correspondent bank for USD and EUR</span>
+            <span style="display:inline-flex;align-items:center;gap:6px;font-size:12px;color:#d4d6da;white-space:nowrap"><span style="width:6px;height:6px;border-radius:50%;background:#6fe3b4"></span>Options ready</span>
+          </div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;transition:opacity .6s .3s;opacity:{{ rv.src.op }}">
+            <span style="height:24px;padding:0 9px;display:inline-flex;align-items:center;border-radius:6px;font-size:12px;color:#8a8f98;box-shadow:inset 0 0 0 1px rgba(255,255,255,.09)">United Kingdom</span>
+            <span style="height:24px;padding:0 9px;display:inline-flex;align-items:center;border-radius:6px;font-size:12px;color:#8a8f98;box-shadow:inset 0 0 0 1px rgba(255,255,255,.09)">European Union</span>
+            <span style="height:24px;padding:0 9px;display:inline-flex;align-items:center;border-radius:6px;font-family:'Geist Mono',monospace;font-size:11.5px;color:#8a8f98;box-shadow:inset 0 0 0 1px rgba(255,255,255,.09)">USD EUR GBP</span>
+          </div>
+          <div style="display:flex;gap:12px;align-items:flex-start;padding:12px 14px;border-radius:11px;background:rgba(255,255,255,.025);transition:opacity .6s .45s,transform .6s .45s cubic-bezier(.2,.8,.2,1);opacity:{{ rv.src.op }};transform:{{ rv.src.tf }}">
+            <img src="assets/relay-icon.png" alt="" style="width:24px;height:24px;border-radius:6px;flex:none">
+            <span style="font-size:13px;line-height:1.5;color:#b4b8bf;text-wrap:pretty">Three banks that onboard EMIs for USD and EUR correspondent flows. All confirmed appetite for your profile.</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:11px;background:rgba(111,227,180,.05);box-shadow:inset 0 0 0 1px rgba(111,227,180,.4);transition:opacity .6s 0.6s,transform .6s 0.6s cubic-bezier(.2,.8,.2,1);opacity:{{ rv.src.op }};transform:{{ rv.src.tf }}">
+              <dc-import name="Relay App Icon" kind="bank" size="30" hint-size="30px,30px"></dc-import>
+              <div style="flex:1;min-width:0"><div style="font-size:13.5px;font-weight:500">Harbourline Bank</div><div style="font-size:12px;color:#62666d;margin-top:1px">London · Correspondent bank</div></div>
+              <span style="font-size:12px;color:#8a8f98;white-space:nowrap">6 to 8 weeks</span>
+              <span style="width:18px;height:18px;border-radius:5px;display:grid;place-items:center;flex:none;background:#6fe3b4"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#0f1011" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span>
+            </div>
+          <div style="display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:11px;background:rgba(255,255,255,.02);box-shadow:inset 0 0 0 1px rgba(255,255,255,.06);transition:opacity .6s 0.72s,transform .6s 0.72s cubic-bezier(.2,.8,.2,1);opacity:{{ rv.src.op }};transform:{{ rv.src.tf }}">
+              <dc-import name="Relay App Icon" kind="bank" size="30" hint-size="30px,30px"></dc-import>
+              <div style="flex:1;min-width:0"><div style="font-size:13.5px;font-weight:500">Vantor Trust</div><div style="font-size:12px;color:#62666d;margin-top:1px">Zurich · Private and correspondent</div></div>
+              <span style="font-size:12px;color:#8a8f98;white-space:nowrap">8 to 10 weeks</span>
+              <span style="width:18px;height:18px;border-radius:5px;display:grid;place-items:center;flex:none;box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.2)"></span>
+            </div>
+          <div style="display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:11px;background:rgba(111,227,180,.05);box-shadow:inset 0 0 0 1px rgba(111,227,180,.4);transition:opacity .6s 0.84s,transform .6s 0.84s cubic-bezier(.2,.8,.2,1);opacity:{{ rv.src.op }};transform:{{ rv.src.tf }}">
+              <dc-import name="Relay App Icon" kind="bank" size="30" hint-size="30px,30px"></dc-import>
+              <div style="flex:1;min-width:0"><div style="font-size:13.5px;font-weight:500">Calder Bay Bank</div><div style="font-size:12px;color:#62666d;margin-top:1px">Dublin · EU licensed bank</div></div>
+              <span style="font-size:12px;color:#8a8f98;white-space:nowrap">5 to 7 weeks</span>
+              <span style="width:18px;height:18px;border-radius:5px;display:grid;place-items:center;flex:none;background:#6fe3b4"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#0f1011" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span>
+            </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;padding:14px 22px;border-top:1px solid rgba(255,255,255,.06)">
+          <span style="flex:1;font-size:12.5px;color:#8a8f98">2 selected</span>
+          <span style="height:30px;padding:0 12px;display:inline-flex;align-items:center;border-radius:7px;font-size:12.5px;font-weight:500;color:#0f1011;background:#f7f8f8">Request 2 intros</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section data-screen-label="Customers" aria-hidden="true" style="display:none;position:relative;padding:160px 0 0">
     <div style="max-width:1200px;margin:0 auto;padding:0 24px">
       <div data-rv="trustHead" style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;transition:opacity .9s,transform .9s cubic-bezier(.2,.8,.2,1);opacity:{{ rv.trustHead.op }};transform:{{ rv.trustHead.tf }}">
@@ -421,7 +476,7 @@ class Component extends DCLogic {
       dash: { op: S.dash ? 1 : 0, skOp: S.dash ? 0 : 1 }, skBoxes: SK_BOXES, skBones: SK_BONES, dashRef: this.dashRef,
       dashLoaded: () => { clearInterval(this._dp); let n = 0; this._dp = setInterval(() => { n++; let ok = false; try { const d = this.dashRef.current?.contentDocument; ok = !!d?.querySelector('aside') && (d.body?.innerText || '').length > 400 && d.querySelectorAll('img').length > 0; } catch (_) { ok = true; } if (ok || n > 40) { clearInterval(this._dp); setTimeout(() => this.setState({ dash: true }), 450); } }, 120); },
       frameRef: this.frameRef, marqueeRef: this.marqueeRef, catRef: this.catRef, scale: sc.toFixed(4), frameH: Math.round(900 * sc) + 'px',
-      rv: { catHead: r('catHead'), journeyHead: r('journeyHead'), journey: r('journey'), howHead: r('howHead'), how: r('how'), trustHead: r('trustHead'), cta: r('cta') },
+      rv: { catHead: r('catHead'), journeyHead: r('journeyHead'), journey: r('journey'), howHead: r('howHead'), how: r('how'), trustHead: r('trustHead'), cta: r('cta'), src: r('src') },
       stages: STAGES.map(([n2, who, title, body, points], i) => { const on = !!S.seen.journey; return { n: n2, who, title, body, points, delay: (0.3 + i * 0.35) + 's', op: on ? 1 : 0, tf: on ? 'translateY(0)' : 'translateY(24px)', dot: on ? '#f7f8f8' : 'rgba(255,255,255,.2)' }; }),
       
       catX: (-S.catP * (n - 1) * 100).toFixed(3) + 'vw', catBar: (S.catP * 100).toFixed(1) + '%',

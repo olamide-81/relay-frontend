@@ -77,7 +77,8 @@ input::placeholder{color:#62666d}
       <sc-if value="{{ empty }}">
         <div style="padding:56px 24px;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center">
           <div style="font-size:13.5px;font-weight:500">No Providers match</div>
-          <div style="font-size:12.5px;color:#62666d">Try another region or clear your search.</div>
+          <div style="font-size:12.5px;color:#62666d">Try another region, or ask Relay to source it from Providers not listed here yet.</div>
+          <span onClick="{{ askSource }}" style="margin-top:10px;height:30px;padding:0 12px;display:inline-flex;align-items:center;border-radius:7px;font-size:12.5px;font-weight:500;color:#0f1011;background:#f7f8f8;cursor:pointer" style-hover="background:#e3e5e8">Request sourcing</span>
           <span onClick="{{ reset }}" style="margin-top:10px;height:30px;padding:0 12px;display:inline-flex;align-items:center;border-radius:7px;font-size:12.5px;font-weight:500;color:#d4d6da;cursor:pointer;box-shadow:inset 0 0 0 1px rgba(255,255,255,.1)" style-hover="background:rgba(255,255,255,.05)">Reset filters</span>
         </div>
       </sc-if>
@@ -216,7 +217,7 @@ class Component extends DCLogic {
         toggle: stop(() => this.setState(st => ({ sel: s ? st.sel.filter(x => x !== p.id) : st.sel.length < 4 ? [...st.sel, p.id] : st.sel }))),
         boxBg: s ? '#6fe3b4' : 'transparent', boxRing: s ? 'none' : 'inset 0 0 0 1.5px rgba(255,255,255,.2)', checkOp: s ? 1 : 0, rowBg: s ? 'rgba(111,227,180,.035)' : S.open === p.id ? 'rgba(255,255,255,.03)' : 'transparent',
         save: stop(() => toggleSave(p.id)), saveFill: on2 ? 'currentColor' : 'none', saveFg: on2 ? '#f7f8f8' : '#62666d', saveTitle: on2 ? 'Bookmarked' : 'Bookmark' }; }),
-      empty: list.length === 0, notEmpty: list.length > 0,
+      empty: list.length === 0, notEmpty: list.length > 0, askSource: () => this.props.onNavigate?.('requests', { view: 'sourcing', compose: true }),
       shownLabel: `Showing ${page * PER + 1}–${Math.min(list.length, page * PER + PER)} of ${list.length} · Free plan: limited preview`,
       pages: Array.from({ length: pages }, (_, i) => ({ label: String(i + 1), go: () => this.setState({ page: i }), bg: i === page ? 'rgba(255,255,255,.08)' : 'transparent', fg: i === page ? '#f7f8f8' : '#8a8f98' })),
       pg: { prevFg: page > 0 ? '#d4d6da' : '#3a3c40', nextFg: page < pages - 1 ? '#d4d6da' : '#3a3c40' },

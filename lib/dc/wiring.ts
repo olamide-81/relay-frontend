@@ -9,7 +9,7 @@
  * after each update and send the changes to the API. Server replies are
  * written back with `quiet()` so they don't echo.
  */
-import { appApi, type MemberRow, type PipelineRow } from '@/lib/api/app'
+import { appApi, type MemberRow, type PipelineRow, type SourcingRow } from '@/lib/api/app'
 import { forgotPassword } from '@/lib/api/auth'
 import { ApiError } from '@/lib/api/simulate'
 import { PRICE } from '@/lib/site-content'
@@ -397,6 +397,19 @@ export function wireRequests(C: any) {
       this.state = { ...this.state, rows: app.data.requests.map((r) => ({ ...r })) }
       this.__codes = new Set(app.data.requests.map((r) => r.code))
     },
+    // Requests created elsewhere (Sourcing intros) show up here without a reload.
+    mount(app) {
+      this.__unsub = app.subscribe(() => {
+        const known: Set<string> = this.__codes
+        const added = app.data.requests.filter((r) => !known.has(r.code) && !this.state.rows.some((x: any) => x.code === r.code))
+        if (!added.length) return
+        added.forEach((r) => known.add(r.code))
+        this.quiet((s: any) => ({ rows: [...added.map((r) => ({ ...r })), ...s.rows] }))
+      })
+    },
+    unmount() {
+      this.__unsub?.()
+    },
     watch: ['rows'],
     sync(app, prev, next) {
       const known: Set<string> = this.__codes
@@ -472,6 +485,126 @@ export function requestsVals(this: any, v: any) {
       v.next()
     },
   }
+}
+
+/* ======================= Sourcing ======================= */
+
+/** Status labels and dots, as in the Relay Sourcing design. */
+export const SOURCING_STATUS: Record<string, [string, string]> = {
+  submitted: ['Submitted', '#8fb8ff'],
+  sourcing: ['Sourcing', '#f2c14e'],
+  ready: ['Options ready', '#6fe3b4'],
+  intro: ['Intros requested', '#d4d6da'],
+  closed: ['Closed', '#3a3c40'],
+}
+
+const setSourcing = (app: AppBridge, rows: SourcingRow[]) => app.set({ sourcing: rows })
+
+export function wireSourcing(C: any) {
+  return wire(C, {
+    seed(app) {
+      const rows = (app.data.sourcing ?? []).map((r) => ({ ...r }))
+      this.state = { ...this.state, rows, open: rows.find((r) => r.status === 'ready')?.code ?? null }
+      this.__codes = new Set(rows.map((r) => r.code))
+    },
+    watch: ['rows'],
+    sync(app, prev, next) {
+      const known: Set<string> = this.__codes
+      const before = new Map<string, any>(prev.rows.map((r: any) => [r.code, r]))
+      const swap = (code: string, row: any) => {
+        this.quiet((s: any) => ({ rows: s.rows.map((x: any) => (x.code === code ? row : x)), open: s.open === code ? row.code : s.open }))
+        setSourcing(app, this.state.rows)
+      }
+      const revert = (code: string, was: any) => (e: unknown) => {
+        this.quiet((s: any) => ({ rows: was ? s.rows.map((x: any) => (x.code === code ? was : x)) : s.rows.filter((x: any) => x.code !== code) }))
+        app.fail(e)
+      }
+      for (const r of next.rows) {
+        const was = before.get(r.code)
+        if (!was && !known.has(r.code)) {
+          // New request (the design numbers it locally; relay-api assigns the real code).
+          appApi
+            .createSourcing({
+              category: r.cat, need: r.cap, title: r.title, markets: r.markets, currencies: r.ccys,
+              volume: r.volume, goLive: r.timeline, mustHaves: r.must, notes: r.notes,
+            })
+            .then((row) => (known.add(row.code), swap(r.code, row)))
+            .catch(revert(r.code, null))
+          continue
+        }
+        if (!was || !known.has(r.code) || was.status === r.status) continue
+        if (r.status === 'closed') appApi.withdrawSourcing(r.code).then((row) => swap(r.code, row)).catch(revert(r.code, was))
+        else if (r.status === 'sourcing' && was.status === 'ready') appApi.noneFitSourcing(r.code).then((row) => swap(r.code, row)).catch(revert(r.code, was))
+        else if (r.status === 'intro')
+          appApi
+            .pickSourcing(r.code, r.picked ?? [])
+            .then(({ sourcing, requests, usage }) => {
+              swap(r.code, sourcing)
+              // The matching Provider intro requests: under To Providers and, once sent, in the Inbox.
+              const have = new Set(app.data.requests.map((x) => x.code))
+              app.set({ requests: [...requests.filter((x) => !have.has(x.code)), ...app.data.requests], usage })
+              app.refresh()
+            })
+            .catch(revert(r.code, was))
+      }
+    },
+  })
+}
+
+export function sourcingVals(this: any, v: any) {
+  const app: AppBridge | undefined = this.props.app
+  if (!app) return {}
+  const rows = new Map<string, any>(this.state.rows.map((r: any) => [r.code, r]))
+  return {
+    rows: v.rows.map((x: any) => {
+      const r = rows.get(x.code)
+      const unseen = r?.unseen ?? (r?.options ?? []).length
+      const nSel = (this.state.sel[x.code] ?? []).length
+      return {
+        ...x,
+        hasBadge: x.hasBadge && unseen > 0,
+        badge: `${unseen} new`,
+        toggle: () => {
+          x.toggle()
+          if (r?.status === 'ready' && r.unseen && this.__codes?.has(x.code)) {
+            this.quiet((s: any) => ({ rows: s.rows.map((y: any) => (y.code === x.code ? { ...y, unseen: 0 } : y)) }))
+            setSourcing(app, this.state.rows)
+            appApi.seenSourcing(x.code).catch(() => {})
+          }
+        },
+        intro: () => {
+          if (nSel && app.blockIntro(nSel)) return
+          x.intro()
+        },
+      }
+    }),
+  }
+}
+
+/** The Overview's Sourcing card: the two latest requests. */
+export function sourcingCardRows(app: AppBridge | undefined, go: (params: Record<string, unknown>) => void) {
+  const rows: any[] = app
+    ? (app.data.sourcing ?? []).slice(0, 2)
+    : [
+        { code: 'SRC-014', cat: 'bank', title: 'SWIFT correspondent bank for USD and EUR payouts', markets: ['United Kingdom', 'European Union'], status: 'ready', unseen: 3 },
+        { code: 'SRC-013', cat: 'kyc', title: 'KYB for UAE registered businesses', markets: ['UAE'], status: 'sourcing' },
+      ]
+  return rows.map((r, i) => {
+    const [label, dot] = SOURCING_STATUS[r.status] ?? SOURCING_STATUS.submitted
+    const unseen = r.unseen ?? (r.options ?? []).length
+    return {
+      kind: r.cat,
+      title: r.title,
+      code: r.code,
+      markets: r.markets.join(', '),
+      status: label,
+      dot,
+      hasBadge: r.status === 'ready' && unseen > 0,
+      badge: `${unseen} new`,
+      line: i < rows.length - 1 ? '1px solid rgba(255,255,255,.04)' : 'none',
+      open: () => go({ view: 'sourcing' }),
+    }
+  })
 }
 
 /* ======================= Providers (pipeline) ======================= */

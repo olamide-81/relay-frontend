@@ -159,6 +159,7 @@ class Component extends DCLogic {
       }),
       empty: list.length === 0,
       notEmpty: list.length > 0,
+      askSource: () => this.props.onNavigate?.('requests', { view: 'sourcing', compose: true }),
       shownLabel: `Showing ${page * PER + 1}–${Math.min(list.length, page * PER + PER)} of ${list.length} · Free plan: limited preview`,
       pages: Array.from({ length: pages }, (_, i) => ({
         label: String(i + 1),
@@ -572,7 +573,28 @@ function template(v0, self) {
                   >
                     {' '}
                     <div style={{ fontSize: '13.5px', fontWeight: '500' }}>No Providers match</div>{' '}
-                    <div style={{ fontSize: '12.5px', color: '#62666d' }}>Try another region or clear your search.</div>{' '}
+                    <div style={{ fontSize: '12.5px', color: '#62666d' }}>
+                      Try another region, or ask Relay to source it from Providers not listed here yet.
+                    </div>{' '}
+                    <span
+                      onClick={v0.askSource}
+                      style={{
+                        marginTop: '10px',
+                        height: '30px',
+                        padding: '0 12px',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        borderRadius: '7px',
+                        fontSize: '12.5px',
+                        fontWeight: '500',
+                        color: '#0f1011',
+                        background: '#f7f8f8',
+                        cursor: 'pointer',
+                      }}
+                      className={'dcp-1wwm6k1'}
+                    >
+                      Request sourcing
+                    </span>{' '}
                     <span
                       onClick={v0.reset}
                       style={{

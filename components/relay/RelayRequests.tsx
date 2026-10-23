@@ -29,6 +29,7 @@ import {
   holeText,
 } from '@/lib/dc/runtime'
 import { RELAY } from '@/lib/dc/relay-data'
+import RelaySourcing from './RelaySourcing'
 import RelayAppIcon from './RelayAppIcon'
 import RelayConfirm from './RelayConfirm'
 
@@ -76,6 +77,8 @@ const REPLY =
   'Thanks for reaching out through Relay. We’d be happy to help — I’ve shared sandbox credentials and a few times for a call. Looking forward to speaking.'
 class Component extends DCLogic {
   state = {
+    view: this.props.view === 'sourcing' ? 'sourcing' : 'providers',
+    composeN: 0,
     open: null,
     cancelAsk: false,
     closeAsk: null,
@@ -104,6 +107,9 @@ class Component extends DCLogic {
     clearInterval(this._i)
   }
   componentDidUpdate(prev) {
+    if (prev.compose !== this.props.compose && this.props.compose) this.setState({ composeUsed: false })
+    if (prev.view !== this.props.view && this.props.view)
+      this.setState({ view: this.props.view === 'sourcing' ? 'sourcing' : 'providers' })
     if (prev.provider !== this.props.provider && this.props.provider)
       this.setState({ modal: true, step: 2, picks: [this.props.provider] })
   }
@@ -143,7 +149,31 @@ class Component extends DCLogic {
       bg: S.cat === k ? 'rgba(255,255,255,.08)' : 'transparent',
       fg: S.cat === k ? '#f7f8f8' : '#8a8f98',
     })
+    const src = S.view === 'sourcing'
+    const vw = (k, label, hasDot) => ({
+      label,
+      hasDot,
+      pick: () => this.setState({ view: k, composeN: 0, composeUsed: true }),
+      bg: S.view === k ? 'rgba(255,255,255,.08)' : 'transparent',
+      fg: S.view === k ? '#f7f8f8' : '#8a8f98',
+      ring: S.view === k ? 'inset 0 0 0 1px rgba(255,255,255,.08)' : 'none',
+    })
     return {
+      isSourcing: src,
+      isProviders: !src,
+      views: [vw('providers', 'To Providers', false), vw('sourcing', 'Sourcing', true)],
+      sub: src
+        ? 'Ask Relay to find Providers that aren’t in the Directory yet.'
+        : 'Intros, pricing and sandbox requests sent to Providers through Relay.',
+      newLabel: src ? 'Request sourcing' : 'New request',
+      newClick: () =>
+        src
+          ? this.setState((s) => ({ composeN: s.composeN + 1 }))
+          : this.setState({ modal: true, step: 1, picks: [], q: '' }),
+      composeInit: !!this.props.compose && this.props.view === 'sourcing' && !S.composeUsed,
+      composeN: S.composeN,
+      toastFn: (...a) => this.props.onToast?.(...a),
+      goSourcing: () => this.setState({ view: 'sourcing', composeN: 1 }),
       tabs: [tab('all', 'All'), tab('open', 'Open'), tab('replied', 'Replied'), tab('closed', 'Closed')],
       rows: list.slice(page * PER, page * PER + PER).map((r) => {
         const p = R.byId[r.pid] ?? {},
@@ -381,12 +411,10 @@ function template(v0, self) {
               <h1 style={{ margin: '0', fontSize: '22px', fontWeight: '500', letterSpacing: '-0.02em' }}>
                 Requests
               </h1>{' '}
-              <div style={{ fontSize: '13.5px', color: '#8a8f98', marginTop: '6px' }}>
-                Intros, pricing and sandbox requests sent to Providers through Relay.
-              </div>{' '}
+              <div style={{ fontSize: '13.5px', color: '#8a8f98', marginTop: '6px' }}>{hole(v0.sub)}</div>{' '}
             </div>{' '}
             <span
-              onClick={v0.openNew}
+              onClick={v0.newClick}
               style={{
                 height: '32px',
                 padding: '0 14px',
@@ -413,397 +441,470 @@ function template(v0, self) {
               >
                 <path d="M12 5v14M5 12h14" />
               </svg>
-              New request
+              {hole(v0.newLabel)}
             </span>{' '}
           </div>{' '}
-          <div style={{ display: 'flex', gap: '4px', borderBottom: '1px solid rgba(255,255,255,.06)' }}>
+          <div
+            style={{
+              display: 'flex',
+              alignSelf: 'flex-start',
+              padding: '3px',
+              gap: '2px',
+              borderRadius: '9px',
+              background: 'rgba(255,255,255,.03)',
+              boxShadow: 'inset 0 0 0 1px rgba(255,255,255,.06)',
+            }}
+          >
             {' '}
-            {list(v0.tabs).map((it1, i1) => {
-              const v1 = { ...v0, t: it1, $index: i1 }
+            {list(v0.views).map((it1, i1) => {
+              const v1 = { ...v0, v: it1, $index: i1 }
               return (
                 <React.Fragment key={i1}>
-                  {' '}
                   <span
-                    onClick={v1.t?.pick}
+                    onClick={v1.v?.pick}
                     style={css(
-                      `position:relative;display:inline-flex;align-items:center;gap:6px;height:36px;padding:0 10px;font-size:13px;font-weight:500;cursor:pointer;transition:color .12s;color:${v1.t?.fg ?? ''}`,
+                      `height:28px;padding:0 12px;display:inline-flex;align-items:center;gap:7px;border-radius:7px;font-size:12.5px;font-weight:500;cursor:pointer;transition:background-color .12s,color .12s;background:${v1.v?.bg ?? ''};color:${v1.v?.fg ?? ''};box-shadow:${v1.v?.ring ?? ''}`,
                     )}
-                    className={'dcp-1yyotay'}
                   >
-                    {hole(v1.t?.label)}
-                    <span style={{ fontSize: '11.5px', color: '#62666d', fontVariantNumeric: 'tabular-nums' }}>
-                      {hole(v1.t?.count)}
-                    </span>
-                    <span
-                      style={css(
-                        `position:absolute;left:8px;right:8px;bottom:-1px;height:2px;border-radius:2px;background:#f7f8f8;transition:opacity .15s;opacity:${v1.t?.line ?? ''}`,
-                      )}
-                    />
-                  </span>{' '}
+                    {hole(v1.v?.label)}
+                    {v1.v?.hasDot ? (
+                      <>
+                        <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#6fe3b4' }} />
+                      </>
+                    ) : null}
+                  </span>
                 </React.Fragment>
               )
             })}{' '}
           </div>{' '}
-          <div
-            style={{
-              borderRadius: '12px',
-              boxShadow: '0 0 0 1px rgba(255,255,255,.06)',
-              background: 'rgba(255,255,255,.012)',
-              overflowX: 'auto',
-            }}
-          >
-            {' '}
-            <div style={{ minWidth: '760px' }}>
+          {v0.isSourcing ? (
+            <>
               {' '}
+              <RelaySourcing app={v0.app} compose={v0.composeInit} nonce={v0.composeN} onToast={v0.toastFn} />{' '}
+            </>
+          ) : null}{' '}
+          {v0.isProviders ? (
+            <>
+              {' '}
+              <div style={{ display: 'flex', gap: '4px', borderBottom: '1px solid rgba(255,255,255,.06)' }}>
+                {' '}
+                {list(v0.tabs).map((it1, i1) => {
+                  const v1 = { ...v0, t: it1, $index: i1 }
+                  return (
+                    <React.Fragment key={i1}>
+                      {' '}
+                      <span
+                        onClick={v1.t?.pick}
+                        style={css(
+                          `position:relative;display:inline-flex;align-items:center;gap:6px;height:36px;padding:0 10px;font-size:13px;font-weight:500;cursor:pointer;transition:color .12s;color:${v1.t?.fg ?? ''}`,
+                        )}
+                        className={'dcp-1yyotay'}
+                      >
+                        {hole(v1.t?.label)}
+                        <span style={{ fontSize: '11.5px', color: '#62666d', fontVariantNumeric: 'tabular-nums' }}>
+                          {hole(v1.t?.count)}
+                        </span>
+                        <span
+                          style={css(
+                            `position:absolute;left:8px;right:8px;bottom:-1px;height:2px;border-radius:2px;background:#f7f8f8;transition:opacity .15s;opacity:${v1.t?.line ?? ''}`,
+                          )}
+                        />
+                      </span>{' '}
+                    </React.Fragment>
+                  )
+                })}{' '}
+              </div>{' '}
               <div
                 style={{
-                  display: 'grid',
-                  gridTemplateColumns: '96px minmax(0,2.4fr) minmax(0,1.4fr) 120px 100px 20px',
-                  alignItems: 'center',
-                  height: '38px',
-                  padding: '0 16px',
-                  borderBottom: '1px solid rgba(255,255,255,.06)',
-                  fontSize: '12px',
-                  color: '#62666d',
+                  borderRadius: '12px',
+                  boxShadow: '0 0 0 1px rgba(255,255,255,.06)',
+                  background: 'rgba(255,255,255,.012)',
+                  overflowX: 'auto',
                 }}
               >
-                <span>ID</span>
-                <span>Request</span>
-                <span>Provider</span>
-                <span>Status</span>
-                <span style={{ textAlign: 'right' }}>Updated</span>
-                <span />
-              </div>{' '}
-              {list(v0.rows).map((it1, i1) => {
-                const v1 = { ...v0, r: it1, $index: i1 }
-                return (
-                  <React.Fragment key={i1}>
-                    {' '}
-                    <div
-                      style={css(
-                        `border-bottom:1px solid rgba(255,255,255,.04);background:${v1.r?.wrapBg ?? ''};transition:background-color .15s`,
-                      )}
-                    >
-                      {' '}
-                      <div
-                        onClick={v1.r?.toggle}
-                        style={{
-                          display: 'grid',
-                          gridTemplateColumns: '96px minmax(0,2.4fr) minmax(0,1.4fr) 120px 100px 20px',
-                          alignItems: 'center',
-                          minHeight: '50px',
-                          padding: '0 16px',
-                          cursor: 'pointer',
-                          transition: 'background-color .12s',
-                        }}
-                        className={'dcp-1l2gqo9'}
-                      >
+                {' '}
+                <div style={{ minWidth: '760px' }}>
+                  {' '}
+                  <div
+                    style={{
+                      display: 'grid',
+                      gridTemplateColumns: '96px minmax(0,2.4fr) minmax(0,1.4fr) 120px 100px 20px',
+                      alignItems: 'center',
+                      height: '38px',
+                      padding: '0 16px',
+                      borderBottom: '1px solid rgba(255,255,255,.06)',
+                      fontSize: '12px',
+                      color: '#62666d',
+                    }}
+                  >
+                    <span>ID</span>
+                    <span>Request</span>
+                    <span>Provider</span>
+                    <span>Status</span>
+                    <span style={{ textAlign: 'right' }}>Updated</span>
+                    <span />
+                  </div>{' '}
+                  {list(v0.rows).map((it1, i1) => {
+                    const v1 = { ...v0, r: it1, $index: i1 }
+                    return (
+                      <React.Fragment key={i1}>
                         {' '}
-                        <span style={{ fontFamily: "'Geist Mono',monospace", fontSize: '12px', color: '#62666d' }}>
-                          {hole(v1.r?.code)}
-                        </span>{' '}
-                        <span
-                          style={{
-                            fontSize: '13.5px',
-                            color: '#d4d6da',
-                            whiteSpace: 'nowrap',
-                            overflow: 'hidden',
-                            textOverflow: 'ellipsis',
-                            paddingRight: '16px',
-                          }}
+                        <div
+                          style={css(
+                            `border-bottom:1px solid rgba(255,255,255,.04);background:${v1.r?.wrapBg ?? ''};transition:background-color .15s`,
+                          )}
                         >
-                          {hole(v1.r?.subject)}
-                        </span>{' '}
-                        <span style={{ display: 'flex', alignItems: 'center', gap: '10px', minWidth: '0' }}>
-                          <RelayAppIcon kind={v1.r?.kind} size="22" />
-                          <span
-                            style={{
-                              fontSize: '13px',
-                              color: '#b4b8bf',
-                              whiteSpace: 'nowrap',
-                              overflow: 'hidden',
-                              textOverflow: 'ellipsis',
-                            }}
-                          >
-                            {hole(v1.r?.provider)}
-                          </span>
-                        </span>{' '}
-                        <span
-                          style={{
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            gap: '7px',
-                            fontSize: '12.5px',
-                            color: '#d4d6da',
-                          }}
-                        >
-                          <span style={css(`width:7px;height:7px;border-radius:50%;background:${v1.r?.dot ?? ''}`)} />
-                          {hole(v1.r?.status)}
-                        </span>{' '}
-                        <span style={{ fontSize: '12.5px', color: '#62666d', textAlign: 'right' }}>
-                          {hole(v1.r?.updated)}
-                        </span>{' '}
-                        <svg
-                          width="14"
-                          height="14"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="#62666d"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          style={css(`justify-self:end;transition:transform .2s;transform:${v1.r?.rot ?? ''}`)}
-                        >
-                          <path d="m6 9 6 6 6-6" />
-                        </svg>{' '}
-                      </div>{' '}
-                      <div
-                        style={css(
-                          `display:grid;transition:grid-template-rows .26s cubic-bezier(.2,.8,.2,1),opacity .2s;grid-template-rows:${v1.r?.rowsOpen ?? ''};opacity:${v1.r?.op ?? ''}`,
-                        )}
-                      >
-                        {' '}
-                        <div style={{ minHeight: '0', overflow: 'hidden' }}>
                           {' '}
                           <div
-                            data-r="m-g1"
+                            onClick={v1.r?.toggle}
                             style={{
-                              padding: '4px 16px 20px 112px',
                               display: 'grid',
-                              gridTemplateColumns: 'minmax(0,1.4fr) minmax(0,1fr)',
-                              gap: '28px',
+                              gridTemplateColumns: '96px minmax(0,2.4fr) minmax(0,1.4fr) 120px 100px 20px',
+                              alignItems: 'center',
+                              minHeight: '50px',
+                              padding: '0 16px',
+                              cursor: 'pointer',
+                              transition: 'background-color .12s',
                             }}
+                            className={'dcp-1l2gqo9'}
                           >
                             {' '}
-                            <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', minWidth: '0' }}>
-                              {' '}
-                              <div
-                                data-r="s-g1"
-                                style={{ display: 'grid', gridTemplateColumns: 'repeat(3,minmax(0,1fr))', gap: '8px' }}
-                              >
-                                {' '}
-                                {list(v1.r?.facts).map((it2, i2) => {
-                                  const v2 = { ...v1, f: it2, $index: i2 }
-                                  return (
-                                    <React.Fragment key={i2}>
-                                      <div
-                                        style={{
-                                          padding: '10px 12px',
-                                          borderRadius: '9px',
-                                          background: 'rgba(255,255,255,.025)',
-                                          boxShadow: 'inset 0 0 0 1px rgba(255,255,255,.05)',
-                                        }}
-                                      >
-                                        <div style={{ fontSize: '11.5px', color: '#62666d' }}>{hole(v2.f?.k)}</div>
-                                        <div style={{ fontSize: '13px', marginTop: '3px' }}>{hole(v2.f?.v)}</div>
-                                      </div>
-                                    </React.Fragment>
-                                  )
-                                })}{' '}
-                              </div>{' '}
-                              <div
+                            <span style={{ fontFamily: "'Geist Mono',monospace", fontSize: '12px', color: '#62666d' }}>
+                              {hole(v1.r?.code)}
+                            </span>{' '}
+                            <span
+                              style={{
+                                fontSize: '13.5px',
+                                color: '#d4d6da',
+                                whiteSpace: 'nowrap',
+                                overflow: 'hidden',
+                                textOverflow: 'ellipsis',
+                                paddingRight: '16px',
+                              }}
+                            >
+                              {hole(v1.r?.subject)}
+                            </span>{' '}
+                            <span style={{ display: 'flex', alignItems: 'center', gap: '10px', minWidth: '0' }}>
+                              <RelayAppIcon kind={v1.r?.kind} size="22" />
+                              <span
                                 style={{
-                                  padding: '12px 14px',
-                                  borderRadius: '10px',
-                                  background: 'rgba(255,255,255,.02)',
-                                  boxShadow: 'inset 0 0 0 1px rgba(255,255,255,.05)',
+                                  fontSize: '13px',
+                                  color: '#b4b8bf',
+                                  whiteSpace: 'nowrap',
+                                  overflow: 'hidden',
+                                  textOverflow: 'ellipsis',
                                 }}
                               >
-                                <div style={{ fontSize: '11.5px', color: '#62666d', marginBottom: '6px' }}>
-                                  Your message
-                                </div>
-                                <div
-                                  style={{ fontSize: '13px', lineHeight: '1.55', color: '#b4b8bf', textWrap: 'pretty' }}
-                                >
-                                  {hole(v1.r?.msg)}
-                                </div>
-                              </div>{' '}
-                              {v1.r?.hasReply ? (
-                                <>
+                                {hole(v1.r?.provider)}
+                              </span>
+                            </span>{' '}
+                            <span
+                              style={{
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: '7px',
+                                fontSize: '12.5px',
+                                color: '#d4d6da',
+                              }}
+                            >
+                              <span
+                                style={css(`width:7px;height:7px;border-radius:50%;background:${v1.r?.dot ?? ''}`)}
+                              />
+                              {hole(v1.r?.status)}
+                            </span>{' '}
+                            <span style={{ fontSize: '12.5px', color: '#62666d', textAlign: 'right' }}>
+                              {hole(v1.r?.updated)}
+                            </span>{' '}
+                            <svg
+                              width="14"
+                              height="14"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="#62666d"
+                              strokeWidth="2"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              style={css(`justify-self:end;transition:transform .2s;transform:${v1.r?.rot ?? ''}`)}
+                            >
+                              <path d="m6 9 6 6 6-6" />
+                            </svg>{' '}
+                          </div>{' '}
+                          <div
+                            style={css(
+                              `display:grid;transition:grid-template-rows .26s cubic-bezier(.2,.8,.2,1),opacity .2s;grid-template-rows:${v1.r?.rowsOpen ?? ''};opacity:${v1.r?.op ?? ''}`,
+                            )}
+                          >
+                            {' '}
+                            <div style={{ minHeight: '0', overflow: 'hidden' }}>
+                              {' '}
+                              <div
+                                data-r="m-g1"
+                                style={{
+                                  padding: '4px 16px 20px 112px',
+                                  display: 'grid',
+                                  gridTemplateColumns: 'minmax(0,1.4fr) minmax(0,1fr)',
+                                  gap: '28px',
+                                }}
+                              >
+                                {' '}
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', minWidth: '0' }}>
+                                  {' '}
+                                  <div
+                                    data-r="s-g1"
+                                    style={{
+                                      display: 'grid',
+                                      gridTemplateColumns: 'repeat(3,minmax(0,1fr))',
+                                      gap: '8px',
+                                    }}
+                                  >
+                                    {' '}
+                                    {list(v1.r?.facts).map((it2, i2) => {
+                                      const v2 = { ...v1, f: it2, $index: i2 }
+                                      return (
+                                        <React.Fragment key={i2}>
+                                          <div
+                                            style={{
+                                              padding: '10px 12px',
+                                              borderRadius: '9px',
+                                              background: 'rgba(255,255,255,.025)',
+                                              boxShadow: 'inset 0 0 0 1px rgba(255,255,255,.05)',
+                                            }}
+                                          >
+                                            <div style={{ fontSize: '11.5px', color: '#62666d' }}>{hole(v2.f?.k)}</div>
+                                            <div style={{ fontSize: '13px', marginTop: '3px' }}>{hole(v2.f?.v)}</div>
+                                          </div>
+                                        </React.Fragment>
+                                      )
+                                    })}{' '}
+                                  </div>{' '}
                                   <div
                                     style={{
                                       padding: '12px 14px',
                                       borderRadius: '10px',
-                                      background: 'rgba(111,227,180,.04)',
-                                      boxShadow: 'inset 0 0 0 1px rgba(111,227,180,.14)',
+                                      background: 'rgba(255,255,255,.02)',
+                                      boxShadow: 'inset 0 0 0 1px rgba(255,255,255,.05)',
                                     }}
                                   >
-                                    <div
-                                      style={{
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        gap: '8px',
-                                        fontSize: '11.5px',
-                                        color: '#6fe3b4',
-                                        marginBottom: '6px',
-                                      }}
-                                    >
-                                      {'Reply from '}
-                                      {hole(v1.r?.provider)}
+                                    <div style={{ fontSize: '11.5px', color: '#62666d', marginBottom: '6px' }}>
+                                      Your message
                                     </div>
                                     <div
                                       style={{
                                         fontSize: '13px',
                                         lineHeight: '1.55',
-                                        color: '#d4d6da',
+                                        color: '#b4b8bf',
                                         textWrap: 'pretty',
                                       }}
                                     >
-                                      {hole(v1.r?.reply)}
+                                      {hole(v1.r?.msg)}
                                     </div>
-                                  </div>
-                                </>
-                              ) : null}{' '}
-                              <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-                                {' '}
-                                {v1.r?.hasReply ? (
-                                  <>
-                                    <span
-                                      onClick={v1.appOpenInbox}
-                                      style={{
-                                        height: '30px',
-                                        padding: '0 12px',
-                                        display: 'inline-flex',
-                                        alignItems: 'center',
-                                        borderRadius: '7px',
-                                        fontSize: '12.5px',
-                                        fontWeight: '500',
-                                        color: '#0f1011',
-                                        background: '#f7f8f8',
-                                        cursor: 'pointer',
-                                      }}
-                                      className={'dcp-1wwm6k1'}
-                                    >
-                                      Open in Inbox
-                                    </span>
-                                  </>
-                                ) : null}{' '}
-                                {v1.r?.canFollow ? (
-                                  <>
-                                    <span
-                                      onClick={v1.r?.follow}
-                                      style={{
-                                        height: '30px',
-                                        padding: '0 12px',
-                                        display: 'inline-flex',
-                                        alignItems: 'center',
-                                        borderRadius: '7px',
-                                        fontSize: '12.5px',
-                                        fontWeight: '500',
-                                        color: '#0f1011',
-                                        background: '#f7f8f8',
-                                        cursor: 'pointer',
-                                      }}
-                                      className={'dcp-1wwm6k1'}
-                                    >
-                                      Send follow-up
-                                    </span>
-                                  </>
-                                ) : null}{' '}
-                                {v1.r?.canClose ? (
-                                  <>
-                                    <span
-                                      onClick={v1.r?.askClose}
-                                      style={{
-                                        height: '30px',
-                                        padding: '0 12px',
-                                        display: 'inline-flex',
-                                        alignItems: 'center',
-                                        borderRadius: '7px',
-                                        fontSize: '12.5px',
-                                        fontWeight: '500',
-                                        color: '#d4d6da',
-                                        cursor: 'pointer',
-                                        boxShadow: 'inset 0 0 0 1px rgba(255,255,255,.1)',
-                                      }}
-                                      className={'dcp-iy5ut3'}
-                                    >
-                                      Close request
-                                    </span>
-                                  </>
-                                ) : null}{' '}
-                              </div>{' '}
-                            </div>{' '}
-                            <div style={{ display: 'flex', flexDirection: 'column', gap: '0' }}>
-                              {' '}
-                              <div style={{ fontSize: '11.5px', color: '#62666d', marginBottom: '10px' }}>
-                                Timeline
-                              </div>{' '}
-                              {list(v1.r?.timeline).map((it2, i2) => {
-                                const v2 = { ...v1, t: it2, $index: i2 }
-                                return (
-                                  <React.Fragment key={i2}>
+                                  </div>{' '}
+                                  {v1.r?.hasReply ? (
+                                    <>
+                                      <div
+                                        style={{
+                                          padding: '12px 14px',
+                                          borderRadius: '10px',
+                                          background: 'rgba(111,227,180,.04)',
+                                          boxShadow: 'inset 0 0 0 1px rgba(111,227,180,.14)',
+                                        }}
+                                      >
+                                        <div
+                                          style={{
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            gap: '8px',
+                                            fontSize: '11.5px',
+                                            color: '#6fe3b4',
+                                            marginBottom: '6px',
+                                          }}
+                                        >
+                                          {'Reply from '}
+                                          {hole(v1.r?.provider)}
+                                        </div>
+                                        <div
+                                          style={{
+                                            fontSize: '13px',
+                                            lineHeight: '1.55',
+                                            color: '#d4d6da',
+                                            textWrap: 'pretty',
+                                          }}
+                                        >
+                                          {hole(v1.r?.reply)}
+                                        </div>
+                                      </div>
+                                    </>
+                                  ) : null}{' '}
+                                  <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
                                     {' '}
-                                    <div style={{ display: 'flex', gap: '12px' }}>
-                                      {' '}
-                                      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                                    {v1.r?.hasReply ? (
+                                      <>
                                         <span
-                                          style={css(
-                                            `width:10px;height:10px;border-radius:50%;margin-top:3px;flex:none;background:${v2.t?.dot ?? ''};box-shadow:0 0 0 3px ${v2.t?.halo ?? ''}`,
-                                          )}
-                                        />
+                                          onClick={v1.appOpenInbox}
+                                          style={{
+                                            height: '30px',
+                                            padding: '0 12px',
+                                            display: 'inline-flex',
+                                            alignItems: 'center',
+                                            borderRadius: '7px',
+                                            fontSize: '12.5px',
+                                            fontWeight: '500',
+                                            color: '#0f1011',
+                                            background: '#f7f8f8',
+                                            cursor: 'pointer',
+                                          }}
+                                          className={'dcp-1wwm6k1'}
+                                        >
+                                          Open in Inbox
+                                        </span>
+                                      </>
+                                    ) : null}{' '}
+                                    {v1.r?.canFollow ? (
+                                      <>
                                         <span
-                                          style={css(
-                                            `flex:1;width:1px;min-height:18px;background:rgba(255,255,255,.08);opacity:${v2.t?.line ?? ''}`,
-                                          )}
-                                        />
-                                      </div>{' '}
-                                      <div style={{ paddingBottom: '14px' }}>
-                                        <div style={css(`font-size:13px;color:${v2.t?.fg ?? ''}`)}>
-                                          {hole(v2.t?.label)}
-                                        </div>
-                                        <div style={{ fontSize: '12px', color: '#62666d', marginTop: '2px' }}>
-                                          {hole(v2.t?.when)}
-                                        </div>
-                                      </div>{' '}
-                                    </div>{' '}
-                                  </React.Fragment>
-                                )
-                              })}{' '}
+                                          onClick={v1.r?.follow}
+                                          style={{
+                                            height: '30px',
+                                            padding: '0 12px',
+                                            display: 'inline-flex',
+                                            alignItems: 'center',
+                                            borderRadius: '7px',
+                                            fontSize: '12.5px',
+                                            fontWeight: '500',
+                                            color: '#0f1011',
+                                            background: '#f7f8f8',
+                                            cursor: 'pointer',
+                                          }}
+                                          className={'dcp-1wwm6k1'}
+                                        >
+                                          Send follow-up
+                                        </span>
+                                      </>
+                                    ) : null}{' '}
+                                    {v1.r?.canClose ? (
+                                      <>
+                                        <span
+                                          onClick={v1.r?.askClose}
+                                          style={{
+                                            height: '30px',
+                                            padding: '0 12px',
+                                            display: 'inline-flex',
+                                            alignItems: 'center',
+                                            borderRadius: '7px',
+                                            fontSize: '12.5px',
+                                            fontWeight: '500',
+                                            color: '#d4d6da',
+                                            cursor: 'pointer',
+                                            boxShadow: 'inset 0 0 0 1px rgba(255,255,255,.1)',
+                                          }}
+                                          className={'dcp-iy5ut3'}
+                                        >
+                                          Close request
+                                        </span>
+                                      </>
+                                    ) : null}{' '}
+                                  </div>{' '}
+                                </div>{' '}
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '0' }}>
+                                  {' '}
+                                  <div style={{ fontSize: '11.5px', color: '#62666d', marginBottom: '10px' }}>
+                                    Timeline
+                                  </div>{' '}
+                                  {list(v1.r?.timeline).map((it2, i2) => {
+                                    const v2 = { ...v1, t: it2, $index: i2 }
+                                    return (
+                                      <React.Fragment key={i2}>
+                                        {' '}
+                                        <div style={{ display: 'flex', gap: '12px' }}>
+                                          {' '}
+                                          <div
+                                            style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
+                                          >
+                                            <span
+                                              style={css(
+                                                `width:10px;height:10px;border-radius:50%;margin-top:3px;flex:none;background:${v2.t?.dot ?? ''};box-shadow:0 0 0 3px ${v2.t?.halo ?? ''}`,
+                                              )}
+                                            />
+                                            <span
+                                              style={css(
+                                                `flex:1;width:1px;min-height:18px;background:rgba(255,255,255,.08);opacity:${v2.t?.line ?? ''}`,
+                                              )}
+                                            />
+                                          </div>{' '}
+                                          <div style={{ paddingBottom: '14px' }}>
+                                            <div style={css(`font-size:13px;color:${v2.t?.fg ?? ''}`)}>
+                                              {hole(v2.t?.label)}
+                                            </div>
+                                            <div style={{ fontSize: '12px', color: '#62666d', marginTop: '2px' }}>
+                                              {hole(v2.t?.when)}
+                                            </div>
+                                          </div>{' '}
+                                        </div>{' '}
+                                      </React.Fragment>
+                                    )
+                                  })}{' '}
+                                </div>{' '}
+                              </div>{' '}
                             </div>{' '}
                           </div>{' '}
                         </div>{' '}
-                      </div>{' '}
-                    </div>{' '}
-                  </React.Fragment>
-                )
-              })}{' '}
-              {v0.empty ? (
-                <>
-                  <div style={{ padding: '56px 24px', textAlign: 'center' }}>
-                    <div style={{ fontSize: '13.5px', fontWeight: '500' }}>No requests here</div>
-                    <div style={{ fontSize: '12.5px', color: '#62666d', marginTop: '4px' }}>
-                      Requests you send will be tracked in this list.
-                    </div>
-                  </div>
-                </>
-              ) : null}{' '}
-            </div>{' '}
-          </div>{' '}
-          {v0.showPager ? (
-            <>
-              {' '}
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px' }}>
-                {' '}
-                <span style={{ fontSize: '12.5px', color: '#62666d' }}>{hole(v0.pagerLabel)}</span>{' '}
-                <div style={{ display: 'flex', gap: '2px' }}>
-                  {list(v0.pages).map((it1, i1) => {
-                    const v1 = { ...v0, n: it1, $index: i1 }
-                    return (
-                      <React.Fragment key={i1}>
-                        <span
-                          onClick={v1.n?.go}
-                          style={css(
-                            `min-width:30px;height:30px;display:grid;place-items:center;border-radius:7px;font-size:12.5px;font-weight:500;cursor:pointer;background:${v1.n?.bg ?? ''};color:${v1.n?.fg ?? ''}`,
-                          )}
-                          className={'dcp-1yyotay'}
-                        >
-                          {hole(v1.n?.label)}
-                        </span>
                       </React.Fragment>
                     )
-                  })}
+                  })}{' '}
+                  {v0.empty ? (
+                    <>
+                      <div style={{ padding: '56px 24px', textAlign: 'center' }}>
+                        <div style={{ fontSize: '13.5px', fontWeight: '500' }}>No requests here</div>
+                        <div style={{ fontSize: '12.5px', color: '#62666d', marginTop: '4px' }}>
+                          Requests you send will be tracked in this list.
+                        </div>
+                      </div>
+                    </>
+                  ) : null}{' '}
                 </div>{' '}
+              </div>{' '}
+              {v0.showPager ? (
+                <>
+                  {' '}
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px' }}>
+                    {' '}
+                    <span style={{ fontSize: '12.5px', color: '#62666d' }}>{hole(v0.pagerLabel)}</span>{' '}
+                    <div style={{ display: 'flex', gap: '2px' }}>
+                      {list(v0.pages).map((it1, i1) => {
+                        const v1 = { ...v0, n: it1, $index: i1 }
+                        return (
+                          <React.Fragment key={i1}>
+                            <span
+                              onClick={v1.n?.go}
+                              style={css(
+                                `min-width:30px;height:30px;display:grid;place-items:center;border-radius:7px;font-size:12.5px;font-weight:500;cursor:pointer;background:${v1.n?.bg ?? ''};color:${v1.n?.fg ?? ''}`,
+                              )}
+                              className={'dcp-1yyotay'}
+                            >
+                              {hole(v1.n?.label)}
+                            </span>
+                          </React.Fragment>
+                        )
+                      })}
+                    </div>{' '}
+                  </div>{' '}
+                </>
+              ) : null}{' '}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12.5px', color: '#62666d' }}>
+                Don’t see the Provider you need?
+                <span
+                  onClick={v0.goSourcing}
+                  style={{
+                    color: '#d4d6da',
+                    cursor: 'pointer',
+                    textDecoration: 'underline',
+                    textDecorationColor: 'rgba(255,255,255,.2)',
+                    textUnderlineOffset: '3px',
+                  }}
+                  className={'dcp-1yyotay'}
+                >
+                  Ask Relay to source one
+                </span>
               </div>{' '}
             </>
           ) : null}

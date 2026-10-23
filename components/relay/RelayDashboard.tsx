@@ -141,6 +141,9 @@ class Component extends DCLogic {
     this.setState((s) => ({ toasts: s.toasts.map((t) => (t.id === id ? { ...t, leaving: true } : t)) }))
     setTimeout(() => this.setState((s) => ({ toasts: s.toasts.filter((t) => t.id !== id) })), 260)
   }
+  componentDidMount() {
+    window.__relayGo = (p, params, key) => this.go(p, params || {}, key)
+  }
   ask(c) {
     this.setState({ confirm: c })
   }
@@ -409,9 +412,9 @@ function template(v0, self) {
                   app={v0.app}
                   plan={v0.plan}
                   user={v0.user}
-                  onNavigate={v0.onNavigate}
                   onCreateList={v0.createList}
                   onUpgrade={v0.openUpgrade}
+                  onNavigate={v0.onNavigate}
                 />{' '}
               </>
             ) : null}{' '}
@@ -503,6 +506,8 @@ function template(v0, self) {
                   app={v0.app}
                   onNavigate={v0.onNavigate}
                   provider={v0.params?.provider}
+                  view={v0.params?.view}
+                  compose={v0.params?.compose}
                   onToast={v0.onToast}
                 />{' '}
               </>

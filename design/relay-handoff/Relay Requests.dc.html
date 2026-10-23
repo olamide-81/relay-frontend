@@ -26,10 +26,17 @@ select option{background:#1c1d20;color:#f7f8f8}
   <div style="display:flex;align-items:flex-end;gap:16px;flex-wrap:wrap">
     <div style="flex:1 1 320px;min-width:0">
       <h1 style="margin:0;font-size:22px;font-weight:500;letter-spacing:-0.02em">Requests</h1>
-      <div style="font-size:13.5px;color:#8a8f98;margin-top:6px">Intros, pricing and sandbox requests sent to Providers through Relay.</div>
+      <div style="font-size:13.5px;color:#8a8f98;margin-top:6px">{{ sub }}</div>
     </div>
-    <span onClick="{{ openNew }}" style="height:32px;padding:0 14px;display:inline-flex;align-items:center;gap:6px;border-radius:8px;font-size:13px;font-weight:500;color:#0f1011;background:#f7f8f8;cursor:pointer" style-hover="background:#e3e5e8"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg>New request</span>
+    <span onClick="{{ newClick }}" style="height:32px;padding:0 14px;display:inline-flex;align-items:center;gap:6px;border-radius:8px;font-size:13px;font-weight:500;color:#0f1011;background:#f7f8f8;cursor:pointer" style-hover="background:#e3e5e8"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg>{{ newLabel }}</span>
   </div>
+  <div style="display:flex;align-self:flex-start;padding:3px;gap:2px;border-radius:9px;background:rgba(255,255,255,.03);box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)">
+    <sc-for list="{{ views }}" as="v" hint-placeholder-count="2"><span onClick="{{ v.pick }}" style="height:28px;padding:0 12px;display:inline-flex;align-items:center;gap:7px;border-radius:7px;font-size:12.5px;font-weight:500;cursor:pointer;transition:background-color .12s,color .12s;background:{{ v.bg }};color:{{ v.fg }};box-shadow:{{ v.ring }}">{{ v.label }}<sc-if value="{{ v.hasDot }}"><span style="width:6px;height:6px;border-radius:50%;background:#6fe3b4"></span></sc-if></span></sc-for>
+  </div>
+  <sc-if value="{{ isSourcing }}">
+    <dc-import name="Relay Sourcing" compose="{{ composeInit }}" nonce="{{ composeN }}" on-toast="{{ toastFn }}" hint-size="100%,600px"></dc-import>
+  </sc-if>
+  <sc-if value="{{ isProviders }}" hint-placeholder-val="{{ true }}">
   <div style="display:flex;gap:4px;border-bottom:1px solid rgba(255,255,255,.06)">
     <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="4">
       <span onClick="{{ t.pick }}" style="position:relative;display:inline-flex;align-items:center;gap:6px;height:36px;padding:0 10px;font-size:13px;font-weight:500;cursor:pointer;transition:color .12s;color:{{ t.fg }}" style-hover="color:#f7f8f8">{{ t.label }}<span style="font-size:11.5px;color:#62666d;font-variant-numeric:tabular-nums">{{ t.count }}</span><span style="position:absolute;left:8px;right:8px;bottom:-1px;height:2px;border-radius:2px;background:#f7f8f8;transition:opacity .15s;opacity:{{ t.line }}"></span></span>
@@ -85,6 +92,8 @@ select option{background:#1c1d20;color:#f7f8f8}
       <span style="font-size:12.5px;color:#62666d">{{ pagerLabel }}</span>
       <div style="display:flex;gap:2px"><sc-for list="{{ pages }}" as="n" hint-placeholder-count="2"><span onClick="{{ n.go }}" style="min-width:30px;height:30px;display:grid;place-items:center;border-radius:7px;font-size:12.5px;font-weight:500;cursor:pointer;background:{{ n.bg }};color:{{ n.fg }}" style-hover="color:#f7f8f8">{{ n.label }}</span></sc-for></div>
     </div>
+  </sc-if>
+  <div style="display:flex;align-items:center;gap:8px;font-size:12.5px;color:#62666d">Don’t see the Provider you need?<span onClick="{{ goSourcing }}" style="color:#d4d6da;cursor:pointer;text-decoration:underline;text-decoration-color:rgba(255,255,255,.2);text-underline-offset:3px" style-hover="color:#f7f8f8">Ask Relay to source one</span></div>
   </sc-if>
 </div>
 
@@ -183,13 +192,13 @@ const PER = 8;
 const MSG = { Intro: 'We’re a European fintech scaling into new markets and would like to explore a partnership. Could we set up a 30-minute intro call this week?', Pricing: 'Could you share commercial terms for our expected volumes? We’re comparing three Providers and aim to decide this quarter.', Sandbox: 'We’d like sandbox access to evaluate the API ahead of a technical review with our engineering team.', RFP: 'Please find our RFP attached. We’re looking for a long-term partner and would appreciate a response within two weeks.' };
 const REPLY = 'Thanks for reaching out through Relay. We’d be happy to help — I’ve shared sandbox credentials and a few times for a call. Looking forward to speaking.';
 class Component extends DCLogic {
-  state = { open: null, cancelAsk: false, closeAsk: null, tab: 'all', rows: INIT, page: 0, modal: false, step: 1, q: '', cat: 'all', region: 'All regions', picks: [], form: { type: 'Intro', volume: VOL[1], timeline: TL[1], msg: '' } };
+  state = { view: this.props.view === 'sourcing' ? 'sourcing' : 'providers', composeN: 0, open: null, cancelAsk: false, closeAsk: null, tab: 'all', rows: INIT, page: 0, modal: false, step: 1, q: '', cat: 'all', region: 'All regions', picks: [], form: { type: 'Intro', volume: VOL[1], timeline: TL[1], msg: '' } };
   componentDidMount() {
     if (!window.RELAY) this._i = setInterval(() => { if (window.RELAY) { clearInterval(this._i); this.forceUpdate(); } }, 40);
     if (this.props.provider) this.setState({ modal: true, step: 2, picks: [this.props.provider] });
   }
   componentWillUnmount() { clearInterval(this._i); }
-  componentDidUpdate(prev) { if (prev.provider !== this.props.provider && this.props.provider) this.setState({ modal: true, step: 2, picks: [this.props.provider] }); }
+  componentDidUpdate(prev) { if (prev.view !== this.props.view && this.props.view) this.setState({ view: this.props.view === 'sourcing' ? 'sourcing' : 'providers' }); if (prev.provider !== this.props.provider && this.props.provider) this.setState({ modal: true, step: 2, picks: [this.props.provider] }); }
   renderVals() {
     const R = window.RELAY ?? EMPTY, S = this.state;
     const f = { all: () => true, open: r => r.status === 'sent' || r.status === 'draft', replied: r => r.status === 'replied', closed: r => r.status === 'closed' };
@@ -202,7 +211,16 @@ class Component extends DCLogic {
     const picked = S.picks.map(id => R.byId[id]).filter(Boolean);
     const can = S.step === 1 ? picked.length > 0 : S.step === 2 ? true : true;
     const chip = (k, l) => ({ label: l, pick: () => this.setState({ cat: k }), bg: S.cat === k ? 'rgba(255,255,255,.08)' : 'transparent', fg: S.cat === k ? '#f7f8f8' : '#8a8f98' });
+    const src = S.view === 'sourcing';
+    const vw = (k, label, hasDot) => ({ label, hasDot, pick: () => this.setState({ view: k, composeN: 0 }), bg: S.view === k ? 'rgba(255,255,255,.08)' : 'transparent', fg: S.view === k ? '#f7f8f8' : '#8a8f98', ring: S.view === k ? 'inset 0 0 0 1px rgba(255,255,255,.08)' : 'none' });
     return {
+      isSourcing: src, isProviders: !src,
+      views: [vw('providers', 'To Providers', false), vw('sourcing', 'Sourcing', true)],
+      sub: src ? 'Ask Relay to find Providers that aren’t in the Directory yet.' : 'Intros, pricing and sandbox requests sent to Providers through Relay.',
+      newLabel: src ? 'Request sourcing' : 'New request',
+      newClick: () => src ? this.setState(s => ({ composeN: s.composeN + 1 })) : this.setState({ modal: true, step: 1, picks: [], q: '' }),
+      composeInit: !!this.props.compose && this.props.view === 'sourcing', composeN: S.composeN, toastFn: (...a) => this.props.onToast?.(...a),
+      goSourcing: () => this.setState({ view: 'sourcing', composeN: 1 }),
       tabs: [tab('all', 'All'), tab('open', 'Open'), tab('replied', 'Replied'), tab('closed', 'Closed')],
       rows: list.slice(page * PER, page * PER + PER).map(r => { const p = R.byId[r.pid] ?? {}, o = S.open === r.code, type = r.subject.split(' — ')[0], st = r.status;
         const steps = [['Draft created', true], ['Sent to ' + (p.name ?? 'Provider'), st !== 'draft'], ['Opened by Provider', st === 'replied' || st === 'closed'], [st === 'closed' ? 'Closed' : 'Reply received', st === 'replied' || st === 'closed']];

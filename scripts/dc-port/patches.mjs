@@ -75,7 +75,7 @@ export default {
       ['<dc-import name="Relay Topbar" ', '<dc-import name="Relay Topbar" plan="{{ plan }}" user="{{ user }}" on-logout="{{ onLogout }}" '],
       [
         '<dc-import name="Relay Overview" ',
-        '<dc-import name="Relay Overview" plan="{{ plan }}" user="{{ user }}" on-navigate="{{ onNavigate }}" on-create-list="{{ createList }}" on-upgrade="{{ openUpgrade }}" ',
+        '<dc-import name="Relay Overview" plan="{{ plan }}" user="{{ user }}" on-create-list="{{ createList }}" on-upgrade="{{ openUpgrade }}" ',
       ],
       ['<dc-import name="Relay Inbox" ', '<dc-import name="Relay Inbox" on-open-provider="{{ openProvider }}" '],
       ['<dc-import name="Relay Compare" ', '<dc-import name="Relay Compare" on-navigate="{{ onNavigate }}" '],
@@ -197,11 +197,26 @@ export default {
     </section>`,
       ],
       ['padding:8px 0;display:flex;flex-direction:column;justify-content:center">', 'padding:8px 0;display:flex;flex-direction:column;justify-content:flex-start">'],
+      // Sourcing card: the workspace's two latest sourcing requests instead of the design's two examples.
+      [
+        /(<div style="display:flex;flex-direction:column">)\s*<div onClick="\{\{ openSourcing \}\}"[\s\S]*?SRC-013[\s\S]*?<\/div>\s*(<\/div>\s*<\/div>)/,
+        `$1
+      <sc-for list="{{ appSrc }}" as="r">
+      <div onClick="{{ r.open }}" style="display:flex;align-items:center;gap:12px;padding:14px 20px;border-bottom:{{ r.line }};cursor:pointer" style-hover="background:rgba(255,255,255,.025)">
+        <dc-import name="Relay App Icon" kind="{{ r.kind }}" size="26" hint-size="26px,26px"></dc-import>
+        <div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ r.title }}</div><div style="font-size:12px;color:#62666d;margin-top:2px"><span style="font-family:'Geist Mono',monospace">{{ r.code }}</span> · {{ r.markets }}</div></div>
+        <span style="display:inline-flex;align-items:center;gap:7px;font-size:12.5px;color:#d4d6da;white-space:nowrap"><span style="width:7px;height:7px;border-radius:50%;background:{{ r.dot }}"></span>{{ r.status }}<sc-if value="{{ r.hasBadge }}"><span style="font-size:11px;font-weight:500;padding:1px 6px;border-radius:5px;color:#0f1011;background:#6fe3b4">{{ r.badge }}</span></sc-if></span>
+      </div>
+      </sc-for>
+      <sc-if value="{{ appSrcEmpty }}"><div style="flex:1;display:flex;flex-direction:column;justify-content:center;padding:18px 20px"><div style="font-size:13px;font-weight:500">Nothing here yet</div><div style="font-size:12.5px;color:#62666d;margin-top:4px">Sourcing requests you send to Relay are tracked here.</div></div></sc-if>
+    $2`,
+      ],
     ],
-    prelude: "import { overviewVals } from '@/lib/dc/wiring'",
+    prelude: "import { overviewVals, sourcingCardRows } from '@/lib/dc/wiring'",
     vals: `function (v) {
       const nav = (k, p) => () => this.props.onNavigate?.(k, p);
-      return { appNewShortlist: () => this.props.onCreateList?.(), appRequestIntro: nav('requests'), appUpgrade: () => this.props.onUpgrade?.(), appComparePlans: nav('settings', { section: 'billing' }), appDirectory: nav('directory'), ...overviewVals.call(this, v) };
+      const appSrc = sourcingCardRows(this.props.app, (p) => this.props.onNavigate?.('requests', p));
+      return { appSrc, appSrcEmpty: appSrc.length === 0, appNewShortlist: () => this.props.onCreateList?.(), appRequestIntro: nav('requests'), appUpgrade: () => this.props.onUpgrade?.(), appComparePlans: nav('settings', { section: 'billing' }), appDirectory: nav('directory'), ...overviewVals.call(this, v) };
     }`,
     logic: [
       [
@@ -274,10 +289,40 @@ const roleOptions = (cur) => [...(!cur ? [{ v: '', l: 'Select a role' }] : ROLES
   },
 
   'Relay Requests': {
-    template: [click('Open in Inbox', 'appOpenInbox')],
+    template: [
+      click('Open in Inbox', 'appOpenInbox'),
+      ['<dc-import name="Relay Sourcing" ', '<dc-import name="Relay Sourcing" app="{{ app }}" '],
+    ],
+    // `compose` from the route opens the Sourcing modal once; switching views by hand doesn't reopen it.
+    logic: [
+      ["pick: () => this.setState({ view: k, composeN: 0 })", "pick: () => this.setState({ view: k, composeN: 0, composeUsed: true })"],
+      ["composeInit: !!this.props.compose && this.props.view === 'sourcing',", "composeInit: !!this.props.compose && this.props.view === 'sourcing' && !S.composeUsed,"],
+      [
+        "componentDidUpdate(prev) { if (prev.view !== this.props.view && this.props.view)",
+        "componentDidUpdate(prev) { if (prev.compose !== this.props.compose && this.props.compose) this.setState({ composeUsed: false }); if (prev.view !== this.props.view && this.props.view)",
+      ],
+    ],
     prelude: "import { wireRequests, requestsVals } from '@/lib/dc/wiring'",
     vals: "function (v) { return { appOpenInbox: () => this.props.onNavigate?.('inbox'), ...requestsVals.call(this, v) } }",
     after: 'Component = wireRequests(Component)',
+  },
+
+  // Sourcing (inside Requests). Signed in, rows come from relay-api and every change is sent back
+  // (lib/dc/wiring wireSourcing); the design's demo rows stay for the website's product shots.
+  'Relay Sourcing': {
+    // Phones: the table scrolls sideways (760px), but an expanded request stays screen-width and
+    // pinned so its details and the Request intro buttons aren't off to the right (app/relay-app-mobile.css).
+    template: [
+      ['background:rgba(255,255,255,.012);overflow-x:auto">\n    <div style="min-width:760px">', 'background:rgba(255,255,255,.012);overflow-x:auto" data-src="table">\n    <div style="min-width:760px">'],
+      ['<div style="display:grid;transition:grid-template-rows .26s', '<div data-src="detail" style="display:grid;transition:grid-template-rows .26s'],
+    ],
+    logic: [
+      // An empty list (a new workspace) would number the first request SRC--Infinity.
+      ['Math.max(...s.rows.map(r => +r.code.slice(4)))', 'Math.max(0, ...s.rows.map(r => +r.code.slice(4)))'],
+    ],
+    prelude: "import { wireSourcing, sourcingVals } from '@/lib/dc/wiring'",
+    vals: 'function (v) { return sourcingVals.call(this, v) }',
+    after: 'Component = wireSourcing(Component)',
   },
 
   // The workspace's real Providers pipeline (relay-api WsPipeline) in the design's ROWS shape.
